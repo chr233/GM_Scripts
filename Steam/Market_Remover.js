@@ -40,14 +40,10 @@ function addBtns() {
         s.textContent = '    ';
         return s;
     }
-
     let area = document.querySelector('.market_header_text');
-
     let b = genBtn('一键下架', setGoal, 'By Chr_', 'autoxiajia');
     let c = genBtn('停止操作', clearGoal, 'By Chr_', 'stopxiajia');
     let d = genBtn('问题反馈', feedBack, '留言即可', 'stopxiajia');
-
-
     area.appendChild(b);
     area.appendChild(genSpace());
     area.appendChild(c);
@@ -87,7 +83,6 @@ function autoRemove() {
             retry(remove2, 100);
         }
     }
-
     function remove3() {
         let frame = document.querySelector("#market_removelisting_dialog");
         if (frame && frame.style.display == 'none') {
@@ -97,8 +92,6 @@ function autoRemove() {
             retry(remove3, 300);
         }
     }
-
-
     // 自动重试
     function retry(foo, t) {
         console.log(foo.name);
