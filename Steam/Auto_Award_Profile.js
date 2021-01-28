@@ -33,19 +33,17 @@ let Vtimer = -1;
 // 初始化
 (function () {
     'use strict';
-    if (checkURL()) {
-        addPanel();
-        loadConf();
-        if (checkSelf()) {
-            document.getElementById('p_dashang').style.display = 'None';
+    addPanel();
+    loadConf();
+    if (checkSelf()) {
+        document.getElementById('p_dashang').style.display = 'None';
+    } else {
+        if (Vmode && checkTarget()) {
+            panelSwitch();
+            getMyPoint();
+            window.onload = autoAward;
         } else {
-            if (Vmode && checkTarget()) {
-                panelSwitch();
-                getMyPoint();
-                window.onload = autoAward;
-            } else {
-                getMyPoint();
-            }
+            getMyPoint();
         }
     }
 })();
@@ -510,12 +508,6 @@ function panelSwitch() {
     } else {
         panel.style.display = 'none';
     }
-}
-// 检查网址
-function checkURL() {
-    let path = window.location.pathname;
-    let re = /^\/(id|profiles)\/[^\/]+\/?$/;
-    return re.test(path);
 }
 // 判断是不是自己
 function checkSelf() {

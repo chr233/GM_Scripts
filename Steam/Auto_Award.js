@@ -33,18 +33,16 @@ let Vtimer = -1;
 // 初始化
 (function () {
     'use strict';
-    if (checkURL()) {
-        addPanel();
-        loadConf();
-        if (checkSelf()) {
-            document.getElementById('p_dashang').style.display = 'None';
+    addPanel();
+    loadConf();
+    if (checkSelf()) {
+        document.getElementById('p_dashang').style.display = 'None';
+    } else {
+        if (Vmode && checkTarget()) {
+            getMyPoint();
+            window.onload = autoAward;
         } else {
-            if (Vmode && checkTarget()) {
-                getMyPoint();
-                window.onload = autoAward;
-            } else {
-                getMyPoint();
-            }
+            getMyPoint();
         }
     }
 })();
@@ -480,12 +478,6 @@ function historyReport() {
         log(n + ' 共计 ' + dic[n] + ' 点');
     }
     log('====点数统计====')
-}
-// 检查网址
-function checkURL() {
-    let path = window.location.pathname;
-    let re = /^\/(id|profiles)\/[^\/]+\/recommended\/\d+/;
-    return re.test(path);
 }
 // 判断是不是自己
 function checkSelf() {
