@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      1.0
+// @version      1.6
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
@@ -61,7 +61,8 @@ function addBtns() {
     if (btnSwitch == null) { return; }
 
     btnSwitch.id = 'btnSwitch1';
-    btnSwitch.style.cssText = 'width: auto;padding: 0 5px;';
+    btnSwitch.title = '点这里开启/隐藏控制面板';
+    btnSwitch.style.cssText = 'width: auto;padding: 0 5px;cursor: pointer;';
     btnSwitch.addEventListener('click', switchPanel);
 
     let panelArea = document.querySelector('.index_navi_left');
@@ -197,22 +198,42 @@ function autoRoll() {
     } catch (e) {
         console.error(e);
     }
-    if (!VCan3) {
-        return;
-    }
+    // if (!VCan3) {
+    //     return;
+    // }
     let v = 0;
-    roll();
-    roll();
-    roll();
-    function roll() {
+    gethash();
+
+    function gethash() {
         GM_xmlhttpRequest({
             method: "GET",
-            url: 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=43&hash=2a7522a6&roll',
+            url: 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=43',
+            onload: function (response) {
+                if (response.status == 200) {
+                    let m = response.responseText.match(/plugin\.php\?id=steamcn_lottery:view&lottery_id=43&hash=(.+)&roll/);
+                    let hash = m ? m[1] : null;
+                    console.log(hash);
+                    if (hash != null) {
+                        roll(hash);
+                        roll(hash);
+                        roll(hash);
+                    }
+                } else {
+                    console.error('出错');
+                }
+            }
+        });
+    }
+
+    function roll(hash) {
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=43&hash=' + hash + '&roll',
             onload: function (response) {
                 if (response.status == 200) {
                     console.log(response.responseText);
                 } else {
-                    console.log('出错')
+                    console.error('出错')
                 }
                 if (++v == 3) {
                     VCan3 = false;
