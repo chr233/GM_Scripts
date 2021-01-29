@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      1.6
+// @version      1.8
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
@@ -150,8 +150,10 @@ function loadCFG() {
     t = GM_getValue('VAuto');
     VAuto = Boolean(t);
     // 日期变更,重置VCan3
-    let d = new Date().getDate();
-    if (d != VLast) {
+    let d = new Date();
+    let day = d.getDay();
+    let hour = d.getHours();
+    if (day != VLast && hour >= 8) {
         VCan3 = true;
         VLast = d;
     }
@@ -217,6 +219,9 @@ function autoRoll() {
                         roll(hash);
                         roll(hash);
                         roll(hash);
+                    }else{
+                        disableS3();
+                        saveCFG();
                     }
                 } else {
                     console.error('出错');
