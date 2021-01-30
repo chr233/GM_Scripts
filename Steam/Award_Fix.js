@@ -2,7 +2,7 @@
 // @name         Award_Fix
 // @namespace    https://blog.chrxw.com
 // @version      1.0
-// @description  Steam自动打赏修复
+// @description  Steam打赏修复
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/recommended\/?(\?p=\d+)?$/
 // @connect      steamcommunity.com
