@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      1.8
+// @version      1.9
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
@@ -142,7 +142,10 @@ function switchPanel() {
 function loadCFG() {
     let t = null;
     t = GM_getValue('VLast');
-    VLast = t ? t : 0;
+    t = Number(t);
+    if (t != t) { t = 0; }
+    VLast = t;
+
     t = GM_getValue('VCan3');
     VCan3 = Boolean(t);
     t = GM_getValue('VShow');
@@ -151,11 +154,11 @@ function loadCFG() {
     VAuto = Boolean(t);
     // 日期变更,重置VCan3
     let d = new Date();
-    let day = d.getDay();
+    let day = d.getDate();
     let hour = d.getHours();
     if (day != VLast && hour >= 8) {
         VCan3 = true;
-        VLast = d;
+        VLast = day;
     }
     saveCFG();
 }
@@ -176,7 +179,6 @@ function checkZP() {
                 let t = response.responseText;
                 let can = t.search('<button id="roll">抽奖</button>') != -1;
                 console.log(can);
-                VCan3 = can;
                 if (!can) {
                     disableS3();
                 }
@@ -190,6 +192,7 @@ function disableS3() {
     let b = document.getElementById('btnS3');
     b.style.textDecoration = 'line-through';
     b.textContent = '今天已经不能-3了';
+    VCan3 = false;
 }
 // 自动-3
 function autoRoll() {
@@ -219,7 +222,7 @@ function autoRoll() {
                         roll(hash);
                         roll(hash);
                         roll(hash);
-                    }else{
+                    } else {
                         disableS3();
                         saveCFG();
                     }
@@ -241,7 +244,6 @@ function autoRoll() {
                     console.error('出错')
                 }
                 if (++v == 3) {
-                    VCan3 = false;
                     disableS3();
                     saveCFG();
                 }
