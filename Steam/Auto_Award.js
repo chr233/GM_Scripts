@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Award
 // @namespace    https://blog.chrxw.com
-// @version      2.1
+// @version      2.2
 // @description  Steam自动打赏
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/recommended/\d+/?$/
@@ -15,7 +15,7 @@
 // ==/UserScript==
 
 // 脚本版本
-let Version = '2.1';
+let Version = '2.2';
 // 自动模式开关
 let Vmode = false;
 // 设置的目标
@@ -213,7 +213,7 @@ function autoAward() {
 
     // 处理评测上的奖励按钮
     function reviewAward() {
-        let reward = document.querySelector('.review_rate_bar>span:nth-child(4)');
+        let reward = document.querySelector('.review_rate_bar>span:nth-child(4)'); 
         if (reward) {
             reward.click();
             tries = 0;
@@ -225,8 +225,9 @@ function autoAward() {
     // 等待加载完全
     function waitLoad() {
         let doms = document.querySelectorAll('button[class^=awardmodal_Button_] span[class^=awardmodal_Points_]');
-        if (doms) {
-            document.querySelector('div[class^=awardmodal_Description_]').textContent = '关闭提示框即可中断操作,Bug反馈【chr@chrxw.com】';
+        let tips = document.querySelector('div[class^=awardmodal_Description_]')
+        if (doms && tips) {
+            tips.textContent = '关闭提示框即可中断操作,Bug反馈【chr@chrxw.com】';
             tries = 0;
             checkPoint();
         } else {

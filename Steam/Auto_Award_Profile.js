@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Award_Profile
 // @namespace    https://blog.chrxw.com
-// @version      2.2
+// @version      2.3
 // @description  Steam个人资料自动打赏
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/?$/
@@ -15,7 +15,7 @@
 // ==/UserScript==
 
 // 脚本版本
-let Version = '2.2';
+let Version = '2.3';
 // 自动模式开关
 let Vmode = false;
 // 设置的目标
@@ -91,7 +91,7 @@ function addPanel() {
         i.id = name;
         i.style.textAlign = 'right';
         i.style.border = 'none';
-        i.style.width = '150px';
+        i.style.width = '140px';
         if (value) { i.value = value; }
         if (tips) { i.placeholder = tips; }
         if (enable != null) {
@@ -243,8 +243,9 @@ function autoAward() {
     // 等待加载完全
     function waitLoad() {
         let doms = document.querySelectorAll('button[class^=awardmodal_Button_] span[class^=awardmodal_Points_]');
-        if (doms) {
-            document.querySelector('div[class^=awardmodal_Description_]').textContent = '关闭提示框即可中断操作,Bug反馈【chr@chrxw.com】';
+        let tips = document.querySelector('div[class^=awardmodal_Description_]')
+        if (doms && tips) {
+            tips.textContent = '关闭提示框即可中断操作,Bug反馈【chr@chrxw.com】';
             tries = 0;
             checkPoint();
         } else {
