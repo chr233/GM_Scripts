@@ -279,7 +279,7 @@ function autoAward() {
     function selectReward() {
         let btns = document.querySelectorAll('button[class^=awardmodal_Button_]');
         let max = 0;
-        for (btn of btns) { // 找到最大的打赏项目
+        for (let btn of btns) { // 找到最大的打赏项目
             if (btn.classNames().toString().search('Disabled') != -1) {
                 continue; // 跳过已经打赏过的选项
             }
@@ -294,7 +294,7 @@ function autoAward() {
         if (max == 0) { // 没有合适的打赏项目,终止操作
             throw '没有合适的打赏项目,请更换评测'
         }
-        for (btn of btns) { // 找到最大的打赏项目
+        for (let btn of btns) { // 找到最大的打赏项目
             if (btn.classNames().toString().search('Disabled') != -1) {
                 // 跳过已经打赏过的选项
                 continue;
@@ -481,7 +481,7 @@ function clearHistory() {
 function historyReport() {
     let list = document.getElementById('op_history').value.split('\n');
     let dic = {};
-    for (txt of list) {
+    for (let txt of list) {
         let match = txt.match(/向 (.*) 打赏 (\d+) 点/);
         if (match) {
             console.log(match)
@@ -496,7 +496,7 @@ function historyReport() {
     }
     console.log(JSON.stringify(dic))
     log('====点数统计====')
-    for (n in dic) {
+    for (let n in dic) {
         log(n + ' 共计 ' + dic[n] + ' 点');
     }
     log('====点数统计====')
