@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Award_Profile
 // @namespace    https://blog.chrxw.com
-// @version      2.3
+// @version      2.4
 // @description  Steam个人资料自动打赏
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/?$/
@@ -15,7 +15,7 @@
 // ==/UserScript==
 
 // 脚本版本
-let Version = '2.3';
+let Version = '2.4';
 // 自动模式开关
 let Vmode = false;
 // 设置的目标
