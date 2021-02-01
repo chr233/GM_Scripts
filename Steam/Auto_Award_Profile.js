@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Award_Profile
 // @namespace    https://blog.chrxw.com
-// @version      2.4
+// @version      2.5
 // @description  Steam个人资料自动打赏
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/?$/
@@ -15,7 +15,7 @@
 // ==/UserScript==
 
 // 脚本版本
-let Version = '2.4';
+let Version = '2.5';
 // 自动模式开关
 let Vmode = false;
 // 设置的目标
@@ -228,10 +228,10 @@ function autoAward() {
     let tries = 0; // 当前次数
 
     retry(reviewAward, 50);
-
+    
     // 处理评测上的奖励按钮
     function reviewAward() {
-        let reward = document.querySelector('.profile_header_actions>a');
+        let reward = document.querySelector('.profile_header_actions>a[href*="AddProfileAward"]');
         if (reward) {
             reward.click();
             tries = 0;
