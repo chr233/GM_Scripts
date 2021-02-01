@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      1.9
+// @version      2.0
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
@@ -22,7 +22,8 @@ let VCan3 = true;
 let VShow = false;
 // 自动-3
 let VAuto = false;
-
+// 音效载入
+let sound = new Audio("https://blog.chrxw.com/usr/keylol/gas.mp3");
 (function () {
     'use strict';
     loadCFG();
@@ -74,7 +75,8 @@ function addBtns() {
     let aLP = document.createElement('a');
     aLP.href = 'https://keylol.com/t571093-1-1';
     let img54 = document.createElement('img');
-    img54.src = 'https://blog.chrxw.com/usr/keylol/index.png';
+    // img54.src = 'https://blog.chrxw.com/usr/keylol/index.png';
+    img54.src = 'https://gitee.com/chr_a1/gm_scripts/raw/master/index.png';
     img54.alt = '总之这里是54的名言';
     img54.style.cssText = 'float: right;margin-top: -28px;height: 100%;'
     aLP.appendChild(img54);
@@ -145,7 +147,6 @@ function loadCFG() {
     t = Number(t);
     if (t != t) { t = 0; }
     VLast = t;
-
     t = GM_getValue('VCan3');
     VCan3 = Boolean(t);
     t = GM_getValue('VShow');
@@ -197,8 +198,6 @@ function disableS3() {
 // 自动-3
 function autoRoll() {
     try {
-        var sound = new Audio();
-        sound.src = "https://blog.chrxw.com/usr/keylol/gas.mp3";
         sound.play();
     } catch (e) {
         console.error(e);
