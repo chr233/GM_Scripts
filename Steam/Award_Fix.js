@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Award_Fix
 // @namespace    https://blog.chrxw.com
-// @version      1.0
+// @version      1.1
 // @description  Steam打赏修复
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/recommended\/?(\?p=\d+)?$/
@@ -16,12 +16,10 @@
 
 (function () {
     'use strict';
-
-        let ts = document.querySelectorAll('.review_award_ctn');
-        if (ts) {
-            for (let t of ts) {
-                t.style.overflow = 'auto';
-            }
+    let ts = document.querySelectorAll('.review_award_ctn');
+    if (ts) {
+        for (let t of ts) {
+            t.style.flexWrap = 'wrap';
         }
-
+    }
 })();
