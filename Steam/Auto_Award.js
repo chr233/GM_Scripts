@@ -36,7 +36,7 @@ let Vtimer = -1;
     addPanel();
     loadConf();
     if (checkSelf()) {
-        document.getElementById('p_dashang').style.display = 'None';
+        document.getElementById('p_dashang').style.display = 'none';
     } else {
         if (Vmode && checkTarget()) {
             getMyPoint();
