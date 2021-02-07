@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chr_'s_Inventory_Helper
 // @namespace    https://blog.chrxw.com
-// @version      1.3
+// @version      1.4
 // @description  Steam库存批量出售
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/inventory/?/
@@ -12,7 +12,7 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-let Vver = '1.3';
+let Vver = '1.4';
 // 上面的开关
 // 定时刷新开关
 let VAutoR = false;
@@ -32,12 +32,13 @@ let VPMode = 'sq';
 // 自动化开关
 let VTask = false;
 // APPID
-let VHash = '#753';
+let VHash = '';
+// 终止任务
+let VRun = false;
 
 // 计时器
 let Vart = -1;//自动刷新
 let Vfrt = -1;//失败刷新
-let Vdis = -1;//禁止刷新
 
 // 选项
 const NameMode = { 'mc': '名称', 'lx': '类型', 'jj': '简介', 'qb': '全部' };
@@ -50,6 +51,7 @@ const PriceMode = { 'sq': '税前', 'sh': '税后' }; //TODO 'zd': '自动'
     checkSetting();
     if (VTask) {
         console.log('已开启自动任务,1秒后开始执行');
+        window.location.hash = VHash;
         setTimeout(() => {
             runAutomatic();
         }, 1000);
@@ -265,7 +267,8 @@ function runManual() {
             }
         }
     }
-    autoSellFunc(hashlist,true);
+    VRun = true;
+    autoSellFunc(hashlist);
 }
 // 自动运行(前三页)
 function runAutomatic() {
@@ -306,22 +309,22 @@ function runAutomatic() {
             }
         }
     }
-    autoSellFunc(hashlist,false);
+    VRun = true;
+    autoSellFunc(hashlist);
 }
 // 自动出售
-function autoSellFunc(hashlist,manual) {
+function autoSellFunc(hashlist, manual) {
     console.log(hashlist);
     if (hashlist.length == 0) {
         console.log('待出售物品列表为空');
         // setTimeout(() => { window.location.reload(); }, 5000);
+        VRun = false;
         return;
     }
     let i = 0;//当前操作的位置
     const max = 50; // 最大尝试次数
     let tries = 0; // 当前次数
-    window.location.hash = VHash;
     retry(waitLoad, 50);
-
     // 等待库存加载完全
     function waitLoad() {
         if (g_ActiveInventory.m_ActivePromise == null) {
@@ -344,6 +347,7 @@ function autoSellFunc(hashlist,manual) {
             }, 500);
         } else {
             console.log('列表执行完毕');
+            VRun = false;
         }
     }
     // 填写价格
@@ -427,7 +431,7 @@ function autoSellFunc(hashlist,manual) {
     // 自动重试
     function retry(foo, t) {
         console.log(foo.name);
-        if (VTask || manual) {
+        if (VRun) {
             if (tries++ <= max) {
                 setTimeout(() => {
                     try {
@@ -438,6 +442,7 @@ function autoSellFunc(hashlist,manual) {
                 }, t);
             } else {
                 console.error('操作超时,等待页面刷新');
+                VRun = false;
             }
         } else {
             console.error('手动终止自动任务');
@@ -575,6 +580,7 @@ function setupGoal() {
     let nmode = document.getElementById('selName').value;
     let price = Number(document.getElementById('iptPrice').value);
     let pmode = document.getElementById('selPrice').value;
+    VRun = false;
     if (NameMode[nmode] != undefined &&
         PriceMode[pmode] != undefined &&
         price == price && price > 0) {
@@ -602,7 +608,9 @@ function resetGoal() {
     VNMode = 'mc';
     VPrice = 0;
     VPMode = 'sq';
-    VHash = '#753';
+    VHash = '';
+    VRun = false;
+    if (VTask) { runAutomaticCtrl(); }
     saveCFG();
     checkSetting();
 }
@@ -696,8 +704,8 @@ function loadCFG() {
     VPMode = t ? t : '';
     t = GM_getValue('VTask');
     VTask = Boolean(t);
-    t = GM_getValue('VAppid');
-    VHash = t ? t : '#753';
+    t = GM_getValue('VHash');
+    VHash = t ? t : '';
     if (VTask) { VPanel = true; }//开启自动任务后始终打开面板
     saveCFG();
 }
@@ -711,5 +719,5 @@ function saveCFG() {
     GM_setValue('VPrice', VPrice);
     GM_setValue('VPMode', VPMode);
     GM_setValue('VTask', VTask);
-    GM_setValue('VAppid', VHash);
+    GM_setValue('VHash', VHash);
 }
