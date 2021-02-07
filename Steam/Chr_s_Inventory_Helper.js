@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chr_'s_Inventory_Helper
 // @namespace    https://blog.chrxw.com
-// @version      1.4
+// @version      1.5
 // @description  Steam库存批量出售
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/inventory/?/
@@ -12,7 +12,7 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-let Vver = '1.4';
+let Vver = '1.5';
 // 上面的开关
 // 定时刷新开关
 let VAutoR = false;
@@ -189,11 +189,14 @@ function addPanel() {
     let divAction = genDiv();
     // let lblAction = genLabel('模式：', 'lblAction');
     // let selAction = genSelect('selAction', { 'cs': '在市场出售', 'fj': '分解为宝珠' }, 'cs');
+    let btnReload = genButton('重载', reloadInventory, 'btnTarget');
     let btnTarget = genButton('高亮匹配', enableHighLight, 'btnTarget');
     let btnSetup = genButton('保存', setupGoal, 'btnSetup');
     let btnReset = genButton('重置', resetGoal, 'btnReset');
     // divAction.appendChild(lblAction);
     // divAction.appendChild(selAction);
+    divAction.appendChild(btnReload);
+    divAction.appendChild(genSpace());
     divAction.appendChild(btnTarget);
     divAction.appendChild(genSpace());
     divAction.appendChild(btnSetup);
@@ -453,6 +456,13 @@ function autoSellFunc(hashlist, manual) {
         let e = new Event('keyup');
         obj.dispatchEvent(e);
     }
+}
+// 重载库存
+function reloadInventory() {
+    VRun = false;
+    let appid = g_ActiveInventory.appid;
+    let contextid = g_ActiveInventory.contextid;
+    g_ActiveInventory.m_owner.ReloadInventory(appid, contextid);
 }
 // 获取Hash字符串
 function getHash(obj) {
