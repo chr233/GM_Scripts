@@ -1,12 +1,10 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      2.0
+// @version      2.1
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
-// @connect      steamcommunity.com
-// @connect      steampowered.com
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
 // @grant        GM_setValue
