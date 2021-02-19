@@ -102,11 +102,6 @@ function addBtns() {
     panel54.appendChild(btnArea);
     panelArea.insertBefore(panel54, panelArea.children[1]);
 }
-
-// 显示小轮盘
-function showLiteRoll() {
-    // TODO 显示轮盘，手动-3
-}
 // 自动打开面板
 function fBtnShow() {
     VShow = !VShow;
@@ -137,7 +132,6 @@ function switchPanel() {
         panel2.style.display = 'block';
     }
 }
-
 // 读取设置
 function loadCFG() {
     let t = null;
