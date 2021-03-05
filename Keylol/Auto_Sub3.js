@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      2.1
+// @version      2.7
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
@@ -21,7 +21,9 @@ let VShow = false;
 // 自动-3
 let VAuto = false;
 // 音效载入
-let sound = new Audio("https://blog.chrxw.com/usr/keylol/gas.mp3");
+const Vsound = new Audio("https://blog.chrxw.com/usr/keylol/gas.mp3");
+// 轮盘链接
+const Vroll = 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=44';
 (function () {
     'use strict';
     loadCFG();
@@ -88,7 +90,6 @@ function addBtns() {
         btnS3.style.textDecoration = 'line-through';
         btnS3.textContent = '今天已经不能-3了';
     }
-    // let btnFT = genButton('我要水贴', () => { window.location.href = 'https://keylol.com/forum.php?mod=post&action=newthread&fid=148' });
 
     let btnShow = genButton(bool2txt(VShow) + '自动打开面板', fBtnShow, 'btnShow');
     let btnAuto = genButton(bool2txt(VAuto) + '自动每日-3', fBtnAuto, 'btnAuto');
@@ -166,7 +167,7 @@ function saveCFG() {
 function checkZP() {
     GM_xmlhttpRequest({
         method: "GET",
-        url: 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=43',
+        url: Vroll,
         onload: function (response) {
             if (response.responseText != null) {
                 let t = response.responseText;
@@ -190,7 +191,7 @@ function disableS3() {
 // 自动-3
 function autoRoll() {
     try {
-        sound.play();
+        Vsound.play();
     } catch (e) {
         console.error(e);
     }
@@ -203,7 +204,7 @@ function autoRoll() {
     function gethash() {
         GM_xmlhttpRequest({
             method: "GET",
-            url: 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=43',
+            url: Vroll,
             onload: function (response) {
                 if (response.status == 200) {
                     let m = response.responseText.match(/plugin\.php\?id=steamcn_lottery:view&lottery_id=43&hash=(.+)&roll/);
@@ -216,6 +217,7 @@ function autoRoll() {
                     } else {
                         disableS3();
                         saveCFG();
+                        showError('【今天已经无法 -3 了哟】');
                     }
                 } else {
                     console.error('出错');
@@ -227,7 +229,7 @@ function autoRoll() {
     function roll(hash) {
         GM_xmlhttpRequest({
             method: "GET",
-            url: 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=43&hash=' + hash + '&roll',
+            url: Vroll + '&hash=' + hash + '&roll',
             onload: function (response) {
                 if (response.status == 200) {
                     console.log(response.responseText);
@@ -237,6 +239,8 @@ function autoRoll() {
                 if (++v == 3) {
                     disableS3();
                     saveCFG();
+                    showError('【自动 -3 完成，祝你好运】');
+                    setTimeout(() => { window.location.reload(); }, 600);
                 }
             }
         });
