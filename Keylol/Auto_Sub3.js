@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      2.7
+// @version      2.8
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
@@ -63,7 +63,7 @@ function addBtns() {
 
     btnSwitch.id = 'btnSwitch1';
     btnSwitch.title = '点这里开启/隐藏控制面板';
-    btnSwitch.style.cssText = 'width: auto;padding: 0 5px;cursor: pointer;';
+    btnSwitch.style.cssText = 'width: auto;padding: 0 5px;cursor: pointer;z-index: 100';
     btnSwitch.addEventListener('click', switchPanel);
 
     let panelArea = document.querySelector('.index_navi_left');
@@ -73,16 +73,17 @@ function addBtns() {
     let panel54 = genPanel('panel54');
 
     let aLP = document.createElement('a');
-    aLP.href = 'https://keylol.com/t571093-1-1';
+    aLP.href = Vroll;
+    aLP.title='前往轮盘页';
     let img54 = document.createElement('img');
     // img54.src = 'https://blog.chrxw.com/usr/keylol/index.png';
-    img54.src = 'https://gitee.com/chr_a1/gm_scripts/raw/master/index.png';
+    img54.src = 'https://gitee.com/chr_a1/gm_scripts/raw/master/Static/keylol.png';
     img54.alt = '总之这里是54的名言';
     img54.style.cssText = 'float: right;margin-top: -28px;height: 100%;'
     aLP.appendChild(img54);
 
     let btnArea = genDiv('btnArea');
-    btnArea.style.cssText = 'width: 210px;text-align: center;margin-top: -10px;';
+    btnArea.style.cssText = 'width: 210px;text-align: center;margin-top: -13px;margin-left: -10px;position: absolute;';
 
     let btnS3 = genButton('【一键-3】', autoRoll, 'btnS3');
 
