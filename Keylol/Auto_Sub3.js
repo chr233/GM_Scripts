@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      2.8
+// @version      2.11
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
@@ -21,10 +21,13 @@ let VShow = false;
 // 自动-3
 let VAuto = false;
 // 音效载入
-const Vsound = new Audio("https://blog.chrxw.com/usr/keylol/gas.mp3");
+const Vsound = new Audio('https://blog.chrxw.com/usr/keylol/gas.mp3');
 // 轮盘链接
 const Vroll = 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=44';
-(function () {
+// 正则表达式
+const Vregex = /plugin\.php\?id=steamcn_lottery:view&lottery_id=44&hash=(.+)&roll/;
+
+(() => {
     'use strict';
     loadCFG();
     addBtns();
@@ -63,7 +66,7 @@ function addBtns() {
 
     btnSwitch.id = 'btnSwitch1';
     btnSwitch.title = '点这里开启/隐藏控制面板';
-    btnSwitch.style.cssText = 'width: auto;padding: 0 5px;cursor: pointer;z-index: 100';
+    btnSwitch.style.cssText = 'width: auto;padding: 0 5px;cursor: pointer;z-index: 1';
     btnSwitch.addEventListener('click', switchPanel);
 
     let panelArea = document.querySelector('.index_navi_left');
@@ -74,7 +77,7 @@ function addBtns() {
 
     let aLP = document.createElement('a');
     aLP.href = Vroll;
-    aLP.title='前往轮盘页';
+    aLP.title = '前往轮盘页';
     let img54 = document.createElement('img');
     // img54.src = 'https://blog.chrxw.com/usr/keylol/index.png';
     img54.src = 'https://gitee.com/chr_a1/gm_scripts/raw/master/Static/keylol.png';
@@ -169,7 +172,7 @@ function checkZP() {
     GM_xmlhttpRequest({
         method: "GET",
         url: Vroll,
-        onload: function (response) {
+        onload: (response) => {
             if (response.responseText != null) {
                 let t = response.responseText;
                 let can = t.search('<button id="roll">抽奖</button>') != -1;
@@ -179,6 +182,9 @@ function checkZP() {
                 }
                 saveCFG();
             }
+        },
+        onerror: (response) => {
+            showError('【出错了，淦】');
         }
     });
 }
@@ -206,9 +212,9 @@ function autoRoll() {
         GM_xmlhttpRequest({
             method: "GET",
             url: Vroll,
-            onload: function (response) {
+            onload: (response) => {
                 if (response.status == 200) {
-                    let m = response.responseText.match(/plugin\.php\?id=steamcn_lottery:view&lottery_id=43&hash=(.+)&roll/);
+                    let m = response.responseText.match(Vregex);
                     let hash = m ? m[1] : null;
                     console.log(hash);
                     if (hash != null) {
@@ -221,8 +227,11 @@ function autoRoll() {
                         showError('【今天已经无法 -3 了哟】');
                     }
                 } else {
-                    console.error('出错');
+                    showError('【出错了，淦】');
                 }
+            },
+            onerror: (response) => {
+                showError('【出错了，淦】');
             }
         });
     }
@@ -231,10 +240,11 @@ function autoRoll() {
         GM_xmlhttpRequest({
             method: "GET",
             url: Vroll + '&hash=' + hash + '&roll',
-            onload: function (response) {
+            onload: (response) => {
                 if (response.status == 200) {
                     console.log(response.responseText);
                 } else {
+                    showError('【出错了，淦】');
                     console.error('出错')
                 }
                 if (++v == 3) {
@@ -242,7 +252,11 @@ function autoRoll() {
                     saveCFG();
                     showError('【自动 -3 完成，祝你好运】');
                     setTimeout(() => { window.location.reload(); }, 600);
+
                 }
+            },
+            onerror: (response) => {
+                showError('【出错了，淦】');
             }
         });
     }
