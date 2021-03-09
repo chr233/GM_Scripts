@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Award_Profile
 // @namespace    https://blog.chrxw.com
-// @version      2.5
+// @version      2.6
 // @description  Steam个人资料自动打赏
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/?$/
@@ -15,7 +15,7 @@
 // ==/UserScript==
 
 // 脚本版本
-let Version = '2.5';
+let Version = '2.6';
 // 自动模式开关
 let Vmode = false;
 // 设置的目标
@@ -31,7 +31,7 @@ let Vpoint_now = -1;
 // 计时器
 let Vtimer = -1;
 // 初始化
-(function () {
+(() => {
     'use strict';
     addPanel();
     loadConf();
@@ -228,7 +228,7 @@ function autoAward() {
     let tries = 0; // 当前次数
 
     retry(reviewAward, 50);
-    
+
     // 处理评测上的奖励按钮
     function reviewAward() {
         let reward = document.querySelector('.profile_header_actions>a[href*="AddProfileAward"]');
@@ -461,7 +461,7 @@ function getMyPoint() {
     GM_xmlhttpRequest({
         method: "GET",
         url: 'https://store.steampowered.com/points/shop/',
-        onload: function (response) {
+        onload: (response) => {
             if (response.status == 200) {
                 let t = response.responseText.match(/\{\&quot\;points\&quot\;\:\&quot\;(\d+)\&quot\;/);
                 t = t ? t[1] : 0;
@@ -469,6 +469,9 @@ function getMyPoint() {
                 document.getElementById('my_point').value = numAddDot(t);
                 calcPoint();
             }
+        },
+        onerror: (response) => {
+            window.location.reload();
         }
     });
 }
