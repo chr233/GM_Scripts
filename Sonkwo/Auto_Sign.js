@@ -11,10 +11,13 @@
 
 (function () {
     'use strict';
-    window.onload = () => {
+    setTimeout(() => {
         let sign = document.querySelector('div.store_user_card_action_check');
-        if (sign && sign.textContent=='签到') {
+        if (sign && sign.textContent == '签到') {
             sign.click();
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
         }
-    }
+    }, 2000);
 })();
