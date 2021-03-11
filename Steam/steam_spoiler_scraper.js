@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Steam_Spoiler_Scraper
 // @namespace    https://blog.chrxw.com
-// @version      1.0
+// @version      1.1
 // @description  Steam 隐藏内容刮刀
 // @author       Chr_
 // @include      /https://steamcommunity\.com/sharedfiles/filedetails/\?id=\d+?$/
@@ -63,14 +63,18 @@ function scratch(ele) {
 
 // 刮开所有隐藏
 function scratchAll() {
-    document.querySelectorAll('.bb_spoiler *').forEach((ele) => {
-        ele.style.cssText = 'visibility:visible;color:#fff;'
+    document.querySelectorAll('.bb_spoiler').forEach((ele) => {
+        if (ele.getAttribute('scratch') != 'on') {
+            ele.click();
+        }
     });
 }
 
 // 恢复所有隐藏
 function unScratchAll() {
-    document.querySelectorAll('.bb_spoiler *').forEach((ele) => {
-        ele.style.cssText = '';
+    document.querySelectorAll('.bb_spoiler').forEach((ele) => {
+        if (ele.getAttribute('scratch') == 'on') {
+            ele.click();
+        }
     });
 }
