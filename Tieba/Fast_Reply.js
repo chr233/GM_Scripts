@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Fast_Reply
 // @namespace    https://blog.chrxw.com/
-// @version      1.0
+// @version      1.2
 // @description  贴吧快速回帖
 // @author       Chr_
 // @include      https://tieba.baidu.com/p/*
@@ -13,9 +13,7 @@
 
 // 快速回帖内容
 let VReplys = [];
-// 最后选择的项目
-let VLast = -1;
-// 
+// 初始化
 (() => {
     'use strict';
     setTimeout(() => {
@@ -52,16 +50,19 @@ function addBtns() {
 }
 // 初始化选择框
 function initSelect() {
+    function genOption(name, value) {
+        let o = document.createElement('option');
+        o.value = value.toString();
+        o.textContent = name;
+        return o;
+    }
     let selReply = document.getElementById('selReply');
     selReply.innerHTML = '';
+    let o = genOption('--快速回复--', -1);
+    selReply.appendChild(o);
     for (let i = 0; i < VReplys.length; i++) {
-        let t = VReplys[i].replace(/<\/?p>/g, ' ').trim().slice(0, 20);
-        let o = document.createElement('option');
-        o.value = i;
-        o.textContent = t;
-        if (i == VLast) {
-            o.selected = true;
-        }
+        let t = VReplys[i].replace(/<\/?p>/g, ' ').replace(/<\/?br>/g, ' ').trim().slice(0, 20);
+        let o = genOption(t, i);
         selReply.appendChild(o);
     }
 }
@@ -72,7 +73,9 @@ function fastReply() {
     if (selReply.selectedOptions.length > 0) {
         let value = selReply.selectedOptions[0].value;
         let id = Number(value);
-        VLast = id;
+        if (id == -1) {
+            return;
+        }
         editBox.innerHTML = VReplys[id];
         saveCFG();
     } else {
@@ -99,6 +102,10 @@ function delFastReply() {
     if (selReply.selectedOptions.length > 0) {
         let value = selReply.selectedOptions[0].value;
         let id = Number(value);
+        if (id == -1) {
+            alert('未设置快速回复内容！');
+            return;
+        }
         VReplys.pop(id);
         initSelect();
         saveCFG();
@@ -108,11 +115,9 @@ function delFastReply() {
 }
 // 保存设置
 function saveCFG() {
-    GM_setValue('VLast', VLast);
     GM_setValue('VReplys', VReplys);
 }
 // 读取设置
 function loadCFG() {
-    VReplys = GM_getValue('VLast') || -1;
     VReplys = GM_getValue('VReplys') || [];
 }
