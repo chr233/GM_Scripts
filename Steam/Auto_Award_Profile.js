@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Award_Profile
 // @namespace    https://blog.chrxw.com
-// @version      2.6
+// @version      2.7
 // @description  Steam个人资料自动打赏
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/?$/
@@ -15,7 +15,7 @@
 // ==/UserScript==
 
 // 脚本版本
-let Version = '2.6';
+let Version = '2.7';
 // 自动模式开关
 let Vmode = false;
 // 设置的目标
@@ -464,9 +464,14 @@ function getMyPoint() {
         onload: (response) => {
             if (response.status == 200) {
                 let t = response.responseText.match(/\{\&quot\;points\&quot\;\:\&quot\;(\d+)\&quot\;/);
-                t = t ? t[1] : 0;
+                console.log(t)
+                t = t ? t[1] : -1;
+                if (t < 0) {
+                    log('获取点数失败,自动刷新');
+                    window.location.reload();
+                }
                 Vpoint_now = Number(t);
-                document.getElementById('my_point').value = numAddDot(t);
+                document.getElementById('my_point').value = numAddDot(Vpoint_now);
                 calcPoint();
             }
         },
