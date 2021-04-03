@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      2.11
+// @version      2.12
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
@@ -23,9 +23,9 @@ let VAuto = false;
 // 音效载入
 const Vsound = new Audio('https://blog.chrxw.com/usr/keylol/gas.mp3');
 // 轮盘链接
-const Vroll = 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=44';
+const Vroll = 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=45';
 // 正则表达式
-const Vregex = /plugin\.php\?id=steamcn_lottery:view&lottery_id=44&hash=(.+)&roll/;
+const Vregex = /plugin\.php\?id=steamcn_lottery:view&lottery_id=45&hash=(.+)&roll/;
 
 (() => {
     'use strict';
@@ -79,7 +79,6 @@ function addBtns() {
     aLP.href = Vroll;
     aLP.title = '前往轮盘页';
     let img54 = document.createElement('img');
-    // img54.src = 'https://blog.chrxw.com/usr/keylol/index.png';
     img54.src = 'https://gitee.com/chr_a1/gm_scripts/raw/master/Static/keylol.png';
     img54.alt = '总之这里是54的名言';
     img54.style.cssText = 'float: right;margin-top: -28px;height: 100%;'
