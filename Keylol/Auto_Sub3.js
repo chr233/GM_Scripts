@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      2.12
+// @version      2.13
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
