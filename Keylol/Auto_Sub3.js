@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      2.13
+// @version      2.14
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
@@ -12,6 +12,8 @@
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
+// 版本号
+const Ver = '2.14'
 // 上次-3时间
 let VLast = 0;
 // 今天还能不能-3
@@ -124,14 +126,15 @@ function bool2txt(bool) {
 }
 // 隐藏面板
 function switchPanel() {
+    let btnSwitch = document.getElementById( 'btnSwitch1');
     let panel1 = document.getElementById('panel54');
     let panel2 = document.getElementById('panelOri');
     if (panel1.style.display == 'none') {
-        btnSwitch1.textContent = '今天你【-3】了吗 - By Chr_';
+        btnSwitch1.textContent = 'Auto Sub 3 - By Chr_ - V '  + Ver + ' - 点这里切换';
         panel1.style.display = 'block';
         panel2.style.display = 'none';
     } else {
-        btnSwitch1.textContent = '关注重点';
+        btnSwitch1.textContent = '关注重点 - 点这里切换';
         panel1.style.display = 'none';
         panel2.style.display = 'block';
     }
