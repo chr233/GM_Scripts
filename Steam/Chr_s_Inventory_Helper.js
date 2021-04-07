@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chr_'s_Inventory_Helper
 // @namespace    https://blog.chrxw.com
-// @version      1.5
+// @version      1.6
 // @description  Steam库存批量出售
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/inventory/?/
@@ -12,7 +12,7 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-let Vver = '1.5';
+let Vver = '1.6';
 // 上面的开关
 // 定时刷新开关
 let VAutoR = false;
@@ -317,7 +317,7 @@ function runAutomatic() {
 }
 // 自动出售
 function autoSellFunc(hashlist, manual) {
-    console.log(hashlist);
+    // console.log(hashlist);
     if (hashlist.length == 0) {
         console.log('待出售物品列表为空');
         // setTimeout(() => { window.location.reload(); }, 5000);
@@ -413,6 +413,10 @@ function autoSellFunc(hashlist, manual) {
                 errmsg.search('There was a problem listing your item') != -1) {
                 console.log('上架失败,重新尝试上架');
                 retry(sellItem, 500);
+            } else if (errmsg.search('直到前一个操作完成之前') != -1 ||
+                errmsg.search('You cannot sell any items until your previous action completes') != -1) {
+                console.log('上架失败,延长等待时间');
+                retry(closeModal, 2000);
             } else {
                 console.log('未知返回值', errmsg);
                 tries = 0;
