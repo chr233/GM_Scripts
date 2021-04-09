@@ -2,7 +2,7 @@
 // @name         Auto Loot
 // @namespace    https://blog.chrxw.com
 // @version      1.2
-// @description  自动领取每日奖励
+// @description  lootlink.me 自动领取日常奖励，自动抽奖
 // @author       Chr_
 // @include      https://www.lootlink.me/*
 // @license      AGPL-3.0
