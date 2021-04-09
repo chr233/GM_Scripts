@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto_Sub3
 // @namespace    https://blog.chrxw.com
-// @version      2.14
+// @version      2.15
 // @description  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
@@ -13,7 +13,7 @@
 // ==/UserScript==
 
 // 版本号
-const Ver = '2.14'
+const Ver = '2.15'
 // 上次-3时间
 let VLast = 0;
 // 今天还能不能-3
@@ -45,7 +45,7 @@ function addBtns() {
     function genButton(text, foo, id) {
         let b = document.createElement('button');
         b.textContent = text;
-        b.style.cssText = 'margin: 3px 5px;'
+        b.style.cssText = 'margin: 8px 2px;'
         b.addEventListener('click', foo);
         if (id) { b.id = id; }
         return b;
@@ -68,6 +68,7 @@ function addBtns() {
 
     btnSwitch.id = 'btnSwitch1';
     btnSwitch.title = '点这里开启/隐藏控制面板';
+    btnSwitch.textContent='关注重点 - Auto Sub 3';
     btnSwitch.style.cssText = 'width: auto;padding: 0 5px;cursor: pointer;z-index: 1';
     btnSwitch.addEventListener('click', switchPanel);
 
@@ -87,7 +88,7 @@ function addBtns() {
     aLP.appendChild(img54);
 
     let btnArea = genDiv('btnArea');
-    btnArea.style.cssText = 'width: 210px;text-align: center;margin-top: -13px;margin-left: -10px;position: absolute;';
+    btnArea.style.cssText = 'width: 210px;text-align: center;margin-top: -10px;margin-left: -10px;position: absolute;';
 
     let btnS3 = genButton('【一键-3】', autoRoll, 'btnS3');
 
@@ -96,23 +97,14 @@ function addBtns() {
         btnS3.textContent = '今天已经不能-3了';
     }
 
-    let btnShow = genButton(bool2txt(VShow) + '自动打开面板', fBtnShow, 'btnShow');
     let btnAuto = genButton(bool2txt(VAuto) + '自动每日-3', fBtnAuto, 'btnAuto');
 
     btnArea.appendChild(btnS3);
-    // btnArea.appendChild(btnFT);
-    btnArea.appendChild(btnShow);
     btnArea.appendChild(btnAuto);
 
     panel54.appendChild(aLP);
     panel54.appendChild(btnArea);
     panelArea.insertBefore(panel54, panelArea.children[1]);
-}
-// 自动打开面板
-function fBtnShow() {
-    VShow = !VShow;
-    document.getElementById('btnShow').textContent = bool2txt(VShow) + '自动打开面板';
-    saveCFG();
 }
 // 自动-3
 function fBtnAuto() {
@@ -130,14 +122,17 @@ function switchPanel() {
     let panel1 = document.getElementById('panel54');
     let panel2 = document.getElementById('panelOri');
     if (panel1.style.display == 'none') {
-        btnSwitch1.textContent = 'Auto Sub 3 - By Chr_ - V '  + Ver + ' - 点这里切换';
+        btnSwitch.textContent = 'Auto Sub 3 - By Chr_ - V '  + Ver;
         panel1.style.display = 'block';
         panel2.style.display = 'none';
+        VShow=true;
     } else {
-        btnSwitch1.textContent = '关注重点 - 点这里切换';
+        btnSwitch.textContent = '关注重点 - Auto Sub 3';
         panel1.style.display = 'none';
         panel2.style.display = 'block';
+        VShow=false;
     }
+    saveCFG();
 }
 // 读取设置
 function loadCFG() {
