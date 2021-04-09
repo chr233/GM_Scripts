@@ -45,7 +45,7 @@ function addBtns() {
     function genButton(text, foo, id) {
         let b = document.createElement('button');
         b.textContent = text;
-        b.style.cssText = 'margin: 8px 2px;'
+        b.style.cssText = 'margin: 8px 5px;'
         b.addEventListener('click', foo);
         if (id) { b.id = id; }
         return b;
@@ -88,7 +88,7 @@ function addBtns() {
     aLP.appendChild(img54);
 
     let btnArea = genDiv('btnArea');
-    btnArea.style.cssText = 'width: 210px;text-align: center;margin-top: -10px;margin-left: -10px;position: absolute;';
+    btnArea.style.cssText = 'width: 180px;text-align: center;margin-top: -10px;margin-left: -10px;position: absolute;';
 
     let btnS3 = genButton('【一键-3】', autoRoll, 'btnS3');
 
