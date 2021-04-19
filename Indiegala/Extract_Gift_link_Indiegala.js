@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Extract_Gift_link_Indiegala
 // @namespace    https://blog.chrxw.com/
-// @version      0.1
+// @version      0.2
 // @description  Indiegala礼物链接提取
 // @author       Chr_
 // @license      AGPL-3.0
@@ -56,7 +56,7 @@ function extract() {
     let txt = document.getElementById('extractLinks');
     let btn2 = document.getElementById('btnCopy');
     let gifts = document.querySelectorAll('div.profile-private-page-library-gifts div.profile-private-page-library-gift-title > div.overflow-auto');
-    if (gifts != null) {
+    if (gifts.length > 0) {
         let list = [];
         let old = txt.value;
         for (let gift of gifts) {
@@ -82,9 +82,9 @@ function extract() {
 function copy() {
     let btn2 = document.getElementById('btnCopy');
     btn2.textContent = '已复制';
-    setTimeout(()=>{
-        btn2.textContent='复制';
-    },1000);
+    setTimeout(() => {
+        btn2.textContent = '复制';
+    }, 1000);
 }
 function clear() {
     let txt = document.getElementById('extractLinks');
