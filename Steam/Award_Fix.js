@@ -9,9 +9,6 @@
 // @connect      steampowered.com
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
-// @grant        GM_setValue
-// @grant        GM_getValue
-// @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
 (function () {
