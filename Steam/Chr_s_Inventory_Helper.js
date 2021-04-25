@@ -161,12 +161,9 @@ function addPanel() {
 
     let panelFunc = genPanel('autoSell', false);
     document.body.appendChild(panelFunc);
-    let lblTitle = genLabel('CIH (暂定) - V' + Vver + ' - By ', null);
+    let lblTitle = genLabel('CIH - V' + Vver + ' - By ', null);
     let lblUrl = genA('Chr_', 'https://steamcommunity.com/id/Chr_');
-    // let linkInfo = genA(' 反馈', null);
-    // linkInfo.style.float = 'left';
-    // let linkHelp = genA('帮助 ', null);
-    // linkHelp.style.float = 'right';
+    let lblFeed = genA('[反馈]', 'https://blog.chrxw.com/scripts.html');
 
     let divName = genDiv();
     let lblName = genLabel('名称：', 'lblName');
@@ -207,10 +204,10 @@ function addPanel() {
     // let btnAutomatic = genButton(bool2txt(VTask) + '自动运行', runAutomaticCtrl, 'btnAutomatic');
     let btnAutomatic = genButton(bool2txt(VTask) + '自动运行', runAutomaticCtrl, 'btnAutomatic');
 
-    // panelFunc.appendChild(linkInfo);
     panelFunc.appendChild(lblTitle);
     panelFunc.appendChild(lblUrl);
-    // panelFunc.appendChild(linkHelp);
+    panelFunc.appendChild(genSpace());
+    panelFunc.appendChild(lblFeed);
     panelFunc.appendChild(genHr());
 
     panelFunc.appendChild(divName);
@@ -695,7 +692,7 @@ function switchPanel() {
 }
 // 显示布尔
 function bool2txt(bool) {
-    return bool ? '【√】' : '【×】';
+    return bool ? '√ ' : '× ';
 }
 // 读取设置
 function loadCFG() {
