@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chr_'s_Inventory_Helper
 // @namespace    https://blog.chrxw.com
-// @version      1.7
+// @version      1.9
 // @description  Steam库存批量出售
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/inventory/?/
@@ -12,7 +12,7 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-let Vver = '1.7'; // 版本号
+let Vver = '1.9'; // 版本号
 // 上面的开关
 let VAutoR = false;// 定时刷新开关
 let VTime = 30; // 定时刷新间隔
@@ -23,6 +23,7 @@ let VName = '';// 物品名称
 let VNMode = 'mc';// 匹配模式
 let VPrice = 0;// 卖出价格
 let VPMode = 'sq';// 价格模式
+let VSMode = 'hl';// 皮肤磨损
 let VTask = false;// 自动化开关
 let VHash = '';// APPID
 let VRun = false;// 终止任务
@@ -32,12 +33,13 @@ let Vfrt = -1;//失败刷新
 // 选项
 const NameMode = { 'mc': '名称', 'lx': '类型', 'jj': '简介', 'qb': '全部' };
 const PriceMode = { 'sq': '税前', 'sh': '税后' }; //TODO 'zd': '自动'
-const SkinMode = { 'ry':'任意','zx': '崭新出厂','lm': '略有磨损','jj': '久经沙场','ps': '破损不堪', 'zh': '战痕累累' }; //TODO 'zd': '自动'
+const SkinMode = { 'ry': '不过滤', 'zx': '崭新出厂', 'lm': '略有磨损', 'jj': '久经沙场', 'ps': '破损不堪', 'zh': '战痕累累', 'ym': '枪皮(有磨损)', 'wm': '非枪皮(无磨损)' };
 
 (function () {
     'use strict';
     loadCFG();
     addPanel();
+    checkifCSGO()
     checkSetting();
     if (VTask) {
         console.log('已开启自动任务,1秒后开始执行');
@@ -93,7 +95,7 @@ function addPanel() {
     }
     function genDiv(cls, id) {
         let d = document.createElement('div');
-        d.style.cssText = 'display:inline-block;vertical-align:middle;';
+        d.style.cssText = 'vertical-align:middle;';
         if (cls) { d.className = cls };
         if (id) { d.id = id };
         return d;
@@ -164,7 +166,7 @@ function addPanel() {
     let lBtnArea = document.querySelector('.inventory_links');
     let btnAutoReload = genMidButton(bool2txt(VAutoR) + '定时刷新', autoReloadCtrl, 'btnAutoReload');
     let btnFailReload = genMidButton(bool2txt(VFailR) + '出错刷新', failReloadCtrl, 'btnFailReload');
-    let btnReloadConf = genSecond('btnReloadConf', 'iptTiming', VTime, '30',reloadTimeCtrl);
+    let btnReloadConf = genSecond('btnReloadConf', 'iptTiming', VTime, '30', reloadTimeCtrl);
     lBtnArea.insertBefore(btnReloadConf, lBtnArea.children[0]);
     lBtnArea.insertBefore(btnAutoReload, lBtnArea.children[0]);
     lBtnArea.insertBefore(btnFailReload, lBtnArea.children[0]);
@@ -197,6 +199,14 @@ function addPanel() {
     divPrice.appendChild(iptPrice);
     divPrice.appendChild(selPrice);
 
+    let divSkin = genDiv();
+    let lblSkin = genLabel('磨损：', 'lblSkin');
+    let selSkin = genSelect('selSkin', SkinMode, VSMode);
+    divSkin.id = 'divSkin';
+    divSkin.style.marginBottom = '5px'
+    divSkin.appendChild(lblSkin);
+    divSkin.appendChild(selSkin);
+
     let divAction = genDiv();
     // let lblAction = genLabel('模式：', 'lblAction');
     // let selAction = genSelect('selAction', { 'cs': '在市场出售', 'fj': '分解为宝珠' }, 'cs');
@@ -204,8 +214,7 @@ function addPanel() {
     let btnTarget = genButton('高亮匹配', enableHighLight, 'btnTarget');
     let btnSetup = genButton('保存', setupGoal, 'btnSetup');
     let btnReset = genButton('重置', resetGoal, 'btnReset');
-    // divAction.appendChild(lblAction);
-    // divAction.appendChild(selAction);
+
     divAction.appendChild(btnReload);
     divAction.appendChild(genSpace());
     divAction.appendChild(btnTarget);
@@ -215,7 +224,6 @@ function addPanel() {
     divAction.appendChild(btnReset);
 
     let btnManual = genButton('手动运行', runManual, 'btnManual');
-    // let btnAutomatic = genButton(bool2txt(VTask) + '自动运行', runAutomaticCtrl, 'btnAutomatic');
     let btnAutomatic = genButton(bool2txt(VTask) + '自动运行', runAutomaticCtrl, 'btnAutomatic');
 
     panelFunc.appendChild(lblTitle);
@@ -225,9 +233,11 @@ function addPanel() {
     panelFunc.appendChild(genHr());
 
     panelFunc.appendChild(divName);
-    panelFunc.appendChild(genBr());
+    // panelFunc.appendChild(genBr());
     panelFunc.appendChild(divPrice);
-    panelFunc.appendChild(genBr());
+    // panelFunc.appendChild(genBr());
+    panelFunc.appendChild(divSkin);
+    // panelFunc.appendChild(genBr());
     panelFunc.appendChild(divAction);
     panelFunc.appendChild(genHr());
     panelFunc.appendChild(btnManual);
@@ -255,6 +265,25 @@ function runManual() {
         let obj = target[i][0].rgItem;
         let desc = obj.description;
         if (desc.marketable == 0) { continue; }//跳过不可出售
+
+        if (g_ActiveInventory.appid == 730) {//跳过磨损不匹配的项目
+            if (VSMode != 'ry') {
+                let ns = desc.descriptions;
+                if (ns != undefined) {
+                    let ms = checkSkin(ns[0].value);
+
+                    if (
+                        (VSMode == 'ym' && ms == '') ||
+                        (VSMode == 'wm' && ms != '') ||
+                        (VSMode != 'ym' && VSMode != 'wm' && ms != VSMode)
+                    ) {
+                        // console.log(ms);
+                        continue;
+                    }
+                }
+            }
+        }
+
         if (VNMode == 'mc' || VNMode == 'qb') {
             let n = desc.name;
             if (isMatch(n.toLowerCase(), VName)) {
@@ -282,7 +311,11 @@ function runManual() {
         }
     }
     VRun = true;
-    autoSellFunc(hashlist);
+    if (hashlist.length == 0) {
+        ShowAlertDialog('提示', '待出售物品列表为空');
+    } else {
+        autoSellFunc(hashlist);
+    }
 }
 // 自动运行(前三页)
 function runAutomatic() {
@@ -297,6 +330,26 @@ function runAutomatic() {
         let obj = target[i][0].rgItem;
         let desc = obj.description;
         if (desc.marketable == 0) { continue; }//跳过不可出售
+
+        if (g_ActiveInventory.appid == 730) {//跳过磨损不匹配的项目
+            if (VSMode != 'ry') {
+                let ns = desc.descriptions;
+                if (ns != undefined) {
+                    let ms = checkSkin(ns[0].value);
+
+                    if (
+                        (VSMode == 'ym' && ms == '') ||
+                        (VSMode == 'wm' && ms != '') ||
+                        (VSMode != 'ym' && VSMode != 'wm' && ms != VSMode)
+                    ) {
+                        // console.log(ms);
+                        continue;
+                    }
+                }
+            }
+        }
+
+
         if (VNMode == 'mc' || VNMode == 'qb') {
             let n = desc.name;
             if (isMatch(n.toLowerCase(), VName)) {
@@ -514,8 +567,23 @@ function isMatch(string, pattern) {
     }
     return dp[0][0];
 };
+// 判断是否为CSGO,否则隐藏磨损筛选
+function checkifCSGO() {
+    let div = document.getElementById('divSkin');
+    if (g_ActiveInventory.appid == 730) {
+        div.style.display = '';
+    } else {
+        div.style.display = 'none';
+    }
+}
 // 取消高亮
 function cancelHighLight() {
+    let div = document.getElementById('divSkin');
+    if (g_ActiveInventory.appid == 730) {
+        div.style.display = '';
+    } else {
+        div.style.display = 'none';
+    }
     let target = g_ActiveInventory.m_rgChildInventories == null ?
         g_ActiveInventory.m_rgItemElements :
         g_ActiveInventory.m_rgChildInventories[6].m_rgItemElements;
@@ -527,6 +595,7 @@ function cancelHighLight() {
             objstyle.outlineStyle = 'none';
         }
     }
+    checkifCSGO();
 }
 // 检查是否有子TAB
 function checkSubChoose() {
@@ -540,6 +609,29 @@ function checkSubChoose() {
         return false;
     }
 }
+// 判断磨损
+function checkSkin(str) {
+    switch (str) {
+        case '外观： 崭新出厂':
+        case 'Exterior: Factory New':
+            return 'zx';
+        case '外观： 略有磨损':
+        case 'Exterior: Minimal Wear':
+            return 'lm';
+        case '外观： 久经沙场':
+        case 'Exterior: Field-Tested':
+            return 'jj';
+        case '外观： 破损不堪':
+        case 'Exterior: Well-Worn':
+            return 'ps';
+        case '外观： 战痕累累':
+        case 'Exterior: Battle-Scarred':
+            return 'zh';
+        default:
+            return '';
+    }
+}
+
 // 高亮匹配项
 function enableHighLight() {
     if (checkSubChoose()) { return; }// 必须选择子TAB
@@ -547,12 +639,32 @@ function enableHighLight() {
     let pattern = document.getElementById('iptName').value.toLowerCase();
     // if (pattern == '') { pattern = '*'; }
     let mode = document.getElementById('selName').value;
+    let skin = document.getElementById('selSkin').value;
     let start = g_ActiveInventory.m_iCurrentPage * 25;
     let end = start + 25;
     let matchlist = [];
     for (let i = start; i < end; i++) {
         if (target[i] != null) {
             let desc = target[i][0].rgItem.description;
+
+            if (g_ActiveInventory.appid == 730) {//跳过磨损不匹配的项目
+                if (skin != 'ry') {
+                    let ns = desc.descriptions;
+                    if (ns != undefined) {
+                        let ms = checkSkin(ns[0].value);
+
+                        if (
+                            (skin == 'ym' && ms == '') ||
+                            (skin == 'wm' && ms != '') ||
+                            (skin != 'ym' && skin != 'wm' && ms != skin)
+                        ) {
+                            // console.log(ms);
+                            continue;
+                        }
+                    }
+                }
+            }
+
             if (mode == 'mc' || mode == 'qb') {
                 let n = desc.name;
                 if (isMatch(n.toLowerCase(), pattern)) {
@@ -605,14 +717,17 @@ function setupGoal() {
     let nmode = document.getElementById('selName').value;
     let price = Number(document.getElementById('iptPrice').value);
     let pmode = document.getElementById('selPrice').value;
+    let smode = document.getElementById('selSkin').value;
     VRun = false;
     if (NameMode[nmode] != undefined &&
         PriceMode[pmode] != undefined &&
+        SkinMode[smode] != undefined &&
         price == price && price > 0) {
         VName = name;
         VNMode = nmode;
         VPrice = Math.floor(price * 100) / 100;
         VPMode = pmode;
+        VSMode = smode;
         VHash = '#' + g_ActiveInventory.appid.toString() + '_' + g_ActiveInventory.contextid.toString();
         saveCFG();
         ShowAlertDialog('成功', '设置保存成功，请选择运行模式。<br>【手动运行】：按照设置自动出售当前页的物品（只执行一次）。<br>【自动运行】：按照设置自动出售前三页的物品（每次刷新后执行）。<br>【自动运行】需要配合【定时刷新】和【出错刷新】使用。');
@@ -629,10 +744,12 @@ function resetGoal() {
     document.getElementById('selName').value = 'mc';
     document.getElementById('iptPrice').value = '';
     document.getElementById('selPrice').value = 'sq';
+    document.getElementById('selSkin').value = 'ry';
     VName = '';
     VNMode = 'mc';
     VPrice = 0;
     VPMode = 'sq';
+    VSMode = 'hl';
     VHash = '';
     VRun = false;
     if (VTask) { runAutomaticCtrl(); }
@@ -690,8 +807,6 @@ function reloadTimeCtrl() {
     }
     saveCFG();
 }
-
-
 // 出错刷新控制
 function failReloadCtrl() {
     if (Vfrt == -1) {
@@ -756,7 +871,10 @@ function loadCFG() {
     VPrice = t ? t : 0;
     t = GM_getValue('VPMode');
     if (PriceMode[t] == undefined) { t = 'sq'; }
-    VPMode = t ? t : '';
+    VPMode = t;
+    t = GM_getValue('VSMode');
+    if (SkinMode[t] == undefined) { t = 'ry'; }
+    VSMode = t;
     t = GM_getValue('VTask');
     VTask = Boolean(t);
     t = GM_getValue('VHash');
@@ -774,6 +892,7 @@ function saveCFG() {
     GM_setValue('VNMode', VNMode);
     GM_setValue('VPrice', VPrice);
     GM_setValue('VPMode', VPMode);
+    GM_setValue('VSMode', VSMode);
     GM_setValue('VTask', VTask);
     GM_setValue('VHash', VHash);
 }
