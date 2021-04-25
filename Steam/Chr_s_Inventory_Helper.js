@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chr_'s_Inventory_Helper
 // @namespace    https://blog.chrxw.com
-// @version      1.6
+// @version      1.7
 // @description  Steam库存批量出售
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/inventory/?/
@@ -12,37 +12,27 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-let Vver = '1.6';
+let Vver = '1.7'; // 版本号
 // 上面的开关
-// 定时刷新开关
-let VAutoR = false;
-// 出错刷新开关
-let VFailR = false;
-// 面板开关
-let VPanel = false;
+let VAutoR = false;// 定时刷新开关
+let VTime = 30; // 定时刷新间隔
+let VFailR = false;// 出错刷新开关
+let VPanel = false;// 面板开关
 // 面板的设置
-// 物品名称
-let VName = '';
-// 匹配模式
-let VNMode = 'mc';
-// 卖出价格
-let VPrice = 0;
-// 价格模式
-let VPMode = 'sq';
-// 自动化开关
-let VTask = false;
-// APPID
-let VHash = '';
-// 终止任务
-let VRun = false;
-
+let VName = '';// 物品名称
+let VNMode = 'mc';// 匹配模式
+let VPrice = 0;// 卖出价格
+let VPMode = 'sq';// 价格模式
+let VTask = false;// 自动化开关
+let VHash = '';// APPID
+let VRun = false;// 终止任务
 // 计时器
 let Vart = -1;//自动刷新
 let Vfrt = -1;//失败刷新
-
 // 选项
 const NameMode = { 'mc': '名称', 'lx': '类型', 'jj': '简介', 'qb': '全部' };
 const PriceMode = { 'sq': '税前', 'sh': '税后' }; //TODO 'zd': '自动'
+const SkinMode = { 'ry':'任意','zx': '崭新出厂','lm': '略有磨损','jj': '久经沙场','ps': '破损不堪', 'zh': '战痕累累' }; //TODO 'zd': '自动'
 
 (function () {
     'use strict';
@@ -69,6 +59,28 @@ function addPanel() {
         if (id) { a.id = id; }
         a.style.cssText = 'margin-right:15px;';
         a.className = 'btn_grey_black btn_medium'; //'btn_darkblue_white_innerfade btn_medium';
+        return a;
+    }
+    function genSecond(ida, idi, value, tips, foo) {
+        let a = document.createElement('a');
+        let s = document.createElement('span');
+        let s1 = document.createElement('span');
+        let s2 = document.createElement('span');
+        let i = genInput(idi, value, tips, true);
+        a.id = ida;
+        a.style.cssText = 'margin-right:15px;display:none';
+        a.className = 'btn_grey_black btn_medium';
+        s1.textContent = '每';
+        s2.textContent = '秒';
+        i.style.width = '40px';
+        i.style.cssText += 'color:#000;background:#fff;vertical-align:inherit;';
+        i.step = 1;
+        i.min = 5;
+        i.addEventListener('change', foo);
+        a.appendChild(s);
+        s.appendChild(s1);
+        s.appendChild(i);
+        s.appendChild(s2);
         return a;
     }
     function genButton(text, foo, id) {
@@ -111,8 +123,8 @@ function addPanel() {
     function genInput(id, value, tips, number) {
         let i = document.createElement('input');
         i.id = id;
-        i.style.cssText = 'border:none;border-radius:0;margin:0px 5px;width:50%;text-align:center;'
-        i.style.cssText += 'color:#000;background:#fff;vertical-align:inherit;'
+        i.style.cssText = 'border:none;border-radius:0;margin:0px 5px;width:50%;text-align:center;';
+        i.style.cssText += 'color:#000;background:#fff;vertical-align:inherit;';
         if (value) { i.value = value; }
         if (tips) { i.placeholder = tips; }
         if (number) {
@@ -125,7 +137,7 @@ function addPanel() {
     function genSelect(id, choose, choice) {
         let s = document.createElement('select');
         s.id = id;
-        s.style.cssText = 'color:#000;background:#fff;border:none;border-radius:0;vertical-align:inherit;'
+        s.style.cssText = 'color:#000;background:#fff;border:none;border-radius:0;vertical-align:inherit;';
         for (k in choose) {
             s.options.add(new Option(choose[k], k));
         }
@@ -150,10 +162,12 @@ function addPanel() {
     })
 
     let lBtnArea = document.querySelector('.inventory_links');
-    let btnFailReload = genMidButton(bool2txt(VAutoR) + '定时刷新', autoReloadCtrl, 'btnAutoReload');
-    let btnAutoReload = genMidButton(bool2txt(VFailR) + '出错刷新', failReloadCtrl, 'btnFailReload');
-    lBtnArea.insertBefore(btnFailReload, lBtnArea.children[0]);
+    let btnAutoReload = genMidButton(bool2txt(VAutoR) + '定时刷新', autoReloadCtrl, 'btnAutoReload');
+    let btnFailReload = genMidButton(bool2txt(VFailR) + '出错刷新', failReloadCtrl, 'btnFailReload');
+    let btnReloadConf = genSecond('btnReloadConf', 'iptTiming', VTime, '30',reloadTimeCtrl);
+    lBtnArea.insertBefore(btnReloadConf, lBtnArea.children[0]);
     lBtnArea.insertBefore(btnAutoReload, lBtnArea.children[0]);
+    lBtnArea.insertBefore(btnFailReload, lBtnArea.children[0]);
 
     let rBtnArea = document.querySelector('.inventory_rightnav');
     let btnSwitch = genMidButton('面板', switchPanel, 'btnSwitch');
@@ -648,18 +662,36 @@ function runAutomaticCtrl() {
 }
 // 定时刷新控制
 function autoReloadCtrl() {
+    let btn = document.getElementById('btnReloadConf');
+    VTime = readTime(30);
     if (Vart == -1) {
+        btn.style.display = '';
         Vart = setInterval(() => {
             window.location.reload();
-        }, 15000);
+        }, VTime * 1000);
+        console.log(`刷新时间${VTime}秒`);
     } else {
         clearInterval(Vart);
         Vart = -1;
     }
-    VAutoR = Vart != -1
+    VAutoR = Vart != -1;
     document.getElementById('btnAutoReload').children[0].textContent = bool2txt(VAutoR) + '定时刷新';
     saveCFG();
 }
+// 设置刷新时间
+function reloadTimeCtrl() {
+    VTime = readTime(30);
+    if (VAutoR) {
+        clearInterval(Vart);
+        Vart = setInterval(() => {
+            window.location.reload();
+        }, VTime * 1000);
+        console.log(`刷新时间${VTime}秒`);
+    }
+    saveCFG();
+}
+
+
 // 出错刷新控制
 function failReloadCtrl() {
     if (Vfrt == -1) {
@@ -694,6 +726,16 @@ function switchPanel() {
 function bool2txt(bool) {
     return bool ? '√ ' : '× ';
 }
+// 文本转数字
+function readTime(def) {
+    let ipt = document.getElementById('iptTiming');
+    let i = Number(ipt.value);
+    if (i != i || i < 5) {
+        return def;
+    } else {
+        return i;
+    }
+}
 // 读取设置
 function loadCFG() {
     let t = null;
@@ -701,6 +743,8 @@ function loadCFG() {
     VAutoR = Boolean(t);
     t = GM_getValue('VFailR');
     VFailR = Boolean(t);
+    t = GM_getValue('VTime');
+    VTime = t ? t : 30;
     t = GM_getValue('VPanel');
     VPanel = Boolean(t);
     t = GM_getValue('VName');
@@ -723,6 +767,7 @@ function loadCFG() {
 // 保存设置
 function saveCFG() {
     GM_setValue('VAutoR', VAutoR);
+    GM_setValue('VTime', VTime);
     GM_setValue('VFailR', VFailR);
     GM_setValue('VPanel', VPanel);
     GM_setValue('VName', VName);
