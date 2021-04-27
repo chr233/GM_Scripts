@@ -380,7 +380,7 @@ function runAutomatic() {
     autoSellFunc(hashlist);
 }
 // 自动出售
-function autoSellFunc(hashlist, manual) {
+function autoSellFunc(hashlist) {
     // console.log(hashlist);
     if (hashlist.length == 0) {
         console.log('待出售物品列表为空');
