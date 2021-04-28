@@ -223,7 +223,7 @@ function addPanel() {
     divAction.appendChild(genSpace());
     divAction.appendChild(btnReset);
 
-    let btnManual = genButton('手动运行', runManual, 'btnManual');
+    let btnManual = genButton('出售当前页', runManual, 'btnManual');
     let btnAutomatic = genButton(bool2txt(VTask) + '自动运行', runAutomaticCtrl, 'btnAutomatic');
 
     panelFunc.appendChild(lblTitle);
@@ -252,7 +252,7 @@ function addPanel() {
         if (VPanel) { switchPanel(); }
     }
 }
-// 手动运行(单页)
+// 出售当前页(单页)
 function runManual() {
     let target = g_ActiveInventory.m_rgChildInventories == null ?
         g_ActiveInventory.m_rgItemElements :
@@ -348,7 +348,6 @@ function runAutomatic() {
                 }
             }
         }
-
 
         if (VNMode == 'mc' || VNMode == 'qb') {
             let n = desc.name;
@@ -460,12 +459,18 @@ function autoSellFunc(hashlist) {
         let dialog = document.getElementById('market_sell_dialog');
         let errmsg = document.getElementById('market_sell_dialog_error').textContent.trim();
         let succmsg = document.querySelector('.newmodal_header>div.title_text');
+        let headertips = document.getElementById('market_headertip_itemsold');
 
-        if (succmsg != null) {
+        if (succmsg != null) { //上架成功，但是需要确认
             console.log('上架成功', succmsg.textContent);
             tries = 0;
             retry(closeModal, 200);
-        } else if (dialog.style.display != 'none') {
+        } else if (dialog.style.display != 'none' && headertips.style.display != 'none') { //上架成功,但是无需确认
+            console.log('上架成功', succmsg.textContent);
+            headertips.style.display = 'none';
+            tries = 0;
+            retry(closeModal, 200);
+        } else if (dialog.style.display != 'none') {//上架失败,检查错误提示
             if (errmsg == '') {//等待响应
                 retry(checkSuccess, 1000);
             } else if (errmsg.search('您已上架该物品并正等待确认') != -1 ||
@@ -730,7 +735,7 @@ function setupGoal() {
         VSMode = smode;
         VHash = '#' + g_ActiveInventory.appid.toString() + '_' + g_ActiveInventory.contextid.toString();
         saveCFG();
-        ShowAlertDialog('成功', '设置保存成功，请选择运行模式。<br>【手动运行】：按照设置自动出售当前页的物品（只执行一次）。<br>【自动运行】：按照设置自动出售前三页的物品（每次刷新后执行）。<br>【自动运行】需要配合【定时刷新】和【出错刷新】使用。');
+        ShowAlertDialog('成功', '设置保存成功，请选择运行模式。<br>【出售当前页】：按照设置自动出售当前页的物品（只执行一次）。<br>【自动运行】：按照设置自动出售前三页的物品（每次刷新后执行）。<br>【自动运行】需要配合【定时刷新】和【出错刷新】使用。');
     } else {
         ShowAlertDialog('错误', '价格填写有误。<br>价格必须是大于0的数字（支持整数和小数）。');
     }
