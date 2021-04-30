@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chr_'s_Inventory_Helper
 // @namespace    https://blog.chrxw.com
-// @version      1.9
+// @version      2.0
 // @description  Steam库存批量出售
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/inventory/?/
@@ -12,7 +12,7 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-let Vver = '1.9'; // 版本号
+let Vver = '2.0'; // 版本号
 // 上面的开关
 let VAutoR = false;// 定时刷新开关
 let VTime = 30; // 定时刷新间隔
