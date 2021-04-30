@@ -11,9 +11,9 @@
 
 (() => {
     'use strict';
-    let t = setInterval(() => {
+    let check = setInterval(() => {
         if (document.querySelector('a[href*=compose]') != null) {
-            clearInterval(t);
+            clearInterval(check);
             loadComplete();
         }
     }, 500);
@@ -33,6 +33,7 @@
                 likes[i++].click();
             } else {
                 clearInterval(t);
+                setInterval(autoLike, 200);
             }
         }, 200);
     }
