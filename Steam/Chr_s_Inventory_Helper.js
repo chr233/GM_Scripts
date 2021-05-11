@@ -753,7 +753,7 @@ function autoFill() {
             }
         }
 
-        if (mode == 'mc' || mode == 'qb') { 
+        if (mode == 'mc' || mode == 'qb') {
             iptname.value = desc.name;
         }
         else if (mode == 'lx') {
