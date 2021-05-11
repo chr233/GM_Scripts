@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chr_'s_Inventory_Helper
 // @namespace    https://blog.chrxw.com
-// @version      2.0
+// @version      2.2
 // @description  Steam库存批量出售
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/inventory/?/
@@ -12,7 +12,7 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-let Vver = '2.0'; // 版本号
+let Vver = '2.2'; // 版本号
 // 上面的开关
 let VAutoR = false;// 定时刷新开关
 let VTime = 30; // 定时刷新间隔
@@ -125,7 +125,7 @@ function addPanel() {
     function genInput(id, value, tips, number) {
         let i = document.createElement('input');
         i.id = id;
-        i.style.cssText = 'border:none;border-radius:0;margin:0px 5px;width:50%;text-align:center;';
+        i.style.cssText = 'border:none;border-radius:0;margin:0px 5px;width:60%;text-align:center;';
         i.style.cssText += 'color:#000;background:#fff;vertical-align:inherit;';
         if (value) { i.value = value; }
         if (tips) { i.placeholder = tips; }
@@ -183,7 +183,7 @@ function addPanel() {
 
     let divName = genDiv();
     let lblName = genLabel('名称：', 'lblName');
-    let iptName = genInput('iptName', VName, '可用 *? 作为通配符', false);
+    let iptName = genInput('iptName', VName, ' *? 可作通配符', false);
     let selName = genSelect('selName', NameMode, VNMode);
     divName.style.marginBottom = '5px'
     divName.appendChild(lblName);
@@ -208,20 +208,27 @@ function addPanel() {
     divSkin.appendChild(selSkin);
 
     let divAction = genDiv();
+    divAction.style.marginBottom = '5px';
+    let divAction2 = genDiv();
     // let lblAction = genLabel('模式：', 'lblAction');
     // let selAction = genSelect('selAction', { 'cs': '在市场出售', 'fj': '分解为宝珠' }, 'cs');
-    let btnReload = genButton('重载', reloadInventory, 'btnTarget');
+    let btnReload = genButton('重载库存', reloadInventory, 'btnTarget');
     let btnTarget = genButton('高亮匹配', enableHighLight, 'btnTarget');
-    let btnSetup = genButton('保存', setupGoal, 'btnSetup');
-    let btnReset = genButton('重置', resetGoal, 'btnReset');
+    let btnFill = genButton('当前物品', autoFill, 'btnFill');
+    // let btnTodo = genButton('自动价格', ()=>{alert('下个版本更新')}, 'btnTodo');
+    let btnSetup = genButton('保存配置', setupGoal, 'btnSetup');
+    let btnReset = genButton('重置配置', resetGoal, 'btnReset');
 
     divAction.appendChild(btnReload);
     divAction.appendChild(genSpace());
     divAction.appendChild(btnTarget);
     divAction.appendChild(genSpace());
-    divAction.appendChild(btnSetup);
-    divAction.appendChild(genSpace());
-    divAction.appendChild(btnReset);
+    divAction.appendChild(btnFill);
+    // divAction2.appendChild(btnTodo);
+    // divAction2.appendChild(genSpace());
+    divAction2.appendChild(btnSetup);
+    divAction2.appendChild(genSpace());
+    divAction2.appendChild(btnReset);
 
     let btnManual = genButton('出售当前页', runManual, 'btnManual');
     let btnAutomatic = genButton(bool2txt(VTask) + '自动运行', runAutomaticCtrl, 'btnAutomatic');
@@ -239,6 +246,7 @@ function addPanel() {
     panelFunc.appendChild(divSkin);
     // panelFunc.appendChild(genBr());
     panelFunc.appendChild(divAction);
+    panelFunc.appendChild(divAction2);
     panelFunc.appendChild(genHr());
     panelFunc.appendChild(btnManual);
     panelFunc.appendChild(genSpace());
@@ -466,7 +474,11 @@ function autoSellFunc(hashlist) {
             tries = 0;
             retry(closeModal, 200);
         } else if (dialog.style.display != 'none' && headertips.style.display != 'none') { //上架成功,但是无需确认
-            console.log('上架成功', succmsg.textContent);
+            if (succmsg != null) {
+                console.log('上架成功', succmsg.textContent);
+            } else {
+                console.log('上架成功', headertips.textContent);
+            }
             headertips.style.display = 'none';
             tries = 0;
             retry(closeModal, 200);
@@ -715,6 +727,59 @@ function enableHighLight() {
         }
     }
 }
+// 按照当前物品填充设置
+function autoFill() {
+    let current = g_ActiveInventory.selectedItem;
+    if (current) {
+        let desc = current.description;
+        let mode = document.getElementById('selName').value;
+        let skin = document.getElementById('selSkin');
+        let iptname = document.getElementById('iptName');
+        let iptPrice = document.getElementById('iptPrice');
+        iptname.value = '';
+
+        if (g_ActiveInventory.appid == 730) { // 填充磨损设定
+            if (skin != 'ry') {
+                let ns = desc.descriptions;
+                if (ns != undefined) {
+                    let ms = checkSkin(ns[0].value);
+
+                    if (ms != '') {
+                        skin.value = ms;
+                    } else {
+                        skin.value = 'wm';
+                    }
+                }
+            }
+        }
+
+        if (mode == 'mc' || mode == 'qb') { 
+            iptname.value = desc.name;
+        }
+        else if (mode == 'lx') {
+            iptname.value = desc.type;
+        }
+        else if (mode == 'jj') {
+            let ns = desc.descriptions;
+            if (ns != undefined) {
+                for (let n of ns) {
+                    if (n.value != '') {
+                        iptname.value = n.value;
+                        break;
+                    } else {
+                        iptname.value = '【该物品无简介】'
+                    }
+                }
+            }
+        }
+
+        iptPrice.focus();
+    } else {
+        ShowAlertDialog('错误', '未选中物品');
+    }
+    console.log(current);
+}
+
 // 设置目标
 function setupGoal() {
     if (checkSubChoose()) { return; } // 必须选择子TAB
