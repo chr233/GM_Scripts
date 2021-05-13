@@ -12,28 +12,31 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-let Vver = '2.2'; // 版本号
+let Vver = '2.3';     // 版本号
 // 上面的开关
-let VAutoR = false;// 定时刷新开关
-let VTime = 30; // 定时刷新间隔
-let VFailR = false;// 出错刷新开关
-let VPanel = false;// 面板开关
+let VAutoR = false;   // 定时刷新开关
+let VTime = 30;       // 定时刷新间隔
+let VFailR = false;   // 出错刷新开关
+let VPanel = false;   // 面板开关
 // 面板的设置
-let VName = '';// 物品名称
-let VNMode = 'mc';// 匹配模式
-let VPrice = 0;// 卖出价格
-let VPMode = 'sq';// 价格模式
-let VSMode = 'hl';// 皮肤磨损
-let VTask = false;// 自动化开关
-let VHash = '';// APPID
-let VRun = false;// 终止任务
+let VName = '';       // 物品名称
+let VNMode = 'mc';    // 匹配模式
+let VPrice = 0;       // 卖出价格
+let VPMode = 'sq';    // 价格模式
+let VSMode = 'hl';    // 皮肤磨损
+let VAPMode = 'zdcs'; // 皮肤磨损
+let VTask = false;    // 自动化开关
+let VHash = '';       // APPID
+let VRun = false;     // 终止任务
+let VAPrice = false;     // 高级设置
 // 计时器
-let Vart = -1;//自动刷新
-let Vfrt = -1;//失败刷新
+let Vart = -1;        //自动刷新
+let Vfrt = -1;        //失败刷新
 // 选项
 const NameMode = { 'mc': '名称', 'lx': '类型', 'jj': '简介', 'qb': '全部' };
-const PriceMode = { 'sq': '税前', 'sh': '税后' }; //TODO 'zd': '自动'
+const PriceMode = { 'sq': '税前', 'sh': '税后' };
 const SkinMode = { 'ry': '不过滤', 'zx': '崭新出厂', 'lm': '略有磨损', 'jj': '久经沙场', 'ps': '破损不堪', 'zh': '战痕累累', 'ym': '枪皮(有磨损)', 'wm': '非枪皮(无磨损)' };
+const AutoPriceMode = { 'zgqg': '最高求购价', 'zdcs': '最低出售价', 'lm': '历史最高成交', 'jj': '久经沙场', 'ps': '破损不堪', 'zh': '战痕累累', 'ym': '枪皮(有磨损)', 'wm': '非枪皮(无磨损)' };
 
 (function () {
     'use strict';
@@ -102,10 +105,10 @@ function addPanel() {
     }
     function genPanel(name, visiable) {
         let d = genDiv(name, name);
-        d.style.cssText = 'background: rgba(58, 58, 58, 0.8);position: fixed;top: 50%;right: 0px;';
+        d.style.cssText = 'background: rgba(58, 58, 58, 0.9);position: fixed;top: 50%;right: 0px;';
         d.style.cssText += 'text-align: center;transform: translate(0px, -50%);z-index: 100;';
         d.style.cssText += 'border: 1px solid rgb(83, 83, 83);padding: 5px;border-radius: 10px 0 0 10px;';
-        d.style.cssText += 'transition:right 0.8s;right:-300px;'
+        d.style.cssText += 'transition:right 0.8s;right:-300px;width:280px;'
         // d.style.display = visiable ? 'block' : 'none';
         return d;
     }
@@ -181,6 +184,12 @@ function addPanel() {
     let lblUrl = genA('Chr_', 'https://steamcommunity.com/id/Chr_');
     let lblFeed = genA('[反馈]', 'https://blog.chrxw.com/scripts.html');
 
+    panelFunc.appendChild(lblTitle);
+    panelFunc.appendChild(lblUrl);
+    panelFunc.appendChild(genSpace());
+    panelFunc.appendChild(lblFeed);
+    panelFunc.appendChild(genHr());
+
     let divName = genDiv();
     let lblName = genLabel('名称：', 'lblName');
     let iptName = genInput('iptName', VName, ' *? 可作通配符', false);
@@ -191,18 +200,30 @@ function addPanel() {
     divName.appendChild(selName);
 
     let divPrice = genDiv();
+    divPrice.style.marginBottom = '5px'
+    let divManualPrice = genDiv('divManualPrice', 'divManualPrice');
+
     let lblPrice = genLabel('定价：', 'lblPrice');
     let iptPrice = genInput('iptPrice', VPrice > 0 ? VPrice : ''.toString(), '卖出价格', true);
     let selPrice = genSelect('selPrice', PriceMode, VPMode);
-    divPrice.style.marginBottom = '5px'
-    divPrice.appendChild(lblPrice);
-    divPrice.appendChild(iptPrice);
-    divPrice.appendChild(selPrice);
+    divManualPrice.appendChild(lblPrice);
+    divManualPrice.appendChild(iptPrice);
+    divManualPrice.appendChild(selPrice);
 
-    let divSkin = genDiv();
+    let divAutoPrice = genDiv('divAutoPrice', 'divAutoPrice');
+    divAutoPrice.style.display = 'none';
+    let lblAdvPrice = genLabel('定价方式：', 'lblAdvPrice');
+    let selAdvPrice = genSelect('selAdvPrice', AutoPriceMode, VAPMode);
+
+    divAutoPrice.appendChild(lblAdvPrice);
+    divAutoPrice.appendChild(selAdvPrice);
+
+    divPrice.appendChild(divManualPrice);
+    divPrice.appendChild(divAutoPrice);
+
+    let divSkin = genDiv('divSkin', 'divSkin');
     let lblSkin = genLabel('磨损：', 'lblSkin');
     let selSkin = genSelect('selSkin', SkinMode, VSMode);
-    divSkin.id = 'divSkin';
     divSkin.style.marginBottom = '5px'
     divSkin.appendChild(lblSkin);
     divSkin.appendChild(selSkin);
@@ -210,12 +231,10 @@ function addPanel() {
     let divAction = genDiv();
     divAction.style.marginBottom = '5px';
     let divAction2 = genDiv();
-    // let lblAction = genLabel('模式：', 'lblAction');
-    // let selAction = genSelect('selAction', { 'cs': '在市场出售', 'fj': '分解为宝珠' }, 'cs');
+
     let btnReload = genButton('重载库存', reloadInventory, 'btnTarget');
     let btnTarget = genButton('高亮匹配', enableHighLight, 'btnTarget');
     let btnFill = genButton('当前物品', autoFill, 'btnFill');
-    // let btnTodo = genButton('自动价格', ()=>{alert('下个版本更新')}, 'btnTodo');
     let btnSetup = genButton('保存配置', setupGoal, 'btnSetup');
     let btnReset = genButton('重置配置', resetGoal, 'btnReset');
 
@@ -224,20 +243,20 @@ function addPanel() {
     divAction.appendChild(btnTarget);
     divAction.appendChild(genSpace());
     divAction.appendChild(btnFill);
-    // divAction2.appendChild(btnTodo);
-    // divAction2.appendChild(genSpace());
     divAction2.appendChild(btnSetup);
     divAction2.appendChild(genSpace());
     divAction2.appendChild(btnReset);
 
+    let divCtrl = genDiv();
     let btnManual = genButton('出售当前页', runManual, 'btnManual');
     let btnAutomatic = genButton(bool2txt(VTask) + '自动运行', runAutomaticCtrl, 'btnAutomatic');
+    let btnSwitchAutoPrice = genButton(bool2txt(VAPrice) + '自动定价', switchAutoPrice, 'btnSwitchAutoPrice');
 
-    panelFunc.appendChild(lblTitle);
-    panelFunc.appendChild(lblUrl);
-    panelFunc.appendChild(genSpace());
-    panelFunc.appendChild(lblFeed);
-    panelFunc.appendChild(genHr());
+    divCtrl.appendChild(btnManual);
+    divCtrl.appendChild(genSpace());
+    divCtrl.appendChild(btnAutomatic);
+    divCtrl.appendChild(genSpace());
+    divCtrl.appendChild(btnSwitchAutoPrice);
 
     panelFunc.appendChild(divName);
     // panelFunc.appendChild(genBr());
@@ -248,9 +267,7 @@ function addPanel() {
     panelFunc.appendChild(divAction);
     panelFunc.appendChild(divAction2);
     panelFunc.appendChild(genHr());
-    panelFunc.appendChild(btnManual);
-    panelFunc.appendChild(genSpace());
-    panelFunc.appendChild(btnAutomatic);
+    panelFunc.appendChild(divCtrl);
 
     if (VFailR) { failReloadCtrl(); }
     if (VAutoR) { autoReloadCtrl(); }
@@ -258,6 +275,7 @@ function addPanel() {
         btnSwitch.style.display = 'none';
     } else {
         if (VPanel) { switchPanel(); }
+        if (VAPrice) { switchAutoPrice(); }
     }
 }
 // 出售当前页(单页)
@@ -907,6 +925,23 @@ function switchPanel() {
     VPanel = p.style.right != '-300px';
     saveCFG();
 }
+// 显示/隐藏自动定价
+function switchAutoPrice() {
+    let pm = document.getElementById('divManualPrice');
+    let pa = document.getElementById('divAutoPrice');
+    let b = document.getElementById('btnSwitchAutoPrice');
+    if (pm.style.display == '') {
+        pm.style.display = 'none';
+        pa.style.display = '';
+    } else {
+        pm.style.display = '';
+        pa.style.display = 'none';
+    }
+    VAPrice = pa.style.display == '';
+    b.textContent = bool2txt(VAPrice) + '自动定价';
+    saveCFG();
+}
+
 // 显示布尔
 function bool2txt(bool) {
     return bool ? '√ ' : '× ';
@@ -932,6 +967,8 @@ function loadCFG() {
     VTime = t ? t : 30;
     t = GM_getValue('VPanel');
     VPanel = Boolean(t);
+    t = GM_getValue('VAPrice');
+    VAPrice = Boolean(t);
     t = GM_getValue('VName');
     VName = t ? t.toLowerCase() : '';
     t = GM_getValue('VNMode');
@@ -958,6 +995,7 @@ function saveCFG() {
     GM_setValue('VTime', VTime);
     GM_setValue('VFailR', VFailR);
     GM_setValue('VPanel', VPanel);
+    GM_setValue('VAPrice', VAPrice);
     GM_setValue('VName', VName);
     GM_setValue('VNMode', VNMode);
     GM_setValue('VPrice', VPrice);
