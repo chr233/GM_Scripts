@@ -898,7 +898,7 @@ function reloadTimeCtrl() {
 function failReloadCtrl() {
     if (Vfrt == -1) {
         Vfrt = setInterval(() => {
-            console.log('checkfail');
+            // console.log('checkfail');
             let err = document.querySelector('.inventory_load_error_header');
             if (err) { window.location.reload(); }
         }, 3000);
