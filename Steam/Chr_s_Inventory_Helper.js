@@ -28,7 +28,6 @@ let VAPMode = 'sddj'; // 定价方式
 let VTask = false;    // 自动化开关
 let VHash = '';       // APPID
 let VRun = false;     // 终止任务
-let VAPrice = false;     // 高级设置
 // 计时器
 let Vart = -1;        //自动刷新
 let Vfrt = -1;        //失败刷新
@@ -276,7 +275,6 @@ function addPanel() {
         btnSwitch.style.display = 'none';
     } else {
         if (VPanel) { switchPanel(); }
-        if (VAPrice) { switchAutoPrice(); }
     }
 }
 // 出售当前页(单页)
@@ -949,8 +947,6 @@ function loadCFG() {
     VTime = t ? t : 30;
     t = GM_getValue('VPanel');
     VPanel = Boolean(t);
-    t = GM_getValue('VAPrice');
-    VAPrice = Boolean(t);
     t = GM_getValue('VName');
     VName = t ? t.toLowerCase() : '';
     t = GM_getValue('VNMode');
@@ -961,6 +957,9 @@ function loadCFG() {
     t = GM_getValue('VPMode');
     if (PriceMode[t] == undefined) { t = 'sq'; }
     VPMode = t;
+    t = GM_getValue('VAPMode');
+    if (AutoPriceMode[t] == undefined) { t = 'zdcs'; }
+    VAPMode = t;
     t = GM_getValue('VSMode');
     if (SkinMode[t] == undefined) { t = 'ry'; }
     VSMode = t;
@@ -977,11 +976,11 @@ function saveCFG() {
     GM_setValue('VTime', VTime);
     GM_setValue('VFailR', VFailR);
     GM_setValue('VPanel', VPanel);
-    GM_setValue('VAPrice', VAPrice);
     GM_setValue('VName', VName);
     GM_setValue('VNMode', VNMode);
     GM_setValue('VPrice', VPrice);
     GM_setValue('VPMode', VPMode);
+    GM_setValue('VAPMode', VAPMode);
     GM_setValue('VSMode', VSMode);
     GM_setValue('VTask', VTask);
     GM_setValue('VHash', VHash);
