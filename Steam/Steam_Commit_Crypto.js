@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Steam_Commit_Crypto
 // @namespace    https://blog.chrxw.com
-// @version      0.1
+// @version      0.2
 // @description  STEAM评测加密解密助手
 // @author       Chr_
-// @include      /https://(store\.steampowered|steamcommunity)\.com?/*.
+// @include      /https://store\.steampowered\.com?/*.
+// @include      /https://steamcommunity\.com?/*.
 // @require      https://greasyfork.org/scripts/426509-bear-encode-decode/code/Bear_Encode_Decode.js
 // @require      https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js
 // @require      https://cdn.bootcdn.net/ajax/libs/crypto-js/4.0.0/core.min.js
@@ -13,7 +14,7 @@
 // @icon         https://blog.chrxw.com/favicon.ico
 // ==/UserScript==
 
-let G_ver = '0.1';     // 版本号
+let G_ver = '0.2';     // 版本号
 
 let G_CMode = 'syyz';  // 加密解密模式
 
@@ -38,9 +39,9 @@ const ValidElemtents = [
 (() => {
     'use strict';
 
-    // if (self != top) {// 位于iframe中,不执行脚本
-    //     return;
-    // }
+    if (self != top && document.documentElement.scrollHeight < 200) {// 位于iframe中,不执行脚本
+        return;
+    }
 
     addPanel();
 
@@ -260,7 +261,7 @@ function handleMouseUpEvent(event) {
                 break;
             }
         }
-    }, 500);
+    }, 100);
 }
 // 鼠标按下事件(隐藏工具栏)
 function handleMouseDownEvent(event) {
