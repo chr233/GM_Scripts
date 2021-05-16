@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Steam_Commit_Crypto
 // @namespace    https://blog.chrxw.com
-// @version      0.3
+// @version      0.4
 // @description  STEAM评测加密解密助手
 // @author       Chr_
 // @include      /https://store\.steampowered\.com?/*.
@@ -15,7 +15,7 @@
 // @icon         https://blog.chrxw.com/favicon.ico
 // ==/UserScript==
 
-let G_ver = '0.3';     // 版本号
+let G_ver = '0.4';     // 版本号
 
 let G_CMode = 'syyz';  // 加密解密模式
 
