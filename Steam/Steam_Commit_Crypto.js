@@ -1,38 +1,37 @@
 // ==UserScript==
 // @name         Steam_Commit_Crypto
 // @namespace    https://blog.chrxw.com
-// @version      0.2
+// @version      0.3
 // @description  STEAM评测加密解密助手
 // @author       Chr_
 // @include      /https://store\.steampowered\.com?/*.
 // @include      /https://steamcommunity\.com?/*.
 // @require      https://greasyfork.org/scripts/426509-bear-encode-decode/code/Bear_Encode_Decode.js
-// @require      https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js
-// @require      https://cdn.bootcdn.net/ajax/libs/crypto-js/4.0.0/core.min.js
+// @require      https://greasyfork.org/scripts/426545-basic-cryto/code/Basic_Cryto.js
+// @require      https://greasyfork.org/scripts/426548-morse-code/code/Morse_Code.js?
+// @require      https://cdn.bootcdn.net/ajax/libs/crypto-js/4.0.0/crypto-js.min.js
 // @connect      steamcommunity.com
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
 // ==/UserScript==
 
-let G_ver = '0.2';     // 版本号
+let G_ver = '0.3';     // 版本号
 
 let G_CMode = 'syyz';  // 加密解密模式
 
-
-let G_str = '';
-
 const CryptoMode = {   // 加解密模式
     // 'auto': ['自动猜测(非万能)', null, null],
-    'syyz': ['兽音译者', bearEncode, bearDecode],
-    // 'msdm': ['摩斯电码', null, null],
+    'syyz': ['兽音译者', '兽音', bearEncode, bearDecode, '核心代码来自  https://github.com/sgdrg15rdg/beast_js'],
     // 'xfy': ['佛曰', null, null],
     // 'rcnb': ['RCNB', null, null],
-    // 'bs64': ['Base64', null, null],
+    'bs64': ['Base64', 'B64', base64Encode, base64Decode, '基于 Crypto JS'],
+    'msdm': ['摩尔斯电码', '摩尔斯', morseEncode, morseDecode, '核心代码来自 https://github.com/hustcc/xmorse'],
 };
 
-const ValidElemtents = [
+const ValidElemtents = [ // 有效元素过滤器
     ['class', 'content'],
-    ['class', 'input_box']
+    ['id', 'ReviewText'],
+    ['class', 'input_box'],
 ];
 
 
@@ -110,6 +109,20 @@ function addPanel() {
             s.options.add(new Option(choose[k][0], k));
         }
         s.value = choice;
+        s.childElements().forEach((ele) => {
+            ele.style.background = '#fff';
+        });
+        return s;
+    }
+    function genSelect2(id) {
+        let s = document.createElement('select');
+        s.id = id;
+        s.style.cssText = 'color:#000;background:#fff;border:none;border-radius:0;padding: 2px 0;margin: 0 2px;';
+        s.options.add(new Option('解密', 'decode', true));
+        s.options.add(new Option('加密', 'encode'));
+        s.childElements().forEach((ele) => {
+            ele.style.background = '#fff';
+        });
         return s;
     }
     function genSpace() {
@@ -156,21 +169,24 @@ function addPanel() {
     let divMode = genDiv();
     let lblMode = genLabel('模式：', 'lblMode');
     let selMode = genSelect('selMode', CryptoMode, G_CMode);
+    let btnHelp = genButton('?', showHelp, 'btnHelp');
 
     divMode.style.marginBottom = '5px'
     divMode.appendChild(lblMode);
     divMode.appendChild(selMode);
+    divMode.appendChild(genSpace());
+    divMode.appendChild(btnHelp);
 
     let divAction = genDiv()
-    let btnEncode = genButton('加密↑', encode, 'btnEncode');
     let btnDecode = genButton('解密↓', decode, 'btnDecode');
+    let btnEncode = genButton('加密↑', encode, 'btnEncode');
     let btnExchange = genButton('交换↕', exchange, 'btnExchange');
     // let btnExtract = genButton('提取链接🌐', null, 'btnExchange');
 
     divAction.style.marginBottom = '5px'
-    divAction.appendChild(btnEncode);
-    divAction.appendChild(genSpace());
     divAction.appendChild(btnDecode);
+    divAction.appendChild(genSpace());
+    divAction.appendChild(btnEncode);
     divAction.appendChild(genSpace());
     divAction.appendChild(btnExchange);
     // divAction.appendChild(genSpace());
@@ -187,14 +203,14 @@ function addPanel() {
 
     let panelTips = genPanel2('sccTips', false);
     document.body.appendChild(panelTips);
+    let selBar = genSelect2('selBar');
+    panelTips.appendChild(selBar);
 
-    let btnSyyzD = genButton('兽音解密', () => { toolbarCallback('syyz_d'); }, 'btnSyyzD');
-    let btnSyyzE = genButton('兽音加密', () => { toolbarCallback('syyz_e'); }, 'btnSyyzE');
-
-    panelTips.appendChild(btnSyyzD);
-    panelTips.appendChild(btnSyyzE);
-
-
+    for (let key in CryptoMode) {
+        let name = CryptoMode[key][1];
+        let btnFunc = genButton(name, () => { toolbarCallback(`${key}`); }, `btn${key}`);
+        panelTips.appendChild(btnFunc);
+    }
 }
 
 // 加密
@@ -202,7 +218,7 @@ function encode() {
     let m = document.getElementById('selMode');
     let i = document.getElementById('txtInput');
     let o = document.getElementById('txtOutput');
-    let obj = CryptoMode[m.value][1];
+    let obj = CryptoMode[m.value][2];
     i.value = obj(o.value);
 }
 // 解密
@@ -210,7 +226,7 @@ function decode() {
     let m = document.getElementById('selMode');
     let i = document.getElementById('txtInput');
     let o = document.getElementById('txtOutput');
-    let obj = CryptoMode[m.value][2];
+    let obj = CryptoMode[m.value][3];
     o.value = obj(i.value);
 }
 // 交换明文密文
@@ -218,20 +234,6 @@ function exchange() {
     let i = document.getElementById('txtInput');
     let o = document.getElementById('txtOutput');
     [i.value, o.value] = [o.value, i.value];
-}
-// 选中文本显示工具栏
-function showDialog(event) {
-    let x = event.clientX;
-    let y = event.clientY;
-    console.log(x, y)
-    console.log(window.getSelection().toString());
-}
-// 隐藏工具栏
-function hideDialog(event) {
-    let x = event.clientX;
-    let y = event.clientY;
-    console.log(x, y)
-    console.log(window.getSelection().toString());
 }
 
 // 鼠标松开事件(显示工具栏)
@@ -244,13 +246,12 @@ function handleMouseUpEvent(event) {
         if (str == "") { // 未选择文本,终止
             return;
         }
-        G_str = str;
 
         // 判断选中的文字是否处于特定的元素中
         for (let [key, value] of ValidElemtents) {
             let obj = ele.getAttribute(key);
             if (obj && obj.toString().indexOf(value) != -1) {
-                console.log(G_str);
+                console.log(str);
                 console.log(key, value);
                 let x, y;
                 x = event.clientX + 15;
@@ -261,7 +262,7 @@ function handleMouseUpEvent(event) {
                 break;
             }
         }
-    }, 100);
+    }, 200);
 }
 // 鼠标按下事件(隐藏工具栏)
 function handleMouseDownEvent(event) {
@@ -280,24 +281,21 @@ function handleMouseDownEvent(event) {
 // 工具栏回调
 function toolbarCallback(mode) {
     let m = document.getElementById('selMode');
+    let bm = document.getElementById('selBar');
     let i = document.getElementById('txtInput');
     let o = document.getElementById('txtOutput');
     let b = document.getElementById('sccTips');
+    let str = window.getSelection().toString();
     b.style.visibility = 'hidden';
     switchPanel(true);
-    i.value = G_str;
-    o.value = G_str;
-    m.value = mode.substr(0, mode.length - 2);
+    m.value = mode;
 
-    switch (mode.substr(mode.length - 1)) {
-        case 'd':
-            decode();
-            break;
-        case 'e':
-            encode();
-            break;
-        default:
-            break;
+    if (bm.value == 'encode') {
+        o.value =str;
+        encode();
+    } else {
+        i.value = str;
+        decode();
     }
 }
 
@@ -314,4 +312,11 @@ function switchPanel(mode) {
     } else {
         p.style.right = mode ? '0' : '-300px';
     }
+}
+
+// 显示编码器信息
+function showHelp() {
+    let m = document.getElementById('selMode');
+    let msg = CryptoMode[m.value][4];
+    ShowAlertDialog('编码器信息', msg);
 }
