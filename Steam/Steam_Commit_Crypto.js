@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Steam_Commit_Crypto
 // @namespace    https://blog.chrxw.com
-// @version      0.4
+// @version      0.5
 // @description  STEAM评测加密解密助手
 // @author       Chr_
 // @include      /https://store\.steampowered\.com?/*.
@@ -10,20 +10,23 @@
 // @require      https://greasyfork.org/scripts/426545-basic-cryto/code/Basic_Cryto.js
 // @require      https://greasyfork.org/scripts/426548-morse-code/code/Morse_Code.js?
 // @require      https://cdn.bootcdn.net/ajax/libs/crypto-js/4.0.0/crypto-js.min.js
+// @require      https://greasyfork.org/scripts/426585-core-value-encode/code/Core_Value_Encode.js
 // @connect      steamcommunity.com
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
+// @grant        GM_xmlhttpRequest
+// @connect      keyfc.net
 // ==/UserScript==
 
-let G_ver = '0.4';     // 版本号
+let G_ver = '0.5';     // 版本号
 
 let G_CMode = 'syyz';  // 加密解密模式
 
 const CryptoMode = {   // 加解密模式
     // 'auto': ['自动猜测(非万能)', null, null],
     'syyz': ['兽音译者', '兽音', bearEncode, bearDecode, '核心代码来自  https://github.com/sgdrg15rdg/beast_js'],
-    // 'xfy': ['佛曰', null, null],
-    // 'rcnb': ['RCNB', null, null],
+    // 'yflc': ['与佛论禅(在线)', '佛曰', yflcEncode, yflcDncode, '调用在线API  http://hi.pcmoe.net/buddha.html'],
+    'shzy': ['核心价值观','价值', valuesEncode, valuesDecode,'核心代码来自  https://github.com/sym233/core-values-encoder'],
     'bs64': ['Base64', 'B64', base64Encode, base64Decode, '基于 Crypto JS'],
     'msdm': ['摩尔斯电码', '摩尔斯', morseEncode, morseDecode, '核心代码来自 https://github.com/hustcc/xmorse'],
 };
@@ -55,7 +58,7 @@ function addPanel() {
     function genButton(text, foo, id) {
         let b = document.createElement('button');
         b.textContent = text;
-        b.style.cssText = 'vertical-align: inherit;padding: 0 5px;'
+        b.style.cssText = 'vertical-align: inherit;padding: 0 5px;height: 24px;'
         b.addEventListener('click', foo);
         if (id) { b.id = id; }
         return b;
@@ -104,25 +107,25 @@ function addPanel() {
     function genSelect(id, choose, choice) {
         let s = document.createElement('select');
         s.id = id;
-        s.style.cssText = 'color:#000;background:#fff;border:none;border-radius:0;vertical-align:inherit;width: 70%;';
+        s.style.cssText = 'color:#000;background:#fff;border:none;border-radius:0;vertical-align:inherit;width: 70%;height: 22px;';
         for (k in choose) {
             s.options.add(new Option(choose[k][0], k));
         }
         s.value = choice;
-        s.childElements().forEach((ele) => {
-            ele.style.background = '#fff';
-        });
+        for (let i = 0; i < s.childElementCount; i++) {
+            s.children[i].style.background = '#fff';
+        }
         return s;
     }
     function genSelect2(id) {
         let s = document.createElement('select');
         s.id = id;
-        s.style.cssText = 'color:#000;background:#fff;border:none;border-radius:0;padding: 2px 0;margin: 0 2px;';
+        s.style.cssText = 'color:#000;background:#fff;border:none;border-radius:0;padding: 2px 0;margin: 0 2px;height: 22px;width: 50px;';
         s.options.add(new Option('解密', 'decode', true));
         s.options.add(new Option('加密', 'encode'));
-        s.childElements().forEach((ele) => {
-            ele.style.background = '#fff';
-        });
+        for (let i = 0; i < s.childElementCount; i++) {
+            s.children[i].style.background = '#fff';
+        }
         return s;
     }
     function genSpace() {
@@ -291,7 +294,7 @@ function toolbarCallback(mode) {
     m.value = mode;
 
     if (bm.value == 'encode') {
-        o.value =str;
+        o.value = str;
         encode();
     } else {
         i.value = str;
