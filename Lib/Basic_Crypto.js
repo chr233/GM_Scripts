@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Basic_Cryto
 // @namespace    https://blog.chrxw.com
-// @version      0.3
-// @description  Base64/AES加解密库
+// @version      0.4
+// @description  Base64加解密库
 // @require      https://cdn.bootcdn.net/ajax/libs/crypto-js/4.0.0/crypto-js.min.js
 // @author       Chr_
 // ==/UserScript==
@@ -25,8 +25,12 @@ function base64Encode(words) {
 function base64Decode(enc) {
     'use strict';
     try {
+
+        // var parsedWordArray = CryptoJS.enc.Base64.parse(base64);
+        // var parsedStr = parsedWordArray.toString(CryptoJS.enc.Utf8);
+
         let words = CryptoJS.enc.Base64.parse(enc);
-        var plain = CryptoJS.enc.Utf8.stringify(words); // 'Hello world'
+        var plain = words.toString(CryptoJS.enc.Utf8);//CryptoJS.enc.Utf8.stringify(words); // 'Hello world'
         return plain;
     } catch (e) {
         console.error(e);
