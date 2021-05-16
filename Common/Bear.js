@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bear_Encode_Decode
 // @namespace    https://blog.chrxw.com
-// @version      0.1
+// @version      0.2
 // @description  兽音译者加解密库
 // @author       sgdrg15rdg
 // ==/UserScript==
@@ -9,6 +9,8 @@
 const beastDictArr = ['嗷', '呜', '啊', '~'];
 
 function bearEncode(rawStr) {
+    'use strict';
+
     let charArr = rawStr.split("");
     let unicodeHexStr = "";
     for (let i = 0; i < charArr.length; i++) {
@@ -32,6 +34,8 @@ function bearEncode(rawStr) {
     return "~呜嗷" + beastStr + "啊";
 }
 function bearDecode(decoratedBeastStr) {
+    'use strict';
+
     let beastStr = decoratedBeastStr.substring(3, decoratedBeastStr.length - 1);
     let unicodeHexStr = "";
     let beastStrArr = beastStr.split("");
