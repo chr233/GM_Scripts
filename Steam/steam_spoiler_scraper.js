@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         Steam_Spoiler_Scraper
+// @name:zh-CN   Steam隐藏内容刮刀
 // @namespace    https://blog.chrxw.com
 // @version      1.1
 // @description  Steam 隐藏内容刮刀
