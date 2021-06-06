@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         Auto Loot
+// @name:zh-CN   Lootlink自动抽奖辅助
 // @namespace    https://blog.chrxw.com
 // @version      1.2
 // @description  lootlink.me 自动领取日常奖励，自动抽奖

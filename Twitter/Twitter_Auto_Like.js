@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         Twitter_Auto_Like
+// @name:zh-CN   推特自动点赞
 // @namespace    https://blog.chrxw.com
 // @version      0.1
 // @description  推特时间线自动点赞

@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         Auto_Sub3
+// @name:zh-CN   蒸汽轮盘自动-3
 // @namespace    https://blog.chrxw.com
 // @version      2.15
 // @description  一键快乐-3

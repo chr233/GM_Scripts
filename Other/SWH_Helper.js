@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         SWH_Helper
+// @name:zh-CN   Steam愿望单助手
 // @namespace    https://blog.chrxw.com
 // @version      1.42
 // @description  从steamdb.keylol.com获取愿望单数据

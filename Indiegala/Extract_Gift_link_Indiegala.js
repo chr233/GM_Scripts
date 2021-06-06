@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         Extract_Gift_link_Indiegala
+// @name:zh-CN   IG礼物链接提取
 // @namespace    https://blog.chrxw.com/
 // @version      0.2
 // @description  Indiegala礼物链接提取

@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         Fast_Reply
+// @name:zh-CN   贴吧快速回复
 // @namespace    https://blog.chrxw.com/
 // @version      1.2
 // @description  贴吧快速回帖

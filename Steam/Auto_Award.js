@@ -1,7 +1,8 @@
 // ==UserScript==
 // @name         Auto_Award
+// @name:zh-CN   Steam自动打赏——评测
 // @namespace    https://blog.chrxw.com
-// @version      2.6
+// @version      2.7
 // @description  Steam自动打赏
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/recommended/\d+/?$/
@@ -15,7 +16,7 @@
 // ==/UserScript==
 
 // 脚本版本
-let Version = '2.6';
+let Version = '2.7';
 // 自动模式开关
 let Vmode = false;
 // 设置的目标

@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         Sonkwo_Auto
+// @name:zh-CN   杉果自动签到
 // @namespace    https://blog.chrxw.com/
 // @version      0.1
 // @description  杉果自动签到
