@@ -11,7 +11,7 @@
         "else: $(selector).attr(key, replacement)"
       ],
       "key": "!html",
-      "selector": "a[aria-label='Pull requests you created']",
+      "selector": "a[aria-label='pull requests you created']",
       "replacement": "请求拉取"
     }
   ],
@@ -64,7 +64,7 @@
     "achievements earned": "已解锁成就",
     "view all achievements": "浏览所有成就",
     "global statistics": "全局统计",
-    "GLOBAL":"全局",
+    "global":"全局",
     "time on duty":"游玩时间",
     "total mass transported":"累计运输质量",
     "average delivery distance":"平均配送里程",
@@ -120,13 +120,13 @@
     "new password":"新的密码",
     "new password verification":"重复新的密码",
 
-    "CHANGE EMAIL":"修改邮箱",
-    "NEW EMAIL":"新的邮箱",
-    "CURRENT PASSWORD":"当前密码",
+    "change email":"修改邮箱",
+    "new email":"新的邮箱",
+    "current password":"当前密码",
 
-    "NEWSLETTER SUBSCRIPTION":"新闻订阅",
-    "PROFILE PRIVACY":"隐私设置",
-    "Set profile as private?":"个人资料非公开(仅自己可见)",
+    "newsletter subscription":"新闻订阅",
+    "profile privacy":"隐私设置",
+    "set profile as private?":"个人资料非公开(仅自己可见)",
 
     "__comments-5": "登陆",
 
@@ -145,11 +145,11 @@
 
     "registration method": "注册方式",
     "existing user?": "已有账户？",
-    "new steam user registration": "使用 Steam 登陆",
-    "retail product key registration": "通过 KEY 激活",
+    "new steam user registration": "使用 steam 登陆",
+    "retail product key registration": "通过 key 激活",
     "you are an existing user and would like to connect more games to your account.": "如果您已经注册完成，可以通过下方（账户登录）按钮，进行登录和帐户配置",
-    "have you purchased american truck simulator or euro truck simulator 2 via steam? you can register them here!": "您是否通过 Steam 商店，购买了（欧洲卡车模拟 2）和（美洲卡车模拟）的游戏副本？如果是，可以点此进行注册和绑定",
-    "use the product key for euro truck simulator 2 obtained in the retail box or through online purchase, except steam.": "通过线下商店或网上商城，购置（欧洲卡车模拟 2）激活密钥，可在此处激活（此处不含 Steam 激活密钥）",
+    "have you purchased american truck simulator or euro truck simulator 2 via steam? you can register them here!": "您是否通过 steam 商店，购买了（欧洲卡车模拟 2）和（美洲卡车模拟）的游戏副本？如果是，可以点此进行注册和绑定",
+    "use the product key for euro truck simulator 2 obtained in the retail box or through online purchase, except steam.": "通过线下商店或网上商城，购置（欧洲卡车模拟 2）激活密钥，可在此处激活（此处不含 steam 激活密钥）",
     "register": "注册",
     "missed our games? try demos!": "想来尝试一下游戏？没问题，试试演示版吧",
 
