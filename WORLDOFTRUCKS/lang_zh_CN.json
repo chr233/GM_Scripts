@@ -40,7 +40,6 @@
     "november": "11月",
     "dec": "12月",
     "december": "12月",
-
     "__comments-2": "公共元素",
     "home": "首页",
     "gallery": "相册",
@@ -52,14 +51,11 @@
     "support": "获取支持",
     "terms of service": "使用条款",
     "privacy policy": "隐私政策",
-    
     "__comments-3": "首页",
     "editor's pick": "编辑推荐",
     "latest news": "最新新闻",
     "view more on our blog": "在博客中查看",
     "featured videos": "精选视频",
-        
-    
     "__comments-4": "相册",
     "user gallery": "用户相册",
     "newest": "最新上传",
@@ -68,7 +64,26 @@
     "most viewed": "最多浏览",
     "next": "下一页",
     "previous": "上一页",
-        
-      "__dict-end": "end"
+    "__comments-5": "个人主页",
+    "profile": "个人资料",
+    "favorites": "收藏夹",
+    "log book": "日志本",
+    "events": "事件",
+    "profile customization": "个性化定制",
+    "account options": "账户选项",
+    "jobs accomplished": "任务完成数",
+    "mass transported": "货物运输量",
+    "total distance": "累计公里数",
+    "share profile": "分享",
+    "my current rides": "连接的账户",
+    "euro truck simulator 2": "欧卡2",
+    "american truck simulator": "美卡",
+    "no profile truck data uploaded": "没有数据",
+    "delivery event": "交付事件",
+    "achievements": "成就",
+    "achievements earned": "已解锁成就",
+    "view all achievements": "浏览所有成就",
+    "global statistics": "全局统计",
+    "__dict-end": "end"
   }
 }
