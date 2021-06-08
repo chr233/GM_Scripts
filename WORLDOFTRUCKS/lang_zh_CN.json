@@ -1,54 +1,63 @@
 {
-    "__comments-css": [
-      "css selector",
-      "css选择器",
-      "对于部分不方便直接替换的词条，需要通过jquery css选择器替换"
-    ],
-    "css": [
-      {
-        "_comments": [
-          "if key === '!html' replace target by: $(selector).html(replacement)",
-          "else: $(selector).attr(key, replacement)"
-        ],
-        "key": "!html",
-        "selector": "a[aria-label='Pull requests you created']",
-        "replacement": "请求拉取"
-      }
-    ],
-  
-    "dict": {
-      "__comments-1": "date",
-      "jan": "1月",
-      "january": "1月",
-      "feb": "2月",
-      "february": "2月",
-      "mar": "3月",
-      "march": "3月",
-      "apr": "4月",
-      "april": "4月",
-      "may": "5月",
-      "jun": "6月",
-      "june": "6月",
-      "jul": "7月",
-      "july": "7月",
-      "aug": "8月",
-      "august": "8月",
-      "sep": "9月",
-      "september": "9月",
-      "oct": "10月",
-      "october": "10月",
-      "nov": "11月",
-      "november": "11月",
-      "dec": "12月",
-      "december": "12月",
-   
-      "__comments-2": "HomePage",
-      "home":"首页",
-      "gallery":"相册",
-      "my page": "个人主页",
-      "sign in": "登录",
-      "join now": "注册",
+  "__comments-css": [
+    "css selector",
+    "css选择器",
+    "对于部分不方便直接替换的词条，需要通过jquery css选择器替换"
+  ],
+  "css": [
+    {
+      "_comments": [
+        "if key === '!html' replace target by: $(selector).html(replacement)",
+        "else: $(selector).attr(key, replacement)"
+      ],
+      "key": "!html",
+      "selector": "a[aria-label='Pull requests you created']",
+      "replacement": "请求拉取"
+    }
+  ],
+  "dict": {
+    "__comments-1": "date",
+    "jan": "1月",
+    "january": "1月",
+    "feb": "2月",
+    "february": "2月",
+    "mar": "3月",
+    "march": "3月",
+    "apr": "4月",
+    "april": "4月",
+    "may": "5月",
+    "jun": "6月",
+    "june": "6月",
+    "jul": "7月",
+    "july": "7月",
+    "aug": "8月",
+    "august": "8月",
+    "sep": "9月",
+    "september": "9月",
+    "oct": "10月",
+    "october": "10月",
+    "nov": "11月",
+    "november": "11月",
+    "dec": "12月",
+    "december": "12月",
+
+    "__comments-2": "导航栏",
+    "home": "首页",
+    "gallery": "相册",
+    "my page": "个人主页",
+    "sign in": "登录",
+    "join now": "注册",
+    "search": "搜索",
+    "sign out": "登出",
+
+    
+    "__comments-3": "首页",
+    "editor's pick": "编辑推荐",
+    "latest news": "最新新闻",
+    "view more on our blog": "在博客中查看",
+    "featured videos": "精选视频",
+        
         
       "__dict-end": "end"
-    }
   }
+}
