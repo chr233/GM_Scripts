@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Morse_Code
 // @namespace    https://blog.chrxw.com
-// @version      0.5
+// @version      0.6
 // @description  摩尔斯电码库,来自https://github.com/hustcc/xmorse
 // @author       hustcc
 // ==/UserScript==
@@ -35,14 +35,19 @@ function unicodeHexMorse(ch) {
 function morseEncode(msg) {
     // 删除空格，转大写，分割为数组
     const text = msg.replace(/\s+/g, '').toLocaleUpperCase().split('');
-
-    return text.map((ch) => {
-        let r = STANDARD[ch];
-        if (!r) {
-            r = unicodeHexMorse(ch); // 找不到，说明是非标准的字符，使用 unicode。
-        }
-        return r.replace(/0/g, SHORT).replace(/1/g, LONG);
-    }).join(SPACE);
+    try {
+        return text.map((ch) => {
+            let r = STANDARD[ch];
+            if (!r) {
+                r = unicodeHexMorse(ch); // 找不到，说明是非标准的字符，使用 unicode。
+            }
+            return r.replace(/0/g, SHORT).replace(/1/g, LONG);
+        }).join(SPACE);
+    }
+    catch (e) {
+        console.error(e);
+        return '**编码出错**';
+    }
 }
 
 function morseHexUnicode(mor) {
@@ -52,13 +57,19 @@ function morseHexUnicode(mor) {
 }
 
 function morseDecode(morse) {
-    return morse.split(SPACE).map((mor) => {
-        const m = mor.replace(/\s+/g, '') // 去除空格
-            .replace(new RegExp('\\' + SHORT, 'g'), '0').replace(new RegExp('\\' + LONG, 'g'), '1'); // 转二进制;
-        let r = REVERSED_STANDARD[m];
-        if (!r) r = morseHexUnicode(m); // 找不到，说明是非标准字符的 morse，使用 unicode 解析方式。
-        return r;
-    }).join('');
+    try {
+        return morse.split(SPACE).map((mor) => {
+            const m = mor.replace(/\s+/g, '') // 去除空格
+                .replace(new RegExp('\\' + SHORT, 'g'), '0').replace(new RegExp('\\' + LONG, 'g'), '1'); // 转二进制;
+            let r = REVERSED_STANDARD[m];
+            if (!r) r = morseHexUnicode(m); // 找不到，说明是非标准字符的 morse，使用 unicode 解析方式。
+            return r;
+        }).join('');
+    }
+    catch (e) {
+        console.error(e);
+        return '**解码出错**';
+    }
 }
 function reverseStandard(standard) {
     const reversed = {};
