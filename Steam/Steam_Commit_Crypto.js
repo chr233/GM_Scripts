@@ -1,8 +1,10 @@
 // ==UserScript==
 // @name         Steam_Commit_Crypto
+// @name:zh-CN   STEAM评测加密解密助手
 // @namespace    https://blog.chrxw.com
-// @version      0.5
-// @description  STEAM评测加密解密助手
+// @version      0.7
+// @description  快速加解密评测文本
+// @description:zh-CN  快速加解密评测文本
 // @author       Chr_
 // @include      /https://store\.steampowered\.com?/*.
 // @include      /https://steamcommunity\.com?/*.
@@ -15,10 +17,9 @@
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
 // @grant        GM_xmlhttpRequest
-// @connect      keyfc.net
 // ==/UserScript==
 
-let G_ver = '0.5';     // 版本号
+let G_ver = '0.7';     // 版本号
 
 let G_CMode = 'syyz';  // 加密解密模式
 
@@ -26,7 +27,7 @@ const CryptoMode = {   // 加解密模式
     // 'auto': ['自动猜测(非万能)', null, null],
     'syyz': ['兽音译者', '兽音', bearEncode, bearDecode, '核心代码来自  https://github.com/sgdrg15rdg/beast_js'],
     // 'yflc': ['与佛论禅(在线)', '佛曰', yflcEncode, yflcDncode, '调用在线API  http://hi.pcmoe.net/buddha.html'],
-    'shzy': ['核心价值观','价值', valuesEncode, valuesDecode,'核心代码来自  https://github.com/sym233/core-values-encoder'],
+    'shzy': ['核心价值观', '价值', valuesEncode, valuesDecode, '核心代码来自  https://github.com/sym233/core-values-encoder'],
     'bs64': ['Base64', 'B64', base64Encode, base64Decode, '基于 Crypto JS'],
     'msdm': ['摩尔斯电码', '摩尔斯', morseEncode, morseDecode, '核心代码来自 https://github.com/hustcc/xmorse'],
 };
@@ -37,8 +38,7 @@ const ValidElemtents = [ // 有效元素过滤器
     ['class', 'input_box'],
 ];
 
-
-(() => {
+window.addEventListener('load', () => {
     'use strict';
 
     if (self != top && document.documentElement.scrollHeight < 200) {// 位于iframe中,不执行脚本
@@ -50,8 +50,9 @@ const ValidElemtents = [ // 有效元素过滤器
     window.addEventListener('mouseup', handleMouseUpEvent);
     window.addEventListener('mousedown', handleMouseDownEvent);
 
-
-})();
+    let bar = document.getElementById('sccTips');
+    bar.style.visibility = 'hidden';
+});
 
 // 添加GUI
 function addPanel() {
