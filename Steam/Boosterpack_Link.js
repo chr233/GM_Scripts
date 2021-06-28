@@ -2,7 +2,7 @@
 // @name         Boosterpack_Link
 // @name:zh-CN   补充包制作器快捷方式
 // @namespace    https://blog.chrxw.com
-// @version      1.0
+// @version      1.1
 // @description  Steam补充包制作器快捷方式
 // @description:zh-CN  Steam补充包制作器快捷方式
 // @author       Chr_
@@ -32,15 +32,24 @@ window.addEventListener('load', () => {
                 } else if (blackList.indexOf(appid) > -1) {
                     console.log('跳过黑名单');
                 } else {
-                    let btn = document.createElement('button');
+                    let btnBoosterPack = document.createElement('button');
 
-                    btn.style.cssText = 'position: absolute;right: 300px;top: 10px;z-index: 99;'
-                    btn.addEventListener('click', () => {
+                    btnBoosterPack.style.cssText = 'position: absolute;right: 300px;top: 10px;z-index: 99;'
+                    btnBoosterPack.addEventListener('click', () => {
                         window.open(`https://steamcommunity.com/tradingcards/boostercreator/#${appid}`);
                     });
-                    btn.textContent = '我要做包';
+                    btnBoosterPack.textContent = '我要做包';
 
-                    ele.appendChild(btn);
+                    let btnPointShop = document.createElement('button');
+
+                    btnPointShop.style.cssText = 'position: absolute;right: 380px;top: 10px;z-index: 99;'
+                    btnPointShop.addEventListener('click', () => {
+                        window.open(`https://store.steampowered.com/points/shop/app/${appid}`);
+                    });
+                    btnPointShop.textContent = '点数商店';
+
+                    ele.appendChild(btnPointShop);
+                    ele.appendChild(btnBoosterPack);
                 }
             }
         });
@@ -54,15 +63,25 @@ window.addEventListener('load', () => {
         } else if (blackList.indexOf(appid) > -1) {
             console.log('跳过黑名单');
         } else {
-            let btn = document.createElement('button');
+            let btnBoosterPack = document.createElement('button');
 
-            btn.style.cssText = 'position: absolute;right: 300px;top: 10px;z-index: 99;'
-            btn.addEventListener('click', () => {
+            btnBoosterPack.style.cssText = 'position: absolute;right: 300px;top: 10px;z-index: 99;'
+            btnBoosterPack.addEventListener('click', () => {
                 window.open(`https://steamcommunity.com/tradingcards/boostercreator/#${appid}`);
             });
-            btn.textContent = '我要做包';
+            btnBoosterPack.textContent = '我要做包';
 
-            title.appendChild(btn);
+            let btnPointShop = document.createElement('button');
+
+            btnPointShop.style.cssText = 'position: absolute;right: 380px;top: 10px;z-index: 99;'
+            btnPointShop.addEventListener('click', () => {
+                window.open(`https://store.steampowered.com/points/shop/app/${appid}`);
+            });
+            btnPointShop.textContent = '点数商店';
+
+            title.appendChild(btnPointShop);
+
+            title.appendChild(btnBoosterPack);
         }
     }
 });
