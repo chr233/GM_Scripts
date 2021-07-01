@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         Chr_'s_Inventory_Helper
+// @name:zh-CN   Steam库存批量出售By Chr_
 // @namespace    https://blog.chrxw.com
 // @version      2.2
 // @description  Steam库存批量出售
@@ -39,8 +40,10 @@ const SkinMode = {
     'zh': '战痕累累', 'ym': '枪皮(有磨损)', 'wm': '非枪皮(无磨损)'
 };
 const AutoPriceMode = {
-    'sddj': '手动定价', 'zgqg': '自动定价 - 当前最高求购价',
-    'zdcs': '自动定价 - 当前最低出售价', 'lszg': '自动定价 - 历史最高成交价'
+    'sddj': '手动定价', 
+    'zgqg': '自动定价 - 当前最高求购价',
+    'zdcs': '自动定价 - 当前最低出售价', 
+    'lspj': '自动定价 - 历史平均成交价',
 };
 
 (function () {
@@ -108,7 +111,7 @@ function addPanel() {
         if (id) { d.id = id };
         return d;
     }
-    function genPanel(name, visiable) {
+    function genPanel(name) {
         let d = genDiv(name, name);
         d.style.cssText = 'background: rgba(58, 58, 58, 0.9);position: fixed;top: 50%;right: 0px;';
         d.style.cssText += 'text-align: center;transform: translate(0px, -50%);z-index: 100;';
@@ -183,7 +186,7 @@ function addPanel() {
     let btnSwitch = genMidButton('面板', switchPanel, 'btnSwitch');
     rBtnArea.insertBefore(btnSwitch, rBtnArea.children[0])
 
-    let panelFunc = genPanel('autoSell', false);
+    let panelFunc = genPanel('autoSell');
     document.body.appendChild(panelFunc);
     let lblTitle = genLabel(`CIH - V ${Vver} - By `, null);
     let lblUrl = genA('Chr_', 'https://steamcommunity.com/id/Chr_');
@@ -238,8 +241,8 @@ function addPanel() {
     let btnReload = genButton('重载库存', reloadInventory, 'btnTarget');
     let btnTarget = genButton('高亮匹配', enableHighLight, 'btnTarget');
     let btnFill = genButton('当前物品', autoFill, 'btnFill');
-    let btnSetup = genButton('保存配置', setupGoal, 'btnSetup');
-    let btnReset = genButton('重置配置', resetGoal, 'btnReset');
+    let btnSetup = genButton('保 存', setupGoal, 'btnSetup');
+    let btnReset = genButton('重 置', resetGoal, 'btnReset');
 
     divAction.appendChild(btnReload);
     divAction.appendChild(genSpace());
@@ -802,15 +805,18 @@ function setupGoal() {
     let nmode = document.getElementById('selName').value;
     let price = Number(document.getElementById('iptPrice').value);
     let pmode = document.getElementById('selPrice').value;
+    let apmode = document.getElementById('selAdvPrice').value;
     let smode = document.getElementById('selSkin').value;
     VRun = false;
     if (NameMode[nmode] != undefined &&
         PriceMode[pmode] != undefined &&
+        AutoPriceMode[apmode] != undefined &&
         SkinMode[smode] != undefined &&
         price == price && price > 0) {
         VName = name;
         VNMode = nmode;
         VPrice = Math.floor(price * 100) / 100;
+        VAPMode = apmode;
         VPMode = pmode;
         VSMode = smode;
         VHash = '#' + g_ActiveInventory.appid.toString() + '_' + g_ActiveInventory.contextid.toString();
@@ -829,11 +835,13 @@ function resetGoal() {
     document.getElementById('selName').value = 'mc';
     document.getElementById('iptPrice').value = '';
     document.getElementById('selPrice').value = 'sq';
+    document.getElementById('selAdvPrice').value = 'sddj';
     document.getElementById('selSkin').value = 'ry';
     VName = '';
     VNMode = 'mc';
     VPrice = 0;
     VPMode = 'sq';
+    VAPMode='sddj';
     VSMode = 'hl';
     VHash = '';
     VRun = false;
@@ -986,8 +994,16 @@ function saveCFG() {
     GM_setValue('VHash', VHash);
 }
 
+// 获取选中物品的name_id
+function getItemNameid(){
+    let hash = 1;
+
+    //TODO 鸽了，看爱死机2去了。
+}
+
+
 // 获取当前选中的物品定价
-function getItemPrice(appid, market_hash) {
+function getItemPrice() {
     let country = 0
     let url = `https://steamcommunity.com/market/listings/${appid}/${market_hash}`;
 
