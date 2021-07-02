@@ -2,7 +2,7 @@
 // @name                WorldofTrucks_CN
 // @name:zh-CN          WorldofTrucks汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.1
+// @version             1.2
 // @description         WorldofTrucks汉化插件(修改自Github-i18n)
 // @description:zh-cn   WorldofTrucks汉化插件(修改自Github-i18n)
 // @author              Chr_
