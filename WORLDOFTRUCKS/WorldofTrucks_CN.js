@@ -6,7 +6,7 @@
 // @description         WorldofTrucks汉化插件(修改自Github-i18n)
 // @description:zh-cn   WorldofTrucks汉化插件(修改自Github-i18n)
 // @author              Chr_
-// @include             /https://[\s.]?worldoftrucks\.com/
+// @include             /https://[\S\s.]?worldoftrucks\.com/
 // @grant               GM_xmlhttpRequest
 // @grant               GM_getResourceText
 // @resource            data https://gitee.com/chr_a1/gm_scripts/raw/master/WORLDOFTRUCKS/lang_zh_CN.json
