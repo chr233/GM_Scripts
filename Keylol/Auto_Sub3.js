@@ -2,8 +2,9 @@
 // @name         Auto_Sub3
 // @name:zh-CN   蒸汽轮盘自动-3
 // @namespace    https://blog.chrxw.com
-// @version      2.15
+// @version      2.17
 // @description  一键快乐-3
+// @description:zh-CN  一键快乐-3
 // @author       Chr_
 // @include      https://keylol.com/*
 // @license      AGPL-3.0
@@ -14,7 +15,7 @@
 // ==/UserScript==
 
 // 版本号
-const Ver = '2.15'
+const Ver = '2.17'
 // 上次-3时间
 let VLast = 0;
 // 今天还能不能-3
@@ -26,9 +27,9 @@ let VAuto = false;
 // 音效载入
 const Vsound = new Audio('https://blog.chrxw.com/usr/keylol/gas.mp3');
 // 轮盘链接
-const Vroll = 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=45';
+const Vroll = 'https://keylol.com/plugin.php?id=steamcn_lottery:view&lottery_id=46';
 // 正则表达式
-const Vregex = /plugin\.php\?id=steamcn_lottery:view&lottery_id=45&hash=(.+)&roll/;
+const Vregex = /plugin\.php\?id=steamcn_lottery:view&lottery_id=46&hash=(.+)&roll/;
 
 (() => {
     'use strict';

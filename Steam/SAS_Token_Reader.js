@@ -425,7 +425,7 @@
     }
     //复制内容
     function setClipboard(data) {
-        GM_setClipboard(data, { type: 'text', mimetype: 'text/plain' })
+        GM_setClipboard(data, { type: 'text', mimetype: 'text/plain' });
     }
 
 

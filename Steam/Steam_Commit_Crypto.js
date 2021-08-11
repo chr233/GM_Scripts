@@ -2,24 +2,25 @@
 // @name         Steam_Commit_Crypto
 // @name:zh-CN   STEAM评测加密解密助手
 // @namespace    https://blog.chrxw.com
-// @version      0.7
+// @version      0.9
 // @description  快速加解密评测文本
 // @description:zh-CN  快速加解密评测文本
 // @author       Chr_
 // @include      /https://store\.steampowered\.com?/*.
 // @include      /https://steamcommunity\.com?/*.
-// @require      https://greasyfork.org/scripts/426509-bear-encode-decode/code/Bear_Encode_Decode.js
-// @require      https://greasyfork.org/scripts/426545-basic-cryto/code/Basic_Cryto.js
-// @require      https://greasyfork.org/scripts/426548-morse-code/code/Morse_Code.js?
+// @require      https://cdn.jsdelivr.net/gh/chr233/GM_Scripts@65475a39f3a5cef38f90b5ac29c560a4fdaee65d/Lib/Bear_Encode_Decode.js
+// @require      https://cdn.jsdelivr.net/gh/chr233/GM_Scripts@65475a39f3a5cef38f90b5ac29c560a4fdaee65d/Lib/Basic_Crypto.js
+// @require      https://cdn.jsdelivr.net/gh/chr233/GM_Scripts@65475a39f3a5cef38f90b5ac29c560a4fdaee65d/Lib/Morse_Code.js?
 // @require      https://cdn.bootcdn.net/ajax/libs/crypto-js/4.0.0/crypto-js.min.js
-// @require      https://greasyfork.org/scripts/426585-core-value-encode/code/Core_Value_Encode.js
+// @require      https://cdn.jsdelivr.net/gh/chr233/GM_Scripts@65475a39f3a5cef38f90b5ac29c560a4fdaee65d/Lib/Core_Value_Encode.js
 // @connect      steamcommunity.com
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
 // @grant        GM_xmlhttpRequest
+// @grant        GM_setClipboard
 // ==/UserScript==
 
-let G_ver = '0.7';     // 版本号
+let G_ver = '0.9';     // 版本号
 
 let G_CMode = 'syyz';  // 加密解密模式
 
@@ -75,7 +76,7 @@ function addPanel() {
         d.style.cssText = 'background: rgba(58, 58, 58, 0.9);position: fixed;top: 50%;';
         d.style.cssText += 'text-align: center;transform: translate(0px, -50%);z-index: 1000;';
         d.style.cssText += 'border: 1px solid rgb(83, 83, 83);padding: 5px;';
-        d.style.cssText += 'transition:right 0.8s;right:-300px;width:280px;font-size:14px;'
+        d.style.cssText += 'transition:right 0.8s;right:-350px;width:310px;font-size:14px;'
         if (visiable) {
             d.style.right = '0';
         }
@@ -185,6 +186,8 @@ function addPanel() {
     let btnDecode = genButton('解密↓', decode, 'btnDecode');
     let btnEncode = genButton('加密↑', encode, 'btnEncode');
     let btnExchange = genButton('交换↕', exchange, 'btnExchange');
+    let btnCopyTxt = genButton('复制原文', copyTxt, 'btnCopyTxt');
+    let btnCopyEnc = genButton('复制密文', copyEnc, 'btnCopyEnc');
     // let btnExtract = genButton('提取链接🌐', null, 'btnExchange');
 
     divAction.style.marginBottom = '5px'
@@ -193,6 +196,10 @@ function addPanel() {
     divAction.appendChild(btnEncode);
     divAction.appendChild(genSpace());
     divAction.appendChild(btnExchange);
+    divAction.appendChild(genSpace());
+    divAction.appendChild(btnCopyTxt);
+    divAction.appendChild(genSpace());
+    divAction.appendChild(btnCopyEnc);
     // divAction.appendChild(genSpace());
     // divAction.appendChild(btnExtract);
 
@@ -308,13 +315,13 @@ function switchPanel(mode) {
     let p = document.getElementById('sccCtrl');
 
     if (mode === null) {
-        if (p.style.right == '-300px') {
+        if (p.style.right == '-350px') {
             p.style.right = '0';
         } else {
-            p.style.right = '-300px';
+            p.style.right = '-350px';
         }
     } else {
-        p.style.right = mode ? '0' : '-300px';
+        p.style.right = mode ? '0' : '-350px';
     }
 }
 
@@ -323,4 +330,16 @@ function showHelp() {
     let m = document.getElementById('selMode');
     let msg = CryptoMode[m.value][4];
     ShowAlertDialog('编码器信息', msg);
+}
+
+// 复制原文
+function copyTxt() {
+    let o = document.getElementById('txtOutput');
+    GM_setClipboard(o.value, { type: 'text', mimetype: 'text/plain' });
+}
+
+// 复制密文
+function copyEnc() {
+    let i = document.getElementById('txtInput');
+    GM_setClipboard(i.value, { type: 'text', mimetype: 'text/plain' });
 }
