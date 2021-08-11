@@ -2,7 +2,7 @@
 // @name         HB_Screenshots
 // @name:zh-CN   HB截图助手
 // @namespace    https://blog.chrxw.com
-// @version      0.1
+// @version      1.0
 // @description  一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author       Chr_
