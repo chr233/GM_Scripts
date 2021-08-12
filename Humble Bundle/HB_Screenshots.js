@@ -2,7 +2,7 @@
 // @name         HB_Screenshots
 // @name:zh-CN   HB截图助手
 // @namespace    https://blog.chrxw.com
-// @version      1.1
+// @version      1.3
 // @description  一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author       Chr_
@@ -80,23 +80,21 @@
     }
     async function genImage() {
         const { divCnv } = GObjs;
-
+        const steam = document.querySelector('.sr-user');
+        const helps = document.querySelectorAll('div[class="key-container wrapper"]>div>p');
         const btns = document.querySelectorAll('button.hb_sc');
-        if (btns) {
-
-            btns.forEach(btn => {
-                btn.style.display = 'none';
-            });
+        if (btns || btns.length > 0) {
+            if (steam) { steam.style.display = 'none'; }
+            if (helps) { helps.forEach(ele => { ele.style.display = 'none'; }); }
 
             divCnv.style.display = '';
-            const keyArea = document.querySelector('div.key-list');
+            const keyArea = document.querySelector('div[class="key-container wrapper"]');
             var canvas = await html2canvas(keyArea, {});
             divCnv.innerHTML = '';
             divCnv.appendChild(canvas);
 
-            btns.forEach(btn => {
-                btn.style.display = '';
-            });
+            if (steam) { steam.style.display = ''; }
+            if (helps) { helps.forEach(ele => { ele.style.display = ''; }); }
         } else {
             alert('Key列表为空?');
         }
@@ -111,6 +109,8 @@
                 const key = ele.querySelector('div.keyfield-value');
                 if (title != null && key != null) {
                     data.push([title.textContent.trim(), key.textContent]);
+                } else {
+                    console.log(title, key);
                 }
             });
         }
