@@ -2,7 +2,7 @@
 // @name         HB_Screenshots
 // @name:zh-CN   HB截图助手
 // @namespace    https://blog.chrxw.com
-// @version      1.3
+// @version      1.4
 // @description  一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author       Chr_
@@ -32,6 +32,9 @@
             return b;
         }
         const divBtns = document.createElement('div');
+
+        const btnScraper = genBtn('一键刮Key', scraperKeys);
+        divBtns.appendChild(btnScraper);
 
         const btnGenImg = genBtn('生成截图(右键可以复制)', genImage);
         divBtns.appendChild(btnGenImg);
@@ -96,9 +99,8 @@
             if (steam) { steam.style.display = ''; }
             if (helps) { helps.forEach(ele => { ele.style.display = ''; }); }
         } else {
-            alert('Key列表为空?');
+            alert('Key列表为空?\n或许是卡DOM了，刷新一下即可。');
         }
-
     }
     function parseKeys() {
         const data = [];
@@ -115,6 +117,17 @@
             });
         }
         return data;
+    }
+    function scraperKeys() {
+        const btns = document.querySelectorAll('[class="js-keyfield keyfield  enabled"]');
+        let i = 0;
+        let t = setInterval(() => {
+            if (i < btns.length) {
+                btns[i++].click();
+            } else {
+                clearInterval(t);
+            }
+        }, 200);
     }
     function copyTxt() {
         const data = parseKeys();
