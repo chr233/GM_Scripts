@@ -2,7 +2,7 @@
 // @name         Sonkwo_Steam_Search
 // @name:zh-CN   杉果Steam快捷搜索
 // @namespace    https://blog.chrxw.com/
-// @version      1.3
+// @version      1.4
 // @description  快捷搜索steam商店
 // @description:zh-CN  快捷搜索steam商店
 // @author       Chr_
@@ -29,7 +29,7 @@ const GObjs = {};
 
 function init() {
   const title = document.querySelector('h5.typical-name-2') || document.querySelector('h3.typical-name-1');
-  const keyword = title.textContent.replace(/[-+=]/g, ' ');
+  const keyword = title.textContent.replace(/[-+=:;：；'"‘’“”]/g, ' ');
 
   console.log(keyword);
   const btnSearch = document.createElement('button');
