@@ -2,7 +2,7 @@
 // @name         Show_English_Name
 // @name:zh-CN   Steam显示英文游戏名
 // @namespace    https://blog.chrxw.com
-// @version      1.1
+// @version      1.2
 // @description  在商店页显示双语游戏名称，点击名称可以复制。
 // @description:zh-CN  在商店页显示双语游戏名称，点击名称可以复制。
 // @author       Chr_
@@ -23,25 +23,34 @@
 
     if (appid === null) { return; }
 
-    $http.getText(`https://store.steampowered.com/app/${appid}/?l=english`).then(html => {
-        let en_title = (html.match(/<title>([\s\S]+)<\/title>/) ?? [, ''])[1];
+    $http.get(`https://store.steampowered.com/api/appdetails?appids=${appid}&l=english`)
+        .then(json => {
 
-        en_title = en_title.replace(/ on Steam$/, '');
+            let data = json[appid];
 
-        let t = setInterval(() => {
-            let ele = document.getElementById('appHubAppName');
-            if (ele != null) {
-                clearInterval(t);
-                let raw_title = ele.textContent
-                if (raw_title.toLowerCase() != en_title.toLowerCase()) {
-                    ele.textContent = `${raw_title} (${en_title})`;
-                    ele.title = '点击复制';
+            if (data.success !== true) { return; }
+
+            let en_title = data.data.name;
+
+            en_title = en_title.replace(/ on Steam$/, '');
+
+            let t = setInterval(() => {
+                let ele = document.getElementById('appHubAppName');
+                if (ele != null) {
+                    clearInterval(t);
+                    let raw_title = ele.textContent
+                    if (raw_title.toLowerCase() != en_title.toLowerCase()) {
+                        ele.textContent = `${raw_title} (${en_title})`;
+                        ele.title = '点击复制';
+                    }
+                    ele.addEventListener('click', () => {
+                        GM_setClipboard(ele.textContent, { type: 'text', mimetype: 'text/plain' });
+                    });
                 }
-                ele.addEventListener('click', () => {
-                    GM_setClipboard(ele.textContent, { type: 'text', mimetype: 'text/plain' });
-                });
-            }
-        }, 500);
-    });
+            }, 500);
+        })
+        .catch(err => {
+            console.error(err);
+        });
 })();
 
