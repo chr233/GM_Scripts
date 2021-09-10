@@ -1,0 +1,8 @@
+.fac_btns {
+  display: block;
+  position: relative;
+  z-index: 100;
+  top: -25px;
+  left: 300px;
+  padding: 1px;
+}
