@@ -2,7 +2,7 @@
 // @name         Fast_Add_Cart
 // @name:zh-CN   Steam快速添加购物车
 // @namespace    https://blog.chrxw.com
-// @version      1.5
+// @version      1.6
 // @description  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author       Chr_
@@ -106,7 +106,8 @@
     //读取sub信息
     function getGameSubs(appID) {
         return new Promise((resolve, reject) => {
-            fetch(`https://store.steampowered.com/api/appdetails?appids=${appID}`, {
+            let lang = document.cookie.replace(/(?:(?:^|.*;\s*)Steam_Language\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+            fetch(`https://store.steampowered.com/api/appdetails?appids=${appID}&lang=${lang}`, {
                 method: 'GET',
                 credentials: 'include',
             })
