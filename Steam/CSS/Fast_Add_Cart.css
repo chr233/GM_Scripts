@@ -1,4 +1,4 @@
-button.fac_btns {
+button.fac_listbtns {
   display: none;
   position: relative;
   z-index: 100;
@@ -6,6 +6,10 @@ button.fac_btns {
   left: 300px;
   padding: 1px;
 }
-a.search_result_row:hover button.fac_btns {
+a.search_result_row:hover button.fac_listbtns {
   display: block;
+}
+button.fac_choose {
+  padding: 1px;
+  margin: 2px 5px;
 }
