@@ -2,7 +2,7 @@
 // @name         Fast_Add_Cart
 // @name:zh-CN   Steam快速添加购物车
 // @namespace    https://blog.chrxw.com
-// @version      1.6
+// @version      1.7
 // @description  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author       Chr_
@@ -63,7 +63,8 @@
                     if (subInfos.length === 1) {
                         let [subID, subName] = subInfos[0];
                         await addCart(subID, appID);
-                        showAlert('添加购物车成功', `<p>${subName}</p>`, true);
+                        let done = showAlert('添加购物车成功', `<p>${subName}</p>`, true);
+                        setTimeout(() => { done.Dismiss(); }, 1200);
                         dialog.Dismiss();
                     } else {
                         let dialog2 = showAlert('请选择SUB', '<div id=fac_choose></div>', true);
@@ -83,7 +84,8 @@
                                 let dialog = showAlert('操作中……', `<p>添加 ${subName} 到购物车</p>`, true);
                                 dialog2.Dismiss();
                                 let [succ, msg] = await addCart(subID, appID);
-                                showAlert(msg, `<p>${subName}</p>`, succ);
+                                let done = showAlert(msg, `<p>${subName}</p>`, succ);
+                                setTimeout(() => { done.Dismiss(); }, 1200);
                                 dialog.Dismiss();
                             });
                             btn.textContent = '🛒添加购物车';
@@ -98,8 +100,8 @@
 
             })
             .catch(err => {
-                showAlert('网络错误', `<p>${err}</p>`, false);
-            }).finally(() => {
+                let done = showAlert('网络错误', `<p>${err}</p>`, false);
+                setTimeout(() => { done.Dismiss(); }, 2000);
                 dialog.Dismiss();
             });
     }
@@ -198,5 +200,4 @@ button.fac_listbtns {
     padding: 1px;
     margin: 2px 5px;
   }
-  
 `);
