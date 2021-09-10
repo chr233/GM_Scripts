@@ -11,7 +11,6 @@
 // @connect      store.steampowered.com
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
-// @grant        GM_setClipboard
 // @grant        GM_xmlhttpRequest
 // @grant        GM_registerMenuCommand
 // ==/UserScript==
