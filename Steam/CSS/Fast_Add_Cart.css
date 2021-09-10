@@ -1,8 +1,11 @@
-.fac_btns {
-  display: block;
+button.fac_btns {
+  display: none;
   position: relative;
   z-index: 100;
   top: -25px;
   left: 300px;
   padding: 1px;
+}
+a.search_result_row:hover button.fac_btns {
+  display: block;
 }

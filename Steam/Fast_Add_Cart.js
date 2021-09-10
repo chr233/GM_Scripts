@@ -2,7 +2,7 @@
 // @name         Fast_Add_Cart
 // @name:zh-CN   Steam快速添加购物车
 // @namespace    https://blog.chrxw.com
-// @version      1.0
+// @version      1.2
 // @description  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author       Chr_
@@ -14,7 +14,6 @@
 // @icon         https://blog.chrxw.com/favicon.ico
 // @grant        GM_xmlhttpRequest
 // @grant        GM_addStyle
-// @grant        GM_openInTab
 // ==/UserScript==
 
 (async () => {
@@ -68,11 +67,11 @@
                     console.log(subInfos);
                     if (subInfos.length === 1) {
                         let [subID, subName, price] = subInfos[0];
-                        await addCart(subID);
+                        await addCart(subID, appID);
                         showAlert('添加购物车成功', `<p>${subName}</p>`, true);
                     } else {
                         let [subID, subName, price] = subInfos[0];
-                        await addCart(subID);
+                        await addCart(subID, appID);
                         showAlert('添加购物车成功', `<p>${subName}</p>`, true);
                     }
                 }
@@ -107,19 +106,43 @@
         });
     }
     //添加购物车,只支持subID
-    async function addCart(subID) {
+    async function addCart(subID, appID) {
         window.localStorage['fac_subid'] = subID;
-        let w = GM_openInTab(`https://store.steampowered.com/cart/?fac=1`, { active: false });
+
         return new Promise((resolve, reject) => {
-            let t = setInterval(() => {
-                if (w.closed) {
-                    clearInterval(t);
+
+            let data = {
+                action: "add_to_cart",
+                originating_snr: "1_store-navigation__",
+                sessionid: document.cookie.replace(/(?:(?:^|.*;\s*)sessionid\s*\=\s*([^;]*).*$)|^.*$/, "$1"),
+                snr: "1_5_9__403",
+                subid: String(subID),
+            }
+            let s = [];
+            for (let k in data) {
+                s+=`${k}=${encodeURIComponent(data[k])}&`;
+            }
+            s = s.slice(0, -1);
+
+            fetch('https://store.steampowered.com/cart/', {
+                method: 'POST',
+                credentials: 'include',
+                body: s,
+                headers: { 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+            })
+                .then(res => {
+                    let test = new RegExp('\<div class\=\"cart_row.*?data\-ds\-appid\=\"' + appID + '\"', 'g');
+                    if (test.test(res)) {
+                        console.log('添加成功');
+                    }
+                    else {
+                        console.log('添加失败');
+                    }
                     resolve();
-                }
-            }, 300);
-            setTimeout(() => {
-                w.close();
-            }, 1000);
+                }).catch(err => {
+                    console.error(err);
+                    reject(err);
+                });
         });
     }
 
@@ -131,11 +154,15 @@
 
 GM_addStyle(`
 button.fac_btns {
-    display: block;
+    display: none;
     position: relative;
     z-index: 100;
     top: -25px;
     left: 300px;
     padding: 1px;
   }
+  a.search_result_row:hover button.fac_btns {
+    display: block;
+  }
+  
 `);
