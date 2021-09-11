@@ -2,11 +2,12 @@
 // @name         Fast_Add_Cart
 // @name:zh-CN   Steam快速添加购物车
 // @namespace    https://blog.chrxw.com
-// @version      1.7
+// @version      1.8
 // @description  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author       Chr_
 // @include      /https://store\.steampowered\.com\/search/.*/
+// @include      /https://store\.steampowered\.com\/publisher/.*/
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
 // @grant        GM_addStyle
@@ -15,22 +16,40 @@
 (async () => {
     'use strict';
     //初始化
-    let t = setInterval(() => {
-        let container = document.getElementById('search_resultsRows');
-        if (container != null) {
-            clearInterval(t);
-            for (let ele of container.children) {
-                addButton(ele);
-            }
-            container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
-                if (relatedNode.parentElement === container) {
-                    addButton(relatedNode);
+    if (window.location.pathname.indexOf('search') !== -1) { //搜索页
+        let t = setInterval(() => {
+            let container = document.getElementById('search_resultsRows');
+            if (container != null) {
+                clearInterval(t);
+                for (let ele of container.children) {
+                    addButton(ele);
                 }
-            });
-            window.addCartEx = addCart;
-        }
-    }, 500);
-
+                container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
+                    if (relatedNode.parentElement === container) {
+                        addButton(relatedNode);
+                    }
+                });
+            }
+        }, 500);
+    } else { //发行商主页
+        let t = setInterval(() => {
+            let container = document.getElementById('RecommendationsRows');
+            if (container != null) {
+                clearInterval(t);
+                for (let ele of container.querySelectorAll('a.recommendation_link')) {
+                    addButton2(ele);
+                }
+                container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
+                    if (relatedNode.nodeName === 'DIV') {
+                        console.log(relatedNode);
+                        for (let ele of relatedNode.querySelectorAll('a.recommendation_link')) {
+                            addButton2(ele);
+                        }
+                    }
+                });
+            }
+        }, 500);
+    }
     //添加按钮
     function addButton(element) {
         if (element.getAttribute('added') !== null) { return; }
@@ -47,6 +66,24 @@
         }, false);
         btn.id = appID;
         btn.className = 'fac_listbtns';
+        btn.textContent = '🛒';
+        element.appendChild(btn);
+    }    //添加按钮
+    function addButton2(element) {
+        if (element.getAttribute('added') !== null) { return; }
+        element.setAttribute('added', '');
+
+        let appID = (element.href.match(/\/app\/(\d+)/) ?? [null, null])[1];
+
+        if (appID == null) { return; }
+
+        let btn = document.createElement('button');
+        btn.addEventListener('click', async (e) => {
+            chooseSubs(appID);
+            e.preventDefault();
+        }, false);
+        btn.id = appID;
+        btn.className = 'fac_publisherbtns';
         btn.textContent = '🛒';
         element.appendChild(btn);
     }
@@ -185,19 +222,36 @@
 })();
 
 GM_addStyle(`
+button.fac_list_btn,
+button.fac_publisherbtns,
 button.fac_listbtns {
-    display: none;
-    position: relative;
-    z-index: 100;
-    top: -25px;
-    left: 300px;
-    padding: 1px;
-  }
-  a.search_result_row:hover button.fac_listbtns {
-    display: block;
-  }
-  button.fac_choose {
-    padding: 1px;
-    margin: 2px 5px;
-  }
+  display: none;
+  position: relative;
+  z-index: 100;
+  padding: 1px;
+}
+button.fac_listbtns {
+  top: -25px;
+  left: 300px;
+  position: relative;
+}
+button.fac_publisherbtns {
+  bottom: 7px;
+  left: 310px;
+  position: absolute;
+}
+button.fac_listbtns {
+  top: -25px;
+  left: 300px;
+  position: relative;
+}
+a.search_result_row:hover button.fac_listbtns,
+div.recommendation:hover button.fac_publisherbtns {
+  display: block;
+}
+button.fac_choose {
+  padding: 1px;
+  margin: 2px 5px;
+}
+
 `);

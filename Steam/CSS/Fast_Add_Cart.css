@@ -1,12 +1,28 @@
+button.fac_list_btn,
+button.fac_publisherbtns,
 button.fac_listbtns {
   display: none;
   position: relative;
   z-index: 100;
-  top: -25px;
-  left: 300px;
   padding: 1px;
 }
-a.search_result_row:hover button.fac_listbtns {
+button.fac_listbtns {
+  top: -25px;
+  left: 300px;
+  position: relative;
+}
+button.fac_publisherbtns {
+  bottom: 7px;
+  left: 310px;
+  position: absolute;
+}
+button.fac_listbtns {
+  top: -25px;
+  left: 300px;
+  position: relative;
+}
+a.search_result_row:hover button.fac_listbtns,
+div.recommendation:hover button.fac_publisherbtns {
   display: block;
 }
 button.fac_choose {
