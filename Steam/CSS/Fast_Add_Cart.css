@@ -21,6 +21,12 @@ button.fac_listbtns {
   left: 300px;
   position: relative;
 }
+button.fac_cartbtns {
+  padding: 5px 10px;
+}
+button.fac_cartbtns:not(:last-child) {
+  margin-right: 15px;
+}
 a.search_result_row:hover button.fac_listbtns,
 div.recommendation:hover button.fac_publisherbtns {
   display: block;
@@ -28,4 +34,9 @@ div.recommendation:hover button.fac_publisherbtns {
 button.fac_choose {
   padding: 1px;
   margin: 2px 5px;
+}
+textarea.fac_inputbox {
+  height: 120px;
+  resize: vertical;
+  font-size: 10px;
 }
