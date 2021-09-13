@@ -1,18 +1,20 @@
 // ==UserScript==
-// @name         Fast_Add_Cart
-// @name:zh-CN   Steam快速添加购物车
-// @namespace    https://blog.chrxw.com
-// @version      2.1
-// @description  在商店页显示双语游戏名称，双击名称可以快捷搜索。
+// @name            Fast_Add_Cart
+// @name:zh-CN      Steam快速添加购物车
+// @namespace       https://blog.chrxw.com
+// @supportURL      https://blog.chrxw.com/scripts.html
+// @contributionURL https://afdian.net/@chr233
+// @version         2.2
+// @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
-// @author       Chr_
-// @include      /https://store\.steampowered\.com\/search/.*/
-// @include      /https://store\.steampowered\.com\/publisher/.*/
-// @include      /https://store\.steampowered\.com\/cart/.*/
-// @license      AGPL-3.0
-// @icon         https://blog.chrxw.com/favicon.ico
-// @grant        GM_addStyle
-// @grant        GM_setClipboard
+// @author          Chr_
+// @include         /https://store\.steampowered\.com\/search/.*/
+// @include         /https://store\.steampowered\.com\/publisher/.*/
+// @include         /https://store\.steampowered\.com\/cart/.*/
+// @license         AGPL-3.0
+// @icon            https://blog.chrxw.com/favicon.ico
+// @grant           GM_addStyle
+// @grant           GM_setClipboard
 // ==/UserScript==
 
 (async () => {
@@ -58,16 +60,21 @@
         let continer = document.querySelector('div.cart_area_body');
 
         let genBr = () => { return document.createElement('br'); };
-        let genBtn = (text, onclick) => {
+        let genBtn = (text, title, onclick) => {
             let btn = document.createElement('button');
-            let spn = document.createElement('span');
             btn.textContent = text;
+            btn.title = title;
             btn.className = 'btn_medium btnv6_blue_hoverfade fac_cartbtns';
             btn.addEventListener('click', onclick);
             return btn;
         };
+        let genSpan = (text) => {
+            let span = document.createElement('span');
+            span.textContent = text;
+            return span;
+        };
         let inputBox = document.createElement('textarea');
-
+        inputBox.value = window.localStorage['fac_cart'] ?? '';
         inputBox.className = 'fac_inputbox';
         inputBox.placeholder = ['一行一条, 支持的格式如下:',
             '1. 商店链接: https://store.steampowered.com/app/xxx',
@@ -77,20 +84,29 @@
             '5. bundleID:    b/xxx bundle/xxx'
         ].join('\n');
 
-
         let btnArea = document.createElement('div');
-
-        let btnImport = genBtn('🔼批量导入购物车', async () => { inputBox.value = await importCart(inputBox.value); });
-        let btnExport = genBtn('🔽导出当前购物车', () => { inputBox.value = exportCart(); });
-        let btnCopy = genBtn('📋复制文本框内容', () => {
+        let btnImport = genBtn('🔼批量导入', '从文本框批量添加购物车', async () => { inputBox.value = await importCart(inputBox.value); });
+        let btnExport = genBtn('🔽导出', '将购物车内容导出至文本框', () => { inputBox.value = exportCart(); });
+        let btnCopy = genBtn('📋复制', '复制文本框中的内容', () => {
             GM_setClipboard(inputBox.value, { type: 'text', mimetype: 'text/plain' });
             showAlert('提示', '复制到剪贴板成功', true);
         });
+        let btnSave = genBtn('💾保存', '储存文本框中的内容', () => {
+            window.localStorage['fac_cart'] = inputBox.value;
+            showAlert('提示', '文本框内容已保存', true);
+        });
+        let btnClear = genBtn('🗑️清除', '清除文本框和已保存的数据', () => {
+            inputBox.value = '';
+            window.localStorage['fac_cart'] = inputBox.value;
+            showAlert('提示', '文本框内容和保存的数据已清除', true);
+        });
         let btnHelp = genBtn('🔣帮助', () => {
             showAlert('帮助', [
-                '<p>【🔼批量导入购物车】将当前购物车内容保存至文本框。</p>',
-                '<p>【🔽导出当前购物车】按照文本框内容批量导入购物车。</p>',
-                '<p>【📋复制文本框内容】复制文本框内容(废话)。</p>',
+                '<p>【🔼批量导入】从文本框批量添加购物车。</p>',
+                '<p>【🔽导出】将购物车内容导出至文本框。</p>',
+                '<p>【📋复制】复制文本框中的内容(废话)。</p>',
+                '<p>【💾保存】储存文本框中的内容。</p>',
+                '<p>【🗑️清除】清除文本框和已保存的数据。</p>',
                 '<p>【🔣帮助】显示没什么卵用的帮助。</p>',
                 '<p>【<a href=https://keylol.com/t747892-1-1 target="_blank">发布帖</a>】 【<a href=https://blog.chrxw.com/scripts.html target="_blank">脚本反馈</a>】</p>'
             ].join('<br>'), true)
@@ -98,9 +114,12 @@
 
         btnArea.appendChild(btnImport);
         btnArea.appendChild(btnExport);
+        btnArea.appendChild(genSpan(' | '));
         btnArea.appendChild(btnCopy);
+        btnArea.appendChild(btnSave);
+        btnArea.appendChild(btnClear);
+        btnArea.appendChild(genSpan(' | '));
         btnArea.appendChild(btnHelp);
-
 
         continer.appendChild(btnArea);
         btnArea.appendChild(genBr());
@@ -116,6 +135,9 @@
             let lines = [];
             let dialog = showAlert('操作中……', '正在导入购物车...', true);
             for (let line of text.split('\n')) {
+                if (line.trim() === '') {
+                    continue;
+                }
                 let match = line.match(regFull) ?? line.match(regShort);
                 if (!match) {
                     let tmp = line.split('#')[0];
@@ -381,7 +403,10 @@ button.fac_cartbtns {
   padding: 5px 10px;
 }
 button.fac_cartbtns:not(:last-child) {
-  margin-right: 15px;
+  margin-right: 7px;
+}
+button.fac_cartbtns:not(:first-child) {
+  margin-left: 7px;
 }
 a.search_result_row:hover button.fac_listbtns,
 div.recommendation:hover button.fac_publisherbtns {
@@ -391,8 +416,8 @@ button.fac_choose {
   padding: 1px;
   margin: 2px 5px;
 }
-textarea.fac_inputbox{
-  height: 120px;
+textarea.fac_inputbox {
+  height: 130px;
   resize: vertical;
   font-size: 10px;
 }

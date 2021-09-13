@@ -25,7 +25,10 @@ button.fac_cartbtns {
   padding: 5px 10px;
 }
 button.fac_cartbtns:not(:last-child) {
-  margin-right: 15px;
+  margin-right: 7px;
+}
+button.fac_cartbtns:not(:first-child) {
+  margin-left: 7px;
 }
 a.search_result_row:hover button.fac_listbtns,
 div.recommendation:hover button.fac_publisherbtns {
@@ -36,7 +39,7 @@ button.fac_choose {
   margin: 2px 5px;
 }
 textarea.fac_inputbox {
-  height: 120px;
+  height: 130px;
   resize: vertical;
   font-size: 10px;
 }
