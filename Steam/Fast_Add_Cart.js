@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.4
+// @version         2.5
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_
@@ -188,13 +188,14 @@
     //导出购物车
     function exportCart() {
         let data = [];
+        let regMatch = new RegExp(/(App|Sub|Bundle)_(\d+)/);
         for (let item of document.querySelectorAll('div.cart_item_list>div.cart_row ')) {
-            let id = item.getAttribute('data-ds-appid') ?? item.getAttribute('data-ds-bundleid');
+            let itemKey = item.getAttribute('data-ds-itemkey');
             let name = item.querySelector('.cart_item_desc').textContent.trim();
-            if (item.hasAttribute('data-ds-bundleid')) {
-                data.push(`bundle/${id} #${name}`);
-            } else if (item.hasAttribute('data-ds-appid')) {
-                data.push(`app/${id} #${name}`);
+            let match = itemKey.match(regMatch);
+            if (match) {
+                let [_, type, id] = match;
+                data.push(`${type.toLowerCase()}/${id} #${name}`);
             }
         }
         return data.join('\n');
