@@ -4,6 +4,8 @@
 
 > 如果需要二次开发,请保留原作者信息,谢谢
 
+---
+
 > 脚本定制请发邮件到 chr@chrxw.com
 
 ## 链接
@@ -22,4 +24,3 @@
 [stars_b]: https://img.shields.io/github/stars/chr233/GM_Scripts
 [license]: https://github.com/chr233/GM_Scripts/blob/master/license
 [license_b]: https://img.shields.io/github/license/chr233/GM_Scripts
-

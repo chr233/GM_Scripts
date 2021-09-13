@@ -20,9 +20,7 @@
 (async () => {
     'use strict';
     //初始化
-
     let pathname = window.location.pathname;
-
     if (pathname.indexOf('search') !== -1) { //搜索页
         let t = setInterval(() => {
             let container = document.getElementById('search_resultsRows');
@@ -100,7 +98,7 @@
             window.localStorage['fac_cart'] = inputBox.value;
             showAlert('提示', '文本框内容和保存的数据已清除', true);
         });
-        let btnHelp = genBtn('🔣帮助', () => {
+        let btnHelp = genBtn('🔣帮助', '显示帮助', () => {
             showAlert('帮助', [
                 '<p>【🔼批量导入】从文本框批量添加购物车。</p>',
                 '<p>【🔽导出】将购物车内容导出至文本框。</p>',
