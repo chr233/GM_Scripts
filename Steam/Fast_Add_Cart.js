@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.3
+// @version         2.4
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_
@@ -132,6 +132,7 @@
         return new Promise(async (resolve, reject) => {
             let regFull = new RegExp(/(app|a|bundle|b|sub|s)\/(\d+)/);
             let regShort = new RegExp(/()(\d+)/);
+            let pureMsg = new RegExp(/<span .*<\/span> /, 'g');
             let lines = [];
             let dialog = showAlert('操作中……', '正在导入购物车...', true);
             for (let line of text.split('\n')) {
@@ -168,12 +169,12 @@
                 if (type === 'sub' || type === 'bundle') {
                     let [succ, msg] = await addCart(type, subID, '');
                     lines.push(`${type}/${subID} #${msg}`);
-
                 } else {
                     try {
                         let subInfos = await getGameSubs(subID);
                         let [sID, subName] = subInfos[0];
                         let [succ, msg] = await addCart('sub', sID, subID);
+                        subName = subName.replace(pureMsg, '');
                         lines.push(`${type}/${subID} #${subName} ${msg}`);
                     } catch (e) {
                         lines.push(`${type}/${subID} #未找到可用SUB`);
@@ -191,10 +192,11 @@
         let data = [];
         for (let item of document.querySelectorAll('div.cart_item_list>div.cart_row ')) {
             let id = item.getAttribute('data-ds-appid') ?? item.getAttribute('data-ds-bundleid');
+            let name = item.querySelector('.cart_item_desc').textContent.trim();
             if (item.hasAttribute('data-ds-bundleid')) {
-                data.push(`bundle/${id}`);
+                data.push(`bundle/${id} #${name}`);
             } else if (item.hasAttribute('data-ds-appid')) {
-                data.push(`app/${id}`);
+                data.push(`app/${id} #${name}`);
             }
         }
         return data.join('\n');
