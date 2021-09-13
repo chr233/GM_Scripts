@@ -1,15 +1,17 @@
 // ==UserScript==
-// @name         Show_English_Name
-// @name:zh-CN   Steam显示英文游戏名
-// @namespace    https://blog.chrxw.com
-// @version      1.8
-// @description  在商店页显示双语游戏名称，双击名称可以快捷搜索。
+// @name            Show_English_Name
+// @name:zh-CN      Steam显示英文游戏名
+// @namespace       https://blog.chrxw.com
+// @supportURL      https://blog.chrxw.com/scripts.html
+// @contributionURL https://afdian.net/@chr233
+// @version         1.9
+// @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
-// @author       Chr_
-// @include      /https://store\.steampowered\.com\/app\/\d+/
-// @license      AGPL-3.0
-// @icon         https://blog.chrxw.com/favicon.ico
-// @grant        GM_registerMenuCommand
+// @author          Chr_
+// @include         /https://store\.steampowered\.com\/app\/\d+/
+// @license         AGPL-3.0
+// @icon            https://blog.chrxw.com/favicon.ico
+// @grant           GM_registerMenuCommand
 // ==/UserScript==
 
 

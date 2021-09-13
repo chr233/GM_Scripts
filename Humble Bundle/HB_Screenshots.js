@@ -1,15 +1,17 @@
 // ==UserScript==
-// @name         HB_Screenshots
-// @name:zh-CN   HB截图助手
-// @namespace    https://blog.chrxw.com
-// @version      1.4
-// @description  一键生成密钥截图
+// @name:zh-CN      HB截图助手
+// @name            HB_Screenshots
+// @namespace       https://blog.chrxw.com
+// @supportURL      https://blog.chrxw.com/scripts.html
+// @contributionURL https://afdian.net/@chr233
+// @version         1.6
+// @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
-// @author       Chr_
-// @icon         https://blog.chrxw.com/favicon.ico
-// @require      https://cdn.jsdelivr.net/gh/chr233/GM_Scripts@30e200849c5b913355ab6869b040eb7367ec20a7/Lib/html2canvas.js
-// @include      /https:\/\/www\.humblebundle\.com\/downloads\?key=\S+/
-// @grant        GM_setClipboard
+// @author          Chr_
+// @icon            https://blog.chrxw.com/favicon.ico
+// @require         https://cdn.jsdelivr.net/gh/chr233/GM_Scripts@30e200849c5b913355ab6869b040eb7367ec20a7/Lib/html2canvas.js
+// @include         /https:\/\/www\.humblebundle\.com\/downloads\?key=\S+/
+// @grant           GM_setClipboard
 // ==/UserScript==
 
 (() => {

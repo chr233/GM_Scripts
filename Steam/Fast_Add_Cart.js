@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name            Fast_Add_Cart
 // @name:zh-CN      Steam快速添加购物车
+// @name            Fast_Add_Cart
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.2
+// @version         2.3
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_
