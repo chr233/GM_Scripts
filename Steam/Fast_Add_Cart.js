@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.5
+// @version         2.6
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_
@@ -15,6 +15,8 @@
 // @icon            https://blog.chrxw.com/favicon.ico
 // @grant           GM_addStyle
 // @grant           GM_setClipboard
+// @grant           GM_setValue
+// @grant           GM_getValue
 // ==/UserScript==
 
 (async () => {
@@ -72,9 +74,9 @@
             return span;
         };
         let inputBox = document.createElement('textarea');
-        inputBox.value = window.localStorage['fac_cart'] ?? '';
+        inputBox.value = GM_getValue('fac_cart') ?? '';
         inputBox.className = 'fac_inputbox';
-        inputBox.placeholder = ['一行一条, 支持的格式如下:',
+        inputBox.placeholder = ['一行一条, 自动忽略【#】后面的内容, 支持的格式如下:',
             '1. 商店链接: https://store.steampowered.com/app/xxx',
             '2. DB链接:  https://steamdb.info/app/xxx',
             '3. appID:   xxx a/xxx app/xxx',
@@ -90,12 +92,12 @@
             showAlert('提示', '复制到剪贴板成功', true);
         });
         let btnSave = genBtn('💾保存', '储存文本框中的内容', () => {
-            window.localStorage['fac_cart'] = inputBox.value;
+            GM_setValue('fac_cart', inputBox.value);
             showAlert('提示', '文本框内容已保存', true);
         });
         let btnClear = genBtn('🗑️清除', '清除文本框和已保存的数据', () => {
             inputBox.value = '';
-            window.localStorage['fac_cart'] = inputBox.value;
+            GM_setValue('fac_cart', '');
             showAlert('提示', '文本框内容和保存的数据已清除', true);
         });
         let btnHelp = genBtn('🔣帮助', '显示帮助', () => {
