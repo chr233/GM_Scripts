@@ -8,9 +8,7 @@
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_
-// @include         /https://store\.steampowered\.com\/search/.*/
-// @include         /https://store\.steampowered\.com\/publisher/.*/
-// @include         /https://store\.steampowered\.com\/cart/.*/
+// @match           https://store.steampowered.com/*
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
 // @grant           GM_addStyle
@@ -23,7 +21,7 @@
     'use strict';
     //初始化
     let pathname = window.location.pathname;
-    if (pathname.indexOf('search') !== -1) { //搜索页
+    if (pathname === '/search/') { //搜索页
         let t = setInterval(() => {
             let container = document.getElementById('search_resultsRows');
             if (container != null) {
@@ -38,25 +36,35 @@
                 });
             }
         }, 500);
-    } else if (pathname.indexOf('publisher') !== -1) { //发行商主页
+    } else if (pathname.startsWith('/publisher/') || pathname.startsWith('/franchise/')) { //发行商主页
         let t = setInterval(() => {
             let container = document.getElementById('RecommendationsRows');
             if (container != null) {
                 clearInterval(t);
                 for (let ele of container.querySelectorAll('a.recommendation_link')) {
-                    addButton2(ele);
+                    addButton(ele);
                 }
                 container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
                     if (relatedNode.nodeName === 'DIV') {
                         console.log(relatedNode);
                         for (let ele of relatedNode.querySelectorAll('a.recommendation_link')) {
-                            addButton2(ele);
+                            addButton(ele);
                         }
                     }
                 });
             }
         }, 500);
-    } else { //购物车页
+    } else if (pathname.startsWith('/app/') || pathname.startsWith('/sub/') || pathname.startsWith('/bundle/')) { //商店详情页
+        let t = setInterval(() => {
+            let container = document.getElementById('game_area_purchase');
+            if (container != null) {
+                clearInterval(t);
+                for (let ele of container.querySelectorAll('div.game_area_purchase_game_wrapper')) {
+                    addButton(ele);
+                }
+            }
+        }, 500);
+    } else if (pathname === '/cart/') { //购物车页
         let continer = document.querySelector('div.cart_area_body');
 
         let genBr = () => { return document.createElement('br'); };
@@ -125,7 +133,6 @@
         btnArea.appendChild(genBr());
         btnArea.appendChild(genBr());
         continer.appendChild(inputBox);
-
     }
     //导入购物车
     function importCart(text) {
@@ -207,9 +214,9 @@
         if (element.getAttribute('added') !== null) { return; }
         element.setAttribute('added', '');
 
-        let appID = (element.href.match(/\/app\/(\d+)/) ?? [null, null])[1];
-
-        if (appID == null) { return; }
+        const regAppID = new RegExp(/\/app\/(\d+)/);
+        let appID = (element.href.match(regAppID) ?? [null, null])[1];
+        if (appID === null) { return; }
 
         let btn = document.createElement('button');
         btn.addEventListener('click', async (e) => {
@@ -218,25 +225,6 @@
         }, false);
         btn.id = appID;
         btn.className = 'fac_listbtns';
-        btn.textContent = '🛒';
-        element.appendChild(btn);
-    }
-    //添加按钮
-    function addButton2(element) {
-        if (element.getAttribute('added') !== null) { return; }
-        element.setAttribute('added', '');
-
-        let appID = (element.href.match(/\/app\/(\d+)/) ?? [null, null])[1];
-
-        if (appID == null) { return; }
-
-        let btn = document.createElement('button');
-        btn.addEventListener('click', async (e) => {
-            chooseSubs(appID);
-            e.preventDefault();
-        }, false);
-        btn.id = appID;
-        btn.className = 'fac_publisherbtns';
         btn.textContent = '🛒';
         element.appendChild(btn);
     }
@@ -380,27 +368,21 @@
 
 GM_addStyle(`
 button.fac_list_btn,
-button.fac_publisherbtns,
 button.fac_listbtns {
   display: none;
   position: relative;
   z-index: 100;
   padding: 1px;
 }
-button.fac_listbtns {
+a.search_result_row > button.fac_listbtns {
   top: -25px;
   left: 300px;
   position: relative;
 }
-button.fac_publisherbtns {
-  bottom: 7px;
-  left: 310px;
+a.recommendation_link > button.fac_listbtns {
+  bottom: 10px;
+  right: 10px;
   position: absolute;
-}
-button.fac_listbtns {
-  top: -25px;
-  left: 300px;
-  position: relative;
 }
 button.fac_cartbtns {
   padding: 5px 10px;
@@ -412,7 +394,7 @@ button.fac_cartbtns:not(:first-child) {
   margin-left: 7px;
 }
 a.search_result_row:hover button.fac_listbtns,
-div.recommendation:hover button.fac_publisherbtns {
+div.recommendation:hover button.fac_listbtns {
   display: block;
 }
 button.fac_choose {
