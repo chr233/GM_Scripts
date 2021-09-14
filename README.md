@@ -1,7 +1,5 @@
 # 油猴脚本
 
-> 如果需要二次开发,请保留原作者信息,谢谢
-
 [![Codacy Badge][codacy_b]][Codacy] ![forks][forks_b] ![stars][stars_b] [![License][license_b]][License]
 
 [codacy_b]: https://app.codacy.com/project/badge/Grade/0c56f19da3ba42118a5b772dde88c088
@@ -11,9 +9,11 @@
 [license]: https://github.com/chr233/GM_Scripts/blob/master/license
 [license_b]: https://img.shields.io/github/license/chr233/GM_Scripts
 
-> 脚本定制请发邮件到 [chr@chrxw.com](mailto:chr@chrxw.com)
+> 如果需要二次开发,请保留原作者信息,谢谢
 
 ## 一些链接
+
+> 脚本定制请发邮件到 [chr@chrxw.com](mailto:chr@chrxw.com)
 
 [:speech_balloon: 脚本反馈](https://blog.chrxw.com/scripts.html)
 
