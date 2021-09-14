@@ -1,17 +1,19 @@
 // ==UserScript==
-// @name         Auto_Sub3
-// @name:zh-CN   蒸汽轮盘自动-3
-// @namespace    https://blog.chrxw.com
-// @version      2.17
-// @description  一键快乐-3
+// @name:zh-CN      蒸汽轮盘自动-3
+// @name            Auto_Sub3
+// @namespace       https://blog.chrxw.com
+// @supportURL      https://blog.chrxw.com/scripts.html
+// @contributionURL https://afdian.net/@chr233
+// @version         2.18
+// @description     一键快乐-3
 // @description:zh-CN  一键快乐-3
-// @author       Chr_
-// @include      https://keylol.com/*
-// @license      AGPL-3.0
-// @icon         https://blog.chrxw.com/favicon.ico
-// @grant        GM_setValue
-// @grant        GM_getValue
-// @grant        GM_xmlhttpRequest
+// @author          Chr_
+// @include         https://keylol.com/*
+// @license         AGPL-3.0
+// @icon            https://blog.chrxw.com/favicon.ico
+// @grant           GM_setValue
+// @grant           GM_getValue
+// @grant           GM_xmlhttpRequest
 // ==/UserScript==
 
 // 版本号
