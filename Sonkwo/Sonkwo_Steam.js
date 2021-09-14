@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com/
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.6
+// @version         1.8
 // @description     快捷搜索steam商店
 // @description:zh-CN  快捷搜索steam商店
 // @author          Chr_
@@ -17,71 +17,73 @@
 // @grant           GM_addStyle
 // ==/UserScript==
 
-const GObjs = {};
-
 (() => {
   'use strict';
-  const t = setInterval(() => {
-    if (document.querySelectorAll('h3.typical-name-1').length > 0) {
-      clearInterval(t);
-      init();
-    }
+  let GdivResult = null; //控件数组
+
+  setTimeout(() => {
+    const container = document.querySelector('div.main-content');
+    container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
+      const ele = document.querySelector('h5.typical-name-2') || document.querySelector('h3.typical-name-1');
+      if (ele.querySelector('button.btnSearch') === null) {
+        init(ele);
+      }
+    });
   }, 500);
+
+  //显示搜索按钮
+  function init(ele) {
+    const keyword = ele.textContent.replace(/[-+=:;：；'"‘’“”]/g, ' ');
+    const btnSearch = document.createElement('button');
+    btnSearch.className = 'btnSearch';
+    btnSearch.textContent = '🔎';
+    btnSearch.addEventListener('mouseover', () => { btnSearch.textContent = '🔎 搜索Steam'; });
+    btnSearch.addEventListener('mouseout', () => { btnSearch.textContent = '🔎'; });
+    btnSearch.addEventListener('click', () => { showResult(keyword); });
+
+    ele.appendChild(btnSearch);
+    const divResult = document.createElement('div');
+    divResult.className = 'divResult';
+    ele.appendChild(divResult);
+
+    GdivResult = divResult;
+  }
+
+  //显示搜索结果
+  function showResult(keyword) {
+    searchStore(keyword, 'CN')
+      .then((result) => {
+        GdivResult.innerHTML = '';
+        if (result.length === 0) {
+          const btnRst = document.createElement('button');
+          btnRst.textContent = '【快速搜索无结果,点击前往steam搜索页】';
+          btnRst.addEventListener('click', () => { window.open(`https://store.steampowered.com/search/?term=${keyword}`); });
+          GdivResult.appendChild(btnRst);
+          return;
+        }
+        result.forEach(({ appID, isBundle, appName, appPrice, appUrl, appImg }) => {
+          const btnRst = document.createElement('button');
+          btnRst.title = `${isBundle ? "bundle" : "app"}/${appID}`;
+          btnRst.addEventListener('click', () => { window.open(appUrl); });
+
+          const btnName = document.createElement('p');
+          btnName.textContent = `${appName}【${appPrice}】`
+          btnRst.appendChild(btnName);
+          btnRst.appendChild(document.createElement('br'));
+
+          const btnImg = new Image();
+          btnImg.src = appImg;
+
+          btnRst.appendChild(btnImg);
+          GdivResult.appendChild(btnRst);
+        });
+      })
+      .catch((reason) => {
+        alert(reason);
+      });
+  }
 })();
 
-function init() {
-  const title = document.querySelector('h5.typical-name-2') || document.querySelector('h3.typical-name-1');
-  const keyword = title.textContent.replace(/[-+=:;：；'"‘’“”]/g, ' ');
-
-  console.log(keyword);
-  const btnSearch = document.createElement('button');
-  btnSearch.className = 'btnSearch';
-  btnSearch.textContent = '🔎';
-  btnSearch.addEventListener('mouseover', () => { btnSearch.textContent = '🔎 搜索Steam'; });
-  btnSearch.addEventListener('mouseout', () => { btnSearch.textContent = '🔎'; });
-  btnSearch.addEventListener('click', () => { showResult(keyword); });
-  title.appendChild(btnSearch);
-
-  const divResult = document.createElement('div');
-  divResult.className = 'divResult';
-  title.appendChild(divResult);
-
-  Object.assign(GObjs, { divResult });
-}
-
-function showResult(keyword) {
-  const { divResult } = GObjs;
-  searchStore(keyword, 'CN')
-    .then((result) => {
-      divResult.innerHTML = '';
-      if (result.length === 0) {
-        const btnRst = document.createElement('button');
-        btnRst.textContent = '【快速搜索无结果,点击前往steam搜索页】';
-        btnRst.addEventListener('click', () => { window.open(`https://store.steampowered.com/search/?term=${keyword}`); });
-        divResult.appendChild(btnRst);
-        return;
-      }
-      result.forEach(({ appID, isBundle, appName, appPrice, appUrl, appImg }) => {
-        const btnRst = document.createElement('button');
-        btnRst.title = `${isBundle ? "bundle" : "app"}/${appID}`;
-        btnRst.addEventListener('click', () => { window.open(appUrl); });
-
-        const btnName = document.createElement('p');
-        btnName.textContent = `${appName}【${appPrice}】`
-        btnRst.appendChild(btnName);
-        btnRst.appendChild(document.createElement('br'));
-
-        const btnImg = new Image();
-        btnImg.src = appImg;
-
-        btnRst.appendChild(btnImg);
-        divResult.appendChild(btnRst);
-      });
-    })
-    .catch((reason) => {
-      alert(reason);
-    });
-}
 
 //CSS表
 GM_addStyle(`
@@ -110,5 +112,5 @@ GM_addStyle(`
     padding: 0 5px;
     margin-left: 5px;
   }
-  
+
 `);
