@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.7
+// @version         2.8
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_
@@ -181,7 +181,7 @@
                         continue;
                 }
 
-                if (type === 'subid' || type === 'bundleid') {
+                if (type === 'sub' || type === 'bundle') {
                     let [succ, msg] = await addCart(type, subID, '');
                     lines.push(`${type}/${subID} #${msg}`);
                 } else {
