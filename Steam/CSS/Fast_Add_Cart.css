@@ -15,6 +15,10 @@ a.recommendation_link > button.fac_listbtns {
   right: 10px;
   position: absolute;
 }
+div.game_purchase_action > button.fac_listbtns {
+  right: 8px;
+  bottom: 8px;
+}
 button.fac_cartbtns {
   padding: 5px 10px;
 }
@@ -27,6 +31,9 @@ button.fac_cartbtns:not(:first-child) {
 a.search_result_row:hover button.fac_listbtns,
 div.recommendation:hover button.fac_listbtns {
   display: block;
+}
+div.game_purchase_action:hover > button.fac_listbtns {
+  display: inline;
 }
 button.fac_choose {
   padding: 1px;

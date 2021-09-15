@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.6
+// @version         2.7
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_
@@ -59,8 +59,9 @@
             let container = document.getElementById('game_area_purchase');
             if (container != null) {
                 clearInterval(t);
-                for (let ele of container.querySelectorAll('div.game_area_purchase_game_wrapper')) {
-                    addButton(ele);
+                console.log(document.querySelectorAll('div.game_area_purchase_game'))
+                for (let ele of document.querySelectorAll('div.game_area_purchase_game')) {
+                    addButton2(ele);
                 }
             }
         }, 500);
@@ -108,6 +109,10 @@
             GM_setValue('fac_cart', '');
             showAlert('提示', '文本框内容和保存的数据已清除', true);
         });
+        let btnForget = genBtn('⚠️清空', '清空购物车', () => {
+            ShowConfirmDialog('', '您确定要移除所有您购物车中的物品吗？', '是', '否')
+                .done(() => { ForgetCart(); });
+        });
         let btnHelp = genBtn('🔣帮助', '显示帮助', () => {
             showAlert('帮助', [
                 '<p>【🔼批量导入】从文本框批量添加购物车。</p>',
@@ -115,6 +120,7 @@
                 '<p>【📋复制】复制文本框中的内容(废话)。</p>',
                 '<p>【💾保存】储存文本框中的内容。</p>',
                 '<p>【🗑️清除】清除文本框和已保存的数据。</p>',
+                '<p>【⚠️清空】清空购物车。</p>',
                 '<p>【🔣帮助】显示没什么卵用的帮助。</p>',
                 '<p>【<a href=https://keylol.com/t747892-1-1 target="_blank">发布帖</a>】 【<a href=https://blog.chrxw.com/scripts.html target="_blank">脚本反馈</a>】</p>'
             ].join('<br>'), true)
@@ -126,6 +132,8 @@
         btnArea.appendChild(btnCopy);
         btnArea.appendChild(btnSave);
         btnArea.appendChild(btnClear);
+        btnArea.appendChild(genSpan(' | '));
+        btnArea.appendChild(btnForget);
         btnArea.appendChild(genSpan(' | '));
         btnArea.appendChild(btnHelp);
 
@@ -173,7 +181,7 @@
                         continue;
                 }
 
-                if (type === 'sub' || type === 'bundle') {
+                if (type === 'subid' || type === 'bundleid') {
                     let [succ, msg] = await addCart(type, subID, '');
                     lines.push(`${type}/${subID} #${msg}`);
                 } else {
@@ -197,14 +205,14 @@
     //导出购物车
     function exportCart() {
         let data = [];
-        let regMatch = new RegExp(/(App|Sub|Bundle)_(\d+)/);
+        let regMatch = new RegExp(/(app|sub|bundle)_(\d+)/);
         for (let item of document.querySelectorAll('div.cart_item_list>div.cart_row ')) {
             let itemKey = item.getAttribute('data-ds-itemkey');
             let name = item.querySelector('.cart_item_desc').textContent.trim();
-            let match = itemKey.match(regMatch);
+            let match = itemKey.toLowerCase().match(regMatch);
             if (match) {
                 let [_, type, id] = match;
-                data.push(`${type.toLowerCase()}/${id} #${name}`);
+                data.push(`${type}/${id} #${name}`);
             }
         }
         return data.join('\n');
@@ -214,19 +222,53 @@
         if (element.getAttribute('added') !== null) { return; }
         element.setAttribute('added', '');
 
-        const regAppID = new RegExp(/\/app\/(\d+)/);
-        let appID = (element.href.match(regAppID) ?? [null, null])[1];
+        let appID = (element.href.match(/\/app\/(\d+)/) ?? [null, null])[1];
         if (appID === null) { return; }
 
         let btn = document.createElement('button');
-        btn.addEventListener('click', async (e) => {
+        btn.addEventListener('click', (e) => {
             chooseSubs(appID);
             e.preventDefault();
         }, false);
-        btn.id = appID;
         btn.className = 'fac_listbtns';
         btn.textContent = '🛒';
         element.appendChild(btn);
+    }
+    //添加按钮
+    function addButton2(element) {
+        if (element.getAttribute('added') !== null) { return; }
+        element.setAttribute('added', '');
+        let type, subID;
+        let itemKey = element.getAttribute('data-ds-itemkey');
+        if (itemKey !== null) {
+            let match = itemKey.toLowerCase().match(/(app|sub|bundle)_(\d+)/);
+            if (match) { [, type, subID] = match; }
+        } else {
+            subID = element.getAttribute('data-ds-subid') ?? element.getAttribute('data-ds-bundleid');
+            type = element.hasAttribute('data-ds-subid') ? 'sub' : 'bundle';
+        }
+        const btnBar = element.querySelector('div.game_purchase_action');
+        const firstItem = element.querySelector('div.game_purchase_action_bg');
+        if (btnBar === null || firstItem == null || type === undefined || subID === undefined) { return; }
+        let appID = (window.location.pathname.match(/\/(app)\/(\d+)/) ?? [null, null, null])[2];
+        let btn = document.createElement('button');
+        btn.addEventListener('click', async () => {
+            let dialog = showAlert('操作中……', '<p>添加到购物车……</p>', true);
+            let [succ, msg] = await addCart(type, subID, appID);
+            let done = showAlert('操作完成', `<p>${msg}</p>`, succ);
+            setTimeout(() => { done.Dismiss(); }, 1200);
+            dialog.Dismiss();
+            if (succ) {
+                let acBtn = btnBar.querySelector('div[class="btn_addtocart"]>a');
+                if (acBtn) {
+                    acBtn.href = 'https://store.steampowered.com/cart/';
+                    acBtn.innerHTML = '\n\t\n<span>在购物车中</span>\n\t\n';
+                }
+            }
+        }, false);
+        btn.className = 'fac_listbtns';
+        btn.textContent = '🛒';
+        btnBar.insertBefore(btn, firstItem);
     }
     //选择SUB
     async function chooseSubs(appID) {
@@ -316,7 +358,7 @@
                 });
         });
     }
-    //添加购物车,只支持subID
+    //添加购物车,只支持subID和bundleID
     function addCart(type = 'sub', subID, appID = null) {
         window.localStorage['fac_subid'] = subID;
         return new Promise((resolve, reject) => {
@@ -384,6 +426,10 @@ a.recommendation_link > button.fac_listbtns {
   right: 10px;
   position: absolute;
 }
+div.game_purchase_action > button.fac_listbtns {
+  right: 8px;
+  bottom: 8px;
+}
 button.fac_cartbtns {
   padding: 5px 10px;
 }
@@ -396,6 +442,9 @@ button.fac_cartbtns:not(:first-child) {
 a.search_result_row:hover button.fac_listbtns,
 div.recommendation:hover button.fac_listbtns {
   display: block;
+}
+div.game_purchase_action:hover > button.fac_listbtns {
+  display: inline;
 }
 button.fac_choose {
   padding: 1px;
