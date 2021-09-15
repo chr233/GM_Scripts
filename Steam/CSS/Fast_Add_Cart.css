@@ -1,4 +1,3 @@
-button.fac_list_btn,
 button.fac_listbtns {
   display: none;
   position: relative;
@@ -8,7 +7,10 @@ button.fac_listbtns {
 a.search_result_row > button.fac_listbtns {
   top: -25px;
   left: 300px;
-  position: relative;
+}
+a.tab_item > button.fac_listbtns {
+  top: -40px;
+  left: 330px;
 }
 a.recommendation_link > button.fac_listbtns {
   bottom: 10px;
@@ -28,6 +30,7 @@ button.fac_cartbtns:not(:last-child) {
 button.fac_cartbtns:not(:first-child) {
   margin-left: 7px;
 }
+a.tab_item:hover button.fac_listbtns,
 a.search_result_row:hover button.fac_listbtns,
 div.recommendation:hover button.fac_listbtns {
   display: block;

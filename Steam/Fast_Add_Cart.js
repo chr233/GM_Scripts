@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.8
+// @version         2.9
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -21,19 +21,32 @@
     'use strict';
     //初始化
     let pathname = window.location.pathname;
-    if (pathname === '/search/') { //搜索页
+    if (pathname === '/search/' || pathname === '/' || pathname.startsWith('/tags/')) { //搜索页,主页,标签页
         let t = setInterval(() => {
-            let container = document.getElementById('search_resultsRows');
-            if (container != null) {
-                clearInterval(t);
-                for (let ele of container.children) {
-                    addButton(ele);
-                }
-                container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
-                    if (relatedNode.parentElement === container) {
-                        addButton(relatedNode);
+            let containers = document.querySelectorAll([
+                '#search_resultsRows',
+                '#tab_newreleases_content',
+                '#tab_topsellers_content',
+                '#tab_upcoming_content',
+                '#tab_specials_content',
+                '#NewReleasesRows',
+                '#TopSellersRows',
+                '#ConcurrentUsersRows',
+                '#TopRatedRows',
+                '#ComingSoonRows'
+            ].join(','));
+            if (containers.length > 0) {
+                for (let container of containers) {
+                    clearInterval(t);
+                    for (let ele of container.children) {
+                        addButton(ele);
                     }
-                });
+                    container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
+                        if (relatedNode.parentElement === container) {
+                            addButton(relatedNode);
+                        }
+                    });
+                }
             }
         }, 500);
     } else if (pathname.startsWith('/publisher/') || pathname.startsWith('/franchise/')) { //发行商主页
@@ -222,6 +235,8 @@
         if (element.getAttribute('added') !== null) { return; }
         element.setAttribute('added', '');
 
+        if (element.href === undefined) { return; }
+
         let appID = (element.href.match(/\/app\/(\d+)/) ?? [null, null])[1];
         if (appID === null) { return; }
 
@@ -277,6 +292,7 @@
             .then(async (subInfos) => {
                 if (subInfos.length === 0) {
                     showAlert('添加购物车失败', '<p>未找到可用SUB, 可能尚未发行或者是免费游戏.</p>', false);
+                    dialog.Dismiss();
                     return;
                 } else {
                     console.log(subInfos);
@@ -409,50 +425,53 @@
 })();
 
 GM_addStyle(`
-button.fac_list_btn,
 button.fac_listbtns {
-  display: none;
-  position: relative;
-  z-index: 100;
-  padding: 1px;
-}
-a.search_result_row > button.fac_listbtns {
-  top: -25px;
-  left: 300px;
-  position: relative;
-}
-a.recommendation_link > button.fac_listbtns {
-  bottom: 10px;
-  right: 10px;
-  position: absolute;
-}
-div.game_purchase_action > button.fac_listbtns {
-  right: 8px;
-  bottom: 8px;
-}
-button.fac_cartbtns {
-  padding: 5px 10px;
-}
-button.fac_cartbtns:not(:last-child) {
-  margin-right: 7px;
-}
-button.fac_cartbtns:not(:first-child) {
-  margin-left: 7px;
-}
-a.search_result_row:hover button.fac_listbtns,
-div.recommendation:hover button.fac_listbtns {
-  display: block;
-}
-div.game_purchase_action:hover > button.fac_listbtns {
-  display: inline;
-}
-button.fac_choose {
-  padding: 1px;
-  margin: 2px 5px;
-}
-textarea.fac_inputbox {
-  height: 130px;
-  resize: vertical;
-  font-size: 10px;
-}
+    display: none;
+    position: relative;
+    z-index: 100;
+    padding: 1px;
+  }
+  a.search_result_row > button.fac_listbtns {
+    top: -25px;
+    left: 300px;
+  }
+  a.tab_item > button.fac_listbtns {
+    top: -40px;
+    left: 330px;
+  }
+  a.recommendation_link > button.fac_listbtns {
+    bottom: 10px;
+    right: 10px;
+    position: absolute;
+  }
+  div.game_purchase_action > button.fac_listbtns {
+    right: 8px;
+    bottom: 8px;
+  }
+  button.fac_cartbtns {
+    padding: 5px 10px;
+  }
+  button.fac_cartbtns:not(:last-child) {
+    margin-right: 7px;
+  }
+  button.fac_cartbtns:not(:first-child) {
+    margin-left: 7px;
+  }
+  a.tab_item:hover button.fac_listbtns,
+  a.search_result_row:hover button.fac_listbtns,
+  div.recommendation:hover button.fac_listbtns {
+    display: block;
+  }
+  div.game_purchase_action:hover > button.fac_listbtns {
+    display: inline;
+  }
+  button.fac_choose {
+    padding: 1px;
+    margin: 2px 5px;
+  }
+  textarea.fac_inputbox {
+    height: 130px;
+    resize: vertical;
+    font-size: 10px;
+  }  
 `);
