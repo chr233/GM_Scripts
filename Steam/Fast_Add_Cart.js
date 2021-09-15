@@ -5,8 +5,8 @@
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
 // @version         2.8
-// @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
-// @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
+// @description     超级方便的添加购物车体验，不用跳转商店页。
+// @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
 // @match           https://store.steampowered.com/*
 // @license         AGPL-3.0
