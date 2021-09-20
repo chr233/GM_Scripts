@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.6
+// @version         1.7
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_
@@ -91,13 +91,13 @@
         if (btns || btns.length > 0) {
             if (steam) { steam.style.display = 'none'; }
             if (helps) { helps.forEach(ele => { ele.style.display = 'none'; }); }
-
             divCnv.style.display = '';
             const keyArea = document.querySelector('div[class="key-container wrapper"]');
-            var canvas = await html2canvas(keyArea, {});
+            const canvas = await html2canvas(keyArea, {});
+            const img = document.createElement('img');
+            img.src = canvas.toDataURL("image/png");
             divCnv.innerHTML = '';
-            divCnv.appendChild(canvas);
-
+            divCnv.appendChild(img);
             if (steam) { steam.style.display = ''; }
             if (helps) { helps.forEach(ele => { ele.style.display = ''; }); }
         } else {
@@ -142,8 +142,7 @@
     }
     function copyCSV() {
         const data = parseKeys();
-        const list = [];
-        list.push('游戏名,Key');
+        const list = ['游戏名,Key'];
         data.forEach(([title, key]) => {
             list.push(`${title},${key}`);
         });
@@ -152,9 +151,7 @@
     }
     function copyMD() {
         const data = parseKeys();
-        const list = [];
-        list.push('|游戏名|Key|');
-        list.push('|-|-|');
+        const list = ['|游戏名|Key|', '|-|-|'];
         data.forEach(([title, key]) => {
             list.push(`|${title}|${key}|`);
         });
