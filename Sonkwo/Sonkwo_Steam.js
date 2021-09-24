@@ -4,14 +4,14 @@
 // @namespace       https://blog.chrxw.com/
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.8
+// @version         1.9
 // @description     快捷搜索steam商店
 // @description:zh-CN  快捷搜索steam商店
 // @author          Chr_
 // @license         AGPL-3.0
 // @connect         steampowered.com
-// @include         /https://www.sonkwo.com\/sku\/\d+/
-// @include         /https://www.sonkwo.hk\/sku\/\d+/
+// @match           https://www.sonkwo.com/sku/*
+// @match           https://www.sonkwo.hk/sku/*
 // @require         https://greasyfork.org/scripts/431430-search-steam-store/code/Search_Steam_Store.js
 // @grant           GM_xmlhttpRequest
 // @grant           GM_addStyle
