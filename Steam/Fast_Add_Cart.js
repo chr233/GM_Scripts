@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.9
+// @version         2.10
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -254,14 +254,26 @@
         if (element.getAttribute('added') !== null) { return; }
         element.setAttribute('added', '');
         let type, subID;
-        let itemKey = element.getAttribute('data-ds-itemkey');
-        if (itemKey !== null) {
+
+        let parentElement = element.parentElement;
+
+        if (parentElement.hasAttribute('data-ds-itemkey')) {
+            let itemKey = parentElement.getAttribute('data-ds-itemkey');
             let match = itemKey.toLowerCase().match(/(app|sub|bundle)_(\d+)/);
             if (match) { [, type, subID] = match; }
+        } else if (parentElement.hasAttribute('data-ds-bundleid') || parentElement.hasAttribute('data-ds-subid')) {
+            subID = parentElement.getAttribute('data-ds-subid') ?? parentElement.getAttribute('data-ds-bundleid');
+            type = parentElement.hasAttribute('data-ds-subid') ? 'sub' : 'bundle';
         } else {
-            subID = element.getAttribute('data-ds-subid') ?? element.getAttribute('data-ds-bundleid');
-            type = element.hasAttribute('data-ds-subid') ? 'sub' : 'bundle';
+            let match = element.id.match(/cart_(\d+)/);
+            if (match) {
+                type = 'sub';
+                [, subID] = match;
+            }
         }
+
+        if (type === undefined || subID === undefined) { console.log('未识别到subID'); return; }
+
         const btnBar = element.querySelector('div.game_purchase_action');
         const firstItem = element.querySelector('div.game_purchase_action_bg');
         if (btnBar === null || firstItem == null || type === undefined || subID === undefined) { return; }
