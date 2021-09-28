@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com/
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.9
+// @version         2.0
 // @description     快捷搜索steam商店
 // @description:zh-CN  快捷搜索steam商店
 // @author          Chr_
@@ -21,14 +21,17 @@
   'use strict';
   let GdivResult = null; //控件数组
 
-  setTimeout(() => {
+  let t = setInterval(() => {
     const container = document.querySelector('div.main-content');
-    container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
-      const ele = document.querySelector('h5.typical-name-2') || document.querySelector('h3.typical-name-1');
-      if (ele.querySelector('button.btnSearch') === null) {
-        init(ele);
-      }
-    });
+    if (container !== null) {
+      clearInterval(t);
+      container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
+        const ele = document.querySelector('h5.typical-name-2') || document.querySelector('h3.typical-name-1');
+        if (ele.querySelector('button.btnSearch') === null) {
+          init(ele);
+        }
+      });
+    }
   }, 500);
 
   //显示搜索按钮
