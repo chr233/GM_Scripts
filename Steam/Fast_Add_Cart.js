@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.10
+// @version         2.11
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -98,7 +98,7 @@
         let inputBox = document.createElement('textarea');
         inputBox.value = GM_getValue('fac_cart') ?? '';
         inputBox.className = 'fac_inputbox';
-        inputBox.placeholder = ['一行一条, 自动忽略【#】后面的内容, 支持的格式如下:',
+        inputBox.placeholder = ['一行一条, 自动忽略【#】后面的内容, 支持的格式如下: (自动保存)',
             '1. 商店链接: https://store.steampowered.com/app/xxx',
             '2. DB链接:  https://steamdb.info/app/xxx',
             '3. appID:   xxx a/xxx app/xxx',
@@ -107,15 +107,14 @@
         ].join('\n');
 
         let btnArea = document.createElement('div');
-        let btnImport = genBtn('🔼批量导入', '从文本框批量添加购物车', async () => { inputBox.value = await importCart(inputBox.value); });
+        let btnImport = genBtn('🔼批量导入', '从文本框批量添加购物车', async () => {
+            inputBox.value = await importCart(inputBox.value);
+            window.location.reload();
+        });
         let btnExport = genBtn('🔽导出', '将购物车内容导出至文本框', () => { inputBox.value = exportCart(); });
         let btnCopy = genBtn('📋复制', '复制文本框中的内容', () => {
             GM_setClipboard(inputBox.value, { type: 'text', mimetype: 'text/plain' });
             showAlert('提示', '复制到剪贴板成功', true);
-        });
-        let btnSave = genBtn('💾保存', '储存文本框中的内容', () => {
-            GM_setValue('fac_cart', inputBox.value);
-            showAlert('提示', '文本框内容已保存', true);
         });
         let btnClear = genBtn('🗑️清除', '清除文本框和已保存的数据', () => {
             inputBox.value = '';
@@ -124,14 +123,16 @@
         });
         let btnForget = genBtn('⚠️清空', '清空购物车', () => {
             ShowConfirmDialog('', '您确定要移除所有您购物车中的物品吗？', '是', '否')
-                .done(() => { ForgetCart(); });
+                .done(() => {
+                    ForgetCart();
+                    window.location.reload();
+                });
         });
         let btnHelp = genBtn('🔣帮助', '显示帮助', () => {
             showAlert('帮助', [
                 '<p>【🔼批量导入】从文本框批量添加购物车。</p>',
                 '<p>【🔽导出】将购物车内容导出至文本框。</p>',
                 '<p>【📋复制】复制文本框中的内容(废话)。</p>',
-                '<p>【💾保存】储存文本框中的内容。</p>',
                 '<p>【🗑️清除】清除文本框和已保存的数据。</p>',
                 '<p>【⚠️清空】清空购物车。</p>',
                 '<p>【🔣帮助】显示没什么卵用的帮助。</p>',
@@ -143,7 +144,6 @@
         btnArea.appendChild(btnExport);
         btnArea.appendChild(genSpan(' | '));
         btnArea.appendChild(btnCopy);
-        btnArea.appendChild(btnSave);
         btnArea.appendChild(btnClear);
         btnArea.appendChild(genSpan(' | '));
         btnArea.appendChild(btnForget);
@@ -154,6 +154,8 @@
         btnArea.appendChild(genBr());
         btnArea.appendChild(genBr());
         continer.appendChild(inputBox);
+
+        window.addEventListener('beforeunload', () => { GM_setValue('fac_cart', inputBox.value); })
     }
     //导入购物车
     function importCart(text) {
