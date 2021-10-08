@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.11
+// @version         2.12
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -15,6 +15,7 @@
 // @grant           GM_setClipboard
 // @grant           GM_setValue
 // @grant           GM_getValue
+// @grant           GM_info
 // ==/UserScript==
 
 (async () => {
@@ -129,14 +130,15 @@
                 });
         });
         let btnHelp = genBtn('🔣帮助', '显示帮助', () => {
-            showAlert('帮助', [
+            const {script:{version}} = GM_info;
+            showAlert(`帮助 插件版本 ${version}`, [
                 '<p>【🔼批量导入】从文本框批量添加购物车。</p>',
                 '<p>【🔽导出】将购物车内容导出至文本框。</p>',
                 '<p>【📋复制】复制文本框中的内容(废话)。</p>',
                 '<p>【🗑️清除】清除文本框和已保存的数据。</p>',
                 '<p>【⚠️清空】清空购物车。</p>',
                 '<p>【🔣帮助】显示没什么卵用的帮助。</p>',
-                '<p>【<a href=https://keylol.com/t747892-1-1 target="_blank">发布帖</a>】 【<a href=https://blog.chrxw.com/scripts.html target="_blank">脚本反馈</a>】</p>'
+                '<p>【<a href=https://keylol.com/t747892-1-1 target="_blank">发布帖</a>】 【<a href=https://blog.chrxw.com/scripts.html target="_blank">脚本反馈</a>】 【Developed by <a href=https://steamcommunity.com/id/Chr_>Chr_</a>】</p>'
             ].join('<br>'), true)
         });
 
