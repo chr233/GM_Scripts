@@ -17,6 +17,11 @@ a.recommendation_link > button.fac_listbtns {
   right: 10px;
   position: absolute;
 }
+div.wishlist_row > button.fac_listbtns {
+  top: 35%;
+  right: 30%;
+  position: absolute;
+}
 div.game_purchase_action > button.fac_listbtns {
   right: 8px;
   bottom: 8px;
@@ -32,7 +37,8 @@ button.fac_cartbtns:not(:first-child) {
 }
 a.tab_item:hover button.fac_listbtns,
 a.search_result_row:hover button.fac_listbtns,
-div.recommendation:hover button.fac_listbtns {
+div.recommendation:hover button.fac_listbtns,
+div.wishlist_row:hover button.fac_listbtns {
   display: block;
 }
 div.game_purchase_action:hover > button.fac_listbtns {

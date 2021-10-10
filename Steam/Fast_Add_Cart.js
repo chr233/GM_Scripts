@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.12
+// @version         2.13
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -73,10 +73,28 @@
             let container = document.getElementById('game_area_purchase');
             if (container != null) {
                 clearInterval(t);
-                console.log(document.querySelectorAll('div.game_area_purchase_game'))
-                for (let ele of document.querySelectorAll('div.game_area_purchase_game')) {
+                for (let ele of container.querySelectorAll('div.game_area_purchase_game')) {
                     addButton2(ele);
                 }
+            }
+        }, 500);
+    } else if (pathname.startsWith('/wishlist/')) { //愿望单页
+        let t = setInterval(() => {
+            let container = document.getElementById('wishlist_ctn');
+            if (container != null) {
+                clearInterval(t);
+
+                for (let ele of container.querySelectorAll('div.wishlist_row')) {
+                    addButton3(ele);
+                }
+                container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
+                    if (relatedNode.nodeName === 'DIV') {
+                        console.log(relatedNode);
+                        for (let ele of relatedNode.querySelectorAll('div.wishlist_row')) {
+                            addButton3(ele);
+                        }
+                    }
+                });
             }
         }, 500);
     } else if (pathname === '/cart/') { //购物车页
@@ -130,7 +148,7 @@
                 });
         });
         let btnHelp = genBtn('🔣帮助', '显示帮助', () => {
-            const {script:{version}} = GM_info;
+            const { script: { version } } = GM_info;
             showAlert(`帮助 插件版本 ${version}`, [
                 '<p>【🔼批量导入】从文本框批量添加购物车。</p>',
                 '<p>【🔽导出】将购物车内容导出至文本框。</p>',
@@ -301,6 +319,23 @@
         btn.textContent = '🛒';
         btnBar.insertBefore(btn, firstItem);
     }
+    //添加按钮
+    function addButton3(element) {
+        if (element.getAttribute('added') !== null) { return; }
+        element.setAttribute('added', '');
+
+        let appID = element.getAttribute('data-app-id');
+        if (appID === null) { return; }
+
+        let btn = document.createElement('button');
+        btn.addEventListener('click', (e) => {
+            chooseSubs(appID);
+            e.preventDefault();
+        }, false);
+        btn.className = 'fac_listbtns';
+        btn.textContent = '🛒';
+        element.appendChild(btn);
+    }
     //选择SUB
     async function chooseSubs(appID) {
         let dialog = showAlert('操作中……', '<p>读取可用SUB</p>', true);
@@ -460,6 +495,11 @@ button.fac_listbtns {
     right: 10px;
     position: absolute;
   }
+  div.wishlist_row > button.fac_listbtns {
+    top: 35%;
+    right: 30%;
+    position: absolute;
+  }
   div.game_purchase_action > button.fac_listbtns {
     right: 8px;
     bottom: 8px;
@@ -475,7 +515,8 @@ button.fac_listbtns {
   }
   a.tab_item:hover button.fac_listbtns,
   a.search_result_row:hover button.fac_listbtns,
-  div.recommendation:hover button.fac_listbtns {
+  div.recommendation:hover button.fac_listbtns,
+  div.wishlist_row:hover button.fac_listbtns {
     display: block;
   }
   div.game_purchase_action:hover > button.fac_listbtns {
