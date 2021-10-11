@@ -60,7 +60,6 @@
                 }
                 container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
                     if (relatedNode.nodeName === 'DIV') {
-                        console.log(relatedNode);
                         for (let ele of relatedNode.querySelectorAll('a.recommendation_link')) {
                             addButton(ele);
                         }
@@ -89,7 +88,6 @@
                 }
                 container.addEventListener('DOMNodeInserted', ({ relatedNode }) => {
                     if (relatedNode.nodeName === 'DIV') {
-                        console.log(relatedNode);
                         for (let ele of relatedNode.querySelectorAll('div.wishlist_row')) {
                             addButton3(ele);
                         }
@@ -344,7 +342,6 @@
                     dialog.Dismiss();
                     return;
                 } else {
-                    console.log(subInfos);
                     if (subInfos.length === 1) {
                         let [subID, subName, discount, price] = subInfos[0];
                         await addCart('sub', subID, appID);
