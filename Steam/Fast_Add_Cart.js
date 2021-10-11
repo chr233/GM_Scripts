@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.15
+// @version         2.16
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -15,7 +15,6 @@
 // @grant           GM_setClipboard
 // @grant           GM_setValue
 // @grant           GM_getValue
-// @grant           GM_info
 // ==/UserScript==
 
 (async () => {
