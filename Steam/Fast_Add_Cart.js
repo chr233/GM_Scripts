@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.13
+// @version         2.14
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -180,9 +180,8 @@
     //导入购物车
     function importCart(text) {
         return new Promise(async (resolve, reject) => {
-            let regFull = new RegExp(/(app|a|bundle|b|sub|s)\/(\d+)/);
-            let regShort = new RegExp(/()(\d+)/);
-            let pureMsg = new RegExp(/<span .*<\/span> /, 'g');
+            const regFull = new RegExp(/(app|a|bundle|b|sub|s)\/(\d+)/);
+            const regShort = new RegExp(/()(\d+)/);
             let lines = [];
             let dialog = showAlert('操作中……', '正在导入购物车...', true);
             for (let line of text.split('\n')) {
@@ -222,10 +221,9 @@
                 } else {
                     try {
                         let subInfos = await getGameSubs(subID);
-                        let [sID, subName] = subInfos[0];
+                        let [sID, subName, discount, price] = subInfos[0];
                         let [succ, msg] = await addCart('sub', sID, subID);
-                        subName = subName.replace(pureMsg, '');
-                        lines.push(`${type}/${subID} #${subName} ${msg}`);
+                        lines.push(`${type}/${subID} #${subName} - ${price} ${msg}`);
                     } catch (e) {
                         lines.push(`${type}/${subID} #未找到可用SUB`);
                     }
@@ -348,9 +346,9 @@
                 } else {
                     console.log(subInfos);
                     if (subInfos.length === 1) {
-                        let [subID, subName] = subInfos[0];
+                        let [subID, subName, discount, price] = subInfos[0];
                         await addCart('sub', subID, appID);
-                        let done = showAlert('添加购物车成功', `<p>${subName}</p>`, true);
+                        let done = showAlert('添加购物车成功', `<p>${subName} - ${price}</p>`, true);
                         setTimeout(() => { done.Dismiss(); }, 1200);
                         dialog.Dismiss();
                     } else {
@@ -365,20 +363,20 @@
                             }, 200);
                         });
                         let divContiner = document.getElementById('fac_choose');
-                        for (let [subID, subName] of subInfos) {
+                        for (let [subID, subName, discount, price] of subInfos) {
                             let btn = document.createElement('button');
                             btn.addEventListener('click', async () => {
-                                let dialog = showAlert('操作中……', `<p>添加 ${subName} 到购物车</p>`, true);
+                                let dialog = showAlert('操作中……', `<p>添加 ${subName} - ${price} 到购物车</p>`, true);
                                 dialog2.Dismiss();
                                 let [succ, msg] = await addCart('sub', subID, appID);
-                                let done = showAlert(msg, `<p>${subName}</p>`, succ);
+                                let done = showAlert(msg, `<p>${subName} - ${price}</p>`, succ);
                                 setTimeout(() => { done.Dismiss(); }, 1200);
                                 dialog.Dismiss();
                             });
                             btn.textContent = '🛒添加购物车';
                             btn.className = 'fac_choose';
                             let p = document.createElement('p');
-                            p.textContent = subName;
+                            p.textContent = `${subName} - ${price}`;
                             p.appendChild(btn);
                             divContiner.appendChild(p);
                         }
@@ -395,7 +393,9 @@
     //读取sub信息
     function getGameSubs(appID) {
         return new Promise((resolve, reject) => {
-            let lang = document.cookie.replace(/(?:(?:^|.*;\s*)Steam_Language\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+            const regPure = new RegExp(/ - [^-]*$/, '');
+            const regSymbol = new RegExp(/[> ] (.+) \d/, '');
+            const lang = document.cookie.replace(/(?:(?:^|.*;\s*)Steam_Language\s*\=\s*([^;]*).*$)|^.*$/, "$1")
             fetch(`https://store.steampowered.com/api/appdetails?appids=${appID}&lang=${lang}`, {
                 method: 'GET',
                 credentials: 'include',
@@ -410,9 +410,16 @@
                         let subInfos = [];
                         for (let pkg of result.data.package_groups) {
                             for (let sub of pkg.subs) {
-                                let { packageid, option_text, price_in_cents_with_discount } = sub;
+                                const { packageid, option_text, percent_savings_text, price_in_cents_with_discount } = sub;
                                 if (price_in_cents_with_discount > 0) { //排除免费SUB
-                                    subInfos.push([packageid, option_text]);
+                                    let symbol = option_text.match(regSymbol)?.pop();
+                                    let price = price_in_cents_with_discount / 100 + ' ' + symbol;
+                                    let subName = option_text.replace(regPure, '');
+                                    if (percent_savings_text === ' ') {
+                                        subInfos.push([packageid, subName, percent_savings_text, price]);
+                                    } else {
+                                        subInfos.push([packageid, subName, false, price]);
+                                    }
                                 }
                             }
                         }
