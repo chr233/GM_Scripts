@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.14
+// @version         2.15
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -21,7 +21,7 @@
 (async () => {
     'use strict';
     //初始化
-    let pathname = window.location.pathname;
+    const pathname = window.location.pathname;
     if (pathname === '/search/' || pathname === '/' || pathname.startsWith('/tags/')) { //搜索页,主页,标签页
         let t = setInterval(() => {
             let containers = document.querySelectorAll([
@@ -235,8 +235,8 @@
     }
     //导出购物车
     function exportCart() {
+        const regMatch = new RegExp(/(app|sub|bundle)_(\d+)/);
         let data = [];
-        let regMatch = new RegExp(/(app|sub|bundle)_(\d+)/);
         for (let item of document.querySelectorAll('div.cart_item_list>div.cart_row ')) {
             let itemKey = item.getAttribute('data-ds-itemkey');
             let name = item.querySelector('.cart_item_desc').textContent.trim();
@@ -451,8 +451,8 @@
                     if (response.ok) {
                         let data = await response.text();
                         if (appID !== null) {
-                            let reg = new RegExp('app\/' + appID);
-                            if (data.search(reg) !== -1) {
+                            const regIfSucc = new RegExp('app\/' + appID);
+                            if (data.search(regIfSucc) !== -1) {
                                 resolve([true, '添加购物车成功']);
                             }
                             else {
