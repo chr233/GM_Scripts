@@ -221,7 +221,7 @@
                         let subInfos = await getGameSubs(subID);
                         let [sID, subName, discount, price] = subInfos[0];
                         let [succ, msg] = await addCart('sub', sID, subID);
-                        lines.push(`${type}/${subID} #${subName} - ${price} ${msg}`);
+                        lines.push(`${type}/${subID} #${subName} - ${discount}${price} ${msg}`);
                     } catch (e) {
                         lines.push(`${type}/${subID} #未找到可用SUB`);
                     }
@@ -345,7 +345,7 @@
                     if (subInfos.length === 1) {
                         let [subID, subName, discount, price] = subInfos[0];
                         await addCart('sub', subID, appID);
-                        let done = showAlert('添加购物车成功', `<p>${subName} - ${price}</p>`, true);
+                        let done = showAlert('添加购物车成功', `<p>${subName} - ${discount}${price}</p>`, true);
                         setTimeout(() => { done.Dismiss(); }, 1200);
                         dialog.Dismiss();
                     } else {
@@ -363,17 +363,17 @@
                         for (let [subID, subName, discount, price] of subInfos) {
                             let btn = document.createElement('button');
                             btn.addEventListener('click', async () => {
-                                let dialog = showAlert('操作中……', `<p>添加 ${subName} - ${price} 到购物车</p>`, true);
+                                let dialog = showAlert('操作中……', `<p>添加 ${subName} - ${discount}${price} 到购物车</p>`, true);
                                 dialog2.Dismiss();
                                 let [succ, msg] = await addCart('sub', subID, appID);
-                                let done = showAlert(msg, `<p>${subName} - ${price}</p>`, succ);
+                                let done = showAlert(msg, `<p>${subName} - ${discount}${price}</p>`, succ);
                                 setTimeout(() => { done.Dismiss(); }, 1200);
                                 dialog.Dismiss();
                             });
                             btn.textContent = '🛒添加购物车';
                             btn.className = 'fac_choose';
                             let p = document.createElement('p');
-                            p.textContent = `${subName} - ${price}`;
+                            p.textContent = `${subName} - ${discount}${price}`;
                             p.appendChild(btn);
                             divContiner.appendChild(p);
                         }
@@ -391,7 +391,7 @@
     function getGameSubs(appID) {
         return new Promise((resolve, reject) => {
             const regPure = new RegExp(/ - [^-]*$/, '');
-            const regSymbol = new RegExp(/[> ] (.+) \d/, '');
+            const regSymbol = new RegExp(/[>-] ([^>-]+) [\d.]+$/, '');
             const lang = document.cookie.replace(/(?:(?:^|.*;\s*)Steam_Language\s*\=\s*([^;]*).*$)|^.*$/, "$1")
             fetch(`https://store.steampowered.com/api/appdetails?appids=${appID}&lang=${lang}`, {
                 method: 'GET',
@@ -409,14 +409,11 @@
                             for (let sub of pkg.subs) {
                                 const { packageid, option_text, percent_savings_text, price_in_cents_with_discount } = sub;
                                 if (price_in_cents_with_discount > 0) { //排除免费SUB
-                                    let symbol = option_text.match(regSymbol)?.pop();
-                                    let price = price_in_cents_with_discount / 100 + ' ' + symbol;
-                                    let subName = option_text.replace(regPure, '');
-                                    if (percent_savings_text === ' ') {
-                                        subInfos.push([packageid, subName, percent_savings_text, price]);
-                                    } else {
-                                        subInfos.push([packageid, subName, false, price]);
-                                    }
+                                    const symbol = option_text.match(regSymbol)?.pop();
+                                    const price = '💳' + price_in_cents_with_discount / 100 + ' ' + symbol;
+                                    const subName = option_text.replace(regPure, '');
+                                    const discount = percent_savings_text !== ' ' ? '🔖' + percent_savings_text + ' ' : '';
+                                    subInfos.push([packageid, subName, discount, price]);
                                 }
                             }
                         }

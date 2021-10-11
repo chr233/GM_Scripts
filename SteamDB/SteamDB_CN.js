@@ -10,6 +10,7 @@
 // @grant               GM_xmlhttpRequest
 // @grant               GM_getResourceText
 // @resource            data https://gitee.com/chr_a1/gm_scripts/raw/master/SteamDB/lang_zh_CN.json
+// @require             https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js
 // ==/UserScript==
 
 
@@ -131,5 +132,57 @@
       characterData: true,
       childList: true,
     });
+  }
+
+  // translate "about"
+  function translateDesc(el) {
+    $(el).append("<br/>");
+    $(el).append("<a id='translate-me' href='#' style='color:rgb(27, 149, 224);font-size: small'>翻译</a>");
+    $("#translate-me").click(function() {
+      // get description text
+      const desc = $(el)
+        .clone()
+        .children()
+        .remove()
+        .end()
+        .text()
+        .trim();
+
+      if(!desc) {
+        return;
+      }
+
+      GM_xmlhttpRequest({
+        method: "GET",
+        url: `https://www.githubs.cn/translate?q=`+ encodeURIComponent(desc),
+        onload: function(res) {
+          if (res.status === 200) {
+              // document.selector()
+            $("#translate-me").hide();
+            // render result
+            const text = res.responseText;
+            $(el).append("<span style='font-size: small'>由 <a target='_blank' style='color:rgb(27, 149, 224);' href='https://www.githubs.cn'>GitHub中文社区</a> 翻译👇</span>");
+            $(el).append("<br/>");
+            $(el).append(text);
+          } else {
+            alert("翻译失败");
+          }
+        }
+      });
+    });
+  }
+
+  function translateByCssSelector() {
+    if(locales.css) {
+      for(var css of locales.css) {
+        if($(css.selector).length > 0) {
+          if(css.key === '!html') {
+            $(css.selector).html(css.replacement);
+          } else {
+            $(css.selector).attr(css.key, css.replacement);
+          }
+        }
+      }
+    }
   }
 })();
