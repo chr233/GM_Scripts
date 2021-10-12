@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.9
+// @version         1.10
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_
@@ -12,6 +12,7 @@
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
 // @grant           GM_registerMenuCommand
+// @grant           GM_setClipboard
 // ==/UserScript==
 
 
@@ -52,15 +53,39 @@
                         }
                         ele_title.title = '双击快捷搜索';
                         ele_title.addEventListener('dblclick', () => {
-                            ShowConfirmDialog(`要使用的搜索关键词？`, '', name_cur, name_en)
+                            ShowConfirmDialog(`你想做什么呢？`, '', '复制游戏名', '搜索游戏名')
                                 .done(() => {
-                                    window.open(`https://store.steampowered.com/search/?term=${name_cur}`);
+                                    if (name_cur == name_en) {
+                                        GM_setClipboard(name_cur, { type: 'text', mimetype: 'text/plain' });
+                                    } else {
+                                        ShowConfirmDialog(`要复制的游戏名称？`, '', name_cur, name_en)
+                                            .done(() => {
+                                                GM_setClipboard(name_cur, { type: 'text', mimetype: 'text/plain' });
+                                            })
+                                            .fail((stats) => {
+                                                if (stats) {
+                                                    GM_setClipboard(name_en, { type: 'text', mimetype: 'text/plain' });
+                                                }
+                                            });
+                                    }
                                 })
                                 .fail((stats) => {
                                     if (stats) {
-                                        window.open(`https://store.steampowered.com/search/?term=${name_en}`);
+                                        if (name_cur == name_en) {
+                                            window.open(`https://store.steampowered.com/search/?term=${name_cur}`);
+                                        } else {
+                                            ShowConfirmDialog(`要使用的搜索关键词？`, '', name_cur, name_en)
+                                                .done(() => {
+                                                    window.open(`https://store.steampowered.com/search/?term=${name_cur}`);
+                                                })
+                                                .fail((stats) => {
+                                                    if (stats) {
+                                                        window.open(`https://store.steampowered.com/search/?term=${name_en}`);
+                                                    }
+                                                });
+                                        }
                                     }
-                                })
+                                });
                         });
                     }
                 }, 500);
