@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.16
+// @version         2.17
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -174,6 +174,11 @@
 
         window.addEventListener('beforeunload', () => { GM_setValue('fac_cart', inputBox.value); })
     }
+
+    //始终在右上角显示购物车按钮
+    let cart_btn = document.getElementById('store_header_cart_btn');
+    if (cart_btn !== null) { cart_btn.style.display = ''; }
+
     //导入购物车
     function importCart(text) {
         return new Promise(async (resolve, reject) => {
