@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.17
+// @version         2.18
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -127,7 +127,16 @@
             inputBox.value = await importCart(inputBox.value);
             window.location.reload();
         });
-        let btnExport = genBtn('🔽导出', '将购物车内容导出至文本框', () => { inputBox.value = exportCart(); });
+        let btnExport = genBtn('🔽导出', '将购物车内容导出至文本框', () => {
+            if (inputBox.value !== '') {
+                ShowConfirmDialog('', '导出操作将会覆盖输入框中的内容,继续吗', '确认', '取消')
+                    .done(() => {
+                        inputBox.value = exportCart();
+                    })
+            } else {
+                inputBox.value = exportCart();
+            }
+        });
         let btnCopy = genBtn('📋复制', '复制文本框中的内容', () => {
             GM_setClipboard(inputBox.value, { type: 'text', mimetype: 'text/plain' });
             showAlert('提示', '复制到剪贴板成功', true);
@@ -243,7 +252,7 @@
         let data = [];
         for (let item of document.querySelectorAll('div.cart_item_list>div.cart_row ')) {
             let itemKey = item.getAttribute('data-ds-itemkey');
-            let name = item.querySelector('.cart_item_desc').textContent.trim();
+            let name = item.querySelector('.cart_item_desc>a').innerText.trim();
             let match = itemKey.toLowerCase().match(regMatch);
             if (match) {
                 let [_, type, id] = match;
