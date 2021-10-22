@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.2
+// @version         1.3
 // @description     显示Steam商店中隐藏的DLC（补丁）。
 // @description:zh-CN  显示Steam商店中隐藏的DLC（补丁）。
 // @author          Chr_
@@ -65,9 +65,10 @@
     //显示App详情
     async function showGameDetail(app) {
         let data = await getAppDetail(app);
-        let { name, is_free, price_overview: { final_formatted } } = data;
+        let { name, is_free } = data;
+        let href = `https://store.steampowered.com/app/${app}/`;
         if (is_free) {
-            ShowConfirmDialog('', `<p>游戏名：${name}</p>`, '启动Steam安装', '复制ASF入库代码')
+            ShowConfirmDialog('', `<p>游戏名：${name} 【<a href=${href} target="_blank">商店链接</a>】</p>`, '启动Steam安装', '复制ASF入库代码')
                 .then(() => {
                     window.open(`steam://install/${app}`);
                 })
@@ -77,7 +78,8 @@
                     }
                 });
         } else {
-            ShowAlertDialog('', `<p>游戏名：${name}</p><p>美区价格：${final_formatted}</p><p>非免费DLC无法直接入库</p>`, '确定');
+            let { price_overview: { final_formatted } } = data;
+            ShowAlertDialog('', `<p>游戏名：${name} 【<a href=${href} target="_blank">商店链接</a>】</p><p>美区价格：${final_formatted}</p><p>非免费DLC无法直接入库</p>`, '确定');
         }
     }
 
