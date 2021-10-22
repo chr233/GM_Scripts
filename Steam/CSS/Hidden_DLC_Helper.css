@@ -1,4 +1,4 @@
-.hdh {
+.hdh:not(:first-child) {
   margin-right: 5px;
 }
 .hdh > a {

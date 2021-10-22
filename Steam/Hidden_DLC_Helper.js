@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.0
+// @version         1.1
 // @description     显示Steam商店中隐藏的DLC（补丁）。
 // @description:zh-CN  显示Steam商店中隐藏的DLC（补丁）。
 // @author          Chr_
@@ -50,6 +50,8 @@
             return s;
         }
         const btnArea = document.querySelector('#gameAreaDLCSection>.gradientbg');
+        btnArea.innerText = '此游戏的内容';
+
         let btnCopyCmd = genBtn('复制ASF指令', () => {
             let cmd = '!addlicense a/' + appList.join(',a/');
             setClipboard(cmd);
@@ -63,9 +65,9 @@
     //显示App详情
     async function showGameDetail(app) {
         let data = await getAppDetail(app);
-        let { name, is_free } = data;
+        let { name, is_free, price_overview: { final_formatted } } = data;
         if (is_free) {
-            ShowConfirmDialog('', `游戏名：${name}`, '启动Steam安装', '复制ASF入库代码')
+            ShowConfirmDialog('', `<p>游戏名：${name}</p>`, '启动Steam安装', '复制ASF入库代码')
                 .then(() => {
                     window.open(`steam://install/${app}`);
                 })
@@ -75,7 +77,7 @@
                     }
                 });
         } else {
-            ShowAlertDialog('', `游戏名：${name}\n\n非免费DLC无法直接入库`, '确定');
+            ShowAlertDialog('', `<p>游戏名：${name}</p><p>美区价格：${final_formatted}</p><p>非免费DLC无法直接入库</p>`, '确定');
         }
     }
 
@@ -124,7 +126,7 @@
     }
 })();
 GM_addStyle(`
-.hdh {
+.hdh:not(:first-child) {
 margin-right: 5px;
 }
 .hdh > a {
