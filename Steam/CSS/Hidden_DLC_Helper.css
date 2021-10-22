@@ -1,0 +1,6 @@
+.hdh {
+  margin-right: 5px;
+}
+.hdh > a {
+  cursor: pointer;
+}
