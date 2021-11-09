@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.7
+// @version         1.8
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_
@@ -158,7 +158,5 @@
         setClipboard(list.join('\n'));
         alert('复制成功');
     }
-    function setClipboard(data) {
-        GM_setClipboard(data, { type: 'text', mimetype: 'text/plain' })
-    }
+    const setClipboard = (data) => { GM_setClipboard(data, 'text'); }
 })();
