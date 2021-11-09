@@ -4,52 +4,75 @@ button.fac_listbtns {
   z-index: 100;
   padding: 1px;
 }
-a.search_result_row > button.fac_listbtns {
+
+a.search_result_row>button.fac_listbtns {
   top: -25px;
   left: 300px;
 }
-a.tab_item > button.fac_listbtns {
+
+a.tab_item>button.fac_listbtns {
   top: -40px;
   left: 330px;
 }
-a.recommendation_link > button.fac_listbtns {
+
+a.recommendation_link>button.fac_listbtns {
   bottom: 10px;
   right: 10px;
   position: absolute;
 }
-div.wishlist_row > button.fac_listbtns {
+
+div.wishlist_row>button.fac_listbtns {
   top: 35%;
   right: 30%;
   position: absolute;
 }
-div.game_purchase_action > button.fac_listbtns {
+
+div.game_purchase_action>button.fac_listbtns {
   right: 8px;
   bottom: 8px;
 }
+
 button.fac_cartbtns {
   padding: 5px 10px;
 }
+
 button.fac_cartbtns:not(:last-child) {
   margin-right: 7px;
 }
+
 button.fac_cartbtns:not(:first-child) {
   margin-left: 7px;
 }
-a.tab_item:hover button.fac_listbtns,
-a.search_result_row:hover button.fac_listbtns,
-div.recommendation:hover button.fac_listbtns,
-div.wishlist_row:hover button.fac_listbtns {
+
+a.tab_item:hover button.fac_listbtns, a.search_result_row:hover button.fac_listbtns, div.recommendation:hover button.fac_listbtns, div.wishlist_row:hover button.fac_listbtns {
   display: block;
 }
-div.game_purchase_action:hover > button.fac_listbtns {
+
+div.game_purchase_action:hover>button.fac_listbtns {
   display: inline;
 }
+
 button.fac_choose {
   padding: 1px;
   margin: 2px 5px;
 }
+
 textarea.fac_inputbox {
   height: 130px;
   resize: vertical;
   font-size: 10px;
+}
+
+textarea.fac_diag {
+  height: 150px;
+  width: 600px;
+  resize: vertical;
+  font-size: 10px;
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: rgba( 0, 0, 0, 0.4);
+  color: #fff;
+  border: 1 px solid #000;
+  border-radius: 3 px;
+  box-shadow: 1px 1px 0px #45556c;
 }

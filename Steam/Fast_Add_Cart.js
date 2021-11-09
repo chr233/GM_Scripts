@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.18
+// @version         2.20
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -138,7 +138,7 @@
             }
         });
         let btnCopy = genBtn('📋复制', '复制文本框中的内容', () => {
-            GM_setClipboard(inputBox.value, { type: 'text', mimetype: 'text/plain' });
+            GM_setClipboard(inputBox.value, 'text');;
             showAlert('提示', '复制到剪贴板成功', true);
         });
         let btnClear = genBtn('🗑️清除', '清除文本框和已保存的数据', () => {
@@ -194,56 +194,65 @@
             const regFull = new RegExp(/(app|a|bundle|b|sub|s)\/(\d+)/);
             const regShort = new RegExp(/()(\d+)/);
             let lines = [];
-            let dialog = showAlert('操作中……', '正在导入购物车...', true);
-            for (let line of text.split('\n')) {
-                if (line.trim() === '') {
-                    continue;
-                }
-                let match = line.match(regFull) ?? line.match(regShort);
-                if (!match) {
-                    let tmp = line.split('#')[0];
-                    lines.push(`${tmp} #格式有误`);
-                    continue;
-                }
-                let [_, type, subID] = match;
-                switch (type.toLowerCase()) {
-                    case '':
-                    case 'a':
-                    case 'app':
-                        type = 'app';
-                        break;
-                    case 's':
-                    case 'sub':
-                        type = 'sub';
-                        break;
-                    case 'b':
-                    case 'bundle':
-                        type = 'bundle';
-                        break;
-                    default:
-                        let tmp = line.split('#')[0];
-                        lines.push(`${tmp} #格式有误`);
-                        continue;
-                }
 
-                if (type === 'sub' || type === 'bundle') {
-                    let [succ, msg] = await addCart(type, subID, '');
-                    lines.push(`${type}/${subID} #${msg}`);
-                } else {
-                    try {
-                        let subInfos = await getGameSubs(subID);
-                        let [sID, subName, discount, price] = subInfos[0];
-                        let [succ, msg] = await addCart('sub', sID, subID);
-                        lines.push(`${type}/${subID} #${subName} - ${discount}${price} ${msg}`);
-                    } catch (e) {
-                        lines.push(`${type}/${subID} #未找到可用SUB`);
+            let dialog = showAlert('正在导入购物车……', '<textarea id="fac_diag" class="fac_diag">操作中……</textarea>', true);
+
+            let t = setInterval(async () => {
+                let txt = document.getElementById('fac_diag');
+                if (txt !== null) {
+                    clearInterval(t);
+                    for (let line of text.split('\n')) {
+                        if (line.trim() === '') {
+                            continue;
+                        }
+                        let match = line.match(regFull) ?? line.match(regShort);
+                        if (!match) {
+                            let tmp = line.split('#')[0];
+                            lines.push(`${tmp} #格式有误`);
+                            continue;
+                        }
+                        let [_, type, subID] = match;
+                        switch (type.toLowerCase()) {
+                            case '':
+                            case 'a':
+                            case 'app':
+                                type = 'app';
+                                break;
+                            case 's':
+                            case 'sub':
+                                type = 'sub';
+                                break;
+                            case 'b':
+                            case 'bundle':
+                                type = 'bundle';
+                                break;
+                            default:
+                                let tmp = line.split('#')[0];
+                                lines.push(`${tmp} #格式有误`);
+                                continue;
+                        }
+
+                        if (type === 'sub' || type === 'bundle') {
+                            let [succ, msg] = await addCart(type, subID, '');
+                            lines.push(`${type}/${subID} #${msg}`);
+                        } else {
+                            try {
+                                let subInfos = await getGameSubs(subID);
+                                let [sID, subName, discount, price] = subInfos[0];
+                                let [succ, msg] = await addCart('sub', sID, subID);
+                                lines.push(`${type}/${subID} #${subName} - ${discount}${price} ${msg}`);
+                            } catch (e) {
+                                lines.push(`${type}/${subID} #未找到可用SUB`);
+                            }
+                        }
+                        txt.value = lines.join('\n');
+                        txt.scrollTop = txt.scrollHeight;
                     }
                 }
-                let d = showAlert('操作中……', `<p>${lines.join('</p><p>')}</p>`, true);
-                setTimeout(() => { d.Dismiss(); }, 1200);
-            }
-            dialog.Dismiss();
-            resolve(lines.join('\n'));
+
+                dialog.Dismiss();
+                resolve(lines.join('\n'));
+            }, 200);
         });
     }
     //导出购物车
@@ -424,7 +433,6 @@
                                 if (price_in_cents_with_discount > 0) { //排除免费SUB
                                     const symbol = option_text.match(regSymbol)?.pop();
                                     const price = '💳' + price_in_cents_with_discount / 100 + ' ' + symbol;
-                                    const subName = option_text.replace(regPure, '');
                                     const discount = percent_savings_text !== ' ' ? '🔖' + percent_savings_text + ' ' : '';
                                     subInfos.push([packageid, subName, discount, price]);
                                 }
@@ -496,53 +504,76 @@ button.fac_listbtns {
     z-index: 100;
     padding: 1px;
   }
-  a.search_result_row > button.fac_listbtns {
+  
+  a.search_result_row>button.fac_listbtns {
     top: -25px;
     left: 300px;
   }
-  a.tab_item > button.fac_listbtns {
+  
+  a.tab_item>button.fac_listbtns {
     top: -40px;
     left: 330px;
   }
-  a.recommendation_link > button.fac_listbtns {
+  
+  a.recommendation_link>button.fac_listbtns {
     bottom: 10px;
     right: 10px;
     position: absolute;
   }
-  div.wishlist_row > button.fac_listbtns {
+  
+  div.wishlist_row>button.fac_listbtns {
     top: 35%;
     right: 30%;
     position: absolute;
   }
-  div.game_purchase_action > button.fac_listbtns {
+  
+  div.game_purchase_action>button.fac_listbtns {
     right: 8px;
     bottom: 8px;
   }
+  
   button.fac_cartbtns {
     padding: 5px 10px;
   }
+  
   button.fac_cartbtns:not(:last-child) {
     margin-right: 7px;
   }
+  
   button.fac_cartbtns:not(:first-child) {
     margin-left: 7px;
   }
-  a.tab_item:hover button.fac_listbtns,
-  a.search_result_row:hover button.fac_listbtns,
-  div.recommendation:hover button.fac_listbtns,
-  div.wishlist_row:hover button.fac_listbtns {
+  
+  a.tab_item:hover button.fac_listbtns, a.search_result_row:hover button.fac_listbtns, div.recommendation:hover button.fac_listbtns, div.wishlist_row:hover button.fac_listbtns {
     display: block;
   }
-  div.game_purchase_action:hover > button.fac_listbtns {
+  
+  div.game_purchase_action:hover>button.fac_listbtns {
     display: inline;
   }
+  
   button.fac_choose {
     padding: 1px;
     margin: 2px 5px;
   }
+  
   textarea.fac_inputbox {
     height: 130px;
     resize: vertical;
     font-size: 10px;
-  }  
+  }
+  
+  textarea.fac_diag {
+    height: 150px;
+    width: 600px;
+    resize: vertical;
+    font-size: 10px;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: rgba( 0, 0, 0, 0.4);
+    color: #fff;
+    border: 1 px solid #000;
+    border-radius: 3 px;
+    box-shadow: 1px 1px 0px #45556c;
+  }
 `);
