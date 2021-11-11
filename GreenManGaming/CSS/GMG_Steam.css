@@ -1,0 +1,31 @@
+.divResult {
+  top: 0;
+  position: relative;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+.divResult > button {
+  cursor: pointer;
+  color: #000;
+  font-size: 15px;
+}
+.divResult > button:not(:last-child) {
+  margin-right: 5px;
+}
+.divResult > button > p {
+  display: inline;
+  margin-left: 6px;
+}
+.divResult > button > img {
+  zoom: 1.5;
+  margin-top: 2px;
+}
+.btnSearch {
+  padding: 0 5px;
+  margin-left: 5px;
+  color: #000;
+  font-size: 15px;
+  padding: 2px;
+}
