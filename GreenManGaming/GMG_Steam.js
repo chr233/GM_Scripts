@@ -115,7 +115,6 @@ GM_addStyle(`
 }
 .btnSearch {
   padding: 1px;
-  margin-left: 5px;
   color: #000;
   font-size: 10px;
 }
