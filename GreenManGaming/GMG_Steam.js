@@ -5,7 +5,7 @@
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
 // @icon            https://blog.chrxw.com/favicon.ico
-// @version         1.2
+// @version         1.4
 // @description     快捷搜索steam商店
 // @description:zh-CN  快捷搜索steam商店
 // @author          Chr_
@@ -20,19 +20,26 @@
 
 (() => {
   'use strict';
-  let GdivResult = null; //控件数组
-
+  const GdivResult = [null, null]; //控件数组
+  let i = 0;
   let t = setInterval(() => {
-    const title = document.querySelector('h1.notranslate');
-    const describe = document.querySelector('ul.navigate-options');
-    if (title !== null) {
+    const title1 = document.querySelector('div[class^=visible]>#pdp-title>h1.notranslate');
+    const describe1 = document.querySelector('div[class^=visible]>#pdp-title>ul.navigate-options');
+    const title2 = document.querySelector('div[class*=hidden]>#pdp-title>h1.notranslate');
+    const describe2 = document.querySelector('div[class*=hidden]>#pdp-title>ul.navigate-options');
+    if (title1 !== null) {
+      init(title1, describe1,0);
+    }
+    if (title2 !== null) {
+      init(title2, describe2,1);
+    }
+    if ((GdivResult[0] !== null && GdivResult[1] !== null) || i++ >= 10) {
       clearInterval(t);
-      init(title, describe);
     }
   }, 500);
 
   //显示搜索按钮
-  function init(title, describe) {
+  function init(title, describe, which) {
     const keyword = title.textContent.replace(/[-+=:;：；'"‘’“”]/g, ' ');
     const btnSearch = document.createElement('button');
     btnSearch.className = 'btnSearch';
@@ -47,20 +54,24 @@
     divResult.style.display = 'none';
     title.appendChild(divResult);
 
-    GdivResult = divResult;
+    GdivResult[which] = divResult;
   }
 
   //显示搜索结果
   function showResult(keyword) {
+    const [divResult1, divResult2] = GdivResult;
     searchStore(keyword, 'CN')
       .then((result) => {
-        GdivResult.innerHTML = '';
-        GdivResult.style.display = '';
+        divResult1.innerHTML = '';
+        divResult2.innerHTML = '';
+        divResult1.style.display = '';
+        divResult2.style.display = '';
         if (result.length === 0) {
           const btnRst = document.createElement('button');
           btnRst.textContent = '【快速搜索无结果,点击前往steam搜索页】';
           btnRst.addEventListener('click', () => { window.open(`https://store.steampowered.com/search/?term=${keyword}`); });
-          GdivResult.appendChild(btnRst);
+          divResult1.appendChild(btnRst);
+          divResult2.appendChild(btnRst);
           return;
         }
         result.forEach(({ appID, isBundle, appName, appPrice, appUrl, appImg }) => {
@@ -77,7 +88,8 @@
           btnImg.src = appImg;
 
           btnRst.appendChild(btnImg);
-          GdivResult.appendChild(btnRst);
+          divResult1.appendChild(btnRst);
+          divResult2.appendChild(btnRst);
         });
       })
       .catch((reason) => {
