@@ -4,7 +4,8 @@
 // @namespace       https://blog.chrxw.com/
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.0
+// @icon            https://blog.chrxw.com/favicon.ico
+// @version         1.1
 // @description     快捷搜索steam商店
 // @description:zh-CN  快捷搜索steam商店
 // @author          Chr_
