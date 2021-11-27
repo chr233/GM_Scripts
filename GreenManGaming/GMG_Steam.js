@@ -5,7 +5,7 @@
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
 // @icon            https://blog.chrxw.com/favicon.ico
-// @version         1.4
+// @version         1.5
 // @description     快捷搜索steam商店
 // @description:zh-CN  快捷搜索steam商店
 // @author          Chr_
@@ -16,10 +16,13 @@
 // @require         https://greasyfork.org/scripts/431430-search-steam-store/code/Search_Steam_Store.js
 // @grant           GM_xmlhttpRequest
 // @grant           GM_addStyle
+// @grant           GM_registerMenuCommand
 // ==/UserScript==
 
 (() => {
   'use strict';
+  const auto = window.localStorage['gs_auto'] ?? '关';
+
   const GdivResult = [null, null]; //控件数组
   let i = 0;
   let t = setInterval(() => {
@@ -28,10 +31,10 @@
     const title2 = document.querySelector('div[class*=hidden]>#pdp-title>h1.notranslate');
     const describe2 = document.querySelector('div[class*=hidden]>#pdp-title>ul.navigate-options');
     if (title1 !== null) {
-      init(title1, describe1,0);
+      init(title1, describe1, 0);
     }
     if (title2 !== null) {
-      init(title2, describe2,1);
+      init(title2, describe2, 1);
     }
     if ((GdivResult[0] !== null && GdivResult[1] !== null) || i++ >= 10) {
       clearInterval(t);
@@ -55,6 +58,10 @@
     title.appendChild(divResult);
 
     GdivResult[which] = divResult;
+
+    if (auto === '开' && which == 1) {
+      btnSearch.click();
+    }
   }
 
   //显示搜索结果
@@ -96,6 +103,10 @@
         alert(reason);
       });
   }
+
+  GM_registerMenuCommand(`自动搜索：【${auto}】`, () => {
+    window.localStorage['gs_auto'] = auto === '开' ? '关' : '开';
+  });
 })();
 
 
