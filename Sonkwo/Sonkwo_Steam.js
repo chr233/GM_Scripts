@@ -5,7 +5,7 @@
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
 // @icon            https://blog.chrxw.com/favicon.ico
-// @version         2.1
+// @version         2.2
 // @description     快捷搜索steam商店
 // @description:zh-CN  快捷搜索steam商店
 // @author          Chr_
@@ -16,10 +16,13 @@
 // @require         https://greasyfork.org/scripts/431430-search-steam-store/code/Search_Steam_Store.js
 // @grant           GM_xmlhttpRequest
 // @grant           GM_addStyle
+// @grant           GM_registerMenuCommand
 // ==/UserScript==
 
 (() => {
   'use strict';
+  const auto = window.localStorage['ss_auto'] ?? '关';
+
   let GdivResult = null; //控件数组
 
   let t = setInterval(() => {
@@ -51,6 +54,10 @@
     ele.appendChild(divResult);
 
     GdivResult = divResult;
+
+    if (auto === '开') {
+      btnSearch.click();
+    }
   }
 
   //显示搜索结果
@@ -86,6 +93,11 @@
         alert(reason);
       });
   }
+
+  GM_registerMenuCommand(`自动搜索：【${auto}】`, () => {
+    window.localStorage['ss_auto'] = auto === '开' ? '关' : '开';
+  });
+
 })();
 
 
