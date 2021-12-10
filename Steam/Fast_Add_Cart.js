@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.22
+// @version         2.23
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -128,10 +128,14 @@
             window.location.reload();
         });
         let btnExport = genBtn('🔽导出', '将购物车内容导出至文本框', () => {
-            if (inputBox.value !== '') {
-                ShowConfirmDialog('', '导出操作将会覆盖输入框中的内容,继续吗', '确认', '取消')
+            let currentValue = inputBox.value.trim();
+            if (currentValue !== '') {
+                ShowConfirmDialog('', '输入框中含有内容, 请选择操作?', '覆盖原有内容', '添加到最后')
                     .done(() => {
                         inputBox.value = exportCart();
+                    })
+                    .fail(() => {
+                        inputBox.value = currentValue + '\n' + exportCart()
                     })
             } else {
                 inputBox.value = exportCart();
