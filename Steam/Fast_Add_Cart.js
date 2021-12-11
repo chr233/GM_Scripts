@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.23
+// @version         2.24
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -157,7 +157,6 @@
             ShowConfirmDialog('', '您确定要移除所有您购物车中的物品吗？', '是', '否')
                 .done(() => {
                     ForgetCart();
-                    window.location.reload();
                 });
         });
         let btnHelp = genBtn('🔣帮助', '显示帮助', () => {
