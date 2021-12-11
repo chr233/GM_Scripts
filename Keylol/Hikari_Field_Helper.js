@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.1
+// @version         1.2
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -74,7 +74,7 @@
                     console.log(`已拥有 ${gameName} ${appID}`);
                 }
             } else {
-                console.log(`${ele.href} 无效`);
+                console.error(`${ele.href} 无效`);
             }
         }
         GM_setValue('ownedGames', ownedGames);
@@ -89,7 +89,7 @@
         const ownedGames = new Set(GM_getValue('ownedGames') ?? []);
         if (ownedGames.size === 0) {
             if (confirm('是否导入游戏列表?')) {
-                window.open(HFLIBARY);
+                window.location.href = HFLIBARY;
             } else {
                 showError('【可以在油猴菜单中进行同步】');
                 GM_setValue('ownedGames', [0]);
@@ -131,7 +131,7 @@
     }
 
     GM_registerMenuCommand('导入Hikari Field游戏', () => {
-        window.open(HFLIBARY);
+        window.location.href = HFLIBARY;
     })
 
 })();
