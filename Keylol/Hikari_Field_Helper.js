@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.3
+// @version         1.4
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -53,6 +53,7 @@
         'honoguraki': ['来自昏暗的时间尽头', 1603740, -1],
         //未发售
         'sekachu': ['在世界与世界的正中央', 1829650, 0],
+        'tsukiniyorisou': ['近月少女的礼仪', 1776970, 0],
     }
     const HFSHOP = 'https://store.hikarifield.co.jp/shop/';
     const HFLIBARY = 'https://store.hikarifield.co.jp/libraries';
