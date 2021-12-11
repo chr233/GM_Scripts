@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.2
+// @version         1.3
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -54,12 +54,9 @@
         //未发售
         'sekachu': ['在世界与世界的正中央', 1829650, 0],
     }
-
     const HFSHOP = 'https://store.hikarifield.co.jp/shop/';
     const HFLIBARY = 'https://store.hikarifield.co.jp/libraries';
-
     const host = window.location.host;
-    setInterval
     if (host === 'store.hikarifield.co.jp') {//更新库存
         const myGames = document.querySelectorAll('.game-cover>a');
 
@@ -95,12 +92,9 @@
                 GM_setValue('ownedGames', [0]);
             }
         }
-
         const steamLinks = document.querySelectorAll('a[href^="http://store.steampowered.com/"],a[href^="https://store.steampowered.com/"],a[href^="https://steamdb.info/app/"]');
         const HFLinks = document.querySelectorAll('a[href^="https://store.hikarifield.co.jp/shop/"]');
-
         const grubAppid = RegExp(/app\/(\d+)\/?/);
-
         for (const ele of steamLinks) {
             const href = ele.href;
             if (href !== undefined) {
@@ -113,7 +107,6 @@
                 }
             }
         }
-
         for (const ele of HFLinks) {
             const key = ele.href?.replace(HFSHOP, '');
             if (key !== undefined) {
@@ -129,9 +122,7 @@
             }
         }
     }
-
     GM_registerMenuCommand('导入Hikari Field游戏', () => {
         window.location.href = HFLIBARY;
     })
-
 })();
