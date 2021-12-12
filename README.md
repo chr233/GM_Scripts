@@ -31,8 +31,12 @@
 
 [Steam 隐藏内容刮刀](https://greasyfork.org/zh-CN/scripts/422912-steam-spoiler-scraper)
 
+[Steam国区隐藏DLC查看](https://greasyfork.org/zh-CN/scripts/434301-hidden-dlc-helper)
+
 [HB截图助手](https://greasyfork.org/zh-CN/scripts/430634-hb-screenshots)
 
 [杉果Steam快捷搜索](https://greasyfork.org/zh-CN/scripts/431437-sonkwo-steam-search)
+
+[Hikari_Field入库检测](https://greasyfork.org/zh-CN/scripts/436897-hikari-field-helper)
 
 [Steam个人资料自动打赏](https://greasyfork.org/zh-CN/scripts/420539-auto-award-profile)
