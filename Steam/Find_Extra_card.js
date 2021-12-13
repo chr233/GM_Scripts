@@ -2,7 +2,7 @@
 // @name            Find_Extra_card
 // @name:zh-CN      Steam寻找多余的卡牌
 // @namespace       https://blog.chrxw.com
-// @version	        1.1
+// @version	        1.2
 // @description	    查找徽章满级但是仍然有卡牌的游戏
 // @description:zh-CN  查找徽章满级但是仍然有卡牌的游戏
 // @author          Chr_
@@ -62,7 +62,7 @@
         isWorking = true;
         btnAbort.disabled = false;
         title.innerText = '读取本页徽章信息';
-        text.value += `开始运行 线程数量:${WorkTread}\n${Line}【卡牌数量】【游戏名】\n` + Line;
+        text.value += `开始运行 线程数量:${WorkTread}\n${Line}【持有】/【一套】 | 【游戏名】\n` + Line;
 
         const box = document.querySelector('.maincontent>.badges_sheet');
         if (box !== null) {
@@ -81,10 +81,10 @@
                     }
                     const values = await Promise.all(tasks);
 
-                    for (const [succ, name, sum] of values) {
+                    for (const [succ, name, sum, total] of values) {
                         if (succ && sum > 0) {
                             count++;
-                            text.value += `${sum}  ${name}\n`;
+                            text.value += `${sum} / ${total} | ${name}\n`;
                         }
                     }
                     title.innerText = `运行进度 【 ${i + WorkTread} / ${badges.length} 】`;
@@ -180,11 +180,12 @@
                     box.innerHTML = pureHtml;
 
                     const cardCount = box.querySelectorAll('.badge_card_set_text_qty');
+                    const cardTotal = cardCount.length;
 
-                    if (cardCount.length === 0) { resolve([true, title, 0]); }
+                    if (cardTotal === 0) { resolve([true, title, 0, 0]); }
 
                     let sum = 0;
-                    for (let i = 0; i < cardCount.length; i++) {
+                    for (let i = 0; i < cardTotal; i++) {
                         let text = cardCount[i].innerText;
                         let num = text.substring(1, text.length - 1);
                         try {
@@ -196,11 +197,11 @@
                     document.body.appendChild(box);
                     document.body.removeChild(box);
 
-                    resolve([true, title, sum]);
+                    resolve([true, title, sum, cardTotal]);
                 })
                 .catch(err => {
                     console.error('请求失败', err);
-                    resolve([false, null, null]);
+                    resolve([false, null, null, null]);
                 });
         });
     }
