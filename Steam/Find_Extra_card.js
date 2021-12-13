@@ -2,7 +2,7 @@
 // @name            Find_Extra_card
 // @name:zh-CN      Steam寻找多余的卡牌
 // @namespace       https://blog.chrxw.com
-// @version	        1.3
+// @version	        1.4
 // @description	    查找徽章满级但是仍然有卡牌的游戏
 // @description:zh-CN  查找徽章满级但是仍然有卡牌的游戏
 // @author          Chr_
@@ -55,8 +55,6 @@
     }
     //读取当前页
     async function findCurrExtraCard() {
-        const textArea = document.querySelector('textarea');
-        textArea.className = 'fec_text';
         const [title, text, btnAbort] = showDialog();
 
         isWorking = true;
