@@ -2,7 +2,7 @@
 // @name            Find_Extra_card
 // @name:zh-CN      Steam寻找多余的卡牌
 // @namespace       https://blog.chrxw.com
-// @version	        1.0
+// @version	        1.1
 // @description	    查找徽章满级但是仍然有卡牌的游戏
 // @description:zh-CN  查找徽章满级但是仍然有卡牌的游戏
 // @author          Chr_
@@ -257,7 +257,7 @@ GM_addStyle(`
     height: 300px;
     width: 600px;
     resize: vertical;
-    font-size: 10px;
+    font-size: 15px;
     margin: 5px 0;
     padding: 5px;
     background-color: rgba(0, 0, 0, 0.4);

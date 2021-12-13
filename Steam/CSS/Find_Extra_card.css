@@ -1,19 +1,20 @@
 .profile_small_header_text > .fec_btn {
   float: right;
 }
-.profile_small_header_text > .fec_btn{
+.profile_small_header_text > .fec_btn {
   margin-left: 5px;
 }
 .fec_action > .fec_btn:not(:first-child) {
   margin-left: 20px;
 }
 .fec_btn {
-  padding: 6px 3px;
+  padding: 3px 6px;
 }
 .fec_action {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 5px;
 }
 .fec_action > .fec_btn {
   flex: 0 0 auto;
@@ -22,7 +23,7 @@
   height: 300px;
   width: 600px;
   resize: vertical;
-  font-size: 10px;
+  font-size: 15px;
   margin: 5px 0;
   padding: 5px;
   background-color: rgba(0, 0, 0, 0.4);
