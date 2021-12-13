@@ -3,8 +3,8 @@
 // @name:zh-CN      Steam寻找多余的卡牌
 // @namespace       https://blog.chrxw.com
 // @version	        1.0
-// @description	    (Steam Auto Mass Craft Trading Cards Badges in Bulk) It will automatically use up your gamecard sets for crafting badges. You can control the which card sets and how many sets to craft by using it.
-// @description:zh-CN  这是一个自动合卡插件，可以指定徽章合成的数量和种类
+// @description	    查找徽章满级但是仍然有卡牌的游戏
+// @description:zh-CN  查找徽章满级但是仍然有卡牌的游戏
 // @author          Chr_
 // @include         /https://steamcommunity\.com/(id|profiles)/[^\/]+/badges/?(\/$|\/\?)?/
 // @supportURL      https://steamcn.com/t339531-1-1
