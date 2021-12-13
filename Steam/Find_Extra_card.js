@@ -2,7 +2,7 @@
 // @name            Find_Extra_card
 // @name:zh-CN      Steam寻找多余的卡牌
 // @namespace       https://blog.chrxw.com
-// @version	        1.2
+// @version	        1.3
 // @description	    查找徽章满级但是仍然有卡牌的游戏
 // @description:zh-CN  查找徽章满级但是仍然有卡牌的游戏
 // @author          Chr_
@@ -44,7 +44,7 @@
                 `<h2>【插件版本 ${version}】</h2>`,
                 `<p>【📇查找本页】：查找当前页面中,徽章已经满级(5级),但是库中仍然有多余卡牌的游戏</p>`,
                 `<p><strike>【📇查找全部】：暂不可用</strike></p>`,
-                '<p>【<a href="#" target="_blank">发布帖</a>】 【<a href=https://blog.chrxw.com/scripts.html target="_blank">脚本反馈</a>】 【Developed by <a href=https://steamcommunity.com/id/Chr_>Chr_</a>】</p>'
+                '<p>【<a href="https://keylol.com/t772471-1-1" target="_blank">发布帖</a>】 【<a href=https://blog.chrxw.com/scripts.html target="_blank">脚本反馈</a>】 【Developed by <a href=https://steamcommunity.com/id/Chr_>Chr_</a>】</p>'
             ].join(''));
         });
         // const btnFindAll = genBtn('📇查找全部', findAllExtraCard);
