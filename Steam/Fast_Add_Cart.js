@@ -142,7 +142,7 @@
             }
         });
         let btnCopy = genBtn('📋复制', '复制文本框中的内容', () => {
-            GM_setClipboard(inputBox.value, 'text');;
+            GM_setClipboard(inputBox.value, 'text');
             showAlert('提示', '复制到剪贴板成功', true);
         });
         let btnClear = genBtn('🗑️清除', '清除文本框和已保存的数据', () => {
