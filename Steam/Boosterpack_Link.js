@@ -2,12 +2,12 @@
 // @name         Boosterpack_Link
 // @name:zh-CN   补充包制作器快捷方式
 // @namespace    https://blog.chrxw.com
-// @version      1.1
+// @version      1.2
 // @description  Steam补充包制作器快捷方式
 // @description:zh-CN  Steam补充包制作器快捷方式
 // @author       Chr_
 // @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/gamecards/(\d+)/?$/
-// @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/badges/?$/
+// @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/badges/?(\/$|\/\?)?/
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
 // ==/UserScript==
