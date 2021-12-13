@@ -169,7 +169,7 @@
                 '<p>【⚠️清空】清空购物车。</p>',
                 '<p>【🔣帮助】显示没什么卵用的帮助。</p>',
                 '<p>【<a href=https://keylol.com/t747892-1-1 target="_blank">发布帖</a>】 【<a href=https://blog.chrxw.com/scripts.html target="_blank">脚本反馈</a>】 【Developed by <a href=https://steamcommunity.com/id/Chr_>Chr_</a>】</p>'
-            ].join('<br>'), true)
+            ].join('<br>'), true);
         });
 
         btnArea.appendChild(btnImport);
