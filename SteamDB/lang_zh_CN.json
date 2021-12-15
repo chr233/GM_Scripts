@@ -431,5 +431,9 @@
       "Sunday": "星期日"
     }
   },
+  "INPUT": {
+    "Search…": "搜索...",
+    "Your profile url or steamid": "你的个人资料链接或SteamID"
+  },
   "DYNAMIC": {}
 }

@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.3
+// @version             1.4
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -30,6 +30,7 @@
 
     var Start = new Date().getTime();
 
+    //静态元素
     for (const [css, dic] of Object.entries(Locales.STATIC)) {
         if (DEBUG) {
             console.log(`〖${css}〗`);
@@ -67,6 +68,30 @@
             }
         }
     }
+
+    //输入框
+    {
+        const inputs = Object.entries(Locales.INPUT);
+        if (DEBUG) {
+            console.log('〖输入框〗');
+        }
+        const elements = document.querySelectorAll("input");
+        if (elements.length > 0) {
+            for (let i = 0; i < elements.length; i++) {
+                const element = elements[i];
+                const raw = element.placeholder;
+                if (!raw) { continue; }
+                const txt = inputs[raw];
+                if (txt) {
+                    element.placeholder = txt;
+                } else if (DEBUG) {
+                    console.log(`"${raw}": "",`);
+                }
+            }
+        }
+    }
+
+
 
     const { script: { version } } = GM_info;
     const { DOC: { "更新时间": update, "贡献名单": contribution } } = Locales;
