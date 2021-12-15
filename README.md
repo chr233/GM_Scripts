@@ -23,20 +23,22 @@
 
 ## 推荐脚本
 
-[Steam库存批量出售 (Chr_'s_Inventory_Helper)](https://greasyfork.org/zh-CN/scripts/421283-chr-s-inventory-helper)
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/421283.json) [Steam库存批量出售 (Chr_'s_Inventory_Helper)](https://greasyfork.org/zh-CN/scripts/421283-chr-s-inventory-helper)
 
-[Steam显示英文游戏名](https://greasyfork.org/zh-CN/scripts/432102-show-english-name)
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/432102.json) [Steam显示英文游戏名](https://greasyfork.org/zh-CN/scripts/432102-show-english-name)
 
-[Steam快速添加购物车](https://greasyfork.org/zh-CN/scripts/432190-fast-add-cart)
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/432190.json) [Steam快速添加购物车](https://greasyfork.org/zh-CN/scripts/432190-fast-add-cart)
 
-[Steam 隐藏内容刮刀](https://greasyfork.org/zh-CN/scripts/422912-steam-spoiler-scraper)
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/422912.json) [Steam 隐藏内容刮刀](https://greasyfork.org/zh-CN/scripts/422912-steam-spoiler-scraper)
 
-[Steam国区隐藏DLC查看](https://greasyfork.org/zh-CN/scripts/434301-hidden-dlc-helper)
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/434301.json) [Steam国区隐藏DLC查看](https://greasyfork.org/zh-CN/scripts/434301-hidden-dlc-helper)
 
-[HB截图助手](https://greasyfork.org/zh-CN/scripts/430634-hb-screenshots)
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/430634.json) [HB截图助手](https://greasyfork.org/zh-CN/scripts/430634-hb-screenshots)
 
-[杉果Steam快捷搜索](https://greasyfork.org/zh-CN/scripts/431437-sonkwo-steam-search)
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/435346.json) [杉果Steam快捷搜索](https://greasyfork.org/zh-CN/scripts/435346-gmg-steam-search)
 
-[Hikari_Field入库检测](https://greasyfork.org/zh-CN/scripts/436897-hikari-field-helper)
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/431437.json) [GMG小绿人Steam快捷搜索](https://greasyfork.org/zh-CN/scripts/431437-sonkwo-steam-search)
 
-[Steam个人资料自动打赏](https://greasyfork.org/zh-CN/scripts/420539-auto-award-profile)
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/436897.json) [Hikari_Field入库检测](https://greasyfork.org/zh-CN/scripts/436897-hikari-field-helper)
+
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/420539.json) [Steam个人资料自动打赏](https://greasyfork.org/zh-CN/scripts/420539-auto-award-profile)
