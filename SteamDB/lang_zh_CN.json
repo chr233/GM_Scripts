@@ -3,14 +3,12 @@
     "更新时间": "2021-12-15",
     "文档说明": "key为CSS选择器,value为翻译字典",
     "贡献名单": [
-      "Chr_"
+      "Chr_",
+      "joejoe5"
     ]
   },
   "STATIC": {
-    ".header-menu-button>span": {
-      "Menu": "菜单"
-    },
-    ".header-menu>ul>li,.header-menu>ul>li>a,.header-navbar>div>a,.header-login>span,.account-menu>ul>li>a,.footer-menu>ul>li,.footer-menu>ul>li>a": {
+    "ul>li,ul>li>a,ul>li>share-action,.header-navbar>div>a,.header-login>span": {
       " About": " 关于",
       "Blog": "博客",
       "Discord": "Discord",
@@ -56,7 +54,13 @@
       "Settings": "设置",
       "Sign out": "登出",
       "Steam Status": "Steam状态",
-      "Steam Web API": "Steam Web API"
+      "Steam Web API": "Steam Web API",
+      " Level ": "等级 ",
+      " years": " 年",
+      "Away": "离开",
+      "Offline": "离线",
+      "Online": "在线",
+      " Share": " 分享"
     },
     ".header-disclaimer": {
       "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB是一个业余项目, 与Valve或Steam无关.",
@@ -66,10 +70,16 @@
       " toggle this menu ": " 开关菜单 ",
       " focus search": " 开始搜索"
     },
-    "h1.header-title": {
-      "Database of everything on Steam.": "应有尽有的 Steam 数据库."
+    "h1": {
+      "Database of everything on Steam.": "应有尽有的 Steam 数据库.",
+      "Your watch list": "您的监视列表",
+      "Upcoming and previous Steam sales": "即将到来的和之前的Steam特卖活动",
+      "Current Steam Sales": "Steam 正在进行的促销",
+      "Steam Calculator": "Steam 计算器",
+      "Steam Charts": "Steam 图表",
+      "Patch notes": "补丁说明"
     },
-    ".container-hello>div>p,.container-hello>div>p>a": {
+    ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a": {
       "This ": "这个 ",
       "third-party": "第三方",
       " website gives you better insight into the ": " 网站可让您更好地了解 ",
@@ -78,9 +88,11 @@
       "Look through our FAQ": "查阅FAQ",
       " if you have any questions about SteamDB, ": " 如果您有任何问题关于SteamDB的问题, ",
       "join our Discord": "加入 Discord 频道",
-      "Follow @SteamDB on Twitter": "在 Twitter 上关注 @SteamDB"
+      "Follow @SteamDB on Twitter": "在 Twitter 上关注 @SteamDB",
+      "Why are upcoming sales marked as unconfirmed?": "为什么即将到来的销售标记为未确认?",
+      "Do you know when the next sale is and what discounts will it have?": "SteamDB 是如何得知下一次促销的时间以及折扣情况的?"
     },
-    "table>thead>tr>th,table>thead>tr>th>a,table>thead>tr>th span": {
+    "tr>th,tr>th>a,tr>th span": {
       "Most Played": "在线人数最多的",
       " Games": "游戏",
       "Players Now": "当前玩家",
@@ -91,7 +103,7 @@
       "Releases": "商品",
       " Price": "售价",
       "Hot Releases": "热门即将推出",
-      "Rating": "评分",
+      "Rating": "好评率",
       "Currency": "货币",
       "Current Price": "当前价格",
       "Converted Price": "换算价格",
@@ -100,13 +112,13 @@
       "Peak": "峰值",
       "Min Daily Peak": "Min Daily Peak",
       "Avg Daily Peak": "Avg Daily Peak",
-      "Twitch Peak": "",
+      "Twitch Peak": "Twitch 高峰",
       "Name": "名称",
       "Created": "创建时间",
-      "SubID": "Sub ID",
-      "Billing Type": "",
+      "SUB ID": "Sub ID",
+      "BILLING TYPE": "购买类型",
       "Last Update": "最后更新",
-      "AppID": "App ID",
+      "AppID": "APP ID",
       "Max Size": "最大尺寸",
       "Extra Info": "额外信息",
       "Description": "描述",
@@ -119,18 +131,49 @@
       "API Name": "API 名称",
       "Display Name": "显示名称",
       "Default Value": "默认名称",
-      "Your Value": "你的值"
+      "Your Value": "你的值",
+      "NAME": "名称",
+      "PRICE": "价格",
+      "DEPOT UPDATE": "仓库更新",
+      "APP UPDATE": "APP更新",
+      "APP TYPE": "APP类型",
+      "LAST UPDATE": "最近更新",
+      "Game": "游戏",
+      "Video": "视频",
+      "Application": "软件",
+      "Price / Hour": "价格 / 小时",
+      "Time": "时间",
+      "Ends in": "结束于",
+      "Started": "开始于",
+      "Release": "发售于",
+      "DATE": "日期",
+      "GAME": "游戏",
+      "PATCH TITLE": "补丁标题",
+      "Upcoming Steam Releases": "即将发售的 Steam 商品"
     },
     ".events-title>span,.events-title>a,#events>.d-flex>a": {
       "Steam Sale Events ": "Steam 促销活动 ",
       "Browse and filter all current deals": "浏览和过滤正在进行的促销活动",
       "View all previous sale events…": "查看所有过去的促销活动…"
     },
-    "#stats,#apphistory,#subhistory,h2.stats-title>a": {
+    "h2,h2.stats-title>a": {
       "SteamDB in numbers": "Steam 统计数据",
       "Recent app events ": "最近更新的APP",
       "Recent package events ": "最近更新的SUB",
-      "Our latest blog post": "最新博客文章"
+      "Our latest blog post": "最新博客文章",
+      "Store Prices": "各区商店价格",
+      "High-resolution Steam charts": "高分辨率 Steam 图表",
+      "Additional Information": "附加信息",
+      "Downloadable Content": "DLC 列表",
+      "Depots": "DEPOT 列表",
+      "Launch Options": "启动选项",
+      "Achievements": "成就",
+      "Screenshots": "截图",
+      "Packages that include this app": "包含此APP的SUB",
+      "History": "历史",
+      "Latest updated products you own": "你库中最近更新的产品",
+      "When is the next Steam sale?": "下一次 Steam 特卖是什么时候? ",
+      "Curated patch notes for Steam games": "Steam 游戏的补丁说明"
     },
     ".container-stats em": {
       "apps in database": "APP总数",
@@ -156,9 +199,9 @@
       "SteamDB has been running ad-free since 2012.": "SteamDB 自2012建立以来一直没有任何广告.",
       "Find out how you can contribute.": "查看我能为 SteamDB 做什么."
     },
-    "table>tbody>tr>td,table>tbody>tr>td>a": {
-      "Yes": "是",
-      "No": "否",
+    "td,td>a": {
+      "Yes": "✅是",
+      "No": "❌否",
       "App ID": "APP ID",
       "App Type": "APP 类型",
       "Developer": "开发商",
@@ -177,12 +220,15 @@
       "full": "完全支持",
       "ReleaseState": "发布状态",
       "released": "已发售",
-      "has_adult_content": "🔞成人元素",
+      "has_adult_content": "成人元素",
       "Store Release Date": "商店页发行日期",
       "osarch": "系统架构",
       "community_hub_visible": "社区中心可见",
       "64-bit only": "仅支持64位",
       "metacritic_name": "Metacritic名称",
+      "metacritic_score": "Metacritic评分",
+      "community_visible_stats": "社区中心可见统计",
+      "Achievement Languages": "成就语言",
       "review_score": "评测结果",
       "review_percentage": "好评率",
       "review_score_bombs": "跑题评测结果",
@@ -191,7 +237,19 @@
       "Supported Languages": "支持的语言",
       "Interface": "界面",
       "Full Audio": "完全音频",
-      "Subtitles": "字幕"
+      "Subtitles": "字幕",
+      "small_capsule": "小预览图",
+      "header_image": "商店小图",
+      "Associations": "关联组织",
+      "Primary Genre": "主要标签",
+      "Store Genres": "商店标签",
+      "Steam Release Date": "Steam发售日期",
+      "Store Asset Modification Time": "存储资产修改时间",
+      "library_assets": "库资源",
+      "library_capsule": "封面图",
+      "library_hero": "库横幅",
+      "library_logo": "库图标",
+      "Web Assets": "网页资源"
     },
     ".app-links>a,.app-links>a>span": {
       "Wishlist": "愿望单",
@@ -209,7 +267,7 @@
       " Prices": " 价格",
       " Charts": " 图表",
       " Information": " 信息",
-      " Packages ": " PACKAGE",
+      " Packages ": " SUB",
       " DLCs ": " DLC",
       " Depots ": " DEPOT",
       " Configuration": " 配置",
@@ -218,7 +276,68 @@
       " Community ": " 社区",
       " Screenshots": " 截图",
       " Linked apps": " 关联 APP",
-      " History": " 历史"
+      " History": " 历史",
+      " Games": "游戏"
+    },
+    ".header-wrapper>div>p,.header-wrapper>div>p>b,.header-wrapper>div>a": {
+      " Your watch list is public, you can share it with this link: ": "你的监视列表是公开的, 你可以分享这个链接: ",
+      " Click the ": "点击详情页面的 ",
+      "\"Watch\"": "“监视”",
+      " button on app pages to add apps to this list.": " 按钮,来添加到监视列表.",
+      "View all sale events": "浏览所有促销活动"
+    },
+    "a.badge-donator": {
+      " DONATOR": " 贡献者"
+    },
+    ".prices>div": {
+      "Account Value": "账户价值",
+      "lowest prices — today's prices ": "最低价值 - 今日价值"
+    },
+    ".warning-no-games *": {
+      "Game playtime is hidden by default on Steam, you can change ": "游戏时间默认在Steam上是隐藏的, 你可以改变 ",
+      "your Steam profile privacy settings": "Steam 个人资料隐私设置",
+      "TODO": "TODO"
+    },
+    ".row-stats span,.row-stats em,.row-stats b": {
+      "Average price ": "平均价值 ",
+      "Average price per hour ": "每小时平均价值 ",
+      "Hours on record": "记录时间 ",
+      "Average playtime": "平均游戏时间 ",
+      "Private": "私密"
+    },
+    "h3,h3>a": {
+      "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
+      "Concurrent Steam Users": "当前在线Steam用户"
+    },
+    ".tabnav-steam-links>div,.tabnav-steam-links>a": {
+      "STEAM LINKS": "Steam 链接",
+      "Games": "游戏",
+      "Wishlist": "愿望单",
+      "Inventory": "库存",
+      "Badges": "徽章",
+      "Groups": "组",
+      "Friends": "好友"
+    },
+    "#table-apps_previous,#table-apps_next": {
+      "Previous": "上一页",
+      "Next": "下一页"
+    },
+    ".text-center>a": {
+      "View more app history entries…": "查看更多 APP 历史记录...",
+      "View more package history entries…": "查看更多 SUB 历史记录..."
+    },
+    "#js-header-hamburger>span,a.btn,button": {
+      "Menu": "菜单",
+      "Calendar": "日历",
+      "Past 7 day releases": "上一周发售的游戏",
+      "Most Followed Upcoming Games": "最收关注的即将发售的游戏",
+      "Most Followed Games": "最受关注的游戏",
+      "Most Wishlisted Games": "最多愿望单的游戏",
+      "Get disappointed in your life™": "计算账号价值",
+      "Get disappointed in your life": "计算账号价值",
+      "Compare — Click the plus button to add to comparison": "比较 - 点击加号按钮添加到比较",
+      "Reload the page with your filters": "应用过滤器并重新加载页面",
+      "Clear filters": "清除过滤器"
     }
   },
   "DYNAMIC": {}

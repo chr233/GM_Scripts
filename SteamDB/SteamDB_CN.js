@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.2
+// @version             1.3
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -20,10 +20,17 @@
     'use strict';
     const DEBUG = window.localStorage['dbg_mode'] == '开';
 
-    const locales = JSON.parse(GM_getResourceText("data"));
-    // const locales = {};
+    GM_registerMenuCommand(`在控制台输出未匹配文本：【${DEBUG ? '开' : '关'}】`, () => {
+        window.localStorage['dbg_mode'] = DEBUG ? '关' : '开';
+        window.location.reload();
+    });
 
-    for (const [css, dic] of Object.entries(locales.STATIC)) {
+    const Locales = JSON.parse(GM_getResourceText("data"));
+    // const Locales = {}
+
+    var Start = new Date().getTime();
+
+    for (const [css, dic] of Object.entries(Locales.STATIC)) {
         if (DEBUG) {
             console.log(`〖${css}〗`);
         }
@@ -61,10 +68,16 @@
         }
     }
 
-    GM_registerMenuCommand(`在控制台输出未匹配文本：【${DEBUG ? '开' : '关'}】`, () => {
-        window.localStorage['dbg_mode'] = DEBUG ? '关' : '开';
-        window.location.reload();
-    })
+    const { script: { version } } = GM_info;
+    const { DOC: { "更新时间": update, "贡献名单": contribution } } = Locales;
+
+    // call your function
+    var End = new Date().getTime();
+    console.log('执行耗时', `${End - Start} ms`);
+    console.log('=================================')
+    console.log(`插件版本: ${version}`);
+    console.log(`更新时间: ${update}`);
+    console.log(`贡献名单: ${contribution.join(', ')}`);
 
     // // 创建一个观察器实例并传入回调函数
     // const observer = new MutationObserver((mutationsList, observer) => {
