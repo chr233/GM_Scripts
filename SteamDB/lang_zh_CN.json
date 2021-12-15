@@ -77,7 +77,10 @@
       "Current Steam Sales": "Steam 正在进行的促销",
       "Steam Calculator": "Steam 计算器",
       "Steam Charts": "Steam 图表",
-      "Patch notes": "补丁说明"
+      "Patch notes": "补丁说明",
+      "Upcoming Steam Releases": "即将发售的 Steam 商品",
+      "\nJoin SteamDB's Discord\n": "\n加入 SteamDB 的 Discord 频道\n",
+      "Frequently Asked Questions": "常见问题"
     },
     ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a": {
       "This ": "这个 ",
@@ -154,7 +157,6 @@
       "DATE": "日期",
       "GAME": "游戏",
       "PATCH TITLE": "补丁标题",
-      "Upcoming Steam Releases": "即将发售的 Steam 商品",
       "Current": "当前在线",
       "24h Peak": "24小时峰值",
       "All-Time Peak": "历史峰值"
@@ -319,7 +321,9 @@
     "h3,h3>a": {
       "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
       "Concurrent Steam Users": "当前在线Steam用户",
-      "Examples on what can be entered": "示例输入"
+      "Examples on what can be entered": "示例输入",
+      "Some rules before you continue": "在继续之前, 请先了解以下规则",
+      "Channels we have": "现有频道"
     },
     ".tabnav-steam-links>div,.tabnav-steam-links>a": {
       "STEAM LINKS": "Steam 链接",
@@ -349,7 +353,8 @@
       "Get disappointed in your life": "计算账号价值",
       "Compare — Click the plus button to add to comparison": "比较 - 点击加号按钮添加到比较",
       "Reload the page with your filters": "应用过滤器并重新加载页面",
-      "Clear filters": "清除过滤器"
+      "Clear filters": "清除过滤器",
+      "I have read the rules": "我已知晓规则"
     },
     "#table-apps_length>label,#table-apps_filter>label": {
       "Show ": "显示 ",
