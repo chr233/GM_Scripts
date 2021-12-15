@@ -21,6 +21,10 @@
 
 [:star: GreasyFork主页](https://greasyfork.org/zh-CN/users/719636-chr233)
 
+[:green_book: GitHub仓库页](https://github.com/chr233/GM_Scripts)
+
+[:blue_book: Gitee仓库页](https://gitee.com/chr_a1/gm_scripts)
+
 ## 推荐脚本
 
 ![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/421283.json) [Steam库存批量出售 (Chr_'s_Inventory_Helper)](https://greasyfork.org/zh-CN/scripts/421283-chr-s-inventory-helper)
