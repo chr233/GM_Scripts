@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.1
+// @version             1.2
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -12,18 +12,21 @@
 // @icon                https://blog.chrxw.com/favicon.ico
 // @resource            data https://gitee.com/chr_a1/gm_scripts/raw/master/SteamDB/lang_zh_CN.json
 // @grant               GM_getResourceText
+// @grant               GM_registerMenuCommand
 // ==/UserScript==
 
 
 (function () {
     'use strict';
-    const DEBUG = true;
+    const DEBUG = window.localStorage['dbg_mode'] == '开';
 
     const locales = JSON.parse(GM_getResourceText("data"));
     // const locales = {};
 
     for (const [css, dic] of Object.entries(locales.STATIC)) {
-        console.log(`〖${css}〗`);
+        if (DEBUG) {
+            console.log(`〖${css}〗`);
+        }
         const elements = document.querySelectorAll(css);
 
         if (elements.length > 0) {
@@ -57,6 +60,11 @@
             }
         }
     }
+
+    GM_registerMenuCommand(`在控制台输出未匹配文本：【${DEBUG ? '开' : '关'}】`, () => {
+        window.localStorage['dbg_mode'] = DEBUG ? '关' : '开';
+        window.location.reload();
+    })
 
     // // 创建一个观察器实例并传入回调函数
     // const observer = new MutationObserver((mutationsList, observer) => {
