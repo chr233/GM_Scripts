@@ -80,7 +80,9 @@
       "Patch notes": "补丁说明",
       "Upcoming Steam Releases": "即将发售的 Steam 商品",
       "\nJoin SteamDB's Discord\n": "\n加入 SteamDB 的 Discord 频道\n",
-      "Frequently Asked Questions": "常见问题"
+      "Frequently Asked Questions": "常见问题",
+      "Get SteamDB extension for your browser": "获取 SteamDB 浏览器插件",
+      "Packages": "SUB (PACKAGES)"
     },
     ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a": {
       "This ": "这个 ",
@@ -186,7 +188,9 @@
       "Curated patch notes for Steam games": "Steam 游戏的补丁说明",
       "Calculate the value of your ": "计算你的 ",
       "Steam ": "Steam ",
-      "account": "账号价值"
+      "account": "账号价值",
+      "Your privacy": "你的隐私",
+      "Page ": "页码 "
     },
     ".container-stats em": {
       "apps in database": "APP总数",
@@ -199,12 +203,15 @@
       "New Unknown: ": "未知: ",
       "New on store: ": "新项目: ",
       "New Game on store: ": "新游戏: ",
+      "New Game: ": "新游戏: ",
       "New DLC on store: ": "新DLC: ",
       "New DLC: ": "新DLC: ",
       "New Beta: ": "新Beta测试: ",
-      "New Demo: ": "新DEMO",
-      "New Application on store: ": "新软件",
+      "New Demo: ": "新DEMO: ",
+      "New Application on store: ": "新软件: ",
+      "New Application: ": "新软件: ",
       "Renamed on store: ": "重命名: ",
+      "Renamed: ": "重命名: ",
       "Retired: ": "停售: ",
       "Removed from store: ": "移除商店页: "
     },
@@ -323,7 +330,15 @@
       "Concurrent Steam Users": "当前在线Steam用户",
       "Examples on what can be entered": "示例输入",
       "Some rules before you continue": "在继续之前, 请先了解以下规则",
-      "Channels we have": "现有频道"
+      "Channels we have": "现有频道",
+      "Install from the Chrome Web Store": "从Chrome Web Store安装",
+      "Install from Mozilla Add-ons": "从Mozilla Add-ons安装",
+      "Install from Microsoft Edge Add-ons": "从Microsoft Edge Add-ons安装",
+      "Checkbox explanation": "选项说明",
+      "SteamDB Website": "SteamDB 网站",
+      "Buttons & links": "按钮 & 链接",
+      "Inventory & Trading": "库存 & 交易",
+      "Enhancements": "改进"
     },
     ".tabnav-steam-links>div,.tabnav-steam-links>a": {
       "STEAM LINKS": "Steam 链接",
