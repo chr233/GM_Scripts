@@ -10,7 +10,7 @@
     ".header-menu-button>span": {
       "Menu": "菜单"
     },
-    ".header-menu>ul>li,.header-menu>ul>li>a,.header-navbar>div>a,.header-login>span,.account-menu>ul>li>a": {
+    ".header-menu>ul>li,.header-menu>ul>li>a,.header-navbar>div>a,.header-login>span,.account-menu>ul>li>a,.footer-menu>ul>li,.footer-menu>ul>li>a": {
       " About": " 关于",
       "Blog": "博客",
       "Discord": "Discord",
@@ -61,6 +61,10 @@
     ".header-disclaimer": {
       "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB是一个业余项目, 与Valve或Steam无关.",
       "All times on the site are UTC.": "网站上的所有时间都是UTC时间."
+    },
+    ".header-kbd": {
+      " toggle this menu ": " 开关菜单 ",
+      " focus search": " 开始搜索"
     },
     "h1.header-title": {
       "Database of everything on Steam.": "应有尽有的 Steam 数据库."
@@ -122,18 +126,17 @@
       "Browse and filter all current deals": "浏览和过滤正在进行的促销活动",
       "View all previous sale events…": "查看所有过去的促销活动…"
     },
-    "#stats": {
-      "SteamDB in numbers": "Steam 统计数据"
+    "#stats,#apphistory,#subhistory,h2.stats-title>a": {
+      "SteamDB in numbers": "Steam 统计数据",
+      "Recent app events ": "最近更新的APP",
+      "Recent package events ": "最近更新的SUB",
+      "Our latest blog post": "最新博客文章"
     },
     ".container-stats em": {
       "apps in database": "APP总数",
       "packages in database": "SUB总数",
       "bundles in database": "BUNDLE总数",
       "releases this year": "今年发售游戏"
-    },
-    "#apphistory,#subhistory": {
-      "Recent app events ": "最近更新的APP",
-      "Recent package events ": "最近更新的SUB"
     },
     ".app-history>li>span": {
       "New: ": "新: ",
@@ -143,6 +146,7 @@
       "New DLC on store: ": "新DLC: ",
       "New DLC: ": "新DLC: ",
       "New Beta: ": "新Beta测试: ",
+      "New Demo: ": "新DEMO",
       "New Application on store: ": "新软件",
       "Renamed on store: ": "重命名: ",
       "Retired: ": "停售: ",
@@ -151,6 +155,70 @@
     ".welding-torch>span,.welding-torch>span>b": {
       "SteamDB has been running ad-free since 2012.": "SteamDB 自2012建立以来一直没有任何广告.",
       "Find out how you can contribute.": "查看我能为 SteamDB 做什么."
+    },
+    "table>tbody>tr>td,table>tbody>tr>td>a": {
+      "Yes": "是",
+      "No": "否",
+      "App ID": "APP ID",
+      "App Type": "APP 类型",
+      "Developer": "开发商",
+      "Publisher": "发行商",
+      "Supported Systems": "支持的操作系统",
+      "Last Change Number ": "最后更改序号",
+      "Last Record Update": "最后更新时间",
+      "Release Date": "发售时间",
+      "clienticon": "客户端图标",
+      "clienttga": "客户端标签",
+      "icon": "小图标",
+      "logo": "商店图标",
+      "logo_small": "商店小图标",
+      "controller_support": "控制器支持",
+      "partial": "部分支持",
+      "full": "完全支持",
+      "ReleaseState": "发布状态",
+      "released": "已发售",
+      "has_adult_content": "🔞成人元素",
+      "Store Release Date": "商店页发行日期",
+      "osarch": "系统架构",
+      "community_hub_visible": "社区中心可见",
+      "64-bit only": "仅支持64位",
+      "metacritic_name": "Metacritic名称",
+      "review_score": "评测结果",
+      "review_percentage": "好评率",
+      "review_score_bombs": "跑题评测结果",
+      "review_percentage_bombs": "跑题评测好评率",
+      "Detected Technologies ": "检测到的组件",
+      "Supported Languages": "支持的语言",
+      "Interface": "界面",
+      "Full Audio": "完全音频",
+      "Subtitles": "字幕"
+    },
+    ".app-links>a,.app-links>a>span": {
+      "Wishlist": "愿望单",
+      "Follow": "关注",
+      "Ignore": "忽略",
+      "Owned": "已拥有",
+      "Watch": "监视",
+      "Install": "安装",
+      " Store": " 商店页",
+      "Hub": "社区中心",
+      " PCGW": "PCG Wiki",
+      " Patches\n": " 补丁\n"
+    },
+    ".tabnav-tabs>a": {
+      " Prices": " 价格",
+      " Charts": " 图表",
+      " Information": " 信息",
+      " Packages ": " PACKAGE",
+      " DLCs ": " DLC",
+      " Depots ": " DEPOT",
+      " Configuration": " 配置",
+      " Cloud Saves": " 云存档",
+      " Achievements": " 成就",
+      " Community ": " 社区",
+      " Screenshots": " 截图",
+      " Linked apps": " 关联 APP",
+      " History": " 历史"
     }
   },
   "DYNAMIC": {}
