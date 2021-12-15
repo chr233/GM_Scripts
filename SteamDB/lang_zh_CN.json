@@ -70,7 +70,7 @@
       " toggle this menu ": " 开关菜单 ",
       " focus search": " 开始搜索"
     },
-    "h1": {
+    "h1,h1>span>a": {
       "Database of everything on Steam.": "应有尽有的 Steam 数据库.",
       "Your watch list": "您的监视列表",
       "Upcoming and previous Steam sales": "即将到来的和之前的Steam特卖活动",
@@ -82,7 +82,20 @@
       "\nJoin SteamDB's Discord\n": "\n加入 SteamDB 的 Discord 频道\n",
       "Frequently Asked Questions": "常见问题",
       "Get SteamDB extension for your browser": "获取 SteamDB 浏览器插件",
-      "Packages": "SUB (PACKAGES)"
+      "Packages": "SUB (PACKAGES)",
+      "Top Rated Games on Steam": "评分最高的 Steam 游戏",
+      "\nOwned Games\n": "\n拥有最多游戏的 Steam 用户\n",
+      "Badges": "徽章",
+      " Top Steam Users By Level": " 等级最高的 Steam 用户",
+      "Steam Weekly Global Top Sellers": "本周 Steam 全球销量排行榜",
+      "Most Followed Steam Games": "最受关注的 Steam 游戏",
+      "Most Wishlisted Steam Games": "最多愿望单的 Steam 游戏",
+      "Steam Profile Badges": "Steam 徽章",
+      "All Steam Game Tags": "所有 Steam 游戏标签",
+      "Most followed upcoming Steam games": "最受关注的即将发售的游戏",
+      "Steam Release Calendar": "Steam 发售日历",
+      "Steam Game Release Summary": "Steam 游戏发售汇总",
+      "How can you help SteamDB": "我该如何帮助 SteamDB"
     },
     ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a": {
       "This ": "这个 ",
@@ -161,7 +174,23 @@
       "PATCH TITLE": "补丁标题",
       "Current": "当前在线",
       "24h Peak": "24小时峰值",
-      "All-Time Peak": "历史峰值"
+      "All-Time Peak": "历史峰值",
+      "Positive": "好评",
+      "Negative": "差评",
+      "Rank": "排名",
+      "Level": "等级",
+      "Unlock Date": "达成日期",
+      "Developer": "开发商",
+      "Release Date": "发售时间",
+      "Followers": "关注数",
+      "Image": "徽章图片",
+      "Max Level": "最高等级",
+      "Foil Max Level": "最高等级(闪亮)",
+      "7d Trend ": "7天走势",
+      "Price": "价格",
+      "Year": "年份",
+      "Games": "游戏数量",
+      "Links": "链接"
     },
     ".events-title>span,.events-title>a,#events>.d-flex>a": {
       "Steam Sale Events ": "Steam 促销活动 ",
@@ -190,7 +219,15 @@
       "Steam ": "Steam ",
       "account": "账号价值",
       "Your privacy": "你的隐私",
-      "Page ": "页码 "
+      "Page ": "页码 ",
+      "As decided by ": "数据来自 ",
+      "SteamDB rating algorithm": "SteamDB 评分算法",
+      "Event Badges": "Steam 活动徽章",
+      "Players ": "玩家可以 ",
+      "can craft trading cards to badges": "合成卡牌",
+      " or earn them during special events.": " 或者参与特殊的促销活动来取得徽章.",
+      "Steam Game Releases by Month": "按月查看 Steam 发布的游戏",
+      "Steam Game Releases by Year": "按年查看 Steam 发布的游戏"
     },
     ".container-stats em": {
       "apps in database": "APP总数",
@@ -338,7 +375,8 @@
       "SteamDB Website": "SteamDB 网站",
       "Buttons & links": "按钮 & 链接",
       "Inventory & Trading": "库存 & 交易",
-      "Enhancements": "改进"
+      "Enhancements": "改进",
+      "Rating Breakdown": "评分细节"
     },
     ".tabnav-steam-links>div,.tabnav-steam-links>a": {
       "STEAM LINKS": "Steam 链接",
@@ -362,6 +400,7 @@
       "Calendar": "日历",
       "Past 7 day releases": "上一周发售的游戏",
       "Most Followed Upcoming Games": "最收关注的即将发售的游戏",
+      "Most Played Games": "最常玩的游戏",
       "Most Followed Games": "最受关注的游戏",
       "Most Wishlisted Games": "最多愿望单的游戏",
       "Get disappointed in your life™": "计算账号价值",
@@ -369,7 +408,11 @@
       "Compare — Click the plus button to add to comparison": "比较 - 点击加号按钮添加到比较",
       "Reload the page with your filters": "应用过滤器并重新加载页面",
       "Clear filters": "清除过滤器",
-      "I have read the rules": "我已知晓规则"
+      "I have read the rules": "我已知晓规则",
+      "All Types": "所有类型",
+      "Filter by year": "按年查看",
+      "Top Selling Games": "销量最好的游戏",
+      "Coming Soon": "即将发售"
     },
     "#table-apps_length>label,#table-apps_filter>label": {
       "Show ": "显示 ",
