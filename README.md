@@ -25,6 +25,8 @@
 
 ![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/421283.json) [Steam库存批量出售 (Chr_'s_Inventory_Helper)](https://greasyfork.org/zh-CN/scripts/421283-chr-s-inventory-helper)
 
+![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/437076.json) [SteamDB_CN](https://greasyfork.org/zh-CN/scripts/437076-steamdb-cn)
+
 ![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/432102.json) [Steam显示英文游戏名](https://greasyfork.org/zh-CN/scripts/432102-show-english-name)
 
 ![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/432190.json) [Steam快速添加购物车](https://greasyfork.org/zh-CN/scripts/432190-fast-add-cart)
