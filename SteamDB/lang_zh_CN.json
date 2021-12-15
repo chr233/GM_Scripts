@@ -90,10 +90,15 @@
       "join our Discord": "加入 Discord 频道",
       "Follow @SteamDB on Twitter": "在 Twitter 上关注 @SteamDB",
       "Why are upcoming sales marked as unconfirmed?": "为什么即将到来的销售标记为未确认?",
-      "Do you know when the next sale is and what discounts will it have?": "SteamDB 是如何得知下一次促销的时间以及折扣情况的?"
+      "Do you know when the next sale is and what discounts will it have?": "SteamDB 是如何得知下一次促销的时间以及折扣情况的?",
+      " Any SteamID format is accepted, enter anything you want and we will convert it on the fly for you.": " 输入 SteamID 的任意形式, 我们将会自动将其转换为 SteamID."
+    },
+    "#insert-steamid>a": {
+      "You are currently signed in as ": "你当前登录账号的 SteamID 是 ",
+      ". Click this or your avatar in the navbar to view your profile.": " . 点击此处或者导航栏上的头像来查看你的个人资料."
     },
     "tr>th,tr>th>a,tr>th span": {
-      "Most Played": "在线人数最多的",
+      "Most Played": "最常玩的",
       " Games": "游戏",
       "Players Now": "当前玩家",
       "Peak Today": "今日峰值",
@@ -149,14 +154,17 @@
       "DATE": "日期",
       "GAME": "游戏",
       "PATCH TITLE": "补丁标题",
-      "Upcoming Steam Releases": "即将发售的 Steam 商品"
+      "Upcoming Steam Releases": "即将发售的 Steam 商品",
+      "Current": "当前在线",
+      "24h Peak": "24小时峰值",
+      "All-Time Peak": "历史峰值"
     },
     ".events-title>span,.events-title>a,#events>.d-flex>a": {
       "Steam Sale Events ": "Steam 促销活动 ",
       "Browse and filter all current deals": "浏览和过滤正在进行的促销活动",
       "View all previous sale events…": "查看所有过去的促销活动…"
     },
-    "h2,h2.stats-title>a": {
+    "h2,h2 *": {
       "SteamDB in numbers": "Steam 统计数据",
       "Recent app events ": "最近更新的APP",
       "Recent package events ": "最近更新的SUB",
@@ -173,7 +181,10 @@
       "History": "历史",
       "Latest updated products you own": "你库中最近更新的产品",
       "When is the next Steam sale?": "下一次 Steam 特卖是什么时候? ",
-      "Curated patch notes for Steam games": "Steam 游戏的补丁说明"
+      "Curated patch notes for Steam games": "Steam 游戏的补丁说明",
+      "Calculate the value of your ": "计算你的 ",
+      "Steam ": "Steam ",
+      "account": "账号价值"
     },
     ".container-stats em": {
       "apps in database": "APP总数",
@@ -307,7 +318,8 @@
     },
     "h3,h3>a": {
       "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
-      "Concurrent Steam Users": "当前在线Steam用户"
+      "Concurrent Steam Users": "当前在线Steam用户",
+      "Examples on what can be entered": "示例输入"
     },
     ".tabnav-steam-links>div,.tabnav-steam-links>a": {
       "STEAM LINKS": "Steam 链接",
@@ -338,6 +350,11 @@
       "Compare — Click the plus button to add to comparison": "比较 - 点击加号按钮添加到比较",
       "Reload the page with your filters": "应用过滤器并重新加载页面",
       "Clear filters": "清除过滤器"
+    },
+    "#table-apps_length>label,#table-apps_filter>label": {
+      "Show ": "显示 ",
+      " entries": " 条",
+      "Search:": "搜索:"
     }
   },
   "DYNAMIC": {}
