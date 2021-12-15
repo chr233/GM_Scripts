@@ -2,187 +2,79 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.2
-// @description         SteamDB汉化插件(修改自Github-i18n)
-// @description:zh-cn   SteamDB汉化插件(修改自Github-i18n)
+// @version             1.0
+// @description         SteamDB汉化插件
+// @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
 // @match               https://steamdb.info/*
-// @grant               GM_xmlhttpRequest
 // @grant               GM_getResourceText
-// @resource            data https://gitee.com/chr_a1/gm_scripts/raw/master/SteamDB/lang_zh_CN.json
-// @require             https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js
 // ==/UserScript==
 
 
 
-(function() {
+(function () {
   'use strict';
+  const DEBUG = true;
 
   const locales = JSON.parse(GM_getResourceText("data"));
 
-  // translateByCssSelector();
-  // translateDesc(".repository-content .f4"); //仓库简介翻译
-  // translateDesc(".gist-content [itemprop='about']"); // Gist 简介翻译
-  traverseElement(document.body);
-  watchUpdate();
-  
-  function translateElement(el) {
-    // Get the text field name
-    let k;
-    if(el.tagName === "INPUT") {
-      if (el.type === 'button' || el.type === 'submit') {
-        k = 'value';
-      } else {
-        k = 'placeholder';
-      }
-    } else {
-      k = 'data';
-    }
-
-    const txtSrc = el[k].trim();
-    const key = txtSrc.toLowerCase()
-        .replace(/\xa0/g, ' ') // replace '&nbsp;'
-        .replace(/\s{2,}/g, ' ');
-
-    if(locales.dict[key]) {
-      el[k] = el[k].replace(txtSrc, locales.dict[key])
-    }
-  }
-
-  function shoudTranslateEl(el) {
-    const blockIds = ["readme", "wiki-content"];
-    const blockClass = [
-      "CodeMirror",
-      "css-truncate", // 过滤文件目录
-      "blob-code"
-    ];
-    const blockTags = ["CODE", "SCRIPT", "LINK", "IMG", "svg", "TABLE", "ARTICLE", "PRE"];
-    const blockItemprops = ["name"];
-
-    if(blockTags.includes(el.tagName)) {
-      return false;
-    }
-
-    if(el.id && blockIds.includes(el.id)) {
-      return false;
-    }
-
-    if(el.classList) {
-      for(let clazz of blockClass) {
-        if(el.classList.contains(clazz)) {
-          return false;
-        }
-      }
-    }
-
-    if(el.getAttribute) {
-      let itemprops = el.getAttribute("itemprop");
-      if(itemprops) {
-        itemprops = itemprops.split(" ");
-        for(let itemprop of itemprops) {
-          console.log(itemprop)
-          if(blockItemprops.includes(itemprop)) {
-            return false;
+  for (const [css, dic] of Object.entries(locales.STATIC)) {
+    console.log(`〖${css}〗`);
+    const elements = document.querySelectorAll(css);
+    if (elements.length > 0) {
+      for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+        if (element.childElementCount === 0) {//节点内部无其他元素
+          const raw = element.innerText;
+          if (!raw || raw.length <= 2) { continue; }
+          const txt = dic[raw];
+          if (txt) {
+            element.innerText = txt;
+          } else if (DEBUG) {
+            console.log(`"${raw}": "",`);
           }
-        }
-      }
-    }
-
-    return true;
-  }
-
-  function traverseElement(el) {
-    if(!shoudTranslateEl(el)) {
-      return
-    }
-
-    for(const child of el.childNodes) {
-      // if(["RELATIVE-TIME", "TIME-AGO"].includes(el.tagName)) {
-      //   translateRelativeTimeEl(el);
-      //   return;
-      // }
-
-      if(child.nodeType === Node.TEXT_NODE) {
-        translateElement(child);
-      }
-      else if(child.nodeType === Node.ELEMENT_NODE) {
-        if(child.tagName === "INPUT") {
-          // translateElement(child);
-        } else {
-          traverseElement(child);
-        }
-      } else {
-        // pass
-      }
-    }
-  }
-
-  function watchUpdate() {
-    const m = window.MutationObserver || window.WebKitMutationObserver;
-    const observer = new m(function (mutations, observer) {
-      for(let mutationRecord of mutations) {
-        for(let node of mutationRecord.addedNodes) {
-          traverseElement(node);
-        }
-      }
-    });
-
-    observer.observe(document.body, {
-      subtree: true,
-      characterData: true,
-      childList: true,
-    });
-  }
-
-  // translate "about"
-  function translateDesc(el) {
-    $(el).append("<br/>");
-    $(el).append("<a id='translate-me' href='#' style='color:rgb(27, 149, 224);font-size: small'>翻译</a>");
-    $("#translate-me").click(function() {
-      // get description text
-      const desc = $(el)
-        .clone()
-        .children()
-        .remove()
-        .end()
-        .text()
-        .trim();
-
-      if(!desc) {
-        return;
-      }
-
-      GM_xmlhttpRequest({
-        method: "GET",
-        url: `https://www.githubs.cn/translate?q=`+ encodeURIComponent(desc),
-        onload: function(res) {
-          if (res.status === 200) {
-              // document.selector()
-            $("#translate-me").hide();
-            // render result
-            const text = res.responseText;
-            $(el).append("<span style='font-size: small'>由 <a target='_blank' style='color:rgb(27, 149, 224);' href='https://www.githubs.cn'>GitHub中文社区</a> 翻译👇</span>");
-            $(el).append("<br/>");
-            $(el).append(text);
-          } else {
-            alert("翻译失败");
-          }
-        }
-      });
-    });
-  }
-
-  function translateByCssSelector() {
-    if(locales.css) {
-      for(var css of locales.css) {
-        if($(css.selector).length > 0) {
-          if(css.key === '!html') {
-            $(css.selector).html(css.replacement);
-          } else {
-            $(css.selector).attr(css.key, css.replacement);
+        } else {//节点内部有其他元素
+          const nodes = element.childNodes;
+          for (let j = 0; j < nodes.length; j++) {
+            const node = nodes[j];
+            if (node.nodeType === Node.TEXT_NODE) {
+              const raw = node.textContent;
+              if (!raw || raw.length <= 2) { continue; }
+              const txt = dic[raw];
+              if (txt) {
+                node.textContent = txt;
+              } else if (DEBUG) {
+                console.log(`"${raw}": "",`);
+              }
+            }
           }
         }
       }
     }
   }
+
+  const m = window.MutationObserver || window.WebKitMutationObserver;
+  // 当观察到变动时执行的回调函数
+  const callback = (mutationsList, observer) => {
+    // Use traditional 'for loops' for IE 11
+    for (let mutation of mutationsList) {
+
+      console.log(mutation);
+
+    }
+  };
+
+  // 创建一个观察器实例并传入回调函数
+  const observer = new m(callback);
+
+  // 以上述配置开始观察目标节点
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // 之后，可停止观察
+  observer.disconnect();
+
+
+
+
+
 })();
