@@ -127,6 +127,7 @@
       " Price": "售价",
       "Hot Releases": "热门即将推出",
       "Rating": "好评率",
+      " Rating": "好评率",
       "Currency": "货币",
       "Current Price": "当前价格",
       "Converted Price": "换算价格",
@@ -177,20 +178,21 @@
       "All-Time Peak": "历史峰值",
       "Positive": "好评",
       "Negative": "差评",
-      "Rank": "排名",
-      "Level": "等级",
+      "RANK": "排名",
+      "LEVEL": "等级",
       "Unlock Date": "达成日期",
       "Developer": "开发商",
       "Release Date": "发售时间",
       "Followers": "关注数",
-      "Image": "徽章图片",
-      "Max Level": "最高等级",
-      "Foil Max Level": "最高等级(闪亮)",
+      "IMAGE": "徽章图片",
+      "MAX LEVEL": "最高等级",
+      "FOIL MAX LEVEL": "最高等级(闪亮)",
       "7d Trend ": "7天走势",
       "Price": "价格",
       "Year": "年份",
       "Games": "游戏数量",
-      "Links": "链接"
+      "Links": "链接",
+      "Top Sellers": "销售排行"
     },
     ".events-title>span,.events-title>a,#events>.d-flex>a": {
       "Steam Sale Events ": "Steam 促销活动 ",
@@ -418,6 +420,15 @@
       "Show ": "显示 ",
       " entries": " 条",
       "Search:": "搜索:"
+    },
+    ".calendar-weekday": {
+      "Monday": "星期一",
+      "Tuesday": "星期二",
+      "Wednesday": "星期三",
+      "Thursday": "星期四",
+      "Friday": "星期五",
+      "Saturday": "星期六",
+      "Sunday": "星期日"
     }
   },
   "DYNAMIC": {}
