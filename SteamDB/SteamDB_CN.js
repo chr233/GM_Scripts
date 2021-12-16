@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.10
+// @version             1.11
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -103,7 +103,7 @@
             for (let j = 0; j < nodes.length; j++) {
               const node = nodes[j];
               if (node.nodeType === Node.TEXT_NODE) {
-                const raw = node.textContent;
+                const raw = node.textContent.trim();
                 if (!raw || raw.length <= 2) { continue; }
                 const txt = dic[raw];
                 if (txt) {

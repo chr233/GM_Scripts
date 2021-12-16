@@ -201,12 +201,12 @@
       "Steam Charts": "Steam 图表",
       "Patch notes": "补丁说明",
       "Upcoming Steam Releases": "即将发售的 Steam 商品",
-      "\nJoin SteamDB's Discord\n": "\n加入 SteamDB 的 Discord 频道\n",
+      "Join SteamDB's Discord": "\n加入 SteamDB 的 Discord 频道\n",
       "Frequently Asked Questions": "常见问题",
       "Get SteamDB extension for your browser": "获取 SteamDB 浏览器插件",
       "Packages": "SUB (PACKAGES)",
       "Top Rated Games on Steam": "评分最高的 Steam 游戏",
-      "\nOwned Games\n": "\n拥有最多游戏的 Steam 用户\n",
+      "Owned Games": "\n拥有最多游戏的 Steam 用户\n",
       "Badges": "徽章",
       "Top Steam Users By Level": " 等级最高的 Steam 用户",
       "Steam Weekly Global Top Sellers": "本周 Steam 全球销量排行榜",
@@ -337,7 +337,7 @@
       "Store": " 商店页",
       "Hub": "社区中心",
       "PCGW": "PCG Wiki",
-      "Patches\n": " 补丁\n"
+      "Patches": " 补丁\n"
     },
     ".tabnav-tabs>a": {
       "Prices": " 价格",
