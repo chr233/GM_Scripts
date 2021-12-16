@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.11
+// @version             1.12
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -11,6 +11,7 @@
 // @license             AGPL-3.0
 // @icon                https://blog.chrxw.com/favicon.ico
 // @resource            data https://gitee.com/chr_a1/gm_scripts/raw/master/SteamDB/lang_zh_CN.json
+// @grant               GM_addStyle
 // @grant               GM_getResourceText
 // @grant               GM_registerMenuCommand
 // ==/UserScript==
@@ -166,4 +167,5 @@
   // // 之后，可停止观察
   // observer.disconnect();
 
+  GM_addStyle('.tabnav-tabs>a{min-width:80px;}');
 })();
