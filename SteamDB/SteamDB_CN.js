@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.12
+// @version             1.13
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -22,12 +22,12 @@
   const DEBUG = window.localStorage['dbg_mode'] == '开';
   const OUTPUT = window.localStorage['out_word'] == '开';
 
-  GM_registerMenuCommand(`调试汉化文本：【${DEBUG ? '开' : '关'}】`, () => {
+  GM_registerMenuCommand(`调试汉化文本: 【${DEBUG ? '开' : '关'}】`, () => {
     window.localStorage['dbg_mode'] = DEBUG ? '关' : '开';
     window.location.reload();
   });
 
-  GM_registerMenuCommand(`在控制台输出未匹配文本：【${OUTPUT ? '开' : '关'}】`, () => {
+  GM_registerMenuCommand(`在控制台输出未匹配文本: 【${OUTPUT ? '开' : '关'}】`, () => {
     window.localStorage['out_word'] = OUTPUT ? '关' : '开';
     window.location.reload();
   });
@@ -147,7 +147,7 @@
   // call your function
   var End = new Date().getTime();
   console.log('执行耗时', `${End - Start} ms`);
-  console.log('=================================')
+  console.log('=================================');
   console.log(`插件版本: ${version}`);
   console.log(`更新时间: ${update}`);
   console.log(`贡献名单: ${contribution.join(', ')}`);

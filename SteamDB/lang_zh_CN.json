@@ -347,7 +347,8 @@
       "Store": " 商店页",
       "Hub": "社区中心",
       "PCGW": "PCG Wiki",
-      "Patches": " 补丁\n"
+      "Patches": " 补丁\n",
+      "Source 2 Viewer": "Source2 查看器"
     },
     ".tabnav-tabs>a": {
       "Prices": " 价格 ",
@@ -429,7 +430,9 @@
       "Coming Soon": "即将发售",
       "Filter by feature or OS": "按特性或者系统过滤",
       "Filter by type (No DLC)": "按类型过滤 (不包含DLC)",
-      "Filter by user tags": "按用户标签过滤"
+      "Filter by user tags": "按用户标签过滤",
+      "Compare with others…": "和其他项比较...",
+      "Embed this chart on your website": "将此图表嵌入您的网站"
     },
     "#table-apps_length>label,#table-apps_filter>label": {
       "Show": "显示 ",
