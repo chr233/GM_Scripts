@@ -1,6 +1,6 @@
 {
   "DOC": {
-    "更新时间": "2021-12-15",
+    "更新时间": "2021-12-16",
     "文档说明": "key为CSS选择器,value为翻译字典",
     "贡献名单": [
       "Chr_",
@@ -62,59 +62,6 @@
       "Offline": "离线",
       "Online": "在线",
       " Share": " 分享"
-    },
-    ".header-disclaimer": {
-      "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB是一个业余项目, 与Valve或Steam无关.",
-      "All times on the site are UTC.": "网站上的所有时间都是UTC时间."
-    },
-    ".header-kbd": {
-      " toggle this menu ": " 开关菜单 ",
-      " focus search": " 开始搜索"
-    },
-    "h1,h1>span>a": {
-      "Database of everything on Steam.": "应有尽有的 Steam 数据库.",
-      "Your watch list": "您的监视列表",
-      "Upcoming and previous Steam sales": "即将到来的和之前的Steam特卖活动",
-      "Current Steam Sales": "Steam 正在进行的促销",
-      "Steam Calculator": "Steam 计算器",
-      "Steam Charts": "Steam 图表",
-      "Patch notes": "补丁说明",
-      "Upcoming Steam Releases": "即将发售的 Steam 商品",
-      "\nJoin SteamDB's Discord\n": "\n加入 SteamDB 的 Discord 频道\n",
-      "Frequently Asked Questions": "常见问题",
-      "Get SteamDB extension for your browser": "获取 SteamDB 浏览器插件",
-      "Packages": "SUB (PACKAGES)",
-      "Top Rated Games on Steam": "评分最高的 Steam 游戏",
-      "\nOwned Games\n": "\n拥有最多游戏的 Steam 用户\n",
-      "Badges": "徽章",
-      " Top Steam Users By Level": " 等级最高的 Steam 用户",
-      "Steam Weekly Global Top Sellers": "本周 Steam 全球销量排行榜",
-      "Most Followed Steam Games": "最受关注的 Steam 游戏",
-      "Most Wishlisted Steam Games": "最多愿望单的 Steam 游戏",
-      "Steam Profile Badges": "Steam 徽章",
-      "All Steam Game Tags": "所有 Steam 游戏标签",
-      "Most followed upcoming Steam games": "最受关注的即将发售的游戏",
-      "Steam Release Calendar": "Steam 发售日历",
-      "Steam Game Release Summary": "Steam 游戏发售汇总",
-      "How can you help SteamDB": "我该如何帮助 SteamDB"
-    },
-    ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a": {
-      "This ": "这个 ",
-      "third-party": "第三方",
-      " website gives you better insight into the ": " 网站可让您更好地了解 ",
-      "Steam": "Steam",
-      " platform and everything in its database.": " 平台及其数据库中的所有内容.",
-      "Look through our FAQ": "查阅FAQ",
-      " if you have any questions about SteamDB, ": " 如果您有任何问题关于SteamDB的问题, ",
-      "join our Discord": "加入 Discord 频道",
-      "Follow @SteamDB on Twitter": "在 Twitter 上关注 @SteamDB",
-      "Why are upcoming sales marked as unconfirmed?": "为什么即将到来的销售标记为未确认?",
-      "Do you know when the next sale is and what discounts will it have?": "SteamDB 是如何得知下一次促销的时间以及折扣情况的?",
-      " Any SteamID format is accepted, enter anything you want and we will convert it on the fly for you.": " 输入 SteamID 的任意形式, 我们将会自动将其转换为 SteamID."
-    },
-    "#insert-steamid>a": {
-      "You are currently signed in as ": "你当前登录账号的 SteamID 是 ",
-      ". Click this or your avatar in the navbar to view your profile.": " . 点击此处或者导航栏上的头像来查看你的个人资料."
     },
     "tr>th,tr>th>a,tr>th span": {
       "Most Played": "最常玩的",
@@ -195,70 +142,6 @@
       "Links": "链接",
       "Top Sellers": "销售排行"
     },
-    ".events-title>span,.events-title>a,#events>.d-flex>a": {
-      "Steam Sale Events ": "Steam 促销活动 ",
-      "Browse and filter all current deals": "浏览和过滤正在进行的促销活动",
-      "View all previous sale events…": "查看所有过去的促销活动…"
-    },
-    "h2,h2 *": {
-      "SteamDB in numbers": "Steam 统计数据",
-      "Recent app events ": "最近更新的APP",
-      "Recent package events ": "最近更新的SUB",
-      "Our latest blog post": "最新博客文章",
-      "Store Prices": "各区商店价格",
-      "High-resolution Steam charts": "高分辨率 Steam 图表",
-      "Additional Information": "附加信息",
-      "Downloadable Content": "DLC 列表",
-      "Depots": "DEPOT 列表",
-      "Launch Options": "启动选项",
-      "Achievements": "成就",
-      "Screenshots": "截图",
-      "Packages that include this app": "包含此APP的SUB",
-      "History": "历史",
-      "Latest updated products you own": "你库中最近更新的产品",
-      "When is the next Steam sale?": "下一次 Steam 特卖是什么时候? ",
-      "Curated patch notes for Steam games": "Steam 游戏的补丁说明",
-      "Calculate the value of your ": "计算你的 ",
-      "Steam ": "Steam ",
-      "account": "账号价值",
-      "Your privacy": "你的隐私",
-      "Page ": "页码 ",
-      "As decided by ": "数据来自 ",
-      "SteamDB rating algorithm": "SteamDB 评分算法",
-      "Event Badges": "Steam 活动徽章",
-      "Players ": "玩家可以 ",
-      "can craft trading cards to badges": "合成卡牌",
-      " or earn them during special events.": " 或者参与特殊的促销活动来取得徽章.",
-      "Steam Game Releases by Month": "按月查看 Steam 发布的游戏",
-      "Steam Game Releases by Year": "按年查看 Steam 发布的游戏"
-    },
-    ".container-stats em": {
-      "apps in database": "APP总数",
-      "packages in database": "SUB总数",
-      "bundles in database": "BUNDLE总数",
-      "releases this year": "今年发售游戏"
-    },
-    ".app-history>li>span": {
-      "New: ": "新: ",
-      "New Unknown: ": "未知: ",
-      "New on store: ": "新项目: ",
-      "New Game on store: ": "新游戏: ",
-      "New Game: ": "新游戏: ",
-      "New DLC on store: ": "新DLC: ",
-      "New DLC: ": "新DLC: ",
-      "New Beta: ": "新Beta测试: ",
-      "New Demo: ": "新DEMO: ",
-      "New Application on store: ": "新软件: ",
-      "New Application: ": "新软件: ",
-      "Renamed on store: ": "重命名: ",
-      "Renamed: ": "重命名: ",
-      "Retired: ": "停售: ",
-      "Removed from store: ": "移除商店页: "
-    },
-    ".welding-torch>span,.welding-torch>span>b": {
-      "SteamDB has been running ad-free since 2012.": "SteamDB 自2012建立以来一直没有任何广告.",
-      "Find out how you can contribute.": "查看我能为 SteamDB 做什么."
-    },
     "td,td>a": {
       "Yes": "✅是",
       "No": "❌否",
@@ -310,6 +193,141 @@
       "library_hero": "库横幅",
       "library_logo": "库图标",
       "Web Assets": "网页资源"
+    },
+    "h1,h1>span>a": {
+      "Database of everything on Steam.": "应有尽有的 Steam 数据库.",
+      "Your watch list": "您的监视列表",
+      "Upcoming and previous Steam sales": "即将到来的和之前的Steam特卖活动",
+      "Current Steam Sales": "Steam 正在进行的促销",
+      "Steam Calculator": "Steam 计算器",
+      "Steam Charts": "Steam 图表",
+      "Patch notes": "补丁说明",
+      "Upcoming Steam Releases": "即将发售的 Steam 商品",
+      "\nJoin SteamDB's Discord\n": "\n加入 SteamDB 的 Discord 频道\n",
+      "Frequently Asked Questions": "常见问题",
+      "Get SteamDB extension for your browser": "获取 SteamDB 浏览器插件",
+      "Packages": "SUB (PACKAGES)",
+      "Top Rated Games on Steam": "评分最高的 Steam 游戏",
+      "\nOwned Games\n": "\n拥有最多游戏的 Steam 用户\n",
+      "Badges": "徽章",
+      " Top Steam Users By Level": " 等级最高的 Steam 用户",
+      "Steam Weekly Global Top Sellers": "本周 Steam 全球销量排行榜",
+      "Most Followed Steam Games": "最受关注的 Steam 游戏",
+      "Most Wishlisted Steam Games": "最多愿望单的 Steam 游戏",
+      "Steam Profile Badges": "Steam 徽章",
+      "All Steam Game Tags": "所有 Steam 游戏标签",
+      "Most followed upcoming Steam games": "最受关注的即将发售的游戏",
+      "Steam Release Calendar": "Steam 发售日历",
+      "Steam Game Release Summary": "Steam 游戏发售汇总",
+      "How can you help SteamDB": "我该如何帮助 SteamDB"
+    },
+    "h2,h2 *": {
+      "SteamDB in numbers": "Steam 统计数据",
+      "Recent app events ": "最近更新的APP",
+      "Recent package events ": "最近更新的SUB",
+      "Our latest blog post": "最新博客文章",
+      "Store Prices": "各区商店价格",
+      "High-resolution Steam charts": "高分辨率 Steam 图表",
+      "Additional Information": "附加信息",
+      "Downloadable Content": "DLC 列表",
+      "Depots": "DEPOT 列表",
+      "Launch Options": "启动选项",
+      "Achievements": "成就",
+      "Screenshots": "截图",
+      "Packages that include this app": "包含此APP的SUB",
+      "History": "历史",
+      "Latest updated products you own": "你库中最近更新的产品",
+      "When is the next Steam sale?": "下一次 Steam 特卖是什么时候? ",
+      "Curated patch notes for Steam games": "Steam 游戏的补丁说明",
+      "Calculate the value of your ": "计算你的 ",
+      "Steam ": "Steam ",
+      "account": "账号价值",
+      "Your privacy": "你的隐私",
+      "Page ": "页码 ",
+      "As decided by ": "数据来自 ",
+      "SteamDB rating algorithm": "SteamDB 评分算法",
+      "Event Badges": "Steam 活动徽章",
+      "Players ": "玩家可以 ",
+      "can craft trading cards to badges": "合成卡牌",
+      " or earn them during special events.": " 或者参与特殊的促销活动来取得徽章.",
+      "Steam Game Releases by Month": "按月查看 Steam 发布的游戏",
+      "Steam Game Releases by Year": "按年查看 Steam 发布的游戏"
+    },
+    "h3,h3>a": {
+      "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
+      "Concurrent Steam Users": "当前在线Steam用户",
+      "Examples on what can be entered": "示例输入",
+      "Some rules before you continue": "在继续之前, 请先了解以下规则",
+      "Channels we have": "现有频道",
+      "Install from the Chrome Web Store": "从Chrome Web Store安装",
+      "Install from Mozilla Add-ons": "从Mozilla Add-ons安装",
+      "Install from Microsoft Edge Add-ons": "从Microsoft Edge Add-ons安装",
+      "Checkbox explanation": "选项说明",
+      "SteamDB Website": "SteamDB 网站",
+      "Buttons & links": "按钮 & 链接",
+      "Inventory & Trading": "库存 & 交易",
+      "Enhancements": "改进",
+      "Rating Breakdown": "评分细节"
+    },
+    ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a": {
+      "This ": "这个 ",
+      "third-party": "第三方",
+      " website gives you better insight into the ": " 网站可让您更好地了解 ",
+      "Steam": "Steam",
+      " platform and everything in its database.": " 平台及其数据库中的所有内容.",
+      "Look through our FAQ": "查阅FAQ",
+      " if you have any questions about SteamDB, ": " 如果您有任何问题关于SteamDB的问题, ",
+      "join our Discord": "加入 Discord 频道",
+      "Follow @SteamDB on Twitter": "在 Twitter 上关注 @SteamDB",
+      "Why are upcoming sales marked as unconfirmed?": "为什么即将到来的销售标记为未确认?",
+      "Do you know when the next sale is and what discounts will it have?": "SteamDB 是如何得知下一次促销的时间以及折扣情况的?",
+      " Any SteamID format is accepted, enter anything you want and we will convert it on the fly for you.": " 输入 SteamID 的任意形式, 我们将会自动将其转换为 SteamID."
+    },
+    ".header-disclaimer": {
+      "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB是一个业余项目, 与Valve或Steam无关.",
+      "All times on the site are UTC.": "网站上的所有时间都是UTC时间."
+    },
+    ".header-kbd": {
+      " toggle this menu ": " 开关菜单 ",
+      " focus search": " 开始搜索"
+    },
+    "#insert-steamid>a": {
+      "You are currently signed in as ": "你当前登录账号的 SteamID 是 ",
+      ". Click this or your avatar in the navbar to view your profile.": " . 点击此处或者导航栏上的头像来查看你的个人资料."
+    },
+    ".events-title>span,.events-title>a,#events>.d-flex>a": {
+      "Steam Sale Events ": "Steam 促销活动 ",
+      "Browse and filter all current deals": "浏览和过滤正在进行的促销活动",
+      "View all previous sale events…": "查看所有过去的促销活动…"
+    },
+    ".container-stats em": {
+      "apps in database": "APP总数",
+      "packages in database": "SUB总数",
+      "bundles in database": "BUNDLE总数",
+      "releases this year": "今年发售游戏"
+    },
+    ".app-history>li>span": {
+      "New: ": "新: ",
+      "New Unknown: ": "未知: ",
+      "New on store: ": "新项目: ",
+      "New Game on store: ": "新游戏: ",
+      "New Game: ": "新游戏: ",
+      "New DLC on store: ": "新DLC: ",
+      "New DLC: ": "新DLC: ",
+      "New Beta: ": "新Beta测试: ",
+      "New Demo: ": "新DEMO: ",
+      "New Application on store: ": "新软件: ",
+      "New Application: ": "新软件: ",
+      "Renamed on store: ": "重命名: ",
+      "New Music on store: ": "新音乐: ",
+      "New Music: ": "新音乐: ",
+      "Renamed: ": "重命名: ",
+      "Retired: ": "停售: ",
+      "Removed from store: ": "移除商店页: "
+    },
+    ".welding-torch>span,.welding-torch>span>b": {
+      "SteamDB has been running ad-free since 2012.": "SteamDB 自2012建立以来一直没有任何广告.",
+      "Find out how you can contribute.": "查看我能为 SteamDB 做什么."
     },
     ".app-links>a,.app-links>a>span": {
       "Wishlist": "愿望单",
@@ -364,22 +382,6 @@
       "Hours on record": "记录时间 ",
       "Average playtime": "平均游戏时间 ",
       "Private": "私密"
-    },
-    "h3,h3>a": {
-      "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
-      "Concurrent Steam Users": "当前在线Steam用户",
-      "Examples on what can be entered": "示例输入",
-      "Some rules before you continue": "在继续之前, 请先了解以下规则",
-      "Channels we have": "现有频道",
-      "Install from the Chrome Web Store": "从Chrome Web Store安装",
-      "Install from Mozilla Add-ons": "从Mozilla Add-ons安装",
-      "Install from Microsoft Edge Add-ons": "从Microsoft Edge Add-ons安装",
-      "Checkbox explanation": "选项说明",
-      "SteamDB Website": "SteamDB 网站",
-      "Buttons & links": "按钮 & 链接",
-      "Inventory & Trading": "库存 & 交易",
-      "Enhancements": "改进",
-      "Rating Breakdown": "评分细节"
     },
     ".tabnav-steam-links>div,.tabnav-steam-links>a": {
       "STEAM LINKS": "Steam 链接",
