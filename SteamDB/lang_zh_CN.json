@@ -494,16 +494,7 @@
       "U.A.E. Dirham": " 阿联酋迪拉姆 AED",
       "Ukrainian Hryvnia": "乌克兰格里夫纳 UAH",
       "Uruguayan Peso": "乌拉圭比索 UYU",
-      "Vietnamese Dong": "越南盾 VND"
-    }
-  },
-  "INPUT": {
-    "Search…": "搜索...",
-    "Search": "搜索",
-    "Your profile url or steamid": "你的个人资料链接或SteamID"
-  },
-  "DYNAMIC": {
-    "option": {
+      "Vietnamese Dong": "越南盾 VND",
       "Filter by feature or OS": "按特性或者系统过滤",
       "Linux & SteamOS": "",
       "macOS": "",
@@ -575,5 +566,12 @@
       "Packages only (unfiltered)": "",
       "All (slow)": "全部 (慢)"
     }
+  },
+  "INPUT": {
+    "Search…": "搜索...",
+    "Search": "搜索",
+    "Your profile url or steamid": "你的个人资料链接或SteamID"
+  },
+  "DYNAMIC": {
   }
 }

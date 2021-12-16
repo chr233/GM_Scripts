@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.8
+// @version             1.9
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -34,10 +34,15 @@
   let Locales;
 
   if (DEBUG) {
+    const template = '{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}';
     const box = document.createElement('div');
+    box.style.cssText = 'display:flex;';
     const text = document.createElement('textarea');
     text.style.cssText = 'width:90%;height:250px;resize:vertical;';
     box.appendChild(text);
+    const action = document.createElement('div');
+    action.style.cssText = 'width:10%;height:100%';
+    box.appendChild(action);
     const btnSave = document.createElement('button');
     btnSave.innerText = '保存并刷新';
     btnSave.addEventListener('click', () => {
@@ -54,11 +59,19 @@
         }
       }
     });
-    btnSave.style.cssText = 'width:10%;height:50px;';
-    box.appendChild(btnSave);
+    btnSave.style.cssText = 'width:100%;height:50px;';
+    action.appendChild(btnSave);
+    const btnReset = document.createElement('button');
+    btnReset.textContent = '清空文本';
+    btnReset.addEventListener('click', () => {
+      window.localStorage['sdb_lang'] = template;
+      window.location.reload();
+    });
+    btnReset.style.cssText = 'width:100%;height:50px;';
+    action.appendChild(btnReset);
+
     const father = document.getElementById('main');
     father.insertBefore(box, father.firstChild);
-    const template = '{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}';
     const customLang = window.localStorage['sdb_lang'] ?? template;
     text.value = customLang;
     Locales = JSON.parse(customLang);
@@ -109,7 +122,7 @@
   }
 
   {//输入框
-    const inputs =Locales.INPUT;
+    const inputs = Locales.INPUT;
     if (OUTPUT) { console.log('〖输入框〗'); }
     const elements = document.querySelectorAll("input");
     for (let i = 0; i < elements.length; i++) {
