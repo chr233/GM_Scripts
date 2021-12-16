@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.7
+// @version             1.8
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -71,11 +71,8 @@
 
   {//静态元素
     for (const [css, dic] of Object.entries(Locales.STATIC)) {
-      if (OUTPUT) {
-        console.log(`〖${css}〗`);
-      }
+      if (OUTPUT) { console.log(`〖${css}〗`); }
       const elements = document.querySelectorAll(css);
-
       if (elements.length > 0) {
         for (let i = 0; i < elements.length; i++) {
           const element = elements[i];
@@ -105,27 +102,25 @@
             }
           }
         }
+      } else {
+        if (OUTPUT) { console.warn(`CSS选择器未匹配到任何元素: ${css}`); }
       }
     }
   }
 
   {//输入框
-    const inputs = Object.entries(Locales.INPUT);
-    if (OUTPUT) {
-      console.log('〖输入框〗');
-    }
+    const inputs =Locales.INPUT;
+    if (OUTPUT) { console.log('〖输入框〗'); }
     const elements = document.querySelectorAll("input");
-    if (elements.length > 0) {
-      for (let i = 0; i < elements.length; i++) {
-        const element = elements[i];
-        const raw = element.placeholder;
-        if (!raw) { continue; }
-        const txt = inputs[raw];
-        if (txt) {
-          element.placeholder = txt;
-        } else if (OUTPUT) {
-          console.log(`"${raw}": "",`);
-        }
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      const raw = element.placeholder;
+      if (!raw) { continue; }
+      const txt = inputs[raw];
+      if (txt) {
+        element.placeholder = txt;
+      } else if (OUTPUT) {
+        console.log(`"${raw}": "",`);
       }
     }
   }
