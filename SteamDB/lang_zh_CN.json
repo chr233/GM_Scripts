@@ -429,6 +429,26 @@
       "Friday": "星期五",
       "Saturday": "星期六",
       "Sunday": "星期日"
+    },
+    ".toast-header": {
+      "Extension error": "扩展插件错误",
+      "Failed to load your games. Are you logged on the Steam Store in this browser?": "无法加载你的游戏，你在这个浏览器中登录Steam了吗？",
+      "Sign in on the Steam Store": "登录Steam"
+    },
+    ".steamy-checkbox-label": {
+      "Show only wishlisted": "仅显示愿望单游戏",
+      "Show only followed": "仅显示关注游戏",
+      "Hide owned games": "隐藏已拥有游戏",
+      "Show only historical lows": "仅显示新史低",
+      "Show only matching lows": "仅显示平史低",
+      "Hide ignored games": "隐藏忽略的游戏"
+    },
+    ".header-sales-bottom": {
+      "When is the next Steam Sale?": "下一次 Steam 特卖是什么时候？",
+      "Sales History": "历史特卖"
+    },
+    ".highest-discount-major": {
+      "new historical low": "新史低"
     }
   },
   "INPUT": {
