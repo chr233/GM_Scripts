@@ -4,7 +4,8 @@
     "文档说明": "key为CSS选择器,value为翻译字典",
     "贡献名单": [
       "Chr_",
-      "joejoe5"
+      "joejoe5",
+      "cyb233"
     ]
   },
   "STATIC": {
@@ -430,7 +431,7 @@
       "Saturday": "星期六",
       "Sunday": "星期日"
     },
-    ".toast-header": {
+    "#js-notifications": {
       "Extension error": "扩展插件错误",
       "Failed to load your games. Are you logged on the Steam Store in this browser?": "无法加载你的游戏，你在这个浏览器中登录Steam了吗？",
       "Sign in on the Steam Store": "登录Steam"
