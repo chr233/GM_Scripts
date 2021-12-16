@@ -232,7 +232,7 @@
       "Launch Options": "启动选项",
       "Achievements": "成就",
       "Screenshots": "截图",
-      "Packages that include this app": "包含此APP的SUB",
+      "Packages that include this app": "包含此 APP 的 SUB",
       "History": "历史",
       "Latest updated products you own": "你库中最近更新的产品",
       "When is the next Steam sale?": "下一次 Steam 特卖是什么时候? ",
@@ -249,7 +249,11 @@
       "can craft trading cards to badges": "合成卡牌",
       "or earn them during special events.": " 或者参与特殊的促销活动来取得徽章.",
       "Steam Game Releases by Month": "按月查看 Steam 发布的游戏",
-      "Steam Game Releases by Year": "按年查看 Steam 发布的游戏"
+      "Steam Game Releases by Year": "按年查看 Steam 发布的游戏",
+      "Bundles that include this app": "包含此 APP 的捆绑包",
+      "Configuration": "配置",
+      "Install Configuration": "安装配置",
+      "Other apps that reference this app": "其他引用此 APP 的 APP"
     },
     "h3,h3>a": {
       "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
@@ -265,7 +269,13 @@
       "Buttons & links": "按钮 & 链接",
       "Inventory & Trading": "库存 & 交易",
       "Enhancements": "改进",
-      "Rating Breakdown": "评分细节"
+      "Rating Breakdown": "评分细节",
+      "Branches": "分支 ",
+      "Other": "其他",
+      "Raw Information": "原始信息",
+      "User File System": "用户文件系统",
+      "Save File Locations": "存档位置",
+      "Localization Strings": "本地化字符串"
     },
     ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a": {
       "This": "这个 ",
@@ -340,20 +350,21 @@
       "Patches": " 补丁\n"
     },
     ".tabnav-tabs>a": {
-      "Prices": " 价格",
-      "Charts": " 图表",
-      "Information": " 信息",
-      "Packages": " SUB",
-      "DLCs": " DLC",
-      "Depots": " DEPOT",
-      "Configuration": " 配置",
-      "Cloud Saves": " 云存档",
-      "Achievements": " 成就",
-      "Community": " 社区",
-      "Screenshots": " 截图",
-      "Linked apps": " 关联 APP",
-      "History": " 历史",
-      "Games": "游戏"
+      "Prices": " 价格 ",
+      "Charts": " 图表 ",
+      "Information": " 信息 ",
+      "Packages": " SUB ",
+      "DLCs": " DLC ",
+      "Depots": " DEPOT ",
+      "Configuration": " 配置 ",
+      "Cloud Saves": " 云存档 ",
+      "Achievements": " 成就 ",
+      "Community": " 社区 ",
+      "Screenshots": " 截图 ",
+      "Linked apps": " 关联 APP ",
+      "History": " 历史 ",
+      "Games": " 游戏 ",
+      "Localization": " 本地化 "
     },
     ".header-wrapper>div>p,.header-wrapper>div>p>b,.header-wrapper>div>a": {
       "Your watch list is public, you can share it with this link:": "你的监视列表是公开的, 你可以分享这个链接: ",
@@ -398,7 +409,7 @@
       "View more app history entries…": "查看更多 APP 历史记录...",
       "View more package history entries…": "查看更多 SUB 历史记录..."
     },
-    "#js-header-hamburger>span,a.btn,button": {
+    "#js-header-hamburger>span,a.btn,button,button>span": {
       "Menu": "菜单",
       "Calendar": "日历",
       "Past 7 day releases": "上一周发售的游戏",
@@ -415,7 +426,10 @@
       "All Types": "所有类型",
       "Filter by year": "按年查看",
       "Top Selling Games": "销量最好的游戏",
-      "Coming Soon": "即将发售"
+      "Coming Soon": "即将发售",
+      "Filter by feature or OS": "按特性或者系统过滤",
+      "Filter by type (No DLC)": "按类型过滤 (不包含DLC)",
+      "Filter by user tags": "按用户标签过滤"
     },
     "#table-apps_length>label,#table-apps_filter>label": {
       "Show": "显示 ",
@@ -430,11 +444,6 @@
       "Friday": "星期五",
       "Saturday": "星期六",
       "Sunday": "星期日"
-    },
-    "#js-notifications": {
-      "Extension error": "扩展插件错误",
-      "Failed to load your games. Are you logged on the Steam Store in this browser?": "无法加载你的游戏，你在这个浏览器中登录Steam了吗？",
-      "Sign in on the Steam Store": "登录Steam"
     },
     ".steamy-checkbox-label": {
       "Show only wishlisted": "仅显示愿望单游戏",
@@ -996,5 +1005,11 @@
     "Search": "搜索",
     "Your profile url or steamid": "你的个人资料链接或SteamID"
   },
-  "DYNAMIC": {}
+  "DYNAMIC": {
+    "#js-notifications": {
+      "Extension error": "扩展插件错误",
+      "Failed to load your games. Are you logged on the Steam Store in this browser?": "无法加载你的游戏，你在这个浏览器中登录Steam了吗？",
+      "Sign in on the Steam Store": "登录Steam"
+    }
+  }
 }
