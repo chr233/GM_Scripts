@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.6
+// @version             1.7
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -36,7 +36,7 @@
   if (DEBUG) {
     const box = document.createElement('div');
     const text = document.createElement('textarea');
-    text.style.cssText = 'width:90%;height:50px;resize:vertical;';
+    text.style.cssText = 'width:90%;height:250px;resize:vertical;';
     box.appendChild(text);
     const btnSave = document.createElement('button');
     btnSave.innerText = '保存并刷新';
@@ -58,7 +58,7 @@
     box.appendChild(btnSave);
     const father = document.getElementById('main');
     father.insertBefore(box, father.firstChild);
-    const template = '{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},"STATIC":{},"INPUT":{},"DYNAMIC":{}}';
+    const template = '{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}';
     const customLang = window.localStorage['sdb_lang'] ?? template;
     text.value = customLang;
     Locales = JSON.parse(customLang);
