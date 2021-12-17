@@ -183,8 +183,8 @@
       "osarch": "系统架构",
       "community_hub_visible": "社区中心可见",
       "64-bit only": "仅支持64位",
-      "metacritic_name": "Metacritic名称",
-      "metacritic_score": "Metacritic评分",
+      "metacritic_name": "Metacritic 名称",
+      "metacritic_score": "Metacritic 评分",
       "community_visible_stats": "社区中心可见统计",
       "Achievement Languages": "成就语言",
       "review_score": "评测结果",
@@ -252,7 +252,11 @@
       "Last Known Name": "最后已知名称",
       "Store or CD Key": "商店购买 和 CDkey",
       "baselanguages": "基础语言",
-      "workshopdepot": "创意工坊 DEPOT"
+      "workshopdepot": "创意工坊 DEPOT",
+      "eulas": "用户协议"
+    },
+    "i.muted": {
+      "empty string": "空"
     },
     "h1,h1>span>a": {
       "Database of everything on Steam.": "应有尽有的 Steam 数据库.",
@@ -508,7 +512,8 @@
       "Embed this chart on your website": "将此图表嵌入您的网站",
       "Set your currency": " 设置您的货币 ",
       "Search": "搜索",
-      "View Steam Points Shop": "在 Steam 点数商店中查看"
+      "View Steam Points Shop": "在 Steam 点数商店中查看",
+      "View screenshots": "浏览截图"
     },
     "#table-apps_length>label,#table-apps_filter>label": {
       "Show": "显示 ",
