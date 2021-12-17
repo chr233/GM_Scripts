@@ -1117,6 +1117,23 @@
     "Search": "搜索",
     "Your profile url or steamid": "你的个人资料链接或SteamID"
   },
+  "LABEL": {
+    "Toggle menu": "开关菜单",
+    "Homepage": "主页",
+    "Search": "搜索",
+    "User menu": "用户菜单",
+    "View your game cards": "查看你的集换式卡牌",
+    "View patch notes for this game": "查看该游戏的补丁说明",
+    "Single-player": "单人",
+    "Steam Achievements": "Steam 成就",
+    "Steam Workshop": "Steam 创意工坊",
+    "Steam Cloud": "Steam 云",
+    "Steam Trading Cards": "Steam 集换式卡牌",
+    "Discord": "Discord",
+    "Twitter": "推特",
+    "GitHub": "GitHub",
+    "Steam Group": "Steam 组"
+  },
   "DYNAMIC": {
     "#js-notifications": {
       "Extension error": "扩展插件错误",

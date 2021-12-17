@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.16
+// @version             1.17
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -37,7 +37,7 @@
   let Locales;
 
   if (DEBUG) {
-    const template = '{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}';
+    const template = '{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"LABEL":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}';
     const box = document.createElement('div');
     box.style.cssText = 'display:flex;';
     const text = document.createElement('textarea');
@@ -141,7 +141,22 @@
     }
   }
 
-
+  {//悬浮提示
+    const labels = Locales.LABEL;
+    if (OUTPUT) { console.log('〖提示文本〗'); }
+    const elements = document.querySelectorAll("*[aria-label]");
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      const raw = element.getAttribute('aria-label');
+      if (!raw) { continue; }
+      const txt = labels[raw];
+      if (txt) {
+        element.setAttribute('aria-label',txt) ;
+      } else if (OUTPUT) {
+        console.log(`"${raw}": "",`);
+      }
+    }
+  }
 
   const { script: { version } } = GM_info;
   const { DOC: { "更新时间": update, "贡献名单": contribution } } = Locales;
@@ -153,6 +168,8 @@
   console.log(`插件版本: ${version}`);
   console.log(`更新时间: ${update}`);
   console.log(`贡献名单: ${contribution.join(', ')}`);
+  console.log('=================================');
+  console.log('迷茫同学:\n『没有恶意 请问直接用谷歌翻译整个网页不香吗』')
   // // 创建一个观察器实例并传入回调函数
   // const observer = new MutationObserver((mutationsList, observer) => {
   //     // Use traditional 'for loops' for IE 11
