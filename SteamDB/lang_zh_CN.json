@@ -572,6 +572,21 @@
       "The data for this package may be outdated, as our bot can no longer access the package info.": "此 SUB 的数据可能已过期, 我们的机器人再也无法读取此 SUB 的信息.",
       "Due to a Steam change in June 2020, packages do not return any information until it is available in the store or owned.": "Steam 在2020年6月更新以后, 只有 SUB 的拥有者才能读取该 SUB 的信息."
     },
+    "#js-search-tips>p,#js-search-tips>ul>li,.header-search-enter": {
+      "Start typing to see game suggestions. This only suggests apps that have a store page.": "输入任何关键字来查看游戏建议. 在这里只会显示有商店页面的应用.",
+      "Use slash key (": "使用快捷键 (",
+      ") to focus search from anywhere.": ") 可以随时打开搜索界面.",
+      "Use arrow keys (": "使用方向键 (",
+      "and": " 和 ",
+      ") to navigate suggestions.": ") 可以选择搜索建议.",
+      "Enter an appid to be redirected to the app page.": "输入 AppID 会直接跳转到应用详情页.",
+      "Enter a steamid (765...) to be redirected to calculator.": "输入 SteamID (765...) 会直接跳转到计算器.",
+      "Paste a profile link (/id/ or /profiles/) to be redirected to calculator.": "输入个人资料链接 (/id/ 或 /profiles/) 会直接跳转到计算器.",
+      "Paste any url that contains app/, sub/, bundle/, or depot/ to be redirected to the relevant page.": "输入任何包含 app/, sub/, bundle/, depot/ 的链接, 会直接跳转到相应的详情页.",
+      "Click anywhere outside the search field to close this popup.": "点击搜索框外的任何地方可以退出此界面.",
+      "Only apps with a store page are suggested.": "只有具有商店页面的 APP 才会显示在搜索提示中.",
+      "Submit to view all results.": "提交关键词查看所有结果."
+    },
     "option,.ms-drop span,.currency-selector>.btn,a.btn-tag": {
       "U.S. Dollar": " 美元 USD",
       "Euro": " 欧元 EUR",
