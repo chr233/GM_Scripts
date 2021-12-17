@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name            Login_Fix
-// @name:zh-CN      登录框无法输入
+// @name:zh-CN      修复登录框无法输入
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.5
+// @version         1.6
 // @description     修复登录框无法输入的Bug
 // @description:zh-CN  修复登录框无法输入的Bug
 // @author          Chr_
-// @match           https://store.steampowered.com/login/*
+// @match           https://store.steampowered.com/login*
+// @match           https://steamcommunity.com/openid/login*
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
 // ==/UserScript==
