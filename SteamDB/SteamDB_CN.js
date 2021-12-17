@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.14
+// @version             1.15
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -31,6 +31,8 @@
     window.localStorage['out_word'] = OUTPUT ? '关' : '开';
     window.location.reload();
   });
+
+  document.querySelector('html').getAttribute('lang') = 'zh-CN';
 
   let Locales;
 

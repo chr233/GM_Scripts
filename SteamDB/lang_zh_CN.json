@@ -1,7 +1,10 @@
 {
   "DOC": {
-    "更新时间": "2021-12-16",
-    "文档说明": "key为CSS选择器,value为翻译字典",
+    "更新时间": "2021-12-17",
+    "文档说明": "STATIC: 静态元素字典, INPUT: 输入框字典, DYNAMIC: 动态元素字典",
+    "STATIC说明": "key为CSS选择器,value为翻译字典. 只匹配被选择的元素中的textNode元素",
+    "INPUT说明": "key为placeholder内容,value为翻译文本",
+    "DYNAMIC说明": "暂未实装",
     "贡献名单": [
       "Chr_",
       "joejoe5",
@@ -190,7 +193,17 @@
       "library_capsule": "封面图",
       "library_hero": "库横幅",
       "library_logo": "库图标",
-      "Web Assets": "网页资源"
+      "Web Assets": "网页资源",
+      "Steam vanity url": "Steam 自定义 URL",
+      "Steam profile url": "Steam 永久链接",
+      "Steam /user/ url": "Steam /user/ 链接",
+      "Steam invite url": "Steam 邀请链接",
+      "Steam China profile url": "蒸汽平台永久链接",
+      "64-bit SteamID": "64位 SteamID",
+      "Account ID (Dota 2 ID)": "账户 ID (Dota 2 ID)",
+      "CS:GO friend code": "CSGO 好友代码",
+      "Steam vanity id": "Steam 自定义 ID",
+      "FiveM's hex format": "FiveM 的十六进制格式"
     },
     "h1,h1>span>a": {
       "Database of everything on Steam.": "应有尽有的 Steam 数据库.",
@@ -277,7 +290,7 @@
       "Save File Locations": "存档位置",
       "Localization Strings": "本地化字符串"
     },
-    ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a": {
+    ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a,.container>div>p": {
       "This": "这个 ",
       "third-party": "第三方",
       "website gives you better insight into the": " 网站可让您更好地了解 ",
@@ -462,6 +475,22 @@
     },
     ".highest-discount-major": {
       "new historical low": "新史低"
+    },
+    ".fancy-price,.fancy-range>label": {
+      "Price": "\n售价\n",
+      "to": "\n到\n",
+      "Reviews": "\n评测数\n",
+      "Rating: ≥": "好评率 ≥",
+      "Discount:": "折扣: "
+    },
+    ".pre-table-title>span": {
+      "Current Deals": "当前特卖",
+      "Most played games on Steam": "Steam 最常玩的游戏"
+    },
+    ".panel-heading,.panel-heading~p": {
+      "Frequently Asked Questions": " 常见问题",
+      "This page will calculate the approximate value of your Steam account by looking up your games on your Steam community profile, using the current prices for each game on the Steam store.": "此页面将依据 Steam 商店中每款游戏的实时价格, 根据您的 Steam 社区个人资料中拥有的游戏来计算您的 Steam 帐户的大致价值.",
+      "We can calculate account worth in all currencies supported by Steam. Our site has price history for all games in all currencies!": "我们可以用 Steam 支持的所有货币单位计算账户的价值. 我们拥有所有游戏在所有货币单位下的价格历史!"
     },
     "option,.ms-drop span": {
       "U.S. Dollar": "美元 USD",
