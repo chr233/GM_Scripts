@@ -84,7 +84,7 @@
       "Currency": "货币",
       "Current Price": "当前价格",
       "Converted Price": "换算价格",
-      "Lowest Recorded Price": "历史最低价格",
+      "LOWEST RECORDED PRICE": "历史最低价格",
       "Month": "月",
       "Peak": "峰值",
       "Min Daily Peak": "Min Daily Peak",
@@ -592,7 +592,7 @@
       "Only apps with a store page are suggested.": "只有具有商店页面的 APP 才会显示在搜索提示中.",
       "Submit to view all results.": "提交关键词查看所有结果."
     },
-    "option,.ms-drop span,.currency-selector>.btn,a.btn-tag": {
+    "option,.ms-drop span,.currency-selector>.btn,a.btn-tag,td.price-line": {
       "U.S. Dollar": " 美元 USD",
       "Euro": " 欧元 EUR",
       "Argentine Peso": " 阿根廷比索 ARS",
