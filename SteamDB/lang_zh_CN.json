@@ -95,6 +95,7 @@
       "SUB ID": "Sub ID",
       "SUBID": "Sub ID",
       "BILLING TYPE": "购买类型",
+      "Billing Type": "购买类型",
       "Last Update": "最后更新",
       "AppID": "APP ID",
       "Max Size": "最大尺寸",
@@ -154,7 +155,10 @@
       "CURRENCY": "货币",
       "CURRENT PRICE": "当前价格",
       "CONVERTED PRICE": "换算价格",
-      "Suggested Price": " 建议定价"
+      "Suggested Price": " 建议定价",
+      "FILE NAME":"文件名",
+      "TYPE":"类型",
+      "SIZE":"大小"
     },
     "td,td>a": {
       "Yes": "✅是",
@@ -323,7 +327,8 @@
       "Install Configuration": "安装配置",
       "Other apps that reference this app": "引用此 APP 的其他 APP",
       "Known restrictions": "已知限制",
-      "Community Items": "社区物品"
+      "Community Items": "社区物品",
+      "Files":"文件列表"
     },
     "h3,h3>a": {
       "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
@@ -440,7 +445,9 @@
       "Linked apps": " 关联 APP ",
       "History": " 历史 ",
       "Games": " 游戏 ",
-      "Localization": " 本地化 "
+      "Localization": " 本地化 ",
+      "Files": " 文件 ",
+      "Manifests": " 清单 "
     },
     ".header-wrapper>div>p,.header-wrapper>div>p>b,.header-wrapper>div>a": {
       "Your watch list is public, you can share it with this link:": "你的监视列表是公开的, 你可以分享这个链接: ",
