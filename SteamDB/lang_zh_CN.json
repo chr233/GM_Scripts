@@ -5,12 +5,7 @@
     "STATIC说明": "key为CSS选择器,value为翻译字典. 只匹配被选择的元素中的textNode元素",
     "INPUT说明": "key为placeholder内容,value为翻译文本",
     "DYNAMIC说明": "暂未实装",
-    "贡献名单": [
-      "Chr_",
-      "joejoe5",
-      "cyb233",
-      "lyzlyslyc"
-    ]
+    "贡献名单": ["Chr_", "joejoe5", "cyb233", "lyzlyslyc"]
   },
   "STATIC": {
     "ul>li,ul>li>a,ul>li>share-action,.header-navbar>div>a,.header-login>span": {
@@ -156,9 +151,9 @@
       "CURRENT PRICE": "当前价格",
       "CONVERTED PRICE": "换算价格",
       "Suggested Price": " 建议定价",
-      "FILE NAME":"文件名",
-      "TYPE":"类型",
-      "SIZE":"大小"
+      "FILE NAME": "文件名",
+      "TYPE": "类型",
+      "SIZE": "大小"
     },
     "td,td>a": {
       "Yes": "✅是",
@@ -328,7 +323,7 @@
       "Other apps that reference this app": "引用此 APP 的其他 APP",
       "Known restrictions": "已知限制",
       "Community Items": "社区物品",
-      "Files":"文件列表"
+      "Files": "文件列表"
     },
     "h3,h3>a": {
       "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
@@ -577,7 +572,68 @@
       "Badges": "徽章",
       "View data": "查看数据",
       "Trading cards": "集换式卡牌",
-      "Booster packs": "补充包"
+      "Booster packs": "补充包",
+      "Jump to a section": "快速跳转"
+    },
+    ".panel>ol>li>a": {
+      "For Developers and Publishers": "致开发商和发行商",
+      "Technical Definitions": "术语解释",
+      "Token Dumper": "Token 转储",
+      "Steam Status FAQ": "Steam 状态 FAQ",
+      "Privacy": "隐私"
+    },
+    ".faq_question>a,.faq_answer>p,.faq_answer>p>b,.faq_answer>p>a,.faq_answer>p>a>b": {
+      "How to contact you?": "如何联系你",
+      "You can": "你可以 ",
+      "join our Discord server": "加入我们的Discord 群组",
+      "Click here if you understand that": "如果您了解 ",
+      "we are not Valve or Steam": "我们不是 Valve 或 Steam",
+      "and want to get email.": " 并希望收到电子邮件, 请点击此处.",
+      "We can": "我们 ",
+      "not help": "并不能",
+      "you with your Steam account or games!!": " 帮你处理 Steam 账户或游戏!!",
+      "We are not interested in selling ads on our website at this time.": "我们目前也没有兴趣接受任何广告投放.",
+      "SteamDB is not affiliated with Valve or Steam. We do not sell games or trade items.": "SteamDB 不隶属于 Valve 或 Steam. 我们也不出售游戏或是交易物品.",
+      "Users claiming to be a Valve employee or Steam moderator, accounts asking to verify your items, and users who send you a message which insist you need to trade your items to them for investigation or security reasons should immediately be reported for trade scams.": "一旦遇到自称是 Valve 员工或 Steam 版主的用户, 要求验证您账户中物品的, 或者向您发送消息坚持您需要向他们交易您的物品以进行调查的, 都是交易诈骗, 请立即举报.",
+      "If you are trying to contact Steam, use Steam Support.": "如果您尝试联系 Steam, 请使用 Steam 客服.",
+      "Why are we doing this?": "我们为什么要做这个东西?",
+      "SteamDB was created to give more insight into the Steam database. We track updates for both applications and packages, we keep a history of all changes made to both applications and packages. We also have a range of other tools such as the": "创建 SteamDB 是为了更深入地了解 Steam 数据库. 我们跟踪 APP 和 SUB 的更新, 我们保留对 APP 和 SUB 做的所有更改的历史记录. 我们还提供一些其他工具, 例如: ",
+      "Calculator": "计算器",
+      "to give people insight into their Steam accounts that would otherwise be impossible.": " 可以让人们深入了解他们(本人或他人)的 Steam 帐户, 在这之前是根本做不到的.",
+      "SteamDB is a purely informational website, it does not provide any downloads, and does not solicit piracy.": "SteamDB 是一个纯粹的数据库网站, 它不提供任何下载, 也不支持盗版.",
+      "Who's the author?": "作者是谁?",
+      "This website is being developed by": "SteamDB 由xPaw开发 ",
+      "How are we getting this information?": "我们的资料从何而来?",
+      "We use": "我们使用 ",
+      "to interface with the Steam network. We request changes for all applications and packages once in a while, but mostly rely on Steam's own update system which automatically notifies us when an application or package updates.": " 来从 Steam 网络获取数据. 我们会不断为所有的 APP 和 SUB 请求更新, 不过在大多数情况下, 我们依赖于 Steam 的自动更新系统, 当 APP 或 SUB 更新时会自动通知我们.",
+      "All of the basic application and package information we provide (unless noted otherwise) is publicly available from Steam itself, and can be acquired by anyone with a regular Steam account. For example, if you launch Steam with the": "我们提供的所有基础 APP 和 SUB 的数据(除非特别注明), 其它人也都可以通过普通的 Steam 账号, 从 Steam 获取得这些信息. 例如, 如果你启动 Steam 时带上启动参数 ",
+      "option and give the command": " 然后使用命令 ",
+      "it'll display most of the information we have on our page for": " 它将会显示有关于 ",
+      "Team Fortress 2": "军团要塞2",
+      ". It is possible to automate it using Valve's": " 的大部分信息. 你也可以使用 Valve 提供的工具来实现自动化 ",
+      "You can take a look at": "你可以查阅 ",
+      "SteamWebPipes, a real-time stream": "SteamWebPipes",
+      "app code to see how it's done on a smaller scale.": " 的源代码来了解如何实现类似的功能.",
+      "If you want a Python library to get data from Steam, take a look at": "如果你使用 Python , 可以查阅这个项目 ",
+      ". Also take a look at": " . 也可以看看 ",
+      "which provides a lot of useful commands.": " 它提供了许多有用的命令.",
+      "If you want a Node.JS library, take a look at": "如果使用 Node.JS , 可以查阅这个项目 ",
+      ". There are libraries to interact with Steam in many different languages, if you prefer something else just search for it.": ". 有许多用不同语言编写的库可以与 Steam 交互, 如果你有需要的话自行搜寻即可.",
+      "If parsing appinfo.vdf is enough for your use case (accessing games you own), then a look at a": "如果你正在解析 appinfo. vdf 对于您的用例(访问你自己的游戏)来说已经足够了, 你可以查阅这个项目 ",
+      "basic parser for that file": "基础VDF解析器",
+      "If you want to download specific depots and manifests, use": "如果您想下载特定的仓库和清单, 请使用 ",
+      "(an alternative to steamcmd).": " (steamcmd 的替代品).",
+      "Does SteamDB have an API?": "SteamDB 有 API 吗?",
+      "In short, no. We believe if you need to get Steam data, you can get it from Steam directly using their WebAPI or using libraries like SteamKit (see above).": "简而言之, 没有. 我们相信, 如果你需要获取 Steam 数据, 你可以直接使用他们的 WebAPI 或使用类似 SteamKit 的库(见上文)直接从Steam获取数据.",
+      "SteamDB is a community website and we do not make money, and maintaining the site is already enough work for us. Creating a good API is a lot of work and a big vector for abuse which we are not equipped to deal with.": "SteamDB 是一个社区网站, 我们不赚钱, 维护网站的工作量对我们来说已经很不容易了. 编写一个好用的 API 是一项繁重的工作, 同时也可能导致滥用.",
+      "If you are looking to get real time updates, you can fork our": "如果你希望实时获得更新, 您可以基于这个项目  ",
+      "and modify it your needs.": " 二次开发来实现想要的效果.",
+      "Can I use auto-refreshing plugins or automatically scrape/crawl SteamDB?": "我可以使用自动刷新插件或爬虫去抓取 SteamDB 的数据吗?",
+      "No, there's a chance you'll get automatically banned for doing so.": "不能, 这么做的话有可能会被自动封禁.",
+      "We also do not allow scraping/crawling on SteamDB.": "我们也不允许在SteamDB上爬取数据",
+      "We also do not allow scraping/crawling on SteamDB. Please get the information from Steam itself, take a look at": "我们也不允许在 SteamDB 上爬取数据. 请自行从 Steam 获取数据, 可以查阅 ",
+      "\"How are we getting this information?\"": "“我们的资料从何而来?”",
+      "question above for more information.": " 节来了解更多信息."
     },
     "span.muted": {
       "Package »": "SUB »"
@@ -1145,7 +1201,8 @@
   "INPUT": {
     "Search…": "搜索...",
     "Search": "搜索",
-    "Your profile url or steamid": "你的个人资料链接或SteamID"
+    "Your profile url or steamid": "你的个人资料链接或SteamID",
+    "Find an answer: type some keywords": "输入关键字来查找解答"
   },
   "LABEL": {
     "Toggle menu": "开关菜单",
@@ -1167,7 +1224,7 @@
   "DYNAMIC": {
     "#js-notifications": {
       "Extension error": "扩展插件错误",
-      "Failed to load your games. Are you logged on the Steam Store in this browser?": "无法加载你的游戏，你在这个浏览器中登录Steam了吗？",
+      "Failed to load your games. Are you logged on the Steam Store in this browser?": "无法加载你的游戏, 你在这个浏览器中登录Steam了吗？",
       "Sign in on the Steam Store": "登录Steam"
     }
   }
