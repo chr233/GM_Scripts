@@ -159,6 +159,7 @@
     "td,td>a": {
       "Yes": "✅是",
       "No": "❌否",
+      "Free": "免费",
       "App ID": "APP ID",
       "App Type": "APP 类型",
       "Developer": "开发商",
@@ -272,6 +273,7 @@
       "Get SteamDB extension for your browser": "获取 SteamDB 浏览器插件",
       "Packages": "SUB (PACKAGES)",
       "Top Rated Games on Steam": "评分最高的 Steam 游戏",
+      "Top Rated Apps on Steam": "评分最高的 Steam 应用",
       "Owned Games": "\n拥有最多游戏的 Steam 用户\n",
       "Badges": "徽章",
       "Top Steam Users By Level": " 等级最高的 Steam 用户",
@@ -354,7 +356,7 @@
       "Steam": "Steam",
       "platform and everything in its database.": " 平台及其数据库中的所有内容.",
       "Look through our FAQ": "查阅FAQ",
-      "if you have any questions about SteamDB,": " 如果您有任何问题关于SteamDB的问题, ",
+      "if you have any questions about SteamDB,": " 如果您有任何问题关于SteamDB 的问题, ",
       "join our Discord": "加入 Discord 频道",
       "Follow @SteamDB on Twitter": "在 Twitter 上关注 @SteamDB",
       "Why are upcoming sales marked as unconfirmed?": "为什么即将到来的销售标记为未确认?",
@@ -362,8 +364,8 @@
       "Any SteamID format is accepted, enter anything you want and we will convert it on the fly for you.": " 输入 SteamID 的任意形式, 我们将会自动将其转换为 SteamID."
     },
     ".header-disclaimer": {
-      "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB是一个业余项目, 与Valve或Steam无关.",
-      "All times on the site are UTC.": "网站上的所有时间都是UTC时间."
+      "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB 是一个业余项目, 与 Valve 或 Steam 无关.",
+      "All times on the site are UTC.": "网站上的所有时间都是 UTC 时间."
     },
     ".header-kbd": {
       "toggle this menu": " 开关菜单 ",
@@ -502,6 +504,7 @@
       "Clear filters": "清除过滤器",
       "I have read the rules": "我已知晓规则",
       "All Types": "所有类型",
+      "Only Games": "只查看游戏",
       "Filter by year": "按年查看",
       "Top Selling Games": "销量最好的游戏",
       "Coming Soon": "即将发售",
@@ -513,21 +516,13 @@
       "Set your currency": " 设置您的货币 ",
       "Search": "搜索",
       "View Steam Points Shop": "在 Steam 点数商店中查看",
-      "View screenshots": "浏览截图"
+      "View screenshots": "浏览截图",
+      "View all known upcoming releases": "浏览所有已知即将发售的游戏"
     },
     "#table-apps_length>label,#table-apps_filter>label": {
       "Show": "显示 ",
       "entries": " 条",
       "Search:": "搜索:"
-    },
-    ".calendar-weekday": {
-      "Monday": "星期一",
-      "Tuesday": "星期二",
-      "Wednesday": "星期三",
-      "Thursday": "星期四",
-      "Friday": "星期五",
-      "Saturday": "星期六",
-      "Sunday": "星期日"
     },
     ".steamy-checkbox-label": {
       "Show only wishlisted": "仅显示愿望单游戏",
@@ -551,9 +546,16 @@
       "Rating: ≥": "好评率 ≥",
       "Discount:": "折扣: "
     },
-    ".pre-table-title>span": {
+    ".pre-table-title>span,.calendar-weekday": {
       "Current Deals": "当前特卖",
-      "Most played games on Steam": "Steam 最常玩的游戏"
+      "Most played games on Steam": "Steam 最常玩的游戏",
+      "Monday": "星期一",
+      "Tuesday": "星期二",
+      "Wednesday": "星期三",
+      "Thursday": "星期四",
+      "Friday": "星期五",
+      "Saturday": "星期六",
+      "Sunday": "星期日"
     },
     ".panel-heading,.panel-heading~p,.panel-heading>span,.panel-heading>a": {
       "Frequently Asked Questions": " 常见问题",
@@ -704,6 +706,7 @@
       "Your watch list": "你的监视列表",
       "Packages only (unfiltered)": "仅显示 捆绑包(未筛选)",
       "All (slow)": "全部 (慢)",
+      "All": "全部",
       "Indie": "独立",
       "Action": "动作",
       "Casual": "休闲",

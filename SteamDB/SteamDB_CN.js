@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.17
+// @version             1.18
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -62,7 +62,7 @@
         }
       }
     });
-    btnSave.style.cssText = 'width:100%;height:50px;';
+    btnSave.style.cssText = 'width:100%;height:50px;margin-bottom:5px;';
     action.appendChild(btnSave);
     const btnReset = document.createElement('button');
     btnReset.textContent = '清空文本';
@@ -70,8 +70,15 @@
       window.localStorage['sdb_lang'] = template;
       window.location.reload();
     });
-    btnReset.style.cssText = 'width:100%;height:50px;';
+    btnReset.style.cssText = 'width:100%;height:50px;margin-bottom:5px;';
     action.appendChild(btnReset);
+    const btnOnline = document.createElement('button');
+    btnOnline.textContent = '当前在线文本';
+    btnOnline.addEventListener('click', () => {
+      text.value = GM_getResourceText("data");
+    });
+    btnOnline.style.cssText = 'width:100%;height:50px;margin-bottom:5px;';
+    action.appendChild(btnOnline);
 
     const father = document.getElementById('main');
     father.insertBefore(box, father.firstChild);
