@@ -10,6 +10,7 @@
 // @author          Chr_
 // @match           https://store.steampowered.com/login*
 // @match           https://steamcommunity.com/openid/login*
+// @match           https://steamcommunity.com/login*
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
 // ==/UserScript==
