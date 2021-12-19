@@ -1,0 +1,78 @@
+.hf-line {
+  margin-top: 0.5em;
+}
+.hf-available {
+  color: #6c3;
+  padding: 0 0.3em;
+}
+.hf-unavailable {
+  color: #e60;
+  padding: 0 0.3em;
+}
+.hf-unknown {
+  color: #ccc;
+  padding: 0 0.3em;
+}
+.hf-available::before {
+  content: "☑";
+  padding-right: 0.3em;
+}
+.hf-unavailable::before {
+  content: "☒";
+  padding-right: 0.3em;
+}
+.hf-unknown::before {
+  content: "☐";
+  padding-right: 0.3em;
+}
+.hf-disabled {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: line-through !important;
+}
+.hf-detail > div {
+  text-align: center;
+}
+.hf-box {
+  width: 300px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background-color: #343a40;
+  color: #ccc;
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+.hf-box * {
+  max-width: 100%;
+}
+.hf-head {
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 4px 0;
+}
+.hf-head > span {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 16px;
+}
+.hf-head > a {
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
+}
+.hf-body {
+  height: 140px;
+}
+.hf-foot {
+  margin: 5px;
+}
+.hf-foot b {
+  color: #8a959c;
+  font-weight: normal;
+}
+.hf-foot a {
+  color: #fff;
+  text-decoration: none;
+}

@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.5
+// @version         2.0
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -12,119 +12,325 @@
 // @include         https://store.hikarifield.co.jp/libraries
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
-// @grant           GM_xmlhttpRequest
+// @resource        data https://gitee.com/chr_a1/gm_scripts/raw/master/Keylol/Data/Hikari_Field_Helper.json
+// @grant           GM_getResourceText
 // @grant           GM_setValue
 // @grant           GM_getValue
+// @grant           GM_addStyle
 // @grant           GM_registerMenuCommand
 // ==/UserScript==
 
 
 (() => {
-    'use strict';
+  "use strict";
 
-    const Data = { //商城关键词: 游戏名, AppID, 状态(1: 已发售, 0: 未发售, -1: 被ban)
-        //已发售
-        'parquet': ['PARQUET', 1662840, 1],
-        'riddle_joker': ['Riddle Joker', 1277930, 1],
-        'kinkoi': ['金辉恋曲四重奏', 1277940, 1],
-        'aokana': ['苍之彼方的四重奏', 1044620, 1],
-        'aokana_extra1': ['苍之彼方的四重奏 EXTRA1', 1340130, 1],
-        'sakura_no_mori2': ['樱之杜†净梦者2', 983150, 1],
-        'natsunoiro': ['追忆夏色年华', 1161190, 1],
-        'alias_carnival': ['爱丽娅的明日盛典', 1094530, 1],
-        'sakura_no_mori': ['樱之杜†净梦者', 749520, 1],
-        'tsukikage': ['月影魅像-解放之羽-', 1069230, 1],
-        'hello_lady_nd': ['淑女同萌！-New Division-', 1025070, 1],
-        'relief': ['Re:LieF 〜献给亲爱的你〜', 1518770, 1],
-        'monobeno_happy_end': ['茂伸奇谈-Happy End-', 831660, 1],
-        'maitetsu_lastrun': ['爱上火车-Last Run!!-', 1434480, 1],
-        'tryment_alpha': ['TrymenT -献给渴望改变的你- AlphA篇', 1183260, 1],
-        'senren_banka': ['千恋＊万花', 1144400, 1],
-        'maitetsu_pure_station': ['爱上火车-Pure Station-', 880950, 1],
-        'hello_lady': ['淑女同萌！', 783120, 1],
-        'monobeno': ['茂伸奇谈-Monobeno-', 758090, 1],
-        'tayutama2': ['游魂2-you\'re the only one-', 552280, 1],
-        //已下架
-        'happiness2': ['Happiness！2 樱花盛典', 1253470, -1],
-        'magical_charming': ['魔卡魅恋！Magical Charming!', 625760, -1],
-        // 'magical_charming2': ['魔卡魅恋 零之编年史', 1216240, -1], //暂无HF商店链接
-        'hello_lady_se': ['淑女同萌！-Superior Entelecheia-', 1286460, -1],
-        'monobeno_asmr': ['妖异乡愁谭', 1264680, -1],
-        'honoguraki': ['来自昏暗的时间尽头', 1603740, -1],
-        //未发售
-        'sekachu': ['在世界与世界的正中央', 1829650, 0],
-        'tsukiniyorisou': ['近月少女的礼仪', 1776970, 0],
+  const HFSHOP = "https://store.hikarifield.co.jp/shop/";
+  const HFLIBARY = "https://store.hikarifield.co.jp/libraries";
+
+  GM_registerMenuCommand("导入Hikari Field游戏", () => {
+    window.location.href = HFLIBARY;
+  });
+
+  const { INFO, DESC } = JSON.parse(GM_getResourceText("data"));
+  const host = window.location.host;
+
+  if (host === "store.hikarifield.co.jp") {
+    //更新库存
+    const myGames = document.querySelectorAll(".game-cover>a");
+    const ownedGames = [625760]; //魔卡魅恋(免费)
+    for (const ele of myGames) {
+      const key = ele.href?.replace(HFSHOP, "");
+      if (key !== undefined) {
+        let [gameName, appID, _, __] = INFO[key] ?? [null, null, null];
+        if (appID !== null) {
+          ownedGames.push(appID);
+          console.log(`已拥有 ${gameName} ${appID}`);
+        }
+      } else {
+        console.error(`${ele.href} 无效`);
+      }
     }
-    const HFSHOP = 'https://store.hikarifield.co.jp/shop/';
-    const HFLIBARY = 'https://store.hikarifield.co.jp/libraries';
-    const host = window.location.host;
-    if (host === 'store.hikarifield.co.jp') {//更新库存
-        const myGames = document.querySelectorAll('.game-cover>a');
+    //储存列表
+    GM_setValue("ownedGames", ownedGames);
+    GM_setValue("refreshTime", new Date().toISOString());
+    swal({
+      position: "top-end",
+      text: "导入游戏列表成功",
+      icon: "success",
+      button: false,
+      timer: 1200
+    });
 
-        const ownedGames = [625760]; //魔卡魅恋(免费)
+  } else if (host.endsWith('keylol.com')) {
+    //其乐
+    if (document.title.search('Keylol') === -1) { return; } //跳过iframe
+    const ownedGames = new Set(GM_getValue("ownedGames") ?? []);
+    const refreshTime = GM_getValue("refreshTime") ?? null;
+    setTimeout(() => {
+      // if (ownedGames.size === 0) {
+      //   if (confirm("是否导入游戏列表?")) {
+      //     window.location.href = HFLIBARY;
+      //   } else {
+      //     showError("【可以在油猴菜单中进行同步】");
+      //     GM_setValue("ownedGames", [0]);
+      //   }
+      // }
+      const steamLinks = document.querySelectorAll("a[href^='https://store.steampowered.com/'],a[href^='https://steamdb.info/app/']");
+      const HFLinks = document.querySelectorAll("a[href^='https://store.hikarifield.co.jp/shop/']");
+      let flag = HFLinks.length > 0;
+      const grubAppid = RegExp(/app\/(\d+)\/?/);
+      for (const ele of steamLinks) {
+        const href = ele.href;
+        if (href !== undefined) {
+          const appID = parseInt(grubAppid.exec(href)?.[1] ?? 0);
+          if (appID > 0) {
+            if (ownedGames.has(appID)) {
+              ele.classList.add("steam-info-link");
+              ele.classList.add("steam-info-own");
+              flag = true;
+            }
+          }
+        }
+      }
+      if (!flag) { return; } //未匹配到游戏,结束运行
+      for (const ele of HFLinks) {
+        const key = ele.href?.replace(HFSHOP, "");
+        if (key !== undefined) {
+          let [gameName, appID, steam, hf] = INFO[key] ?? [null, null, null, null];
+          if (appID !== null) {
+            if (ownedGames.has(appID)) {
+              ele.classList.add("steam-info-link");
+              ele.classList.add("steam-info-own");
+            }
+            ele.setAttribute("data-hf", key);
+            ele.addEventListener("mouseenter", showDiag);
+          }
+        } else {
+          console.log(ele);
+        }
+      }
+    }, 1000);
 
-        for (const ele of myGames) {
-            const key = ele.href?.replace(HFSHOP, '');
-            if (key !== undefined) {
-                let [gameName, appID, _] = Data[key] ?? [null, null, null];
-                if (appID !== null) {
-                    ownedGames.push(appID);
-                    console.log(`已拥有 ${gameName} ${appID}`);
-                }
-            } else {
-                console.error(`${ele.href} 无效`);
-            }
-        }
-        GM_setValue('ownedGames', ownedGames);
-        swal({
-            position: 'top-end',
-            text: '导入游戏列表成功',
-            icon: "success",
-            button: false,
-            timer: 1200
-        });
+    const diagObjs = {}; //小部件DOM对象
+    //创建弹窗小部件
+    function initDiag() {
+      const newDiv = (cls) => { const d = document.createElement("div"); if (cls) { d.className = cls; } return d; };
 
-    } else { //其乐
-        const ownedGames = new Set(GM_getValue('ownedGames') ?? []);
-        if (ownedGames.size === 0) {
-            if (confirm('是否导入游戏列表?')) {
-                window.location.href = HFLIBARY;
-            } else {
-                showError('【可以在油猴菜单中进行同步】');
-                GM_setValue('ownedGames', [0]);
-            }
+      const hfBox = newDiv("hf-box");
+
+      let lastRefresh;
+      if (refreshTime !== null) {
+        try {
+          const t = new Date(refreshTime);
+          lastRefresh = `账号同步于 ${t.toLocaleString()} 点击刷新`;
+        } catch (e) {
+          console.error(e);
+          lastRefresh = `读取同步时间出错, 点击刷新`;
         }
-        const steamLinks = document.querySelectorAll('a[href^="http://store.steampowered.com/"],a[href^="https://store.steampowered.com/"],a[href^="https://steamdb.info/app/"]');
-        const HFLinks = document.querySelectorAll('a[href^="https://store.hikarifield.co.jp/shop/"]');
-        const grubAppid = RegExp(/app\/(\d+)\/?/);
-        for (const ele of steamLinks) {
-            const href = ele.href;
-            if (href !== undefined) {
-                const appID = parseInt(grubAppid.exec(href)?.[1] ?? 0);
-                if (appID > 0) {
-                    if (ownedGames.has(appID)) {
-                        ele.classList.add('steam-info-link');
-                        ele.classList.add('steam-info-own');
-                    }
-                }
-            }
-        }
-        for (const ele of HFLinks) {
-            const key = ele.href?.replace(HFSHOP, '');
-            if (key !== undefined) {
-                let [gameName, appID, _] = Data[key] ?? [null, null, null];
-                if (appID !== null) {
-                    if (ownedGames.has(appID)) {
-                        ele.classList.add('steam-info-link');
-                        ele.classList.add('steam-info-own');
-                    }
-                }
-            } else {
-                console.log(ele);
-            }
-        }
+      } else {
+        lastRefresh = "账号未同步, 点击刷新";
+      }
+
+      hfBox.innerHTML = `
+      <div class="hf-head">
+        <span title="">占位</span><a title="隐藏">❌</a>
+      </div>
+      <div class="hf-body">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1662840/header.jpg">
+      </div>
+      <div class="hf-foot">
+        <div class="hf-describe">
+          <span title="">...</span>
+        </div>
+        <div class="hf-line"></div>
+        <div class="hf-detail">
+          <div class="hf-line"></div>
+          <div><a href="${HFLIBARY}" target="_blank">${lastRefresh}</a></div>
+          <div class="hf-line"></div>
+          <p class="hf-hf"><b>HF商店:</b><span class="hf-unknown">占位</span><a href="#" target="_blank" class="hf-link">前往商店</a></p>
+          <div class="hf-line"></div>
+          <p class="hf-steam"><b>Steam: </b><span class="hf-unknown">占位</span> <a href="#" target="_blank" class="hf-link steam-info-loaded">前往商店</a> (<a href="#" target="_blank">SteamDB</a>)</p></div>
+          <div class="hf-line"></div>
+        </div>
+      </div>
+      `
+      document.body.insertBefore(hfBox, document.body.firstChild);
+
+      const eleTitle = hfBox.querySelector("div.hf-head>span");
+      const eleClose = hfBox.querySelector("div.hf-head>a");
+      const eleImg = hfBox.querySelector("div.hf-body>img");
+      const eleDesc = hfBox.querySelector("div.hf-describe>span");
+      const eleHfState = hfBox.querySelector("p.hf-hf>span");
+      const eleHfLink = hfBox.querySelector("p.hf-hf>a");
+      const eleSteamState = hfBox.querySelector("p.hf-steam>span");
+      const eleSteamLink = hfBox.querySelector("p.hf-steam>a:first-of-type");
+      const eleSteamDBLink = hfBox.querySelector("p.hf-steam>a:last-of-type");
+
+      eleClose.addEventListener('click', hideDiag);
+
+      Object.assign(diagObjs, { hfBox, eleTitle, eleImg, eleDesc, eleHfState, eleHfLink, eleSteamState, eleSteamLink, eleSteamDBLink });
     }
-    GM_registerMenuCommand('导入Hikari Field游戏', () => {
-        window.location.href = HFLIBARY;
-    })
+
+    initDiag();
+
+    const { script: { version } } = GM_info;
+    const Tail = ` - 『Hikari_Field_Helper v${version} by Chr_』`;
+
+    //更新小部件显示
+    function showDiag(event) {
+      const ele = event.target;
+      const key = ele.getAttribute("data-hf");
+
+      const { hfBox, eleTitle, eleImg, eleDesc, eleHfState, eleHfLink, eleSteamState, eleSteamLink, eleSteamDBLink } = diagObjs;
+
+      const [gameName, appID, steamState, hfState] = INFO[key] ?? [null, null, null, null];
+      const describe = DESC[key] ?? "";
+
+      if (!gameName) { return; }
+
+      eleTitle.title = gameName + Tail;
+      eleTitle.textContent = gameName;
+      eleImg.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appID}/header.jpg`;
+
+      eleDesc.textContent = describe.substr(0, 72) + "...";
+      eleDesc.title = describe;
+
+      switch (hfState) {
+        case -1:
+          eleHfState.textContent = "已下架";
+          eleHfState.className = "hf-unavailable";
+          break;
+        case 1:
+          eleHfState.textContent = "可购买";
+          eleHfState.className = "hf-available";
+          break;
+        default:
+          eleHfState.textContent = "未发售";
+          eleHfState.className = "hf-unknown";
+          break;
+      }
+      eleHfLink.href = HFSHOP + key;
+
+      switch (steamState) {
+        case -1:
+          eleSteamState.textContent = "已下架";
+          eleSteamState.className = "hf-unavailable";
+          eleSteamLink.classList.add("hf-disabled");
+          break;
+        case 1:
+          eleSteamState.textContent = "可购买";
+          eleSteamState.className = "hf-available";
+          eleSteamLink.classList.remove("hf-disabled");
+          break;
+        default:
+          eleSteamState.textContent = "未发售";
+          eleSteamState.className = "hf-unknown";
+          eleSteamLink.classList.remove("hf-disabled");
+          break;
+      }
+      eleSteamLink.href = `https://store.steampowered.com/app/${appID}/`;
+      eleSteamDBLink.href = `https://steamdb.info/app/${appID}/`;
+
+      const { top, right } = ele.getBoundingClientRect();
+      hfBox.style.left = `${right + window.scrollX + 2}px`;
+      hfBox.style.top = `${top + window.scrollY}px`;
+      hfBox.style.opacity = 1;
+      hfBox.style.display = "";
+      hfBox.removeAttribute("hf-fd");
+    }
+    //隐藏小部件
+    function hideDiag(event) {
+      console.log('call hideDiag');
+      const { hfBox } = diagObjs;
+      if (!hfBox.hasAttribute("hf-fd")) {
+        hfBox.setAttribute("hf-fd", "");
+        hfBox.style.opacity = 0;
+        setTimeout(() => {
+          hfBox.style.cssText = "display:none; opacity: 0;";
+        }, 200);
+      }
+    }
+  }
+
 })();
+
+GM_addStyle(`.hf-line {
+  margin-top: 0.5em;
+}
+.hf-available {
+  color: #6c3;
+  padding: 0 0.3em;
+}
+.hf-unavailable {
+  color: #e60;
+  padding: 0 0.3em;
+}
+.hf-unknown {
+  color: #ccc;
+  padding: 0 0.3em;
+}
+.hf-available::before {
+  content: "☑";
+  padding-right: 0.3em;
+}
+.hf-unavailable::before {
+  content: "☒";
+  padding-right: 0.3em;
+}
+.hf-unknown::before {
+  content: "☐";
+  padding-right: 0.3em;
+}
+.hf-disabled {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: line-through !important;
+}
+.hf-detail > div {
+  text-align: center;
+}
+.hf-box {
+  width: 300px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background-color: #343a40;
+  color: #ccc;
+  border-radius: 5px;
+  transition: all 0.2s;
+}
+.hf-box * {
+  max-width: 100%;
+}
+.hf-head {
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 4px 0;
+}
+.hf-head > span {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 16px;
+}
+.hf-head > a {
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
+}
+.hf-body {
+  height: 140px;
+}
+.hf-foot {
+  margin: 5px;
+}
+.hf-foot b {
+  color: #8a959c;
+  font-weight: normal;
+}
+.hf-foot a {
+  color: #fff;
+  text-decoration: none;
+}
+
+`);
