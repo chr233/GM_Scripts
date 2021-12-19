@@ -620,7 +620,6 @@
       "If you want a Node.JS library, take a look at": "如果使用 Node.JS , 可以查阅这个项目 ",
       ". There are libraries to interact with Steam in many different languages, if you prefer something else just search for it.": ". 有许多用不同语言编写的库可以与 Steam 交互, 如果你有需要的话自行搜寻即可.",
       "If parsing appinfo.vdf is enough for your use case (accessing games you own), then a look at a": "如果你正在解析 appinfo. vdf 对于您的用例(访问你自己的游戏)来说已经足够了, 你可以查阅这个项目 ",
-      "basic parser for that file": "基础VDF解析器",
       "If you want to download specific depots and manifests, use": "如果您想下载特定的仓库和清单, 请使用 ",
       "(an alternative to steamcmd).": " (steamcmd 的替代品).",
       "Does SteamDB have an API?": "SteamDB 有 API 吗?",
