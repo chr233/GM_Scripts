@@ -1,8 +1,6 @@
 {
   "INFO": {
     "_doc_": ["游戏名", "appid", "steam状态", "hf可购买"],
-
-    "_released_": ["在售 状态=1"],
     "parquet": ["PARQUET", 1662840, 1, 1],
     "riddle_joker": ["Riddle Joker", 1277930, 1, 1],
     "kinkoi": ["金辉恋曲四重奏", 1277940, 1, 1],
@@ -23,16 +21,12 @@
     "hello_lady": ["淑女同萌！", 783120, 1, 1],
     "monobeno": ["茂伸奇谈-Monobeno-", 758090, 1, 1],
     "tayutama2": ["游魂2-you're the only one-", 552280, 1, 1],
-
-    "_baned": ["Steam已下架 状态=-1"],
     "happiness2": ["Happiness！2 樱花盛典", 1253470, -1, 1],
     "honoguraki": ["来自昏暗的时间尽头", 1603740, -1, 1],
     "magical_charming": ["魔卡魅恋！Magical Charming!", 625760, -1, 0],
     "magical_charming2": ["魔卡魅恋 零之编年史", 1216240, -1, 0],
     "hello_lady_se": ["淑女同萌！-Superior Entelecheia-", 1286460, -1, 0],
     "monobeno_asmr": ["妖异乡愁谭", 1264680, -1, 0],
-
-    "_notrelease_": ["未发售 状态=0"],
     "sekachu": ["在世界与世界的正中央", 1829650, 0, 0],
     "tsukiniyorisou": ["近月少女的礼仪", 1776970, 0, 0]
   },
