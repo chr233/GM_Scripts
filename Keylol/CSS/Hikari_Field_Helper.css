@@ -42,7 +42,7 @@
   background-color: #343a40;
   color: #ccc;
   border-radius: 5px;
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 .hf-box * {
   max-width: 100%;

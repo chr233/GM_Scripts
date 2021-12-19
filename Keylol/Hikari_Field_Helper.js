@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.0
+// @version         2.1
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -66,15 +66,17 @@
     if (document.title.search('Keylol') === -1) { return; } //跳过iframe
     const ownedGames = new Set(GM_getValue("ownedGames") ?? []);
     const refreshTime = GM_getValue("refreshTime") ?? null;
+
+    if (ownedGames.size === 0) {
+      if (confirm("是否导入游戏列表?")) {
+        window.location.href = HFLIBARY;
+      } else {
+        showError("【可以在油猴菜单中进行同步】");
+        GM_setValue("ownedGames", [0]);
+      }
+    }
+
     setTimeout(() => {
-      // if (ownedGames.size === 0) {
-      //   if (confirm("是否导入游戏列表?")) {
-      //     window.location.href = HFLIBARY;
-      //   } else {
-      //     showError("【可以在油猴菜单中进行同步】");
-      //     GM_setValue("ownedGames", [0]);
-      //   }
-      // }
       const steamLinks = document.querySelectorAll("a[href^='https://store.steampowered.com/'],a[href^='https://steamdb.info/app/']");
       const HFLinks = document.querySelectorAll("a[href^='https://store.hikarifield.co.jp/shop/']");
       let flag = HFLinks.length > 0;
@@ -131,6 +133,8 @@
         lastRefresh = "账号未同步, 点击刷新";
       }
 
+      hfBox.style.display="none";
+
       hfBox.innerHTML = `
       <div class="hf-head">
         <span title="">占位</span><a title="隐藏">❌</a>
@@ -154,7 +158,7 @@
         </div>
       </div>
       `
-      document.body.insertBefore(hfBox, document.body.firstChild);
+      document.body.appendChild(hfBox);
 
       const eleTitle = hfBox.querySelector("div.hf-head>span");
       const eleClose = hfBox.querySelector("div.hf-head>a");
