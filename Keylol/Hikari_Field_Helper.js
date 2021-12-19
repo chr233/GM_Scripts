@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.1
+// @version         2.2
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -17,7 +17,6 @@
 // @grant           GM_setValue
 // @grant           GM_getValue
 // @grant           GM_addStyle
-// @grant           GM_registerMenuCommand
 // ==/UserScript==
 
 
@@ -26,10 +25,6 @@
 
   const HFSHOP = "https://store.hikarifield.co.jp/shop/";
   const HFLIBARY = "https://store.hikarifield.co.jp/libraries";
-
-  GM_registerMenuCommand("导入Hikari Field游戏", () => {
-    window.location.href = HFLIBARY;
-  });
 
   const { INFO, DESC } = JSON.parse(GM_getResourceText("data"));
   const host = window.location.host;
@@ -68,10 +63,10 @@
     const refreshTime = GM_getValue("refreshTime") ?? null;
 
     if (ownedGames.size === 0) {
-      if (confirm("是否导入游戏列表?")) {
+      if (confirm("是否立即导入游戏列表?")) {
         window.location.href = HFLIBARY;
       } else {
-        showError("【可以在油猴菜单中进行同步】");
+        showError("【可以在悬浮窗口中进行同步】");
         GM_setValue("ownedGames", [0]);
       }
     }
