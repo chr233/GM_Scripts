@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.6
+// @version         1.7
 // @description     修复登录框无法输入的Bug
 // @description:zh-CN  修复登录框无法输入的Bug
 // @author          Chr_
@@ -17,15 +17,15 @@
 
 
 (() => {
-    'use strict';
-    const userName = document.getElementById('input_username');
-    const passWord = document.getElementById('input_password');
-    userName.addEventListener('dblclick', () => {
-        const value = prompt('请输入用户名', userName.value);
+    "use strict";
+    const userName = document.querySelector("#input_username,#steamAccountName");
+    const passWord = document.querySelector("#input_password,#steamPassword");
+    userName.addEventListener("dblclick", () => {
+        const value = prompt("请输入用户名", userName.value);
         if (value) { userName.value = value; }
     });
-    passWord.addEventListener('dblclick', () => {
-        const value = prompt('请输入密码', passWord.value);
+    passWord.addEventListener("dblclick", () => {
+        const value = prompt("请输入密码", passWord.value);
         if (value) { passWord.value = value; }
     });
 })();
