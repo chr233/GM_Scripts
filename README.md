@@ -41,9 +41,9 @@
 
 [![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/430634.json) HB截图助手](https://greasyfork.org/zh-CN/scripts/430634-hb-screenshots)
 
-[![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/435346.json) 杉果Steam快捷搜索](https://greasyfork.org/zh-CN/scripts/435346-gmg-steam-search)
+[![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/435346.json) GMG小绿人Steam快捷搜索](https://greasyfork.org/zh-CN/scripts/435346-gmg-steam-search)
 
-[![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/431437.json) GMG小绿人Steam快捷搜索](https://greasyfork.org/zh-CN/scripts/431437-sonkwo-steam-search)
+[![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/431437.json) 杉果Steam快捷搜索](https://greasyfork.org/zh-CN/scripts/431437-sonkwo-steam-search)
 
 [![徽章](https://img.shields.io/badge/dynamic/json?color=%23990000&label=GreasyFork&query=total_installs&suffix=%20installs&url=https://greasyfork.org/scripts/436897.json) Hikari_Field入库检测](https://greasyfork.org/zh-CN/scripts/436897-hikari-field-helper)
 
