@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.0
+// @version         2.1
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_
@@ -108,7 +108,11 @@
             divCnv.innerHTML = "";
             divCnv.appendChild(img);
             if (steam) { steam.style.display = ""; }
-            if (helps) { helps.forEach(ele => { ele.style.display = ""; }); }
+            if (helps) {
+                for (const help of helps) {
+                    help.style.display = "";
+                }
+            }
         } else {
             alert("Key列表为空?\n或许是卡DOM了，刷新一下即可。");
         }
@@ -117,15 +121,15 @@
         const data = [];
         const keys = document.querySelectorAll("div.key-list>div");
         if (keys) {
-            keys.forEach(ele => {
-                const title = ele.querySelector("h4");
-                const key = ele.querySelector("div.keyfield-value");
-                if (title != null && key != null) {
-                    data.push([title.textContent.trim(), key.textContent]);
+            for (const key of keys) {
+                const title = key.querySelector("h4");
+                const keyStr = key.querySelector("div.keyfield-value");
+                if (title && keyStr) {
+                    data.push([title.textContent.trim(), keyStr.textContent]);
                 } else {
-                    console.log(title, key);
+                    console.log(title, keyStr);
                 }
-            });
+            }
         }
         return data;
     }
@@ -177,5 +181,7 @@
         setClipboard(list.join("\n"), "html");
         alert("复制成功");
     }
-    const setClipboard = (data, type = "text") => { GM_setClipboard(data, type); }
+    function setClipboard(data, dataType = "text") {
+        GM_setClipboard(data, dataType);
+    }
 })();

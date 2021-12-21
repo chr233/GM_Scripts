@@ -14,56 +14,56 @@
 
 // 初始化
 (() => {
-    'use strict';
+    "use strict";
     addPanel();
     addFunction();
 
     // 添加按钮
     function addPanel() {
         function genBtn(name, foo, tooltip, id) {
-            let s = document.createElement('span');
-            s.className = 'general_btn tooltip';
+            let s = document.createElement("span");
+            s.className = "general_btn tooltip";
             s.title = tooltip;
             s.textContent = name;
-            s.addEventListener('click', foo);
+            s.addEventListener("click", foo);
             if (id) { s.id = id; }
             return s;
         }
-        let btnReport = document.getElementById('ReportItemBtn');
+        let btnReport = document.getElementById("ReportItemBtn");
         if (btnReport != null) {
             let btnDiv = btnReport.parentElement;
-            let btnShow = genBtn('刮开', () => { scratchAll(true); }, '刮开所有隐藏', 'btnShow');
-            let btnHide = genBtn('恢复', () => { scratchAll(false); }, '恢复所有隐藏', 'btnHide');
+            let btnShow = genBtn("刮开", () => { scratchAll(true); }, "刮开所有隐藏", "btnShow");
+            let btnHide = genBtn("恢复", () => { scratchAll(false); }, "恢复所有隐藏", "btnHide");
             btnDiv.appendChild(btnShow);
             btnDiv.appendChild(btnHide);
         }
     }
     // 为每个隐藏绑定函数
     function addFunction() {
-        for (let ele of document.querySelectorAll('.bb_spoiler')) {
-            ele.addEventListener('click', scratch);
+        for (let ele of document.querySelectorAll(".bb_spoiler")) {
+            ele.addEventListener("click", scratch);
         }
     }
     // 刮开单个隐藏
     function scratch(ele) {
         let s = ele.currentTarget;
-        console.log(s.getAttribute('scratch'))
-        if (s.getAttribute('scratch') != 'on') {
-            for (let e of s.querySelectorAll('*')) {
-                e.style.cssText = 'visibility:visible;color:#fff;';
+        console.log(s.getAttribute("scratch"))
+        if (s.getAttribute("scratch") != "on") {
+            for (let e of s.querySelectorAll("*")) {
+                e.style.cssText = "visibility:visible;color:#fff;";
             }
-            s.setAttribute('scratch', 'on');
+            s.setAttribute("scratch", "on");
         } else {
-            for (let e of s.querySelectorAll('*')) {
-                e.style.cssText = '';
+            for (let e of s.querySelectorAll("*")) {
+                e.style.cssText = "";
             }
-            s.removeAttribute('scratch');
+            s.removeAttribute("scratch");
         }
     }
     // 刮开所有隐藏
     function scratchAll(show = true) {
-        for (let ele of document.querySelectorAll('.bb_spoiler')) {
-            if ((ele.getAttribute('scratch') != 'on') === show) {
+        for (let ele of document.querySelectorAll(".bb_spoiler")) {
+            if ((ele.getAttribute("scratch") != "on") === show) {
                 ele.click();
             }
         }

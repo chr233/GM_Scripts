@@ -2,13 +2,6 @@
 
 [![Codacy Badge][codacy_b]][Codacy] ![forks][forks_b] ![stars][stars_b] [![License][license_b]][License]
 
-[codacy_b]: https://app.codacy.com/project/badge/Grade/0c56f19da3ba42118a5b772dde88c088
-[codacy]: https://www.codacy.com/gh/chr233/GM_Scripts/dashboard
-[forks_b]: https://img.shields.io/github/forks/chr233/GM_Scripts
-[stars_b]: https://img.shields.io/github/stars/chr233/GM_Scripts
-[license]: https://github.com/chr233/GM_Scripts/blob/master/license
-[license_b]: https://img.shields.io/github/license/chr233/GM_Scripts
-
 > 如果需要二次开发,请保留原作者信息,谢谢
 
 ## 一些链接
@@ -85,3 +78,10 @@
 [11]: https://greasyfork.org/zh-CN/scripts/420539-auto-award-profile
 [11_p]: https://keylol.com/t671171-1-1
 [11_p_2]: https://blog.chrxw.com/archives/2021/07/05/1578.html
+
+[codacy_b]: https://app.codacy.com/project/badge/Grade/0c56f19da3ba42118a5b772dde88c088
+[codacy]: https://www.codacy.com/gh/chr233/GM_Scripts/dashboard
+[forks_b]: https://img.shields.io/github/forks/chr233/GM_Scripts
+[stars_b]: https://img.shields.io/github/stars/chr233/GM_Scripts
+[license]: https://github.com/chr233/GM_Scripts/blob/master/license
+[license_b]: https://img.shields.io/github/license/chr233/GM_Scripts

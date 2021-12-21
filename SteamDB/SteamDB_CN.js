@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.18
+// @version             1.19
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -18,71 +18,71 @@
 
 
 (function () {
-  'use strict';
-  const DEBUG = window.localStorage['dbg_mode'] == '开';
-  const OUTPUT = window.localStorage['out_word'] == '开';
+  "use strict";
+  const DEBUG = window.localStorage["dbg_mode"] == "开";
+  const OUTPUT = window.localStorage["out_word"] == "开";
 
-  GM_registerMenuCommand(`调试汉化文本: 【${DEBUG ? '开' : '关'}】`, () => {
-    window.localStorage['dbg_mode'] = DEBUG ? '关' : '开';
+  GM_registerMenuCommand(`调试汉化文本: 【${DEBUG ? "开" : "关"}】`, () => {
+    window.localStorage["dbg_mode"] = DEBUG ? "关" : "开";
     window.location.reload();
   });
 
-  GM_registerMenuCommand(`在控制台输出未匹配文本: 【${OUTPUT ? '开' : '关'}】`, () => {
-    window.localStorage['out_word'] = OUTPUT ? '关' : '开';
+  GM_registerMenuCommand(`在控制台输出未匹配文本: 【${OUTPUT ? "开" : "关"}】`, () => {
+    window.localStorage["out_word"] = OUTPUT ? "关" : "开";
     window.location.reload();
   });
 
-  document.querySelector('html').setAttribute('lang', 'zh-CN');
+  document.querySelector("html").setAttribute("lang", "zh-CN");
 
   let Locales;
 
   if (DEBUG) {
-    const template = '{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"LABEL":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}';
-    const box = document.createElement('div');
-    box.style.cssText = 'display:flex;';
-    const text = document.createElement('textarea');
-    text.style.cssText = 'width:90%;height:250px;resize:vertical;';
+    const template = `{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"LABEL":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}`;
+    const box = document.createElement("div");
+    box.style.cssText = "display:flex;";
+    const text = document.createElement("textarea");
+    text.style.cssText = "width:90%;height:250px;resize:vertical;";
     box.appendChild(text);
-    const action = document.createElement('div');
-    action.style.cssText = 'width:10%;height:100%';
+    const action = document.createElement("div");
+    action.style.cssText = "width:10%;height:100%";
     box.appendChild(action);
-    const btnSave = document.createElement('button');
-    btnSave.innerText = '保存并刷新';
-    btnSave.addEventListener('click', () => {
+    const btnSave = document.createElement("button");
+    btnSave.innerText = "保存并刷新";
+    btnSave.addEventListener("click", () => {
       const raw = text.value.trim();
       if (!raw) {
-        alert('翻译文本不能为空!!!');
+        alert("翻译文本不能为空!!!");
       } else {
         try {
           JSON.parse(raw);
-          window.localStorage['sdb_lang'] = raw;
+          window.localStorage["sdb_lang"] = raw;
           window.location.reload();
         } catch (e) {
-          alert('翻译文本不是有效的JSON格式!!!');
+          alert("翻译文本不是有效的JSON格式!!!");
         }
       }
     });
-    btnSave.style.cssText = 'width:100%;height:50px;margin-bottom:5px;';
+    btnSave.style.cssText = "width:100%;height:50px;margin-bottom:5px;";
     action.appendChild(btnSave);
-    const btnReset = document.createElement('button');
-    btnReset.textContent = '清空文本';
-    btnReset.addEventListener('click', () => {
-      window.localStorage['sdb_lang'] = template;
+    const btnReset = document.createElement("button");
+    btnReset.textContent = "清空文本";
+    btnReset.addEventListener("click", () => {
+      window.localStorage["sdb_lang"] = template;
       window.location.reload();
     });
-    btnReset.style.cssText = 'width:100%;height:50px;margin-bottom:5px;';
+    btnReset.style.cssText = "width:100%;height:50px;margin-bottom:5px;";
     action.appendChild(btnReset);
-    const btnOnline = document.createElement('button');
-    btnOnline.textContent = '当前在线文本';
-    btnOnline.addEventListener('click', () => {
+    const btnOnline = document.createElement("button");
+    btnOnline.textContent = "当前在线文本";
+    btnOnline.addEventListener("click", () => {
       text.value = GM_getResourceText("data");
     });
-    btnOnline.style.cssText = 'width:100%;height:50px;margin-bottom:5px;';
+    btnOnline.style.cssText = "width:100%;height:50px;margin-bottom:5px;";
     action.appendChild(btnOnline);
 
-    const father = document.getElementById('main');
+    const father = document.getElementById("main");
     father.insertBefore(box, father.firstChild);
-    const customLang = window.localStorage['sdb_lang'] ?? template;
+    const customLang = window.localStorage["sdb_lang"] ?? template;
     text.value = customLang;
     Locales = JSON.parse(customLang);
   } else {
@@ -133,7 +133,7 @@
 
   {//输入框
     const inputs = Locales.INPUT;
-    if (OUTPUT) { console.log('〖输入框〗'); }
+    if (OUTPUT) { console.log("〖输入框〗"); }
     const elements = document.querySelectorAll("input");
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
@@ -150,15 +150,15 @@
 
   {//悬浮提示
     const labels = Locales.LABEL;
-    if (OUTPUT) { console.log('〖提示文本〗'); }
+    if (OUTPUT) { console.log("〖提示文本〗"); }
     const elements = document.querySelectorAll("*[aria-label]");
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
-      const raw = element.getAttribute('aria-label');
+      const raw = element.getAttribute("aria-label");
       if (!raw) { continue; }
       const txt = labels[raw];
       if (txt) {
-        element.setAttribute('aria-label',txt) ;
+        element.setAttribute("aria-label", txt);
       } else if (OUTPUT) {
         console.log(`"${raw}": "",`);
       }
@@ -170,28 +170,13 @@
 
   // call your function
   var End = new Date().getTime();
-  console.log('执行耗时', `${End - Start} ms`);
-  console.log('=================================');
+  console.log("执行耗时", `${End - Start} ms`);
+  console.log("=================================");
   console.log(`插件版本: ${version}`);
   console.log(`更新时间: ${update}`);
-  console.log(`贡献名单: ${contribution.join(', ')}`);
-  console.log('=================================');
-  console.log('迷茫同学:\n『没有恶意 请问直接用谷歌翻译整个网页不香吗』')
-  // // 创建一个观察器实例并传入回调函数
-  // const observer = new MutationObserver((mutationsList, observer) => {
-  //     // Use traditional 'for loops' for IE 11
-  //     for (let mutation of mutationsList) {
-  //         console.log(mutation);
+  console.log(`贡献名单: ${contribution.join(", ")}`);
+  console.log("=================================");
+  console.log("迷茫同学:\n『没有恶意 请问直接用谷歌翻译整个网页不香吗』")
 
-  //     }
-
-  // });
-
-  // // 以上述配置开始观察目标节点
-  // observer.observe(document.body, { childList: true, subtree: true });
-
-  // // 之后，可停止观察
-  // observer.disconnect();
-
-  GM_addStyle('.tabnav-tabs>a{min-width:80px;}');
+  GM_addStyle(".tabnav-tabs>a{min-width:80px;}");
 })();

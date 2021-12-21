@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.12
+// @version         1.13
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_
@@ -17,31 +17,31 @@
 
 
 (() => {
-    'use strict';
-    const mode = window.localStorage['sen_mode'] ?? 'c(e)';
-    const pure = window.localStorage['sen_pure'] ?? '关';
+    "use strict";
+    const mode = window.localStorage.getItem("sen_mode") ?? "c(e)";
+    const pure = window.localStorage.getItem("sen_pure") ?? "关";
     const appid = (window.location.pathname.match(/\/app\/(\d+)/) ?? [null, null])[1];
     if (appid === null) { return; }
     fetch(`https://store.steampowered.com/api/appdetails?appids=${appid}&l=english`)
-        .then(async response => {
+        .then(async (response) => {
             if (response.ok) {
                 let json = await response.json();
                 let data = json[appid];
                 if (data.success !== true) { return; }
                 let name_en = data.data.name;
                 let t = setInterval(() => {
-                    let ele_title = document.getElementById('appHubAppName');
+                    let ele_title = document.getElementById("appHubAppName");
                     if (ele_title != null) {
                         clearInterval(t);
-                        let ele_path = document.querySelector('div.blockbg>a:last-child');
+                        let ele_path = document.querySelector("div.blockbg>a:last-child");
                         let name_cur = ele_title.textContent
                         if (name_cur.toLowerCase() != name_en.toLowerCase()) {
-                            if (pure === '开') {
+                            if (pure === "开") {
                                 name_en = pureName(name_en);
                                 name_cur = pureName(name_cur);
                             }
-                            let name_new = '';
-                            if (mode === 'e(c)') {
+                            let name_new = "";
+                            if (mode === "e(c)") {
                                 name_new = `${name_en} (${name_cur})`;
                             } else {
                                 name_new = `${name_cur} (${name_en})`;
@@ -51,15 +51,15 @@
                                 ele_path.textContent = name_new;
                             }
                         }
-                        ele_title.title = '双击快捷搜索';
-                        ele_title.addEventListener('dblclick', () => {
-                            ShowConfirmDialog(`你想做什么呢？`, '', '复制游戏名', '搜索游戏名')
+                        ele_title.title = "双击快捷搜索";
+                        ele_title.addEventListener("dblclick", () => {
+                            ShowConfirmDialog(`你想做什么呢？`, "", "复制游戏名", "搜索游戏名")
                                 .done(() => {
-                                    const setClipboard = (data) => { GM_setClipboard(data, 'text'); }
+                                    const setClipboard = (data) => { GM_setClipboard(data, "text"); }
                                     if (name_cur == name_en) {
                                         setClipboard(name_cur);
                                     } else {
-                                        ShowConfirmDialog(`要复制的游戏名称？`, '', name_cur, name_en)
+                                        ShowConfirmDialog(`要复制的游戏名称？`, "", name_cur, name_en)
                                             .done(() => {
                                                 setClipboard(name_cur);
                                             })
@@ -75,7 +75,7 @@
                                         if (name_cur == name_en) {
                                             window.open(`https://store.steampowered.com/search/?term=${name_cur}`);
                                         } else {
-                                            ShowConfirmDialog(`要使用的搜索关键词？`, '', name_cur, name_en)
+                                            ShowConfirmDialog(`要使用的搜索关键词？`, "", name_cur, name_en)
                                                 .done(() => {
                                                     window.open(`https://store.steampowered.com/search/?term=${name_cur}`);
                                                 })
@@ -94,18 +94,18 @@
                 console.error(response.status);
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(err);
         });
-    GM_registerMenuCommand(`切换显示格式：【${mode === 'c(e)' ? '原名 (英文名)' : '英文名 (原名)'}】`, () => {
-        window.localStorage['sen_mode'] = mode === 'c(e)' ? 'e(c)' : 'c(e)';
+    GM_registerMenuCommand(`切换显示格式：【${mode === "c(e)" ? "原名 (英文名)" : "英文名 (原名)"}】`, () => {
+        window.localStorage.setItem("sen_mode", mode === "c(e)" ? "e(c)" : "c(e)");
         window.location.reload();
     })
     GM_registerMenuCommand(`过滤特殊符号：【${pure}】`, () => {
-        window.localStorage['sen_pure'] = pure === '开' ? '关' : '开';
+        window.localStorage.setItem("sen_pure", pure === "开" ? "关" : "开");
         window.location.reload();
     })
     function pureName(str) {
-        return str.replace(/[《》™©®]/g, '');
+        return str.replace(/[《》™©®]/g, "");
     }
 })();
