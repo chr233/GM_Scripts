@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.2
+// @version         2.3
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -56,9 +56,9 @@
       timer: 1200
     });
 
-  } else if (host.endsWith('keylol.com')) {
+  } else if (host.endsWith("keylol.com")) {
     //其乐
-    if (document.title.search('Keylol') === -1) { return; } //跳过iframe
+    if (document.title.search("Keylol") === -1) { return; } //跳过iframe
     const ownedGames = new Set(GM_getValue("ownedGames") ?? []);
     const refreshTime = GM_getValue("refreshTime") ?? null;
 
@@ -101,6 +101,7 @@
             }
             ele.setAttribute("data-hf", key);
             ele.addEventListener("mouseenter", showDiag);
+            ele.addEventListener("mouseleave", hideDiag);
           }
         } else {
           console.log(ele);
@@ -108,7 +109,10 @@
       }
     }, 1000);
 
-    const diagObjs = {}; //小部件DOM对象
+    const diagObjs = {}; // 小部件DOM对象
+    let isShow = false;  // 悬浮窗是否显示
+    let timer = -1;      // 隐藏计时器
+
     //创建弹窗小部件
     function initDiag() {
       const newDiv = (cls) => { const d = document.createElement("div"); if (cls) { d.className = cls; } return d; };
@@ -128,11 +132,11 @@
         lastRefresh = "账号未同步, 点击刷新";
       }
 
-      hfBox.style.display="none";
+      hfBox.style.display = "none";
 
       hfBox.innerHTML = `
       <div class="hf-head">
-        <span title="">占位</span><a title="隐藏">❌</a>
+        <span title="">占位</span>
       </div>
       <div class="hf-body">
         <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1662840/header.jpg">
@@ -151,12 +155,11 @@
           <p class="hf-steam"><b>Steam: </b><span class="hf-unknown">占位</span> <a href="#" target="_blank" class="hf-link steam-info-loaded">前往商店</a> (<a href="#" target="_blank">SteamDB</a>)</p></div>
           <div class="hf-line"></div>
         </div>
-      </div>
-      `
+      </div>`
+
       document.body.appendChild(hfBox);
 
       const eleTitle = hfBox.querySelector("div.hf-head>span");
-      const eleClose = hfBox.querySelector("div.hf-head>a");
       const eleImg = hfBox.querySelector("div.hf-body>img");
       const eleDesc = hfBox.querySelector("div.hf-describe>span");
       const eleHfState = hfBox.querySelector("p.hf-hf>span");
@@ -165,18 +168,25 @@
       const eleSteamLink = hfBox.querySelector("p.hf-steam>a:first-of-type");
       const eleSteamDBLink = hfBox.querySelector("p.hf-steam>a:last-of-type");
 
-      eleClose.addEventListener('click', hideDiag);
+      hfBox.addEventListener("mouseenter", diagMoveIn);
+      hfBox.addEventListener("mouseleave", hideDiag);
 
-      Object.assign(diagObjs, { hfBox, eleTitle, eleImg, eleDesc, eleHfState, eleHfLink, eleSteamState, eleSteamLink, eleSteamDBLink });
+      Object.assign(diagObjs, {
+        hfBox, eleTitle, eleImg, eleDesc, eleHfState,
+        eleHfLink, eleSteamState, eleSteamLink, eleSteamDBLink
+      });
     }
 
     initDiag();
 
     const { script: { version } } = GM_info;
-    const Tail = ` - 『Hikari_Field_Helper v${version} by Chr_』`;
+    const Tail = ` - 『Hikari Field Helper v${version} by Chr_』`;
 
     //更新小部件显示
     function showDiag(event) {
+      isShow = true;
+      clearTmout();
+
       const ele = event.target;
       const key = ele.getAttribute("data-hf");
 
@@ -235,18 +245,31 @@
       hfBox.style.top = `${top + window.scrollY}px`;
       hfBox.style.opacity = 1;
       hfBox.style.display = "";
-      hfBox.removeAttribute("hf-fd");
+    }
+    //清除计时器
+    function clearTmout() {
+      if (timer !== -1) {
+        clearTimeout(timer);
+        timer = -1;
+      }
+    }
+    //对话框鼠标移入
+    function diagMoveIn(event) {
+      clearTmout();
     }
     //隐藏小部件
     function hideDiag(event) {
-      console.log('call hideDiag');
+      clearTmout();
       const { hfBox } = diagObjs;
-      if (!hfBox.hasAttribute("hf-fd")) {
-        hfBox.setAttribute("hf-fd", "");
-        hfBox.style.opacity = 0;
-        setTimeout(() => {
-          hfBox.style.cssText = "display:none; opacity: 0;";
-        }, 200);
+      if (isShow) {
+        timer = setTimeout(() => {
+          isShow = false;
+          timer = -1;
+          hfBox.style.opacity = 0;
+          setTimeout(() => {
+            hfBox.style.cssText = "display:none; opacity: 0;";
+          }, 200);
+        }, 900);
       }
     }
   }
