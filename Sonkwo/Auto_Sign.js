@@ -11,7 +11,7 @@
 // ==/UserScript==
 
 (function () {
-    'use strict';
+    "use strict";
     setTimeout(() => {
         let sign = document.querySelector('div.store_user_card_action_check');
         if (sign && sign.textContent == '签到') {

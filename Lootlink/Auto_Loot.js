@@ -2,7 +2,7 @@
 // @name         Auto Loot
 // @name:zh-CN   Lootlink自动抽奖辅助
 // @namespace    https://blog.chrxw.com
-// @version      1.2
+// @version      1.3
 // @description  lootlink.me 自动领取日常奖励，自动抽奖
 // @author       Chr_
 // @include      https://www.lootlink.me/*
@@ -12,23 +12,23 @@
 // ==/UserScript==
 
 (function () {
-    'use strict';
+    "use strict";
     showLabel();
     dailyClaim();
     add10xBtn();
 })();
 // 显示标签
 function showLabel() {
-    let uname = document.querySelector('#profileMenuInvoker>span');
-    let tag1 = document.createElement('span');
-    tag1.textContent = ' (反馈 ';
-    tag1.addEventListener('click', () => {
-        window.open('https://keylol.com/t676764-1-1');
+    let uname = document.querySelector("#profileMenuInvoker>span");
+    let tag1 = document.createElement("span");
+    tag1.textContent = " (反馈 ";
+    tag1.addEventListener("click", () => {
+        window.open("https://keylol.com/t676764-1-1");
     });
-    let tag2 = document.createElement('span');
-    tag2.textContent = '| By Chr_) ';
-    tag2.addEventListener('click', () => {
-        window.open('https://blog.chrxw.com');
+    let tag2 = document.createElement("span");
+    tag2.textContent = "| By Chr_) ";
+    tag2.addEventListener("click", () => {
+        window.open("https://blog.chrxw.com");
     });
     uname.appendChild(tag1);
     uname.appendChild(tag2);
@@ -39,13 +39,13 @@ function dailyClaim() {
     let tries = 0;
     clickDaily();
     function clickDaily() {
-        let coin = document.querySelector('#wallet2 a[data-modal-target="#crate-modal"]');
+        let coin = document.querySelector("#wallet2 a[data-modal-target='#crate-modal']");
         if (coin) {
             coin.click();
             tries = 0;
             retry(claimCoin, 1000);
         } else {
-            let coin = document.querySelector('#wallet2 div:not([style*="display:none"])>[src="/images/art/crate.png"]:not(.grayscale)');
+            let coin = document.querySelector("#wallet2 div:not([style*='display:none'])>[src='/images/art/crate.png']:not(.grayscale)");
             if (coin) {
                 coin.parentElement.click();
                 tries = 0;
@@ -65,7 +65,7 @@ function dailyClaim() {
     }
     function closePanel() {
         let title = document.querySelector("#cratetab > h4");
-        if (title.textContent.search('Opened') != -1 || title.textContent.search('Received') != -1) {
+        if (title.textContent.search("Opened") != -1 || title.textContent.search("Received") != -1) {
             let closebtn = document.querySelector("#crate-modal > button");
             closebtn.click();
             window.location.reload();
@@ -86,28 +86,28 @@ function dailyClaim() {
                 }
             }, t);
         } else {
-            console.log('操作超时');
+            console.log("操作超时");
         }
     }
 }
 // 添加x连按钮
 function add10xBtn() {
     function genBtn(txt, time, index) {
-        let btn = document.createElement('button');
-        btn.id = 'loot' + time.toString() + 'x' + (index).toString();
+        let btn = document.createElement("button");
+        btn.id = "loot" + time.toString() + "x" + (index).toString();
         btn.onclick = loot10x;
-        btn.className = 'float-right btn btn-lg u-btn-cyan g-color-white u-btn-hover-v2-1';
+        btn.className = "float-right btn btn-lg u-btn-cyan g-color-white u-btn-hover-v2-1";
         btn.textContent = txt;
         return btn;
     }
-    let lootBtns = document.querySelectorAll('button[data-modal-target="#loot-modal"]');
+    let lootBtns = document.querySelectorAll("button[data-modal-target='#loot-modal']");
     let i = 0;
     for (let lootBtn of lootBtns) {
         let bar = lootBtn.parentElement.parentElement.children[0];
-        let box = document.createElement('div');
-        let btn5x = genBtn('五连', 5, i);
-        let btn10x = genBtn('十连', 10, i);
-        let btn100x = genBtn('梭哈', 100, i);
+        let box = document.createElement("div");
+        let btn5x = genBtn("五连", 5, i);
+        let btn10x = genBtn("十连", 10, i);
+        let btn100x = genBtn("梭哈", 100, i);
         box.appendChild(btn5x);
         box.appendChild(btn10x);
         box.appendChild(btn100x);
@@ -123,12 +123,12 @@ function loot10x(e) {
     let count = 0;
     clickLoot();
     function clickLoot() {
-        let id = e.target.getAttribute('id');
+        let id = e.target.getAttribute("id");
         let t = id.match(/^loot(\d+)x(\d+)$/);
         t = t ? [t[1], t[2]] : [0, 0];
-        let lootBtns = document.querySelectorAll('button[data-modal-target="#loot-modal"]');
+        let lootBtns = document.querySelectorAll("button[data-modal-target='#loot-modal']");
         if (lootBtns == null) {
-            alert('未找到Loot按钮');
+            alert("未找到Loot按钮");
             return;
         }
         LOOT = Number(t[0]);
@@ -137,9 +137,9 @@ function loot10x(e) {
         retry(claimLoot, 1000);
     }
     function claimLoot() {
-        let lootbtn = document.querySelector('#rollit');
+        let lootbtn = document.querySelector("#rollit");
         if (lootbtn) {
-            document.getElementById('rollmessage').textContent = '第' + (count + 1).toString() + '/' + LOOT.toString() + '抽';
+            document.getElementById("rollmessage").textContent = "第" + (count + 1).toString() + "/" + LOOT.toString() + "抽";
             lootbtn.click();
             tries = 0;
             retry(waitLoot, 1000);
@@ -149,10 +149,10 @@ function loot10x(e) {
     }
     function waitLoot() {
         let lootbtn = document.querySelector("#rollit");
-        if (lootbtn.textContent.search('Try') != -1) {
+        if (lootbtn.textContent.search("Try") != -1) {
             if (++count >= LOOT) {
-                document.getElementById('rollmessage').textContent = '抽完啦';
-                console.log('done');
+                document.getElementById("rollmessage").textContent = "抽完啦";
+                console.log("done");
                 return;
             }
             tries = 0;
@@ -166,8 +166,8 @@ function loot10x(e) {
         if (tries++ <= MAX) {
             setTimeout(() => {
                 try {
-                    if (document.getElementById('rolltab') == null) {
-                        console.log('cancel');
+                    if (document.getElementById("rolltab") == null) {
+                        console.log("cancel");
                         return;
                     }
                     foo();
@@ -178,7 +178,7 @@ function loot10x(e) {
                 }
             }, t);
         } else {
-            console.log('操作超时');
+            console.log("操作超时");
         }
     }
 }
