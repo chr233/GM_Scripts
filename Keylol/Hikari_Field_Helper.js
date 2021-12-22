@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.3
+// @version         2.4
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -241,8 +241,15 @@
       eleSteamDBLink.href = `https://steamdb.info/app/${appID}/`;
 
       const { top, right } = ele.getBoundingClientRect();
-      hfBox.style.left = `${right + window.scrollX + 2}px`;
-      hfBox.style.top = `${top + window.scrollY}px`;
+
+      const boxHeight = 303;
+      const boxWidth = 300;
+
+      const boxTop = Math.min(top, document.documentElement.clientHeight - boxHeight) + window.scrollY;
+      const boxLeft = Math.min(right, document.documentElement.clientWidth - boxWidth) + window.scrollX;
+
+      hfBox.style.left = `${boxLeft}px`;
+      hfBox.style.top = `${boxTop}px`;
       hfBox.style.opacity = 1;
       hfBox.style.display = "";
     }
