@@ -656,6 +656,10 @@
       "Only apps with a store page are suggested.": "只有具有商店页面的 APP 才会显示在搜索提示中.",
       "Submit to view all results.": "提交关键词查看所有结果."
     },
+    ".global-announcement>div,.global-announcement>div>a": {
+      "🙏 Help SteamDB continue tracking data by": "\n🙏 请帮助 SteamDB 继续追踪数据, 通过\n",
+      "donating Steam keys or using token dumper program": "捐赠 Steam Key 或使用 Token Dumper"
+    },
     "option,.ms-drop span,.currency-selector>.btn,a.btn-tag,td.price-line": {
       "U.S. Dollar": " 美元 USD",
       "Euro": " 欧元 EUR",
