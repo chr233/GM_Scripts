@@ -1,10 +1,10 @@
 // ==UserScript==
+// @name:zh-CN      Steam隐藏DLC查询
 // @name            Hidden_DLC_Helper
-// @name:zh-CN      隐藏DLC查询
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.6
+// @version         1.7
 // @description     显示Steam商店中隐藏的DLC（补丁）。
 // @description:zh-CN  显示Steam商店中隐藏的DLC（补丁）。
 // @author          Chr_
