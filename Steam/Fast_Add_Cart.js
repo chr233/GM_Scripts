@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.27
+// @version         2.28
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -129,8 +129,8 @@
             inputBox.value = await importCart(inputBox.value);
             window.location.reload();
         });
-
-        if (pathname.search("history") !== -1) {
+        const histryPage = pathname.search("history") !== -1;
+        if (histryPage) {
             btnImport.disabled = true;
             btnImport.title = "当前页面无法导入购物车";
         }
@@ -161,9 +161,10 @@
                     showAlert("提示", "文本框内容和保存的数据已清除", true);
                 });
         });
-        const btnHistory = genBtn("📜历史", "查看购物车历史记录", () => {
-            window.location.href = "https://help.steampowered.com/zh-cn/accountdata/ShoppingCartHistory";
-        });
+        const btnHistory = !histryPage
+            ? genBtn("📜历史", "查看购物车历史记录", () => { window.location.href = "https://help.steampowered.com/zh-cn/accountdata/ShoppingCartHistory"; })
+            : genBtn("↩️返回", "返回你当前的购物车", () => { window.location.href = "https://store.steampowered.com/cart/"; });
+
         const btnForget = genBtn("⚠️清空", "清空购物车", () => {
             ShowConfirmDialog("", "您确定要移除所有您购物车中的物品吗？", "是", "否")
                 .done(() => {
@@ -178,6 +179,7 @@
                 "<p>【📋复制】复制文本框中的内容(废话)。</p>",
                 "<p>【🗑️清除】清除文本框和已保存的数据。</p>",
                 "<p>【📜历史】查看购物车历史记录。</p>",
+                "<p>【↩️返回】返回你当前的购物车。</p>",
                 "<p>【⚠️清空】清空购物车。</p>",
                 "<p>【🔣帮助】显示没什么卵用的帮助。</p>",
                 `<p>【<a href="https://keylol.com/t747892-1-1" target="_blank">发布帖</a>】 【<a href="https://blog.chrxw.com/scripts.html" target="_blank">脚本反馈</a>】 【Developed by <a href="https://steamcommunity.com/id/Chr_" target="_blank">Chr_</a>】</p>`
