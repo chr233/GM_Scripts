@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.4
+// @version         2.6
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -35,7 +35,7 @@
     const ownedGames = [625760]; //魔卡魅恋(免费)
     for (const ele of myGames) {
       const key = ele.href?.replace(HFSHOP, "");
-      if (key !== undefined) {
+      if (key) {
         let [gameName, appID, _, __] = INFO[key] ?? [null, null, null];
         if (appID !== null) {
           ownedGames.push(appID);
@@ -78,7 +78,7 @@
       const grubAppid = RegExp(/app\/(\d+)\/?/);
       for (const ele of steamLinks) {
         const href = ele.href;
-        if (href !== undefined) {
+        if (href) {
           const appID = parseInt(grubAppid.exec(href)?.[1] ?? 0);
           if (appID > 0) {
             if (ownedGames.has(appID)) {
@@ -92,8 +92,8 @@
       if (!flag) { return; } //未匹配到游戏,结束运行
       for (const ele of HFLinks) {
         const key = ele.href?.replace(HFSHOP, "");
-        if (key !== undefined) {
-          let [gameName, appID, steam, hf] = INFO[key] ?? [null, null, null, null];
+        if (key) {
+          let [_, appID, __, ___] = INFO[key] ?? [null, null, null, null];
           if (appID !== null) {
             if (ownedGames.has(appID)) {
               ele.classList.add("steam-info-link");
@@ -126,7 +126,7 @@
           lastRefresh = `账号同步于 ${t.toLocaleString()} 点击刷新`;
         } catch (e) {
           console.error(e);
-          lastRefresh = `读取同步时间出错, 点击刷新`;
+          lastRefresh = "读取同步时间出错, 点击刷新";
         }
       } else {
         lastRefresh = "账号未同步, 点击刷新";
