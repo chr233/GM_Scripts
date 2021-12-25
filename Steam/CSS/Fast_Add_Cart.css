@@ -49,9 +49,9 @@ button.fac_choose {
   margin: 2px 5px;
 }
 textarea.fac_inputbox {
-  height: 130px;
   resize: vertical;
   font-size: 10px;
+  min-height: 130px;
 }
 textarea.fac_diag {
   height: 150px;

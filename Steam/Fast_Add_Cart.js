@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.25
+// @version         2.27
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -94,11 +94,11 @@
                 });
             }
         }, 500);
-    } else if (pathname === "/cart/") { //购物车页
-        let continer = document.querySelector("div.cart_area_body");
+    } else if (pathname.startsWith("/cart/")) { //购物车页
+        const continer = document.querySelector("div.cart_area_body");
 
-        let genBr = () => { return document.createElement("br"); };
-        let genBtn = (text, title, onclick) => {
+        function genBr() { return document.createElement("br"); };
+        function genBtn(text, title, onclick) {
             let btn = document.createElement("button");
             btn.textContent = text;
             btn.title = title;
@@ -106,13 +106,12 @@
             btn.addEventListener("click", onclick);
             return btn;
         };
-        let genSpan = (text) => {
+        function genSpan(text) {
             let span = document.createElement("span");
             span.textContent = text;
             return span;
         };
-        let inputBox = document.createElement("textarea");
-        inputBox.value = GM_getValue("fac_cart") ?? "";
+        const inputBox = document.createElement("textarea");
         inputBox.className = "fac_inputbox";
         inputBox.placeholder = ["一行一条, 自动忽略【#】后面的内容, 支持的格式如下: (自动保存)",
             "1. 商店链接: https://store.steampowered.com/app/xxx",
@@ -121,13 +120,22 @@
             "4. subID:       s/xxx sub/xxx",
             "5. bundleID:    b/xxx bundle/xxx"
         ].join("\n");
+        const savedCart = GM_getValue("fac_cart") ?? "";
+        inputBox.value = savedCart;
+        inputBox.style.height = Math.min(savedCart.split('\n').length * 20 + 20, 500).toString() + "px";
 
-        let btnArea = document.createElement("div");
-        let btnImport = genBtn("🔼批量导入", "从文本框批量添加购物车", async () => {
+        const btnArea = document.createElement("div");
+        const btnImport = genBtn("🔼导入", "从文本框批量添加购物车", async () => {
             inputBox.value = await importCart(inputBox.value);
             window.location.reload();
         });
-        let btnExport = genBtn("🔽导出", "将购物车内容导出至文本框", () => {
+
+        if (pathname.search("history") !== -1) {
+            btnImport.disabled = true;
+            btnImport.title = "当前页面无法导入购物车";
+        }
+
+        const btnExport = genBtn("🔽导出", "将购物车内容导出至文本框", () => {
             let currentValue = inputBox.value.trim();
             if (currentValue !== "") {
                 ShowConfirmDialog("", "输入框中含有内容, 请选择操作?", "覆盖原有内容", "添加到最后")
@@ -141,11 +149,11 @@
                 inputBox.value = exportCart();
             }
         });
-        let btnCopy = genBtn("📋复制", "复制文本框中的内容", () => {
+        const btnCopy = genBtn("📋复制", "复制文本框中的内容", () => {
             GM_setClipboard(inputBox.value, "text");
             showAlert("提示", "复制到剪贴板成功", true);
         });
-        let btnClear = genBtn("🗑️清除", "清除文本框和已保存的数据", () => {
+        const btnClear = genBtn("🗑️清除", "清除文本框和已保存的数据", () => {
             ShowConfirmDialog("", "您确定要清除文本框和已保存的数据吗？", "是", "否")
                 .done(() => {
                     inputBox.value = "";
@@ -153,19 +161,23 @@
                     showAlert("提示", "文本框内容和保存的数据已清除", true);
                 });
         });
-        let btnForget = genBtn("⚠️清空", "清空购物车", () => {
+        const btnHistory = genBtn("📜历史", "查看购物车历史记录", () => {
+            window.location.href = "https://help.steampowered.com/zh-cn/accountdata/ShoppingCartHistory";
+        });
+        const btnForget = genBtn("⚠️清空", "清空购物车", () => {
             ShowConfirmDialog("", "您确定要移除所有您购物车中的物品吗？", "是", "否")
                 .done(() => {
                     ForgetCart();
                 });
         });
-        let btnHelp = genBtn("🔣帮助", "显示帮助", () => {
+        const btnHelp = genBtn("🔣帮助", "显示帮助", () => {
             const { script: { version } } = GM_info;
             showAlert(`帮助 插件版本 ${version}`, [
                 "<p>【🔼批量导入】从文本框批量添加购物车。</p>",
                 "<p>【🔽导出】将购物车内容导出至文本框。</p>",
                 "<p>【📋复制】复制文本框中的内容(废话)。</p>",
                 "<p>【🗑️清除】清除文本框和已保存的数据。</p>",
+                "<p>【📜历史】查看购物车历史记录。</p>",
                 "<p>【⚠️清空】清空购物车。</p>",
                 "<p>【🔣帮助】显示没什么卵用的帮助。</p>",
                 `<p>【<a href="https://keylol.com/t747892-1-1" target="_blank">发布帖</a>】 【<a href="https://blog.chrxw.com/scripts.html" target="_blank">脚本反馈</a>】 【Developed by <a href="https://steamcommunity.com/id/Chr_" target="_blank">Chr_</a>】</p>`
@@ -177,6 +189,8 @@
         btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnCopy);
         btnArea.appendChild(btnClear);
+        btnArea.appendChild(genSpan(" | "));
+        btnArea.appendChild(btnHistory);
         btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnForget);
         btnArea.appendChild(genSpan(" | "));
@@ -191,7 +205,7 @@
     }
 
     //始终在右上角显示购物车按钮
-    let cart_btn = document.getElementById("store_header_cart_btn");
+    const cart_btn = document.getElementById("store_header_cart_btn");
     if (cart_btn !== null) { cart_btn.style.display = ""; }
 
     //导入购物车
@@ -562,6 +576,7 @@ button.fac_listbtns {
     height: 130px;
     resize: vertical;
     font-size: 10px;
+    min-height: 130px;
   }
   textarea.fac_diag {
     height: 150px;
@@ -575,5 +590,5 @@ button.fac_listbtns {
     border: 1 px solid #000;
     border-radius: 3 px;
     box-shadow: 1px 1px 0px #45556c;
-  }  
+  } 
 `);
