@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.28
+// @version         2.29
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -161,10 +161,12 @@
                     showAlert("提示", "文本框内容和保存的数据已清除", true);
                 });
         });
-        const btnHistory = !histryPage
-            ? genBtn("📜历史", "查看购物车历史记录", () => { window.location.href = "https://help.steampowered.com/zh-cn/accountdata/ShoppingCartHistory"; })
-            : genBtn("↩️返回", "返回你当前的购物车", () => { window.location.href = "https://store.steampowered.com/cart/"; });
-
+        const btnHistory = genBtn("📜历史", "查看购物车历史记录", () => {
+            window.location.href = "https://help.steampowered.com/zh-cn/accountdata/ShoppingCartHistory";
+        });
+        const btnBack = genBtn("↩️返回", "返回你当前的购物车", () => {
+            window.location.href = "https://store.steampowered.com/cart/";
+        });
         const btnForget = genBtn("⚠️清空", "清空购物车", () => {
             ShowConfirmDialog("", "您确定要移除所有您购物车中的物品吗？", "是", "否")
                 .done(() => {
@@ -192,7 +194,7 @@
         btnArea.appendChild(btnCopy);
         btnArea.appendChild(btnClear);
         btnArea.appendChild(genSpan(" | "));
-        btnArea.appendChild(btnHistory);
+        btnArea.appendChild(histryPage ? btnBack : btnHistory);
         btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnForget);
         btnArea.appendChild(genSpan(" | "));
