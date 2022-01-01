@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.29
+// @version         2.30
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -122,7 +122,14 @@
         ].join("\n");
         const savedCart = GM_getValue("fac_cart") ?? "";
         inputBox.value = savedCart;
-        inputBox.style.height = Math.min(savedCart.split('\n').length * 20 + 20, 500).toString() + "px";
+
+        function fitInputBox() {
+            inputBox.style.height = Math.min(inputBox.value.split('\n').length * 20 + 20, 900).toString() + "px";
+        }
+
+        inputBox.addEventListener("input", fitInputBox);
+
+        fitInputBox();
 
         const btnArea = document.createElement("div");
         const btnImport = genBtn("🔼导入", "从文本框批量添加购物车", async () => {
@@ -138,15 +145,21 @@
         const btnExport = genBtn("🔽导出", "将购物车内容导出至文本框", () => {
             let currentValue = inputBox.value.trim();
             if (currentValue !== "") {
+                const now = new Date().toLocaleString();
                 ShowConfirmDialog("", "输入框中含有内容, 请选择操作?", "覆盖原有内容", "添加到最后")
                     .done(() => {
-                        inputBox.value = exportCart();
+                        inputBox.value = `========【${now}】=========\n` + exportCart();
+                        fitInputBox();
                     })
-                    .fail(() => {
-                        inputBox.value = currentValue + "\n" + exportCart()
-                    })
+                    .fail((bool) => {
+                        if (bool) {
+                            inputBox.value = currentValue + `\n========【${now}】=========\n` + exportCart();
+                            fitInputBox();
+                        }
+                    });
             } else {
                 inputBox.value = exportCart();
+                fitInputBox();
             }
         });
         const btnCopy = genBtn("📋复制", "复制文本框中的内容", () => {
@@ -158,6 +171,7 @@
                 .done(() => {
                     inputBox.value = "";
                     GM_setValue("fac_cart", "");
+                    fitInputBox();
                     showAlert("提示", "文本框内容和保存的数据已清除", true);
                 });
         });
@@ -526,73 +540,73 @@
 })();
 
 GM_addStyle(`
-button.fac_listbtns {
-    display: none;
-    position: relative;
-    z-index: 100;
-    padding: 1px;
-  }
-  a.search_result_row > button.fac_listbtns {
-    top: -25px;
-    left: 300px;
-  }
-  a.tab_item > button.fac_listbtns {
-    top: -40px;
-    left: 330px;
-  }
-  a.recommendation_link > button.fac_listbtns {
-    bottom: 10px;
-    right: 10px;
-    position: absolute;
-  }
-  div.wishlist_row > button.fac_listbtns {
-    top: 35%;
-    right: 30%;
-    position: absolute;
-  }
-  div.game_purchase_action > button.fac_listbtns {
-    right: 8px;
-    bottom: 8px;
-  }
-  button.fac_cartbtns {
-    padding: 5px 10px;
-  }
-  button.fac_cartbtns:not(:last-child) {
-    margin-right: 7px;
-  }
-  button.fac_cartbtns:not(:first-child) {
-    margin-left: 7px;
-  }
-  a.tab_item:hover button.fac_listbtns,
-  a.search_result_row:hover button.fac_listbtns,
-  div.recommendation:hover button.fac_listbtns,
-  div.wishlist_row:hover button.fac_listbtns {
-    display: block;
-  }
-  div.game_purchase_action:hover > button.fac_listbtns {
-    display: inline;
-  }
-  button.fac_choose {
-    padding: 1px;
-    margin: 2px 5px;
-  }
-  textarea.fac_inputbox {
-    height: 130px;
-    resize: vertical;
-    font-size: 10px;
-    min-height: 130px;
-  }
-  textarea.fac_diag {
-    height: 150px;
-    width: 600px;
-    resize: vertical;
-    font-size: 10px;
-    margin-bottom: 5px;
-    padding: 5px;
-    background-color: rgba(0, 0, 0, 0.4);
-    color: #fff;
-    border: 1 px solid #000;
-    border-radius: 3 px;
-    box-shadow: 1px 1px 0px #45556c;
-  } 
-`);
+    button.fac_listbtns {
+        display: none;
+        position: relative;
+        z-index: 100;
+        padding: 1px;
+    }
+    a.search_result_row > button.fac_listbtns {
+        top: -25px;
+        left: 300px;
+    }
+    a.tab_item > button.fac_listbtns {
+        top: -40px;
+        left: 330px;
+    }
+    a.recommendation_link > button.fac_listbtns {
+        bottom: 10px;
+        right: 10px;
+        position: absolute;
+    }
+    div.wishlist_row > button.fac_listbtns {
+        top: 35%;
+        right: 30%;
+        position: absolute;
+    }
+    div.game_purchase_action > button.fac_listbtns {
+        right: 8px;
+        bottom: 8px;
+    }
+    button.fac_cartbtns {
+        padding: 5px 10px;
+    }
+    button.fac_cartbtns:not(:last-child) {
+        margin-right: 5px;
+    }
+    button.fac_cartbtns:not(:first-child) {
+        margin-left: 5px;
+    }
+    a.tab_item:hover button.fac_listbtns,
+    a.search_result_row:hover button.fac_listbtns,
+    div.recommendation:hover button.fac_listbtns,
+    div.wishlist_row:hover button.fac_listbtns {
+        display: block;
+    }
+    div.game_purchase_action:hover > button.fac_listbtns {
+        display: inline;
+    }
+    button.fac_choose {
+        padding: 1px;
+        margin: 2px 5px;
+    }
+    textarea.fac_inputbox {
+        height: 130px;
+        resize: vertical;
+        font-size: 10px;
+        min-height: 130px;
+    }
+    textarea.fac_diag {
+        height: 150px;
+        width: 600px;
+        resize: vertical;
+        font-size: 10px;
+        margin-bottom: 5px;
+        padding: 5px;
+        background-color: rgba(0, 0, 0, 0.4);
+        color: #fff;
+        border: 1 px solid #000;
+        border-radius: 3 px;
+        box-shadow: 1px 1px 0px #45556c;
+    } 
+    `);

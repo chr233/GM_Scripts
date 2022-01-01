@@ -30,10 +30,10 @@ button.fac_cartbtns {
   padding: 5px 10px;
 }
 button.fac_cartbtns:not(:last-child) {
-  margin-right: 7px;
+  margin-right: 5px;
 }
 button.fac_cartbtns:not(:first-child) {
-  margin-left: 7px;
+  margin-left: 5px;
 }
 a.tab_item:hover button.fac_listbtns,
 a.search_result_row:hover button.fac_listbtns,
