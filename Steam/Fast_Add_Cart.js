@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.30
+// @version         2.31
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -230,7 +230,7 @@
     function importCart(text) {
         return new Promise(async (resolve, reject) => {
             const regFull = new RegExp(/(app|a|bundle|b|sub|s)\/(\d+)/);
-            const regShort = new RegExp(/()(\d+)/);
+            const regShort = new RegExp(/^([\s]*|)(\d+)/);
             let lines = [];
 
             let dialog = showAlert("正在导入购物车……", `<textarea id="fac_diag" class="fac_diag">操作中……</textarea>`, true);
@@ -245,8 +245,12 @@
                         }
                         let match = line.match(regFull) ?? line.match(regShort);
                         if (!match) {
-                            let tmp = line.split("#")[0];
-                            lines.push(`${tmp} #格式有误`);
+                            if (line.search("=====") === -1) {
+                                let tmp = line.split("#")[0];
+                                lines.push(`${tmp} #格式有误`);
+                            }else{
+                                lines.push(line);
+                            }
                             continue;
                         }
                         let [_, type, subID] = match;
