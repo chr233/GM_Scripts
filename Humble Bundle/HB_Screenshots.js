@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.1
+// @version         2.2
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_
@@ -173,9 +173,13 @@
     }
     function copyHTML() {
         const data = parseKeys();
-        const list = ["<table border=\"1\" cellspacing=\"0\">", "<tr><th>游戏名</th><th>Key</th></tr>"];
+        const tdCss = "style=\"padding:5px 10px;border-top:1px solid;\"";
+        const list = [
+            "<table style=\"border-collapse:collapse;margin-bottom:0.7em;\">",
+            "<tr><th>游戏名</th><th>Key</th></tr>"
+        ];
         for (const [title, key] of data) {
-            list.push(`<tr><td>${title}</td><td>${key}</td></tr>`);
+            list.push(`<tr><td ${tdCss}>${title}</td><td ${tdCss}>${key}</td></tr>`);
         }
         list.push("</table>");
         setClipboard(list.join("\n"), "html");
