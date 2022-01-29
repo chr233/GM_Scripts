@@ -61,7 +61,15 @@
       "Offline": "离线",
       "Online": "在线",
       "Share": " 分享",
-      "Unwatch": "停止监视"
+      "Unwatch": "停止监视",
+      "players right now": " 当前在线",
+      "24-hour peak": " 24小时峰值",
+      "all-time peak": " 历史峰值 ",
+      "followers": " 关注者",
+      "in top sellers": " 畅销榜排名",
+      "positive reviews": " 好评数",
+      "negative reviews": " 差评数",
+      "viewers right now": " 当前观看人数"
     },
     "tr>th,tr>th>a,tr>th span": {
       "DEPOTID": "DEPOT ID",
@@ -80,6 +88,7 @@
       "Current Price": "当前价格",
       "Converted Price": "换算价格",
       "LOWEST RECORDED PRICE": "历史最低价格",
+      "Lowest Recorded Price": "历史最低价格",
       "Month": "月",
       "Peak": "峰值",
       "Min Daily Peak": "Min Daily Peak",
@@ -161,6 +170,7 @@
       "Free": "免费",
       "App ID": "APP ID",
       "App Type": "APP 类型",
+      "Store Name": "商店名称",
       "Developer": "开发商",
       "Publisher": "发行商",
       "Supported Systems": "支持的操作系统",
@@ -253,7 +263,12 @@
       "Store or CD Key": "商店购买 和 CDkey",
       "baselanguages": "基础语言",
       "workshopdepot": "创意工坊 DEPOT",
-      "eulas": "用户协议"
+      "eulas": "用户协议",
+      "3rd-Party Account":"第三方平台账号",
+      "onlyvrsupport":"只支持 VR",
+      "vrheadsetstreaming":"VR 头显串流",
+      "ControllerVr":"支持的 VR 控制器",
+      "PlayAreaVr":"支持的 VR 游玩设备"
     },
     "i.muted": {
       "empty string": "空"
@@ -323,7 +338,10 @@
       "Other apps that reference this app": "引用此 APP 的其他 APP",
       "Known restrictions": "已知限制",
       "Community Items": "社区物品",
-      "Files": "文件列表"
+      "Files": "文件列表",
+      "Lifetime concurrent players on Steam": "同时在线数预测",
+      "Steam game hub followers chart": "Steam 社区中心关注者图表",
+      "Monthly breakdown": "月度明细"
     },
     "h3,h3>a": {
       "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
@@ -348,6 +366,14 @@
       "Localization Strings": "本地化字符串",
       "Technical Item Data": "开发者数据",
       "User Tags": "用户标签"
+    },
+    "h4": {
+      "Concurrent players": "同时在线",
+      "Owner estimations": "拥有人数估计",
+      "Store data": "商店数据",
+      "Playtime estimations by SteamSpy": "游戏时长估算(来自 SteamSpy)",
+      "Twitch Stats": "Twitch 数据",
+      "Discount color explanation":"折扣颜色说明"
     },
     ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a,.container>div>p": {
       "This": "这个 ",
@@ -581,6 +607,12 @@
       "Token Dumper": "Token 转储",
       "Steam Status FAQ": "Steam 状态 FAQ",
       "Privacy": "隐私"
+    },
+    ".discount-faq>p,.discount-faq>p>span":{
+      "Blue discount":"蓝色折扣",
+      "Product has not been this cheap before (new historical low)":" 新史低 (当前价格比之前的历史最低价格还要低)",
+      "Green discount":"绿色折扣",
+      "Product is priced on par with lowest recorded price":" 平史低 (当前价格和之前的历史最低价格相同)"
     },
     ".faq_question>a,.faq_answer>p,.faq_answer>p>b,.faq_answer>p>a,.faq_answer>p>a>b": {
       "How to contact you?": "如何联系你",
