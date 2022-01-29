@@ -31,7 +31,7 @@
       "Free promotions": "限免促销",
       "Database": " 数据库",
       "User tags": "用户标签",
-      "Technologies & built with": "技术 & 建造",
+      "Technologies & built with": "技术 & 构建",
       "Upcoming releases": "即将发售",
       "Upcoming": "即将发售",
       "Most followed upcoming": "最受关注",
@@ -264,11 +264,11 @@
       "baselanguages": "基础语言",
       "workshopdepot": "创意工坊 DEPOT",
       "eulas": "用户协议",
-      "3rd-Party Account":"第三方平台账号",
-      "onlyvrsupport":"只支持 VR",
-      "vrheadsetstreaming":"VR 头显串流",
-      "ControllerVr":"支持的 VR 控制器",
-      "PlayAreaVr":"支持的 VR 游玩设备"
+      "3rd-Party Account": "第三方平台账号",
+      "onlyvrsupport": "只支持 VR",
+      "vrheadsetstreaming": "VR 头显串流",
+      "ControllerVr": "支持的 VR 控制器",
+      "PlayAreaVr": "支持的 VR 游玩设备"
     },
     "i.muted": {
       "empty string": "空"
@@ -373,7 +373,7 @@
       "Store data": "商店数据",
       "Playtime estimations by SteamSpy": "游戏时长估算(来自 SteamSpy)",
       "Twitch Stats": "Twitch 数据",
-      "Discount color explanation":"折扣颜色说明"
+      "Discount color explanation": "折扣颜色说明"
     },
     ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a,.container>div>p": {
       "This": "这个 ",
@@ -513,7 +513,8 @@
       "Click on a currency name to load price history for that currency.": " 点击货币名称来显示该货币的价格历史.",
       "Valve suggested prices are displayed on packages page.": " Valve 建议定价仅在 SUB 页面显示."
     },
-    ".text-center>a": {
+    ".text-center,.text-center>a": {
+      "We limit upcoming releases view to 30 days by default.": "\n我们默认只显示未来30天内发布的游戏.",
       "View more app history entries…": "查看更多 APP 历史记录...",
       "View more package history entries…": "查看更多 SUB 历史记录..."
     },
@@ -521,10 +522,11 @@
       "Menu": "菜单",
       "Calendar": "日历",
       "Past 7 day releases": "上一周发售的游戏",
-      "Most Followed Upcoming Games": "最收关注的即将发售的游戏",
+      "Most Followed Upcoming Games": "最受关注的即将发售的游戏",
       "Most Played Games": "最常玩的游戏",
       "Most Followed Games": "最受关注的游戏",
       "Most Wishlisted Games": "最多愿望单的游戏",
+      "Most Wishlisted Upcoming Games": "最多愿望单即将推出的游戏",
       "Get disappointed in your life™": "计算账号价值",
       "Get disappointed in your life": "计算账号价值",
       "Compare — Click the plus button to add to comparison": "比较 - 点击加号按钮添加到比较",
@@ -545,7 +547,8 @@
       "Search": "搜索",
       "View Steam Points Shop": "在 Steam 点数商店中查看",
       "View screenshots": "浏览截图",
-      "View all known upcoming releases": "浏览所有已知即将发售的游戏"
+      "View all known upcoming releases": "浏览所有已知即将发售的游戏",
+      "Hide ≤100 followers": "隐藏关注者 ≤100 的游戏"
     },
     "#table-apps_length>label,#table-apps_filter>label": {
       "Show": "显示 ",
@@ -583,7 +586,8 @@
       "Thursday": "星期四",
       "Friday": "星期五",
       "Saturday": "星期六",
-      "Sunday": "星期日"
+      "Sunday": "星期日",
+      "Most played games": "最常玩的游戏"
     },
     ".panel-heading,.panel-heading~p,.panel-heading>span,.panel-heading>a": {
       "Frequently Asked Questions": " 常见问题",
@@ -608,11 +612,17 @@
       "Steam Status FAQ": "Steam 状态 FAQ",
       "Privacy": "隐私"
     },
-    ".discount-faq>p,.discount-faq>p>span":{
-      "Blue discount":"蓝色折扣",
-      "Product has not been this cheap before (new historical low)":" 新史低 (当前价格比之前的历史最低价格还要低)",
-      "Green discount":"绿色折扣",
-      "Product is priced on par with lowest recorded price":" 平史低 (当前价格和之前的历史最低价格相同)"
+    "panel>p": {
+      "We track every new build on Steam, and try connect these builds to announcements by the game developers in their hub.": "我们跟踪 Steam 上的每个版本更新, 并尝试将这些更新与游戏开发者发布的更新公告联系起来.",
+      "We also automatically display the list of changed files for every single patch.": "我们还为每个更新自动显示文件改动列表."
+    },
+    ".discount-faq>p,.discount-faq>p>span,.discount-faq>p>a": {
+      "Blue discount": "蓝色折扣",
+      "Product has not been this cheap before (new historical low)": " 新史低 (当前价格比之前的历史最低价格还要低)",
+      "Green discount": "绿色折扣",
+      "Product is priced on par with lowest recorded price": " 平史低 (当前价格和之前的历史最低价格相同)",
+      "Looking for bundles? Take a look at our bundles page": "想查询捆绑包? 点击前往捆绑包折扣分页",
+      "View all previous Steam sales and their dates": "浏览之前所有的 Steam 促销活动"
     },
     ".faq_question>a,.faq_answer>p,.faq_answer>p>b,.faq_answer>p>a,.faq_answer>p>a>b": {
       "How to contact you?": "如何联系你",
@@ -671,7 +681,9 @@
     },
     ".muted-banner>p": {
       "The data for this package may be outdated, as our bot can no longer access the package info.": "此 SUB 的数据可能已过期, 我们的机器人再也无法读取此 SUB 的信息.",
-      "Due to a Steam change in June 2020, packages do not return any information until it is available in the store or owned.": "Steam 在2020年6月更新以后, 只有 SUB 的拥有者才能读取该 SUB 的信息."
+      "Due to a Steam change in June 2020, packages do not return any information until it is available in the store or owned.": "Steam 在2020年6月更新以后, 只有 SUB 的拥有者才能读取该 SUB 的信息.",
+      "High-resolution Steam charts with concurrent player counts for all Steam games, including historic data.": "所有 Steam 游戏的高分辨率 Steam 图表, 包括历史数据.",
+      "We update data and charts for the current top 800 games every 5 minutes, and the rest every 10 minutes.": "对于排名前800的游戏数据, 我们每5分钟更新一次, 其余的每10分钟更新一次."
     },
     "#js-search-tips>p,#js-search-tips>ul>li,.header-search-enter": {
       "Start typing to see game suggestions. This only suggests apps that have a store page.": "输入任何关键字来查看游戏建议. 在这里只会显示有商店页面的应用.",
