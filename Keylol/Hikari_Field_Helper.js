@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.6
+// @version         2.7
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -73,9 +73,10 @@
 
     setTimeout(() => {
       const steamLinks = document.querySelectorAll("a[href^='https://store.steampowered.com/'],a[href^='https://steamdb.info/app/']");
-      const HFLinks = document.querySelectorAll("a[href^='https://store.hikarifield.co.jp/shop/']");
+      const HFLinks = document.querySelectorAll("a[href*='https://store.hikarifield.co.jp/shop/']");
       let flag = HFLinks.length > 0;
       const grubAppid = RegExp(/app\/(\d+)\/?/);
+      const grubHFKey = RegExp(/shop\/(\S+)\/?/);
       for (const ele of steamLinks) {
         const href = ele.href;
         if (href) {
@@ -91,20 +92,23 @@
       }
       if (!flag) { return; } //未匹配到游戏,结束运行
       for (const ele of HFLinks) {
-        const key = ele.href?.replace(HFSHOP, "");
-        if (key) {
-          let [_, appID, __, ___] = INFO[key] ?? [null, null, null, null];
-          if (appID !== null) {
-            if (ownedGames.has(appID)) {
-              ele.classList.add("steam-info-link");
-              ele.classList.add("steam-info-own");
+        const href = ele.href;
+        if (href) {
+          const key = grubHFKey.exec(href)?.[1];
+          if (key) {
+            let [_, appID, __, ___] = INFO[key] ?? [null, null, null, null];
+            if (appID !== null) {
+              if (ownedGames.has(appID)) {
+                ele.classList.add("steam-info-link");
+                ele.classList.add("steam-info-own");
+              }
+              ele.setAttribute("data-hf", key);
+              ele.addEventListener("mouseenter", showDiag);
+              ele.addEventListener("mouseleave", hideDiag);
             }
-            ele.setAttribute("data-hf", key);
-            ele.addEventListener("mouseenter", showDiag);
-            ele.addEventListener("mouseleave", hideDiag);
+          } else {
+            console.log(ele);
           }
-        } else {
-          console.log(ele);
         }
       }
     }, 1000);
