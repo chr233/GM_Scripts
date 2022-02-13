@@ -42,6 +42,7 @@
       "Top game owners": "拥有最多游戏的玩家",
       "Top profile levels": "拥有最高等级的玩家",
       "Top selling games": "销量最高的游戏",
+      "Top selling games last week": "上周销量最高的游戏",
       "Most followed games": "最受关注的游戏",
       "Most wishlisted games": "最多愿望单的游戏",
       "Profile badges": "个人资料徽章",
@@ -72,6 +73,9 @@
       "viewers right now": " 当前观看人数"
     },
     "tr>th,tr>th>a,tr>th span": {
+      "DISC": "碟片",
+      "TRACK": "音轨",
+      "DURATION": "持续时间",
       "DEPOTID": "资产 ID",
       "Most Played": "最常玩的",
       "Games": "游戏",
@@ -188,6 +192,7 @@
       "full": "完全支持",
       "ReleaseState": "发布状态",
       "released": "已发售",
+      "prerelease":"未发售",
       "has_adult_content": "成人元素",
       "Store Release Date": "商店页发行日期",
       "osarch": "系统架构",
@@ -195,6 +200,7 @@
       "64-bit only": "仅支持64位",
       "metacritic_name": "Metacritic 名称",
       "metacritic_score": "Metacritic 评分",
+      "metacritic_fullurl": "Metacritic 完整链接",
       "community_visible_stats": "社区中心可见统计",
       "Achievement Languages": "成就语言",
       "review_score": "评测结果",
@@ -242,8 +248,26 @@
       "Game": "游戏",
       "Application": "软件",
       "Music": "音乐",
+      "album_cover": "专辑封面",
+      "encrypted_video": "加密视频",
+      "3rd-Party DRM": "第三方 DRM",
+      "serverbrowsername": "浏览器显示名",
+      "LinuxClientIcon": "Linux 客户端图标",
+      "osextended": "扩展操作系统",
+      "Steam Deck Compatibility": "Steam Deck 兼容性",
+      "DLCAvailableOnStore": "DLC 在商店中可见",
+      "DLCForAppID": "DLC 所属本体 APPID",
+      "MusicAlbumForAppID": "原声带所属本体 APPID",
+      "MusicAlbumAvailableOnStore": "原声带商店可见",
+      "MustOwnAppToPurchase": "购买需要拥有 APP",
+      "anti_cheat_support_url": "反作弊支持链接",
       "Is free on the store?": "在商店中免费?",
       "has_adult_content_violence": "成人元素(暴力)",
+      "has_adult_content_sex": "成人元素(色情)",
+      "AlwaysCountsAsOwned": "拥有计数",
+      "DevComp": "开发者专用",
+      "PreserveOnWishlist": "保留愿望单",
+      "ReleaseStateOverride": "发布状态覆写",
       "ReleaseStateSteamChina": "蒸汽平台发布状态",
       "SteamChinaApproved": "蒸汽平台审核通过",
       "market_presence": "存在市场",
@@ -268,7 +292,8 @@
       "onlyvrsupport": "只支持 VR",
       "vrheadsetstreaming": "VR 头显串流",
       "ControllerVr": "支持的 VR 控制器",
-      "PlayAreaVr": "支持的 VR 游玩设备"
+      "PlayAreaVr": "支持的 VR 游玩设备",
+      "maxnumfiles": "最大文件数"
     },
     "i.muted": {
       "empty string": "空"
@@ -314,6 +339,9 @@
       "Launch Options": "启动选项",
       "Achievements": "成就",
       "Screenshots": "截图",
+      "Album Tracks": "音乐专辑",
+      "Album Metadata": "音乐专辑元数据",
+      "Album Assets": "音乐专辑资源",
       "Packages that include this app": "包含此 APP 的 SUB",
       "History": "历史",
       "Latest updated products you own": "你库中最近更新的产品",
@@ -341,7 +369,9 @@
       "Files": "文件列表",
       "Lifetime concurrent players on Steam": "同时在线数预测",
       "Steam game hub followers chart": "Steam 社区中心关注者图表",
-      "Monthly breakdown": "月度明细"
+      "Monthly breakdown": "月度明细",
+      "Depots in this package": "此 SUB 包含的资产",
+      "Apps in this package": "此 SUB 包含的 APP"
     },
     "h3,h3>a": {
       "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
@@ -555,6 +585,13 @@
       "entries": " 条",
       "Search:": "搜索:"
     },
+    ".faq_section": {
+      "For Developers and Publishers": "致开发商和发行商",
+      "Technical Definitions": "术语解释",
+      "Token Dumper FAQ": "Token Dumper 常见问题",
+      "Steam Status FAQ": "Steam 状态 常见问题",
+      "Privacy": "隐私"
+    },
     ".steamy-checkbox-label": {
       "Show only wishlisted": "仅显示愿望单游戏",
       "Show only followed": "仅显示关注游戏",
@@ -589,7 +626,7 @@
       "Sunday": "星期日",
       "Most played games": "最常玩的游戏"
     },
-    ".panel-heading,.panel-heading~p,.panel-heading>span,.panel-heading>a": {
+    ".panel-heading,.panel-heading~p,.panel-heading>span,.panel-heading>a,.panel-heading~p>a": {
       "Frequently Asked Questions": " 常见问题",
       "This page will calculate the approximate value of your Steam account by looking up your games on your Steam community profile, using the current prices for each game on the Steam store.": "此页面将依据 Steam 商店中每款游戏的实时价格, 根据您的 Steam 社区个人资料中拥有的游戏来计算您的 Steam 帐户的大致价值.",
       "We can calculate account worth in all currencies supported by Steam. Our site has price history for all games in all currencies!": "我们可以用 Steam 支持的所有货币单位计算账户的价值. 我们拥有所有游戏在所有货币单位下的价格历史!",
@@ -603,7 +640,12 @@
       "View data": "查看数据",
       "Trading cards": "集换式卡牌",
       "Booster packs": "补充包",
-      "Jump to a section": "快速跳转"
+      "Jump to a section": "快速跳转",
+      "Developer package": " 开发者 SUB",
+      "This package is intended for developers and publishers only.": "当前 SUB 仅限开发商或发行商使用.",
+      "Do you have a key for this package? (even if it was already used)": " 你有包含此 SUB 的激活码吗? (即使它已经被使用过)",
+      "You can donate the key to SteamDB": "你可以将激活码捐赠给 SteamDB",
+      ", our bot will be able to update the package name.": ", 我们的机器人可以更新此 SUB 的名称."
     },
     ".panel>ol>li>a": {
       "For Developers and Publishers": "致开发商和发行商",
@@ -680,6 +722,7 @@
       "Package »": "SUB »"
     },
     ".muted-banner>p": {
+      "There is only partial information available about this app as SteamDB is missing the access token.":"此 APP 仅能查到部分信息, 这是因为 SteamDB 缺少访问凭据.",
       "The data for this package may be outdated, as our bot can no longer access the package info.": "此 SUB 的数据可能已过期, 我们的机器人再也无法读取此 SUB 的信息.",
       "Due to a Steam change in June 2020, packages do not return any information until it is available in the store or owned.": "Steam 在2020年6月更新以后, 只有 SUB 的拥有者才能读取该 SUB 的信息.",
       "High-resolution Steam charts with concurrent player counts for all Steam games, including historic data.": "所有 Steam 游戏的高分辨率 Steam 图表, 包括历史数据.",
@@ -704,7 +747,7 @@
       "🙏 Help SteamDB continue tracking data by": "\n🙏 请帮助 SteamDB 继续追踪数据, 通过\n",
       "donating Steam keys or using token dumper program": "捐赠 Steam Key 或使用 Token Dumper"
     },
-    "option,.ms-drop span,.currency-selector>.btn,a.btn-tag,td.price-line": {
+    "option,.ms-drop span,.currency-selector>.btn,a.btn-tag,td.price-line,.label-link": {
       "U.S. Dollar": " 美元 USD",
       "Euro": " 欧元 EUR",
       "Argentine Peso": " 阿根廷比索 ARS",
