@@ -1,0 +1,31 @@
+.tabnav-tabs > a {
+  min-width: 80px;
+}
+.sdc {
+  display: flex;
+}
+.sdc > textarea {
+  width: 100%;
+  height: 200px;
+  min-height: 200px;
+  resize: vertical;
+}
+.sdc > div.app-links {
+  width: 150px;
+  margin: 5px;
+}
+.sdc > div.app-links > a {
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: #213145;
+  color: white;
+  font-size: 12px;
+  border-radius: 0px;
+}
+.sdc > div.app-links > a:last-child {
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 0px;
+  color: #67c1f5;
+  background-color: #273b4b;
+}

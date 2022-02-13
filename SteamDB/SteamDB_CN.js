@@ -2,7 +2,7 @@
 // @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
 // @namespace           https://blog.chrxw.com
-// @version             1.19
+// @version             1.20
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -37,17 +37,18 @@
   let Locales;
 
   if (DEBUG) {
+
+
     const template = `{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"LABEL":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}`;
     const box = document.createElement("div");
-    box.style.cssText = "display:flex;";
+    box.className = "sdc";
     const text = document.createElement("textarea");
-    text.style.cssText = "width:90%;height:250px;resize:vertical;";
     box.appendChild(text);
     const action = document.createElement("div");
-    action.style.cssText = "width:10%;height:100%";
+    action.className = "app-links";
     box.appendChild(action);
-    const btnSave = document.createElement("button");
-    btnSave.innerText = "保存并刷新";
+    const btnSave = document.createElement("a");
+    btnSave.innerText = "💾 保存并应用";
     btnSave.addEventListener("click", () => {
       const raw = text.value.trim();
       if (!raw) {
@@ -62,23 +63,26 @@
         }
       }
     });
-    btnSave.style.cssText = "width:100%;height:50px;margin-bottom:5px;";
     action.appendChild(btnSave);
-    const btnReset = document.createElement("button");
-    btnReset.textContent = "清空文本";
+    const btnReset = document.createElement("a");
+    btnReset.textContent = "🗑️ 清空文本";
     btnReset.addEventListener("click", () => {
       window.localStorage["sdb_lang"] = template;
       window.location.reload();
     });
-    btnReset.style.cssText = "width:100%;height:50px;margin-bottom:5px;";
     action.appendChild(btnReset);
-    const btnOnline = document.createElement("button");
-    btnOnline.textContent = "当前在线文本";
+    const btnOnline = document.createElement("a");
+    btnOnline.textContent = "📄 当前在线文本";
     btnOnline.addEventListener("click", () => {
-      text.value = GM_getResourceText("data");
+      if (confirm("替换为在线版本后当前所做修改将会丢失, 确定要继续吗?")) {
+        text.value = GM_getResourceText("data");
+      }
     });
-    btnOnline.style.cssText = "width:100%;height:50px;margin-bottom:5px;";
     action.appendChild(btnOnline);
+    const about = document.createElement('a');
+    about.href = "https://blog.chrxw.com"
+    about.innerText = "🔗 By Chr_ © 2022";
+    action.appendChild(about);
 
     const father = document.getElementById("main");
     father.insertBefore(box, father.firstChild);
@@ -178,5 +182,37 @@
   console.log("=================================");
   console.log("迷茫同学:\n『没有恶意 请问直接用谷歌翻译整个网页不香吗』")
 
-  GM_addStyle(".tabnav-tabs>a{min-width:80px;}");
-})();
+  GM_addStyle(`
+    .tabnav-tabs > a {
+      min-width: 80px;
+    }
+    .sdc {
+      display: flex;
+    }
+    .sdc > textarea {
+      width: 100%;
+      height: 200px;
+      min-height: 200px;
+      resize: vertical;
+    }
+    .sdc > div.app-links {
+      width: 150px;
+      margin: 5px;
+    }
+    .sdc > div.app-links > a {
+      width: 100%;
+      margin-bottom: 10px;
+      background-color: #213145;
+      color: white;
+      font-size: 12px;
+      border-radius: 0px;
+    }
+    .sdc > div.app-links > a:last-child {
+      width: 100%;
+      margin-top: 30px;
+      margin-bottom: 0px;
+      color: #67c1f5;
+      background-color: #273b4b;
+    }
+`);
+})(); 
