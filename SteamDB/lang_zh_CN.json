@@ -726,7 +726,8 @@
       "The data for this package may be outdated, as our bot can no longer access the package info.": "此 SUB 的数据可能已过期, 我们的机器人再也无法读取此 SUB 的信息.",
       "Due to a Steam change in June 2020, packages do not return any information until it is available in the store or owned.": "Steam 在2020年6月更新以后, 只有 SUB 的拥有者才能读取该 SUB 的信息.",
       "High-resolution Steam charts with concurrent player counts for all Steam games, including historic data.": "所有 Steam 游戏的高分辨率 Steam 图表, 包括历史数据.",
-      "We update data and charts for the current top 800 games every 5 minutes, and the rest every 10 minutes.": "对于排名前800的游戏数据, 我们每5分钟更新一次, 其余的每10分钟更新一次."
+      "We update data and charts for the current top 800 games every 5 minutes, and the rest every 10 minutes.": "对于排名前800的游戏数据, 我们每5分钟更新一次, 其余的每10分钟更新一次.",
+      "At the request of the publisher, this app has been retired. You may not be able to buy or get it.":"应发行商请求, 此应用已在 Steam 商店下架, 你可能无法再购买或者获取它."
     },
     "#js-search-tips>p,#js-search-tips>ul>li,.header-search-enter": {
       "Start typing to see game suggestions. This only suggests apps that have a store page.": "输入任何关键字来查看游戏建议. 在这里只会显示有商店页面的应用.",
