@@ -587,6 +587,9 @@
       "Hide ≤100 followers": "隐藏关注者 ≤100 的游戏",
       "View global stats on Steam": "在 Steam 上查看全球成就统计"
     },
+    ".instantsearch": {
+      "Instant search": "渐进式搜索"
+    },
     "#table-apps_length>label,#table-apps_filter>label": {
       "Show": "显示 ",
       "entries": " 条",
@@ -1324,7 +1327,9 @@
     "Twitter": "推特",
     "GitHub": "GitHub",
     "Steam Group": "Steam 组",
-    "View article on PCGamingWiki": "查看 PCG Wiki 上的文章"
+    "View article on PCGamingWiki": "查看 PCG Wiki 上的文章",
+    "Blue discount — Product has not been this cheap before":"蓝色折扣 - 新史低 (当前价格比之前的历史最低价格还要低)",
+    "Green discount — Product is priced on par with lowest recorded price":"绿色折扣 - 平史低 (当前价格和之前的历史最低价格相同)"
   },
   "DYNAMIC": {
     "#js-notifications": {
