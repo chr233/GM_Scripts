@@ -109,7 +109,7 @@
       "Max Size": "最大尺寸",
       "Extra Info": "额外信息",
       "Description": "描述",
-      "Build ID": "Build ID",
+      "Build ID": "编译 ID",
       "Time Updated": "更新时间",
       "KEY": "项目名称",
       "Key": "项目名称",
@@ -118,13 +118,12 @@
       "PLATFORM": "平台",
       "PATH": "路径",
       "PATTERN": "通配符",
-      "API name": "API 名称",
-      "Display name and description": "显示名称和描述",
-      "Icons": "图标",
-      "API Name": "API 名称",
-      "Display Name": "显示名称",
-      "Default Value": "默认名称",
-      "Your Value": "你的值",
+      "DISPLAY NAME AND DESCRIPTION": "显示名称和描述",
+      "ICONS": "图标",
+      "API NAME": "API 名称",
+      "DISPLAY NAME": "显示名称",
+      "DEFAULT VALUE": "默认名称",
+      "YOUR VALUE": "你的值",
       "NAME": "名称",
       "PRICE": "价格",
       "DEPOT UPDATE": "资产更新",
@@ -192,11 +191,12 @@
       "full": "完全支持",
       "ReleaseState": "发布状态",
       "released": "已发售",
-      "prerelease":"未发售",
+      "prerelease": "未发售",
       "has_adult_content": "成人元素",
       "Store Release Date": "商店页发行日期",
       "osarch": "系统架构",
       "community_hub_visible": "社区中心可见",
+      "workshop_visible": "创意工坊可见",
       "64-bit only": "仅支持64位",
       "metacritic_name": "Metacritic 名称",
       "metacritic_score": "Metacritic 评分",
@@ -257,6 +257,8 @@
       "Steam Deck Compatibility": "Steam Deck 兼容性",
       "DLCAvailableOnStore": "DLC 在商店中可见",
       "DLCForAppID": "DLC 所属本体 APPID",
+      "DemoOfAppID": "Demo 所属本体 APPID",
+      "Parent App": "所属本体 APPID",
       "MusicAlbumForAppID": "原声带所属本体 APPID",
       "MusicAlbumAvailableOnStore": "原声带商店可见",
       "MustOwnAppToPurchase": "购买需要拥有 APP",
@@ -293,7 +295,10 @@
       "vrheadsetstreaming": "VR 头显串流",
       "ControllerVr": "支持的 VR 控制器",
       "PlayAreaVr": "支持的 VR 游玩设备",
-      "maxnumfiles": "最大文件数"
+      "maxnumfiles": "最大文件数",
+      "view portrait image": " 查看库封面",
+      "view hero background": " 查看库横幅",
+      "view logo image": " 查看库图标"
     },
     "i.muted": {
       "empty string": "空"
@@ -371,7 +376,8 @@
       "Steam game hub followers chart": "Steam 社区中心关注者图表",
       "Monthly breakdown": "月度明细",
       "Depots in this package": "此 SUB 包含的资产",
-      "Apps in this package": "此 SUB 包含的 APP"
+      "Apps in this package": "此 SUB 包含的 APP",
+      "Stats": "统计数据"
     },
     "h3,h3>a": {
       "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
@@ -578,7 +584,8 @@
       "View Steam Points Shop": "在 Steam 点数商店中查看",
       "View screenshots": "浏览截图",
       "View all known upcoming releases": "浏览所有已知即将发售的游戏",
-      "Hide ≤100 followers": "隐藏关注者 ≤100 的游戏"
+      "Hide ≤100 followers": "隐藏关注者 ≤100 的游戏",
+      "View global stats on Steam": "在 Steam 上查看全球成就统计"
     },
     "#table-apps_length>label,#table-apps_filter>label": {
       "Show": "显示 ",
@@ -631,6 +638,8 @@
       "This page will calculate the approximate value of your Steam account by looking up your games on your Steam community profile, using the current prices for each game on the Steam store.": "此页面将依据 Steam 商店中每款游戏的实时价格, 根据您的 Steam 社区个人资料中拥有的游戏来计算您的 Steam 帐户的大致价值.",
       "We can calculate account worth in all currencies supported by Steam. Our site has price history for all games in all currencies!": "我们可以用 Steam 支持的所有货币单位计算账户的价值. 我们拥有所有游戏在所有货币单位下的价格历史!",
       "0. Unnamed launch option": "0. 未命名启动选项",
+      "1. Unnamed launch option": "1. 未命名启动选项",
+      "2. Unnamed launch option": "2. 未命名启动选项",
       "This package is not shared using Family Sharing": " 此 SUB 已禁用家庭共享功能",
       "This package is not shared using Family Sharing.": "此 SUB 已禁用家庭共享功能.",
       "No cross region trading and gifting": " 此 SUB 无法跨区交易和送礼",
@@ -722,12 +731,13 @@
       "Package »": "SUB »"
     },
     ".muted-banner>p": {
-      "There is only partial information available about this app as SteamDB is missing the access token.":"此 APP 仅能查到部分信息, 这是因为 SteamDB 缺少访问凭据.",
+      "There is only partial information available about this app as SteamDB is missing the access token.": "此 APP 仅能查到部分信息, 这是因为 SteamDB 缺少访问凭据.",
       "The data for this package may be outdated, as our bot can no longer access the package info.": "此 SUB 的数据可能已过期, 我们的机器人再也无法读取此 SUB 的信息.",
       "Due to a Steam change in June 2020, packages do not return any information until it is available in the store or owned.": "Steam 在2020年6月更新以后, 只有 SUB 的拥有者才能读取该 SUB 的信息.",
       "High-resolution Steam charts with concurrent player counts for all Steam games, including historic data.": "所有 Steam 游戏的高分辨率 Steam 图表, 包括历史数据.",
       "We update data and charts for the current top 800 games every 5 minutes, and the rest every 10 minutes.": "对于排名前800的游戏数据, 我们每5分钟更新一次, 其余的每10分钟更新一次.",
-      "At the request of the publisher, this app has been retired. You may not be able to buy or get it.":"应发行商请求, 此应用已在 Steam 商店下架, 你可能无法再购买或者获取它."
+      "At the request of the publisher, this app has been retired. You may not be able to buy or get it.": "应发行商请求, 此应用已在 Steam 商店下架, 你可能无法再购买或者获取它.",
+      "This build has not been seen in a public branch.": "这个版本没有在公开分支出现过."
     },
     "#js-search-tips>p,#js-search-tips>ul>li,.header-search-enter": {
       "Start typing to see game suggestions. This only suggests apps that have a store page.": "输入任何关键字来查看游戏建议. 在这里只会显示有商店页面的应用.",
@@ -747,6 +757,9 @@
     ".global-announcement>div,.global-announcement>div>a": {
       "🙏 Help SteamDB continue tracking data by": "\n🙏 请帮助 SteamDB 继续追踪数据, 通过\n",
       "donating Steam keys or using token dumper program": "捐赠 Steam Key 或使用 Token Dumper"
+    },
+    ".tab-pane>p": {
+      "This app is not included in any package known to us. As packages now require tokens, SteamDB needs a token to access package info.": "此 APP 没有包含在我们已知的任何 SUB 中. 因为读取 SUB 信息需要访问凭据, 所以 SteamDB 暂时无法获取该 SUB 的信息."
     },
     "option,.ms-drop span,.currency-selector>.btn,a.btn-tag,td.price-line,.label-link": {
       "U.S. Dollar": " 美元 USD",
@@ -1310,7 +1323,8 @@
     "Discord": "Discord",
     "Twitter": "推特",
     "GitHub": "GitHub",
-    "Steam Group": "Steam 组"
+    "Steam Group": "Steam 组",
+    "View article on PCGamingWiki": "查看 PCG Wiki 上的文章"
   },
   "DYNAMIC": {
     "#js-notifications": {
