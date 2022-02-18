@@ -10,11 +10,11 @@
   min-height: 200px;
   resize: vertical;
 }
-.sdc > div.app-links {
+.sdc > div.sdc-links {
   width: 150px;
   margin: 5px;
 }
-.sdc > div.app-links > a {
+.sdc > div.sdc-links > a {
   width: 100%;
   margin-bottom: 10px;
   background-color: #213145;
@@ -22,7 +22,7 @@
   font-size: 12px;
   border-radius: 0px;
 }
-.sdc > div.app-links > a:last-child {
+.sdc > div.sdc-links > a:last-child {
   width: 100%;
   margin-top: 30px;
   margin-bottom: 0px;

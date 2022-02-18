@@ -4,7 +4,7 @@
 // @namespace           https://blog.chrxw.com
 // @supportURL          https://blog.chrxw.com/scripts.html
 // @contributionURL     https://afdian.net/@chr233
-// @version             1.21
+// @version             1.22
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -38,14 +38,13 @@
   let Locales;
 
   if (DEBUG) {
-
     const template = `{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"LABEL":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}`;
     const box = document.createElement("div");
     box.className = "sdc";
     const text = document.createElement("textarea");
     box.appendChild(text);
     const action = document.createElement("div");
-    action.className = "app-links";
+    action.className = "sdc-links";
     box.appendChild(action);
     const btnSave = document.createElement("a");
     btnSave.innerText = "💾 保存并应用";
@@ -193,36 +192,36 @@
 
   // 添加样式
   GM_addStyle(`
-    .tabnav-tabs > a {
-      min-width: 80px;
-    }
-    .sdc {
-      display: flex;
-    }
-    .sdc > textarea {
-      width: 100%;
-      height: 200px;
-      min-height: 200px;
-      resize: vertical;
-    }
-    .sdc > div.app-links {
-      width: 150px;
-      margin: 5px;
-    }
-    .sdc > div.app-links > a {
-      width: 100%;
-      margin-bottom: 10px;
-      background-color: #213145;
-      color: white;
-      font-size: 12px;
-      border-radius: 0px;
-    }
-    .sdc > div.app-links > a:last-child {
-      width: 100%;
-      margin-top: 30px;
-      margin-bottom: 0px;
-      color: #67c1f5;
-      background-color: #273b4b;
-    }
+  .tabnav-tabs > a {
+    min-width: 80px;
+  }
+  .sdc {
+    display: flex;
+  }
+  .sdc > textarea {
+    width: 100%;
+    height: 200px;
+    min-height: 200px;
+    resize: vertical;
+  }
+  .sdc > div.sdc-links {
+    width: 150px;
+    margin: 5px;
+  }
+  .sdc > div.sdc-links > a {
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #213145;
+    color: white;
+    font-size: 12px;
+    border-radius: 0px;
+  }
+  .sdc > div.sdc-links > a:last-child {
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 0px;
+    color: #67c1f5;
+    background-color: #273b4b;
+  }  
 `);
 })(); 
