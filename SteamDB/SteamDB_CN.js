@@ -1,13 +1,14 @@
 // ==UserScript==
-// @name                SteamDB_CN
 // @name:zh-CN          SteamDB汉化
+// @name                SteamDB_CN
 // @namespace           https://blog.chrxw.com
-// @version             1.20
+// @supportURL          https://blog.chrxw.com/scripts.html
+// @contributionURL     https://afdian.net/@chr233
+// @version             1.21
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
 // @match               https://steamdb.info/*
-// @supportURL          https://steamcn.com/t339531-1-1
 // @license             AGPL-3.0
 // @icon                https://blog.chrxw.com/favicon.ico
 // @resource            data https://gitee.com/chr_a1/gm_scripts/raw/master/SteamDB/lang_zh_CN.json
@@ -37,7 +38,6 @@
   let Locales;
 
   if (DEBUG) {
-
 
     const template = `{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"LABEL":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}`;
     const box = document.createElement("div");
@@ -172,8 +172,9 @@
   const { script: { version } } = GM_info;
   const { DOC: { "更新时间": update, "贡献名单": contribution } } = Locales;
 
-  // call your function
   var End = new Date().getTime();
+
+  // 统计耗时
   console.log("执行耗时", `${End - Start} ms`);
   console.log("=================================");
   console.log(`插件版本: ${version}`);
@@ -182,6 +183,15 @@
   console.log("=================================");
   console.log("迷茫同学:\n『没有恶意 请问直接用谷歌翻译整个网页不香吗』")
 
+  // 添加按钮
+  const headerUl=document.querySelector(".header-menu-container>div>ul:nth-child(1)");
+  const footerUl=document.querySelector(".footer-container>div>ul:nth-child(1)");
+  const scriptLink = document.createElement("li");
+  scriptLink.innerHTML = `<a href="https://blog.chrxw.com" target="_blank">SteamDB 汉化 V${version}</a>`;
+  headerUl.appendChild(scriptLink);
+  footerUl.appendChild(scriptLink.cloneNode(true));
+
+  // 添加样式
   GM_addStyle(`
     .tabnav-tabs > a {
       min-width: 80px;
