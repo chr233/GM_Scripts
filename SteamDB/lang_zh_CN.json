@@ -1328,8 +1328,8 @@
     "GitHub": "GitHub",
     "Steam Group": "Steam 组",
     "View article on PCGamingWiki": "查看 PCG Wiki 上的文章",
-    "Blue discount — Product has not been this cheap before":"蓝色折扣 - 新史低 (当前价格比之前的历史最低价格还要低)",
-    "Green discount — Product is priced on par with lowest recorded price":"绿色折扣 - 平史低 (当前价格和之前的历史最低价格相同)"
+    "Blue discount — Product has not been this cheap before": "蓝色折扣 - 新史低 (当前价格比之前的历史最低价格还要低)",
+    "Green discount — Product is priced on par with lowest recorded price": "绿色折扣 - 平史低 (当前价格和之前的历史最低价格相同)"
   },
   "DYNAMIC": {
     "#js-notifications": {
