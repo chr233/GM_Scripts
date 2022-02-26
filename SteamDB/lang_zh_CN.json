@@ -300,6 +300,11 @@
       "view hero background": " 查看库横幅",
       "view logo image": " 查看库图标"
     },
+    "td>p,td>span": {
+      "Hidden.": " 隐藏成就\n",
+      "Shared Install": "共享安装",
+      "Unused": "未使用"
+    },
     "i.muted": {
       "empty string": "空"
     },
@@ -585,7 +590,8 @@
       "View screenshots": "浏览截图",
       "View all known upcoming releases": "浏览所有已知即将发售的游戏",
       "Hide ≤100 followers": "隐藏关注者 ≤100 的游戏",
-      "View global stats on Steam": "在 Steam 上查看全球成就统计"
+      "View global stats on Steam": "在 Steam 上查看全球成就统计",
+      "Load filters": "设置过滤器"
     },
     ".instantsearch": {
       "Instant search": "渐进式搜索"
@@ -650,7 +656,15 @@
       "Changelist": "\n更新列表 ",
       "Badges": "徽章",
       "View data": "查看数据",
+      "View images": "查看图像",
       "Trading cards": "集换式卡牌",
+      "Profile backgrounds": "个人资料背景",
+      "Emoticons": "表情",
+      "Profile modifiers": "个人资料修饰器",
+      "Chat stickers": "聊天贴纸",
+      "Mini profile backgrounds": "迷你个人资料背景",
+      "Avatar frames": "头像框",
+      "Animated avatars": "动画头像",
       "Booster packs": "补充包",
       "Jump to a section": "快速跳转",
       "Developer package": " 开发者 SUB",
@@ -740,7 +754,8 @@
       "High-resolution Steam charts with concurrent player counts for all Steam games, including historic data.": "所有 Steam 游戏的高分辨率 Steam 图表, 包括历史数据.",
       "We update data and charts for the current top 800 games every 5 minutes, and the rest every 10 minutes.": "对于排名前800的游戏数据, 我们每5分钟更新一次, 其余的每10分钟更新一次.",
       "At the request of the publisher, this app has been retired. You may not be able to buy or get it.": "应发行商请求, 此应用已在 Steam 商店下架, 你可能无法再购买或者获取它.",
-      "This build has not been seen in a public branch.": "这个版本没有在公开分支出现过."
+      "This build has not been seen in a public branch.": "这个版本没有在公开分支出现过.",
+      "Filter history to a single key": " 按照指定的类型过滤历史记录"
     },
     "#js-search-tips>p,#js-search-tips>ul>li,.header-search-enter": {
       "Start typing to see game suggestions. This only suggests apps that have a store page.": "输入任何关键字来查看游戏建议. 在这里只会显示有商店页面的应用.",
