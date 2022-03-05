@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.1
+// @version         1.2
 // @description     批量撤回评测点赞/有趣
 // @description:zh-CN  批量撤回评测点赞/有趣
 // @author          Chr_
@@ -41,7 +41,7 @@
     <p> 1. 仅会对含有黑名单词汇的评测消赞</p>
     <p> 2. 一行一条规则, 支持 * ? 作为通配符</p>
     <p> 3. Steam 评测是社区的重要组成部分, 请尽量使用黑名单进行消赞</p>
-    <p> 4. 一些常用的规则参见 【<a href="#" target="_blank">发布帖</a>】</p>
+    <p> 4. 一些常用的规则参见 【<a href="https://keylol.com/t794532-1-1" target="_blank">发布帖</a>】</p>
     <p> 5. 如果需要使用正则表达式, 请以 $$ 开头</p>
     <p> 6. 如果需要对所有评测消赞, 请填入 * </p>`;
     banner.appendChild(describe);
