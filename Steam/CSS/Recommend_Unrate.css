@@ -1,0 +1,18 @@
+.feature_banner {
+  background-size: cover;
+}
+.feature_banner > div {
+  margin-left: 10px;
+  color: #fff;
+  font-weight: 200;
+}
+.ru_btn {
+  margin-left: 5px;
+  padding: 2px;
+}
+.ru_filter {
+  resize: vertical;
+  width: calc(100% - 30px);
+  min-height: 80px;
+  margin: 10px;
+}
