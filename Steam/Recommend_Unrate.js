@@ -4,7 +4,11 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
+<<<<<<< HEAD
 // @version         1.3
+=======
+// @version         1.2
+>>>>>>> 8369012941fb2f2c7026dd3d95a6efb0c4f13722
 // @description     批量撤回评测点赞/有趣
 // @description:zh-CN  批量撤回评测点赞/有趣
 // @author          Chr_
