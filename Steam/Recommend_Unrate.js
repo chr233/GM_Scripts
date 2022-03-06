@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.6
+// @version         1.7
 // @description     批量撤回评测点赞/有趣
 // @description:zh-CN  批量撤回评测点赞/有趣
 // @author          Chr_
@@ -204,7 +204,7 @@
                     resolve([true, recomment, recommentID, rate]);
                 }).catch((err) => {
                     console.error(err);
-                    resolve([false, "未知错误 :" + err, 0, 0]);
+                    resolve([false, "未知错误", 0, 0]);
                 });
         });
     }
