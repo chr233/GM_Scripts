@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.5
+// @version         1.6
 // @description     批量撤回评测点赞/有趣
 // @description:zh-CN  批量撤回评测点赞/有趣
 // @author          Chr_
@@ -22,7 +22,7 @@
 
     const defaultRules = [
         "$$⠄|⢁|⠁|⣀|⣄|⣤|⣆|⣦|⣶|⣷|⣿|⣇|⣧",
-        "$$我是((伞兵|傻|啥|煞|聪明)|(比|逼|币))",
+        "$$我是((伞兵|傻|啥|煞|聪明|s)|(比|逼|币|b))",
         "$$(补|布)丁|和谐|去兔子",
         "$$度盘|网盘|链接|提取码",
         "$$步兵|骑兵",
@@ -39,18 +39,20 @@
     const { script: { version } } = GM_info;
     describe.innerHTML = `
     <h4>批量撤回评测点赞 Ver ${version} By 【<a href="https://steamcommunity.com/id/Chr_" target="_blank">Chr_</a>】</h4>
-    <h5>关键词黑名单设置: 【<a href="#" class="ru_default">重置</a>】</h5>
+    <h5>关键词黑名单设置: 【<a href="#" class="ru_default">重置规则</a>】</h5>
     <p> 1. 仅会对含有黑名单词汇的评测消赞</p>
     <p> 2. 一行一条规则, 支持 * ? 作为通配符</p>
     <p> 3. Steam 评测是社区的重要组成部分, 请尽量使用黑名单进行消赞</p>
     <p> 4. 一些常用的规则参见 【<a href="https://keylol.com/t794532-1-1" target="_blank">发布帖</a>】</p>
     <p> 5. 如果需要使用正则表达式, 请以 $$ 开头</p>
-    <p> 6. 如果需要对所有评测消赞, 请填入 * </p>`;
+    <p> 6. 如果需要对所有评测消赞, 请填入 * </p>
+    <p> 7. 以 # 开头的规则将被视为注释, 不会生效</p>`;
     banner.appendChild(describe);
     const filter = document.createElement('textarea');
-    filter.placeholder = "黑名单规则, 一行一条, 支持 * ? 作为通配符";
+    filter.placeholder = "黑名单规则, 一行一条, 支持 * ? 作为通配符, 支持正则表达式";
     filter.className = "ru_filter";
-    filter.value = window.localStorage.getItem("ru_rules") ?? defaultRules;
+    const savedRules = window.localStorage.getItem("ru_rules");
+    filter.value = savedRules !== null ? savedRules : defaultRules;
     const resetRule = banner.querySelector(".ru_default");
     resetRule.onclick = () => {
         ShowConfirmDialog(`⚠️操作确认`, `<div>确定要重置规则吗?</div>`, '确认', '取消')
@@ -69,7 +71,7 @@
         b.onclick = async () => {
             b.disabled = true;
             b.innerText = "执行中...";
-            await comfirmUnvote(rateTable);
+            await comfirmUnvote(ele);
             b.disabled = false;
             b.innerText = "执行消赞";
         };
