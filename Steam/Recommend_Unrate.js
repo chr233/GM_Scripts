@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.4
+// @version         1.5
 // @description     批量撤回评测点赞/有趣
 // @description:zh-CN  批量撤回评测点赞/有趣
 // @author          Chr_
@@ -22,7 +22,7 @@
 
     const defaultRules = [
         "$$⠄|⢁|⠁|⣀|⣄|⣤|⣆|⣦|⣶|⣷|⣿|⣇|⣧",
-        "$$我是(伞兵|傻|啥|煞|聪明)|(比|逼|币)",
+        "$$我是((伞兵|傻|啥|煞|聪明)|(比|逼|币))",
         "$$(补|布)丁|和谐|去兔子",
         "$$度盘|网盘|链接|提取码",
         "$$步兵|骑兵",
