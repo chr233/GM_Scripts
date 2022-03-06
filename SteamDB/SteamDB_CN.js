@@ -4,14 +4,14 @@
 // @namespace           https://blog.chrxw.com
 // @supportURL          https://blog.chrxw.com/scripts.html
 // @contributionURL     https://afdian.net/@chr233
-// @version             1.22
+// @version             1.23
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
 // @match               https://steamdb.info/*
 // @license             AGPL-3.0
 // @icon                https://blog.chrxw.com/favicon.ico
-// @resource            data https://gitee.com/chr_a1/gm_scripts/raw/master/SteamDB/lang_zh_CN.json
+// @resource            data https://gitee.com/chr_a1/gm_scripts/raw/master/SteamDB/SteamDB_CN.json
 // @grant               GM_addStyle
 // @grant               GM_getResourceText
 // @grant               GM_registerMenuCommand
