@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.1
+// @version         1.3
 // @description     批量撤回评测点赞/有趣
 // @description:zh-CN  批量撤回评测点赞/有趣
 // @author          Chr_
@@ -22,11 +22,13 @@
 
     const defaultRules = [
         "$$⠄|⢁|⠁|⣀|⣄|⣤|⣆|⣦|⣶|⣷|⣿|⣇|⣧",
-        "pan",
-        "share",
-        "weiyun",
-        "lanzou",
-        "baidu",
+        "$$我是(伞兵|傻|啥|煞|聪明)|(比|逼|币)",
+        "$$(补|布)丁|和谐|去兔子",
+        "$$度盘|网盘|链接|提取码",
+        "$$步兵|骑兵",
+        "$$pan|share|weiyun|lanzou|baidu",
+        "{链接已删除}",
+        "/s/",
     ].join("\n");
 
     const rateTable = document.getElementById("AccountDataTable_1");
@@ -41,7 +43,7 @@
     <p> 1. 仅会对含有黑名单词汇的评测消赞</p>
     <p> 2. 一行一条规则, 支持 * ? 作为通配符</p>
     <p> 3. Steam 评测是社区的重要组成部分, 请尽量使用黑名单进行消赞</p>
-    <p> 4. 一些常用的规则参见 【<a href="#" target="_blank">发布帖</a>】</p>
+    <p> 4. 一些常用的规则参见 【<a href="https://keylol.com/t794532-1-1" target="_blank">发布帖</a>】</p>
     <p> 5. 如果需要使用正则表达式, 请以 $$ 开头</p>
     <p> 6. 如果需要对所有评测消赞, 请填入 * </p>`;
     banner.appendChild(describe);
@@ -92,7 +94,10 @@
         const rules = filter.value.split("\n").map(x => x)
             .filter((item, index, arr) => item && arr.indexOf(item, 0) === index)
             .map((x) => {
-                if (x.startsWith("$$")) {
+                if (x.startsWith("#")) {
+                    return [0, x];
+                }
+                else if (x.startsWith("$$")) {
                     try {
                         return [2, new RegExp(x.slice(2), "ig")];
                     } catch (e) {
@@ -123,32 +128,36 @@
             }
 
             let flag = false;
+            let txt = "";
             for (const [mode, rule] of rules) {
                 if (mode === 2) {// 正则模式
                     if (recomment.search(rule) !== -1) {
                         flag = true;
+                        txt = rule.toString().substring(0, 8);
                         break;
                     }
                 } else if (mode === 1) {//简易通配符
                     if (isMatch(recomment, rule)) {
                         flag = true;
+                        txt = rule.substring(0, 8);
                         break;
                     }
                 } else if (mode === 0) { //关键字搜寻
                     if (recomment.includes(rule)) {
                         flag = true;
+                        txt = rule.substring(0, 8);
                         break;
                     }
                 }
             }
             if (flag) {//需要消赞
                 const raw = name.innerText;
-                name.innerText = `${raw}【❌ 命中规则】`;
+                name.innerText = `${raw}【❌ 命中规则  ${txt}】`;
                 const succ1 = await changeVote(id, true, sessionID);
                 const succ2 = await changeVote(id, false, sessionID);
 
                 if (succ1 && succ2) {
-                    name.innerText = `${raw}【💔 消赞成功】`;
+                    name.innerText = `${raw}【💔 消赞成功 ${txt}】`;
                 } else {
                     name.innerText = `${raw}【💥 消赞失败(请检查社区是否登陆)】`;
                 }
