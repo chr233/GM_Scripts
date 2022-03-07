@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.7
+// @version         1.9
 // @description     批量撤回评测点赞/有趣
 // @description:zh-CN  批量撤回评测点赞/有趣
 // @author          Chr_
@@ -27,7 +27,7 @@
         "$$度盘|网盘|链接|提取码",
         "$$步兵|骑兵",
         "$$pan|share|weiyun|lanzou|baidu",
-        "{链接已删除}",
+        "链接已删除",
         "/s/",
     ].join("\n");
 
@@ -41,12 +41,14 @@
     <h4>批量撤回评测点赞 Ver ${version} By 【<a href="https://steamcommunity.com/id/Chr_" target="_blank">Chr_</a>】</h4>
     <h5>关键词黑名单设置: 【<a href="#" class="ru_default">重置规则</a>】</h5>
     <p> 1. 仅会对含有黑名单词汇的评测消赞</p>
-    <p> 2. 一行一条规则, 支持 * ? 作为通配符</p>
-    <p> 3. Steam 评测是社区的重要组成部分, 请尽量使用黑名单进行消赞</p>
-    <p> 4. 一些常用的规则参见 【<a href="https://keylol.com/t794532-1-1" target="_blank">发布帖</a>】</p>
-    <p> 5. 如果需要使用正则表达式, 请以 $$ 开头</p>
-    <p> 6. 如果需要对所有评测消赞, 请填入 * </p>
-    <p> 7. 以 # 开头的规则将被视为注释, 不会生效</p>`;
+    <p> 2. 一行一条规则, 默认为关键词模式 (评测中需要出现指定的词汇才会判断为需要消赞)</p>
+    <p> 3. 以 !! 开头的规则为简易通配符模式 (比如 !!我是?? 可以匹配包含 我是xx 的评测)</p>
+    <p> 4. 以 $$ 开头的规则为正则表达式模式 (比如 $$我是([啥s]|[比b]) 可以匹配包含 我是sb 的评测</p>
+    <p> 5. 以 # 开头的规则将被视为注释, 不会生效</p>
+    <p> 6. <b>Steam 评测是社区的重要组成部分, 请尽量使用黑名单进行消赞</b></p>
+    <p> 7. 一些常用的规则参见 【<a href="https://keylol.com/t794532-1-1" target="_blank">发布帖</a>】</p>
+    <p> 8. 如果需要对所有评测消赞, 请填入 !!* </p>`;
+
     banner.appendChild(describe);
     const filter = document.createElement('textarea');
     filter.placeholder = "黑名单规则, 一行一条, 支持 * ? 作为通配符, 支持正则表达式";
@@ -101,11 +103,14 @@
                 }
                 else if (x.startsWith("$$")) {
                     try {
-                        return [2, new RegExp(x.slice(2), "ig")];
+                        return [2, new RegExp(x.substring(2), "ig")];
                     } catch (e) {
                         ShowDialog("正则表达式有误", x);
                         return [-1, null];
                     }
+                }
+                else if (x.startsWith("!!")) {
+                    return [1, x.substring(2)];
                 }
                 else if (x.includes("*") || x.includes("?")) {
                     return [1, x];
@@ -139,7 +144,7 @@
                         break;
                     }
                 } else if (mode === 1) {//简易通配符
-                    if (isMatch(recomment, rule)) {
+                    if (isMatch(recomment.replace(/\?|\*/, ""), rule)) {
                         flag = true;
                         txt = rule.substring(0, 8);
                         break;
