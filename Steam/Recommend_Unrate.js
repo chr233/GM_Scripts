@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.9
+// @version         1.10
 // @description     批量撤回评测点赞/有趣
 // @description:zh-CN  批量撤回评测点赞/有趣
 // @author          Chr_
@@ -110,10 +110,10 @@
                     }
                 }
                 else if (x.startsWith("!!")) {
-                    return [1, x.substring(2)];
+                    return [1, x.substring(2).replace(/\*+/g, '*')];
                 }
                 else if (x.includes("*") || x.includes("?")) {
-                    return [1, x];
+                    return [1, x.replace(/\*+/g, '*')];
                 }
                 return [0, x];
             });
@@ -144,7 +144,7 @@
                         break;
                     }
                 } else if (mode === 1) {//简易通配符
-                    if (isMatch(recomment.replace(/\?|\*/, ""), rule)) {
+                    if (isMatch(recomment.replace(/\?|\*/g, ""), rule)) {
                         flag = true;
                         txt = rule.substring(0, 8);
                         break;
