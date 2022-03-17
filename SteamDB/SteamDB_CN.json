@@ -455,9 +455,7 @@
       "Profile Customizations": "自定义个人主页"
     },
     ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a,.container>div>p": {
-      "This": "这个 ",
-      "third-party": "第三方",
-      "website gives you better insight into the": " 网站可让您更好地了解 ",
+      "This third-party website gives you better insight into the": "这个第三方网站可让您更好地了解 ",
       "Steam": "Steam",
       "platform and everything in its database.": " 平台及其数据库中的所有内容.",
       "Look through our FAQ": "查阅FAQ",
