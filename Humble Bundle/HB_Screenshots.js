@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.2
+// @version         2.3
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_
@@ -142,7 +142,7 @@
             } else {
                 clearInterval(t);
             }
-        }, 200);
+        }, 1000);
     }
     function copyTxt() {
         const data = parseKeys();
