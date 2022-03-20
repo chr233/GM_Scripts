@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.7
+// @version         2.8
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -73,7 +73,7 @@
 
     setTimeout(() => {
       const steamLinks = document.querySelectorAll("a[href^='https://store.steampowered.com/'],a[href^='https://steamdb.info/app/']");
-      const HFLinks = document.querySelectorAll("a[href*='https://store.hikarifield.co.jp/shop/']");
+      const HFLinks = document.querySelectorAll("a[href^='https://store.hikarifield.co.jp/shop/'],a[href^='https://steamcommunity.com/linkfilter/?url=https://shop.hikarifield.co.jp/shop/']");
       let flag = HFLinks.length > 0;
       const grubAppid = RegExp(/app\/(\d+)\/?/);
       const grubHFKey = RegExp(/shop\/(\S+)\/?/);
