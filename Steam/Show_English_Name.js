@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.15
+// @version         1.16
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_
@@ -31,7 +31,7 @@
                 const data = json[appid];
                 if (data.success !== true) { return; }
 
-                const { name: name_en, supported_languages, categories } = data.data;
+                let { name: name_en, supported_languages, categories } = data.data;
 
                 const t = setInterval(() => {
                     const ele_title = document.getElementById("appHubAppName");
