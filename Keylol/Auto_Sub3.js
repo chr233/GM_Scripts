@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.18
+// @version         2.21
 // @description     一键快乐-3
 // @description:zh-CN  一键快乐-3
 // @author          Chr_
@@ -13,7 +13,7 @@
 // @icon            https://blog.chrxw.com/favicon.ico
 // @grant           GM_setValue
 // @grant           GM_getValue
-// @grant           GM_info
+// @grant           GM_xmlhttpRequest
 // ==/UserScript==
 
 // 版本号
@@ -43,20 +43,6 @@ const Vregex = /plugin\.php\?id=steamcn_lottery:view&lottery_id=46&hash=(.+)&rol
     if (VCan3 && VAuto) {
         autoRoll();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 })();
 // 添加GUI
 function addBtns() {
@@ -100,7 +86,7 @@ function addBtns() {
     aLP.href = Vroll;
     aLP.title = '前往轮盘页';
     let img54 = document.createElement('img');
-    img54.src = 'https://gitee.com/chr_a1/gm_scripts/raw/master/Static/keylol.png';
+    img54.src = 'https://cdn.jsdelivr.net/gh/chr233/GM_Scripts@65475a39f3a5cef38f90b5ac29c560a4fdaee65d/Static/keylol.png';
     img54.alt = '总之这里是54的名言';
     img54.style.cssText = 'float: right;margin-top: -28px;height: 100%;'
     aLP.appendChild(img54);
@@ -276,48 +262,3 @@ function autoRoll() {
         });
     }
 }
-
-
-class Request {
-    constructor(timeout = 3000) {
-        this.timeout = timeout;
-    }
-    get(url, opt = {}) {
-        return this.baseRequest(url, 'GET', opt, 'json');
-    }
-    getHtml(url, opt = {}) {
-        return this.baseRequest(url, 'GET', opt, '');
-    }
-    getText(url, opt = {}) {
-        return this.baseRequest(url, 'GET', opt, 'text');
-    }
-    post(url, data, opt = {}) {
-        opt.data = JSON.stringify(data);
-        return this.baseRequest(url, 'POST', opt, 'json');
-    }
-    baseRequest(url, method = 'GET', opt = {}, responseType = 'json') {
-        Object.assign(opt, {
-            url, method, responseType, timeout: this.timeout
-        });
-        return new Promise((resolve, reject) => {
-            opt.ontimeout = opt.onerror = reject;
-            opt.onload = ({ readyState, status, response, responseText }) => {
-                if (readyState === 4 && status === 200) {
-                    if (responseType == 'json') {
-                        resolve(response);
-                    } else if (responseType == 'text') {
-                        resolve(responseText);
-                    }
-                } else {
-                    console.error('网络错误');
-                    console.log(readyState);
-                    console.log(status);
-                    console.log(response);
-                    reject('解析出错');
-                }
-            }
-            GM_xmlhttpRequest(opt);
-        });
-    }
-}
-const $http = new Request();
