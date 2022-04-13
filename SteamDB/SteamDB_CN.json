@@ -332,7 +332,8 @@
       "Avatar frame": "头像框",
       "Special profile": "特殊个人资料背景",
       "PurchaseRestrictedCountries":"限制购买的国家",
-      "AllowPurchaseFromRestrictedCountries":"允许在限购国家购买"
+      "AllowPurchaseFromRestrictedCountries":"允许在限购国家购买",
+      "(Buy Restrict)":"(购买限制)"
     },
     "td>p,td>span": {
       "Hidden.": " 隐藏成就\n",
