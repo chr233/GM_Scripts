@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.31
+// @version         2.32
 // @description     超级方便的添加购物车体验，不用跳转商店页。
 // @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
 // @author          Chr_
@@ -239,7 +239,7 @@
                 let txt = document.getElementById("fac_diag");
                 if (txt !== null) {
                     clearInterval(t);
-                    for (let line of text.split("\n")) {
+                    for (let line of text.split("\n").reverse()) {
                         if (line.trim() === "") {
                             continue;
                         }
