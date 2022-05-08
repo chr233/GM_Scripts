@@ -4,14 +4,14 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.3
+// @version         2.4
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
-// @require         https://cdn.jsdelivr.net/gh/chr233/GM_Scripts@30e200849c5b913355ab6869b040eb7367ec20a7/Lib/html2canvas.js
-// @include         /https:\/\/www\.humblebundle\.com\/downloads\?key=\S+/
+// @require         https://cdn.bootcdn.net/ajax/libs/html2canvas/1.4.1/html2canvas.js
+// @include         https://www.humblebundle.com/downloads?key=*
 // @grant           GM_setClipboard
 // ==/UserScript==
 
@@ -24,7 +24,7 @@
         addGUI();
         GTimer = setInterval(() => {
             waitLoading();
-        }, 500);
+        }, 5000);
     })();
     function addGUI() {
         function genBtn(txt, foo) {
@@ -34,6 +34,7 @@
             b.style.cssText = "font-size: 10px;margin: 2px;";
             return b;
         }
+
         const divBtns = document.createElement("div");
 
         const btnScraper = genBtn("一键刮Key", scraperKeys);
@@ -86,10 +87,10 @@
         }
         const keys = document.querySelectorAll("div.key-list>div");
         if (keys) {
-            keys.forEach(ele => {
+            for (let ele of keys) {
                 const btn = genBtn(ele);
                 ele.appendChild(btn);
-            });
+            }
         }
     }
     async function genImage() {
@@ -99,7 +100,11 @@
         const btns = document.querySelectorAll("button.hb_sc");
         if (btns || btns.length > 0) {
             if (steam) { steam.style.display = "none"; }
-            if (helps) { helps.forEach(ele => { ele.style.display = "none"; }); }
+            if (helps) {
+                for (let ele of helps) {
+                    ele.style.display = "none";
+                }
+            }
             divCnv.style.display = "";
             const keyArea = document.querySelector("div[class='key-container wrapper']");
             const canvas = await html2canvas(keyArea, {});
@@ -121,7 +126,7 @@
         const data = [];
         const keys = document.querySelectorAll("div.key-list>div");
         if (keys) {
-            for (const key of keys) {
+            for (let key of keys) {
                 const title = key.querySelector("h4");
                 const keyStr = key.querySelector("div.keyfield-value");
                 if (title && keyStr) {
@@ -147,7 +152,7 @@
     function copyTxt() {
         const data = parseKeys();
         const list = [];
-        for (const [title, key] of data) {
+        for (let [title, key] of data) {
             list.push(`${title}  ${key}`);
         }
         setClipboard(list.join("\n"), "text");
@@ -178,7 +183,7 @@
             "<table style=\"border-collapse:collapse;margin-bottom:0.7em;\">",
             "<tr><th>游戏名</th><th>Key</th></tr>"
         ];
-        for (const [title, key] of data) {
+        for (let [title, key] of data) {
             list.push(`<tr><td ${tdCss}>${title}</td><td ${tdCss}>${key}</td></tr>`);
         }
         list.push("</table>");
