@@ -4,13 +4,13 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.4
+// @version         2.5
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
-// @require         https://cdn.bootcdn.net/ajax/libs/html2canvas/1.4.1/html2canvas.js
+// @require         https://cdn.bootcdn.net/ajax/libs/html2canvas/1.4.1/html2canvas.min.js
 // @include         https://www.humblebundle.com/downloads?key=*
 // @grant           GM_setClipboard
 // ==/UserScript==
@@ -107,19 +107,23 @@
             }
             divCnv.style.display = "";
             const keyArea = document.querySelector("div[class='key-container wrapper']");
-            const canvas = await html2canvas(keyArea, {});
+            show_flash("图片生成中...");
+            const canvas = await html2canvas(keyArea);
             const img = document.createElement("img");
             img.src = canvas.toDataURL("image/png");
             divCnv.innerHTML = "";
             divCnv.appendChild(img);
-            if (steam) { steam.style.display = ""; }
+            if (steam) {
+                steam.style.display = "";
+            }
             if (helps) {
                 for (const help of helps) {
                     help.style.display = "";
                 }
             }
+            show_flash("图片生成完成, 右键图片复制");
         } else {
-            alert("Key列表为空?\n或许是卡DOM了，刷新一下即可。");
+            show_flash("Key列表为空?\n或许是卡DOM了，刷新一下即可。");
         }
     }
     function parseKeys() {
@@ -140,14 +144,22 @@
     }
     function scraperKeys() {
         const btns = document.querySelectorAll("[class='js-keyfield keyfield  enabled']");
-        let i = 0;
-        let t = setInterval(() => {
-            if (i < btns.length) {
-                btns[i++].click();
-            } else {
-                clearInterval(t);
-            }
-        }, 1000);
+        if (btns) {
+            let i = 0;
+            let t = setInterval(() => {
+                if (i < btns.length) {
+                    btns[i++].click();
+                } else {
+                    clearInterval(t);
+                    show_flash("刮开完成, 即将自动刷新");
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 800);
+                }
+            }, 1000);
+        } else {
+            show_flash("没有检测到可刮的Key");
+        }
     }
     function copyTxt() {
         const data = parseKeys();
@@ -156,7 +168,7 @@
             list.push(`${title}  ${key}`);
         }
         setClipboard(list.join("\n"), "text");
-        alert("复制成功");
+        show_flash("复制成功");
     }
     function copyCSV() {
         const data = parseKeys();
@@ -165,7 +177,7 @@
             list.push(`${title}, ${key}`);
         }
         setClipboard(list.join("\n"), "text");
-        alert("复制成功");
+        show_flash("复制成功");
     }
     function copyMD() {
         const data = parseKeys();
@@ -174,7 +186,7 @@
             list.push(`| ${title} | ${key} |`);
         }
         setClipboard(list.join("\n"), "text");
-        alert("复制成功");
+        show_flash("复制成功");
     }
     function copyHTML() {
         const data = parseKeys();
@@ -188,7 +200,7 @@
         }
         list.push("</table>");
         setClipboard(list.join("\n"), "html");
-        alert("复制成功");
+        show_flash("复制成功");
     }
     function setClipboard(data, dataType = "text") {
         GM_setClipboard(data, dataType);
