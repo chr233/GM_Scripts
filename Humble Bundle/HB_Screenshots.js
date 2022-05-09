@@ -4,13 +4,13 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.5
+// @version         2.7
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
-// @require         https://cdn.bootcdn.net/ajax/libs/html2canvas/1.4.1/html2canvas.min.js
+// @require         https://lib.baomitu.com/html2canvas/1.4.1/html2canvas.min.js
 // @include         https://www.humblebundle.com/downloads?key=*
 // @grant           GM_setClipboard
 // ==/UserScript==
@@ -40,7 +40,7 @@
         const btnScraper = genBtn("一键刮Key", scraperKeys);
         divBtns.appendChild(btnScraper);
 
-        const btnGenImg = genBtn("生成截图(右键图片复制)", genImage);
+        const btnGenImg = genBtn("生成截图", genImage);
         divBtns.appendChild(btnGenImg);
 
         const label = document.createElement("label");
@@ -94,21 +94,28 @@
         }
     }
     async function genImage() {
+        window.stop();
+        show_flash("图片生成中...");
+        const Start = new Date().getTime();
         const { divCnv } = GObjs;
         const steam = document.querySelector(".sr-user");
         const helps = document.querySelectorAll("div[class='key-container wrapper']>div>p");
         const btns = document.querySelectorAll("button.hb_sc");
         if (btns || btns.length > 0) {
-            if (steam) { steam.style.display = "none"; }
+            if (steam) {
+                steam.style.display = "none";
+            }
             if (helps) {
-                for (let ele of helps) {
+                for (const ele of helps) {
                     ele.style.display = "none";
                 }
             }
             divCnv.style.display = "";
             const keyArea = document.querySelector("div[class='key-container wrapper']");
-            show_flash("图片生成中...");
-            const canvas = await html2canvas(keyArea);
+            const canvas = await html2canvas(keyArea, {
+                imageTimeout: 10,
+                logging: false,
+            });
             const img = document.createElement("img");
             img.src = canvas.toDataURL("image/png");
             divCnv.innerHTML = "";
@@ -121,9 +128,10 @@
                     help.style.display = "";
                 }
             }
-            show_flash("图片生成完成, 右键图片复制");
+            const End = new Date().getTime();
+            show_flash(`图片生成完成, 右键图片复制, 耗时 ${End - Start} ms`);
         } else {
-            show_flash("Key列表为空?\n或许是卡DOM了，刷新一下即可。");
+            show_flash("Key列表为空?\n或许是卡DOM了, 刷新一下即可。");
         }
     }
     function parseKeys() {
