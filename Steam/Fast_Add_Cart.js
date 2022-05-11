@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         3.0
+// @version         3.1
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -150,10 +150,12 @@
         if (languageTips && language === "ZH") {
             if (!document.querySelector("html").lang.startsWith("zh")) {
                 ShowConfirmDialog("tips", "Fast add cart now support English, switch?", "Using English", "Don't show again")
-                    .doen(() => {
+                    .done(() => {
                         GM_setValue("lang", "EN");
+                        GM_setValue("languageTips", false);
                         window.location.reload();
-                    }).fail((bool) => {
+                    })
+                    .fail((bool) => {
                         if (bool) {
                             showAlert("", "You can switch the plugin's language using TamperMonkey's menu.");
                             GM_setValue("languageTips", false);
