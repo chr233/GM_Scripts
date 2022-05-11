@@ -4,9 +4,9 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.32
-// @description     超级方便的添加购物车体验，不用跳转商店页。
-// @description:zh-CN  超级方便的添加购物车体验，不用跳转商店页。
+// @version         3.0
+// @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
+// @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
 // @match           https://store.steampowered.com/*
 // @license         AGPL-3.0
@@ -15,14 +15,169 @@
 // @grant           GM_setClipboard
 // @grant           GM_setValue
 // @grant           GM_getValue
+// @grant           GM_registerMenuCommand
 // ==/UserScript==
 
 (async () => {
     "use strict";
+
+    // 多语言
+    const LANG = {
+        "ZH": {
+            "langName": "中文",
+            "changeLang": "修改插件语言",
+            "facInputBoxPlaceHolder": "一行一条, 自动忽略【#】后面的内容, 支持的格式如下: (自动保存)",
+            "storeLink": "商店链接",
+            "steamDBLink": "DB链接",
+            "import": "批量导入",
+            "importDesc": "从文本框批量添加购物车",
+            "importDesc2": "当前页面无法导入购物车",
+            "export": "导出",
+            "exportDesc": "将购物车内容导出至文本框",
+            "exportConfirm": "输入框中含有内容, 请选择操作?",
+            "exportConfirmReplace": "覆盖原有内容",
+            "exportConfirmAppend": "添加到最后",
+            "copy": "复制",
+            "copyDesc": "复制文本框中的内容",
+            "copyDone": "复制到剪贴板成功",
+            "reset": "清除",
+            "resetDesc": "清除文本框和已保存的数据",
+            "resetConfirm": "您确定要清除文本框和已保存的数据吗？",
+            "history": "历史",
+            "historyDesc": "查看购物车历史记录",
+            "goBack": "返回",
+            "goBackDesc": "返回你当前的购物车",
+            "clear": "清空",
+            "clearDesc": "清空购物车",
+            "clearConfirm": "您确定要移除所有您购物车中的物品吗？",
+            "clearDone": "文本框内容和保存的数据已清除",
+            "help": "帮助",
+            "helpDesc": "显示帮助",
+            "helpTitle": "插件版本",
+            "formatError": "格式有误",
+            "chooseSub": "请选择SUB",
+            "operation": "操作中……",
+            "operationDone": "操作完成",
+            "addCart": "添加购物车",
+            "addCartTips": "添加到购物车……",
+            "addCartErrorSubNotFount": "未识别到SubID",
+            "noSubDesc": "可能尚未发行或者是免费游戏",
+            "inCart": "在购物车中",
+            "importingTitle": "正在导入购物车……",
+            "add": "添加",
+            "toCart": "到购物车",
+            "tips": "提示",
+            "ok": "是",
+            "no": "否",
+            "fetchingSubs": "读取可用SUB",
+            "noSubFound": "未找到可用SUB",
+            "networkError": "网络错误",
+            "addCartSuccess": "添加购物车成功",
+            "addCartError": "添加购物车失败",
+            "networkRequestError": "网络请求失败",
+            "unknownError": "未知错误",
+            "unrecognizedResult": "返回了未知结果",
+        },
+        "EN": {
+            "langName": "English",
+            "changeLang": "Change plugin language",
+            "facInputBoxPlaceHolder": "One line one item, ignore the content after #, support format: (auto save)",
+            "storeLink": "Store link",
+            "steamDBLink": "DB link",
+            "import": "Import",
+            "importDesc": "Batch add cart from textbox",
+            "importDesc2": "Current page can't import cart",
+            "export": "Export",
+            "exportDesc": "Export cart content to textbox",
+            "exportConfirm": "Textbox contains content, please choose operation?",
+            "exportConfirmReplace": "Replace original content",
+            "exportConfirmAppend": "Append to the end",
+            "copy": "Copy",
+            "copyDesc": "Copy textbox content",
+            "copyDone": "Copy to clipboard success",
+            "reset": "Reset",
+            "resetDesc": "Clear textbox and saved data",
+            "resetConfirm": "Are you sure to clear textbox and saved data?",
+            "history": "History",
+            "historyDesc": "View cart history",
+            "goBack": "Back",
+            "goBackDesc": "Back to your cart",
+            "clear": "Clear",
+            "clearDesc": "Clear cart",
+            "clearConfirm": "Are you sure to remove all items in your cart?",
+            "clearDone": "Textbox content and saved data has been cleared",
+            "help": "Help",
+            "helpDesc": "Show help",
+            "helpTitle": "Plugin Version",
+            "formatError": "Format error",
+            "chooseSub": "Please choose SUB",
+            "operation": "Operation in progress……",
+            "operationDone": "Operation done",
+            "addCart": "Add cart",
+            "addCartTips": "Adding to cart……",
+            "addCartErrorSubNotFount": "Unrecognized SubID",
+            "noSubDesc": "Maybe not released or free game",
+            "inCart": "In cart",
+            "importingTitle": "Importing cart……",
+            "add": "Add",
+            "toCart": "To cart",
+            "tips": "Tips",
+            "ok": "OK",
+            "no": "No",
+            "fetchingSubs": "Fetching available SUB",
+            "noSubFound": "No available SUB",
+            "networkError": "Network error",
+            "addCartSuccess": "Add cart success",
+            "addCartError": "Add cart failed",
+            "networkRequestError": "Network request failed",
+            "unknownError": "Unknown error",
+            "unrecognizedResult": "Returned unrecognized result",
+        }
+    }
+
+    // 判断语言
+    let language = GM_getValue("lang", "ZH");
+    if (!language in LANG) {
+        language = "ZH";
+        GM_setValue("lang", language);
+    }
+    // 获取翻译文本
+    function t(key) {
+        return LANG[language][key] || key;
+    }
+    {// 自动弹出提示
+        const languageTips = GM_getValue("languageTips", true);
+        if (languageTips && language === "ZH") {
+            if (!document.querySelector("html").lang.startsWith("zh")) {
+                ShowConfirmDialog("tips", "Fast add cart now support English, switch?", "Using English", "Don't show again")
+                    .doen(() => {
+                        GM_setValue("lang", "EN");
+                        window.location.reload();
+                    }).fail((bool) => {
+                        if (bool) {
+                            showAlert("", "You can switch the plugin's language using TamperMonkey's menu.");
+                            GM_setValue("languageTips", false);
+                        }
+                    });
+            }
+        }
+    }
+    GM_registerMenuCommand(`${t("changeLang")} (${t("langName")})`, () => {
+        switch (language) {
+            case "EN":
+                language = "ZH";
+                break;
+            case "ZH":
+                language = "EN";
+                break;
+        }
+        GM_setValue("lang", language);
+        window.location.reload();
+    });
     //初始化
     const pathname = window.location.pathname;
     if (pathname === "/search/" || pathname === "/" || pathname.startsWith("/tags/")) { //搜索页,主页,标签页
-        let t = setInterval(() => {
+        let timer = setInterval(() => {
             let containers = document.querySelectorAll([
                 "#search_resultsRows",
                 "#tab_newreleases_content",
@@ -37,7 +192,7 @@
             ].join(","));
             if (containers.length > 0) {
                 for (let container of containers) {
-                    clearInterval(t);
+                    clearInterval(timer);
                     for (let ele of container.children) {
                         addButton(ele);
                     }
@@ -50,10 +205,10 @@
             }
         }, 500);
     } else if (pathname.startsWith("/publisher/") || pathname.startsWith("/franchise/")) { //发行商主页
-        let t = setInterval(() => {
+        let timer = setInterval(() => {
             let container = document.getElementById("RecommendationsRows");
             if (container != null) {
-                clearInterval(t);
+                clearInterval(timer);
                 for (let ele of container.querySelectorAll("a.recommendation_link")) {
                     addButton(ele);
                 }
@@ -67,20 +222,20 @@
             }
         }, 500);
     } else if (pathname.startsWith("/app/") || pathname.startsWith("/sub/") || pathname.startsWith("/bundle/")) { //商店详情页
-        let t = setInterval(() => {
+        let timer = setInterval(() => {
             let container = document.getElementById("game_area_purchase");
             if (container != null) {
-                clearInterval(t);
+                clearInterval(timer);
                 for (let ele of container.querySelectorAll("div.game_area_purchase_game")) {
                     addButton2(ele);
                 }
             }
         }, 500);
     } else if (pathname.startsWith("/wishlist/")) { //愿望单页
-        let t = setInterval(() => {
+        let timer = setInterval(() => {
             let container = document.getElementById("wishlist_ctn");
             if (container != null) {
-                clearInterval(t);
+                clearInterval(timer);
 
                 for (let ele of container.querySelectorAll("div.wishlist_row")) {
                     addButton3(ele);
@@ -113,10 +268,10 @@
         };
         const inputBox = document.createElement("textarea");
         inputBox.className = "fac_inputbox";
-        inputBox.placeholder = ["一行一条, 自动忽略【#】后面的内容, 支持的格式如下: (自动保存)",
-            "1. 商店链接: https://store.steampowered.com/app/xxx",
-            "2. DB链接:  https://steamdb.info/app/xxx",
-            "3. appID:   xxx a/xxx app/xxx",
+        inputBox.placeholder = [t("facInputBoxPlaceHolder"),
+        `1. ${t("storeLink")}: https://store.steampowered.com/app/xxx`,
+        `2. ${t("steamDBLink")}:  https://steamdb.info/app/xxx`,
+            "3. appID:       xxx a/xxx app/xxx",
             "4. subID:       s/xxx sub/xxx",
             "5. bundleID:    b/xxx bundle/xxx"
         ].join("\n");
@@ -132,21 +287,21 @@
         fitInputBox();
 
         const btnArea = document.createElement("div");
-        const btnImport = genBtn("🔼导入", "从文本框批量添加购物车", async () => {
+        const btnImport = genBtn(`🔼${t("import")}`, t("importDesc"), async () => {
             inputBox.value = await importCart(inputBox.value);
             window.location.reload();
         });
         const histryPage = pathname.search("history") !== -1;
         if (histryPage) {
             btnImport.disabled = true;
-            btnImport.title = "当前页面无法导入购物车";
+            btnImport.title = t("importDesc2");
         }
 
-        const btnExport = genBtn("🔽导出", "将购物车内容导出至文本框", () => {
+        const btnExport = genBtn(`🔽${t("export")}`, t("exportDesc"), () => {
             let currentValue = inputBox.value.trim();
             if (currentValue !== "") {
                 const now = new Date().toLocaleString();
-                ShowConfirmDialog("", "输入框中含有内容, 请选择操作?", "覆盖原有内容", "添加到最后")
+                ShowConfirmDialog("", t("exportConfirm"), t("exportConfirmReplace"), t("exportConfirmAppend"))
                     .done(() => {
                         inputBox.value = `========【${now}】=========\n` + exportCart();
                         fitInputBox();
@@ -162,42 +317,42 @@
                 fitInputBox();
             }
         });
-        const btnCopy = genBtn("📋复制", "复制文本框中的内容", () => {
+        const btnCopy = genBtn(`📋${t("copy")}`, t("copyDesc"), () => {
             GM_setClipboard(inputBox.value, "text");
-            showAlert("提示", "复制到剪贴板成功", true);
+            showAlert(t("tips"), t("copyDone"), true);
         });
-        const btnClear = genBtn("🗑️清除", "清除文本框和已保存的数据", () => {
-            ShowConfirmDialog("", "您确定要清除文本框和已保存的数据吗？", "是", "否")
+        const btnClear = genBtn(`🗑️${t("reset")}`, t("resetDesc"), () => {
+            ShowConfirmDialog("", t("resetConfirm"), t("ok"), t("no"))
                 .done(() => {
                     inputBox.value = "";
                     GM_setValue("fac_cart", "");
                     fitInputBox();
-                    showAlert("提示", "文本框内容和保存的数据已清除", true);
+                    showAlert(t("tips"), t("clearDone"), true);
                 });
         });
-        const btnHistory = genBtn("📜历史", "查看购物车历史记录", () => {
+        const btnHistory = genBtn(`📜${t("history")}`, t("historyDesc"), () => {
             window.location.href = "https://help.steampowered.com/zh-cn/accountdata/ShoppingCartHistory";
         });
-        const btnBack = genBtn("↩️返回", "返回你当前的购物车", () => {
+        const btnBack = genBtn(`↩️${t("goBackDesc")}`, t("goBackDesc"), () => {
             window.location.href = "https://store.steampowered.com/cart/";
         });
-        const btnForget = genBtn("⚠️清空", "清空购物车", () => {
-            ShowConfirmDialog("", "您确定要移除所有您购物车中的物品吗？", "是", "否")
+        const btnForget = genBtn(`⚠️${t("clear")}`, t("clearDesc"), () => {
+            ShowConfirmDialog("", t("clearConfirm"), t("ok"), t("no"))
                 .done(() => {
                     ForgetCart();
                 });
         });
-        const btnHelp = genBtn("🔣帮助", "显示帮助", () => {
+        const btnHelp = genBtn(`🔣${t("help")}`, t("helpDesc"), () => {
             const { script: { version } } = GM_info;
-            showAlert(`帮助 插件版本 ${version}`, [
-                "<p>【🔼批量导入】从文本框批量添加购物车。</p>",
-                "<p>【🔽导出】将购物车内容导出至文本框。</p>",
-                "<p>【📋复制】复制文本框中的内容(废话)。</p>",
-                "<p>【🗑️清除】清除文本框和已保存的数据。</p>",
-                "<p>【📜历史】查看购物车历史记录。</p>",
-                "<p>【↩️返回】返回你当前的购物车。</p>",
-                "<p>【⚠️清空】清空购物车。</p>",
-                "<p>【🔣帮助】显示没什么卵用的帮助。</p>",
+            showAlert(`${t("helpTitle")} ${version}`, [
+                `<p>【🔼${t("import")}】${t("importDesc")}</p>`,
+                `<p>【🔽${t("export")}】${t("exportDesc")}</p>`,
+                `<p>【📋${t("copy")}】${t("copyDesc")}</p>`,
+                `<p>【🗑️${t("reset")}】${t("resetDesc")}。</p>`,
+                `<p>【📜${t("history")}】${t("historyDesc")}</p>`,
+                `<p>【↩️${t("goBack")}】${t("goBackDesc")}</p>`,
+                `<p>【⚠️${t("clear")}】${t("clearDesc")}</p>`,
+                `<p>【🔣${t("help")}】${t("helpDesc")}</p>`,
                 `<p>【<a href="https://keylol.com/t747892-1-1" target="_blank">发布帖</a>】 【<a href="https://blog.chrxw.com/scripts.html" target="_blank">脚本反馈</a>】 【Developed by <a href="https://steamcommunity.com/id/Chr_" target="_blank">Chr_</a>】</p>`
             ].join("<br>"), true);
         });
@@ -233,12 +388,12 @@
             const regShort = new RegExp(/^([\s]*|)(\d+)/);
             let lines = [];
 
-            let dialog = showAlert("正在导入购物车……", `<textarea id="fac_diag" class="fac_diag">操作中……</textarea>`, true);
+            let dialog = showAlert(t("importingTitle"), `<textarea id="fac_diag" class="fac_diag">${t("operation")}</textarea>`, true);
 
-            let t = setInterval(async () => {
+            let timer = setInterval(async () => {
                 let txt = document.getElementById("fac_diag");
                 if (txt !== null) {
-                    clearInterval(t);
+                    clearInterval(timer);
                     for (let line of text.split("\n").reverse()) {
                         if (line.trim() === "") {
                             continue;
@@ -247,8 +402,8 @@
                         if (!match) {
                             if (line.search("=====") === -1) {
                                 let tmp = line.split("#")[0];
-                                lines.push(`${tmp} #格式有误`);
-                            }else{
+                                lines.push(`${tmp} #${t("formatError")}`);
+                            } else {
                                 lines.push(line);
                             }
                             continue;
@@ -270,7 +425,7 @@
                                 break;
                             default:
                                 let tmp = line.split("#")[0];
-                                lines.push(`${tmp} #格式有误`);
+                                lines.push(`${tmp} #${t("formatError")}`);
                                 continue;
                         }
 
@@ -284,7 +439,7 @@
                                 let [succ, msg] = await addCart("sub", sID, subID);
                                 lines.push(`${type}/${subID} #${subName} - ${discount}${price} ${msg}`);
                             } catch (e) {
-                                lines.push(`${type}/${subID} #未找到可用SUB`);
+                                lines.push(`${type}/${subID} #${t("noSubFound")}`);
                             }
                         }
                         txt.value = lines.join("\n");
@@ -355,7 +510,7 @@
         }
 
         if (type === undefined || subID === undefined) {
-            console.warn("未识别到subID");
+            console.warn(t("addCartErrorSubNotFount"));
             return;
         }
 
@@ -365,16 +520,16 @@
         let appID = (window.location.pathname.match(/\/(app)\/(\d+)/) ?? [null, null, null])[2];
         let btn = document.createElement("button");
         btn.addEventListener("click", async () => {
-            let dialog = showAlert("操作中……", "<p>添加到购物车……</p>", true);
+            let dialog = showAlert(t("operation"), `<p>${t("addCartTips")}</p>`, true);
             let [succ, msg] = await addCart(type, subID, appID);
-            let done = showAlert("操作完成", `<p>${msg}</p>`, succ);
+            let done = showAlert(t("operationDone"), `<p>${msg}</p>`, succ);
             setTimeout(() => { done.Dismiss(); }, 1200);
             dialog.Dismiss();
             if (succ) {
                 let acBtn = btnBar.querySelector("div[class='btn_addtocart']>a");
                 if (acBtn) {
                     acBtn.href = "https://store.steampowered.com/cart/";
-                    acBtn.innerHTML = "\n\t\n<span>在购物车中</span>\n\t\n";
+                    acBtn.innerHTML = `\n\t\n<span>${t("inCart")}</span>\n\t\n`;
                 }
             }
         }, false);
@@ -401,27 +556,27 @@
     }
     //选择SUB
     async function chooseSubs(appID) {
-        let dialog = showAlert("操作中……", "<p>读取可用SUB</p>", true);
+        let dialog = showAlert(t("operation"), `<p>${t("fetchingSubs")}</p>`, true);
         getGameSubs(appID)
             .then(async (subInfos) => {
                 if (subInfos.length === 0) {
-                    showAlert("添加购物车失败", "<p>未找到可用SUB, 可能尚未发行或者是免费游戏.</p>", false);
+                    showAlert(t("addCartError"), `<p>${t("noSubFound")}, ${t("noSubDesc")}.</p>`, false);
                     dialog.Dismiss();
                     return;
                 } else {
                     if (subInfos.length === 1) {
                         let [subID, subName, discount, price] = subInfos[0];
                         await addCart("sub", subID, appID);
-                        let done = showAlert("添加购物车成功", `<p>${subName} - ${discount}${price}</p>`, true);
+                        let done = showAlert(t("addCartSuccess"), `<p>${subName} - ${discount}${price}</p>`, true);
                         setTimeout(() => { done.Dismiss(); }, 1200);
                         dialog.Dismiss();
                     } else {
-                        let dialog2 = showAlert("请选择SUB", "<div id=fac_choose></div>", true);
+                        let dialog2 = showAlert(t("chooseSub"), "<div id=fac_choose></div>", true);
                         dialog.Dismiss();
                         await new Promise((resolve) => {
-                            let t = setInterval(() => {
+                            let timer = setInterval(() => {
                                 if (document.getElementById("fac_choose") !== null) {
-                                    clearInterval(t);
+                                    clearInterval(timer);
                                     resolve();
                                 }
                             }, 200);
@@ -430,14 +585,14 @@
                         for (let [subID, subName, discount, price] of subInfos) {
                             let btn = document.createElement("button");
                             btn.addEventListener("click", async () => {
-                                let dialog = showAlert("操作中……", `<p>添加 ${subName} - ${discount}${price} 到购物车</p>`, true);
+                                let dialog = showAlert(t("operation"), `<p>${t("add")} ${subName} - ${discount}${price} ${t("toCart")}</p>`, true);
                                 dialog2.Dismiss();
                                 let [succ, msg] = await addCart("sub", subID, appID);
                                 let done = showAlert(msg, `<p>${subName} - ${discount}${price}</p>`, succ);
                                 setTimeout(() => { done.Dismiss(); }, 1200);
                                 dialog.Dismiss();
                             });
-                            btn.textContent = "🛒添加购物车";
+                            btn.textContent = `🛒${t("addCart")}`;
                             btn.className = "fac_choose";
                             let p = document.createElement("p");
                             p.textContent = `${subName} - ${discount}${price}`;
@@ -448,7 +603,7 @@
                 }
             })
             .catch((err) => {
-                let done = showAlert("网络错误", `<p>${err}</p>`, false);
+                let done = showAlert(t("networkError"), `<p>${err}</p>`, false);
                 setTimeout(() => { done.Dismiss(); }, 2000);
                 dialog.Dismiss();
             });
@@ -458,7 +613,7 @@
         return new Promise((resolve, reject) => {
             const regPure = new RegExp(/ - [^-]*$/, "");
             const regSymbol = new RegExp(/[>-] ([^>-]+) [\d.]+$/, "");
-            const lang = document.cookie.replace(/(?:(?:^|.*;\s*)Steam_Language\s*\=\s*([^;]*).*$)|^.*$/, "$1")
+            const lang = document.cookie.replace(/(?:(?:^|.*;\s*)Steam_Language\s*\=\s*([^;]*).*$)|^.*$/, "$1");
             fetch(`https://store.steampowered.com/api/appdetails?appids=${appID}&lang=${lang}`, {
                 method: "GET",
                 credentials: "include",
@@ -468,7 +623,7 @@
                         let data = await response.json();
                         let result = data[appID];
                         if (result.success !== true) {
-                            reject("返回了未知结果");
+                            reject(t("unrecognizedResult"));
                         }
                         let subInfos = [];
                         for (let pkg of result.data.package_groups) {
@@ -486,7 +641,7 @@
                         console.info(subInfos);
                         resolve(subInfos);
                     } else {
-                        reject("网络请求失败");
+                        reject(t("networkRequestError"));
                     }
                 }).catch((err) => {
                     reject(err);
@@ -520,20 +675,20 @@
                         if (appID !== null) {
                             const regIfSucc = new RegExp("app\/" + appID);
                             if (data.search(regIfSucc) !== -1) {
-                                resolve([true, "添加购物车成功"]);
+                                resolve([true, t("addCartSuccess")]);
                             }
                             else {
-                                resolve([false, "添加购物车失败"]);
+                                resolve([false, t("addCartError")]);
                             }
                         } else {
-                            resolve([true, "添加购物车成功"]);
+                            resolve([true, t("addCartSuccess")]);
                         }
                     } else {
-                        resolve([false, "网络请求失败"]);
+                        resolve([false, t("networkRequestError")]);
                     }
                 }).catch((err) => {
                     console.error(err);
-                    resolve([false, "未知错误：" + err]);
+                    resolve([false, `${t("unknownError")}: ${err}`]);
                 });
         });
     }
