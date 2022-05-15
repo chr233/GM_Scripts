@@ -4,14 +4,14 @@
 // @namespace           https://blog.chrxw.com
 // @supportURL          https://blog.chrxw.com/scripts.html
 // @contributionURL     https://afdian.net/@chr233
-// @version             1.24
+// @version             1.30
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
 // @match               https://steamdb.info/*
 // @license             AGPL-3.0
 // @icon                https://blog.chrxw.com/favicon.ico
-// @resource            data https://gitee.com/chr_a1/gm_scripts/raw/master/SteamDB/SteamDB_CN.json
+// @resource            data https://cf.chrxw.com/SteamDB/SteamDB_CN.json
 // @grant               GM_addStyle
 // @grant               GM_getResourceText
 // @grant               GM_registerMenuCommand
@@ -93,7 +93,7 @@
   }
 
   //计时
-  var Start = new Date().getTime();
+  const Start = new Date().getTime();
 
   {//静态元素
     for (const [css, dic] of Object.entries(Locales.STATIC)) {
@@ -171,7 +171,7 @@
   const { script: { version } } = GM_info;
   const { DOC: { "更新时间": update, "贡献名单": contribution } } = Locales;
 
-  var End = new Date().getTime();
+  const End = new Date().getTime();
 
   // 统计耗时
   console.log("执行耗时", `${End - Start} ms`);
