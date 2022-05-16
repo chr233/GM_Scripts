@@ -331,9 +331,9 @@
       "Mini profile": "迷你个人资料背景",
       "Avatar frame": "头像框",
       "Special profile": "特殊个人资料背景",
-      "PurchaseRestrictedCountries":"限制购买的国家",
-      "AllowPurchaseFromRestrictedCountries":"允许在限购国家购买",
-      "(Buy Restrict)":"(购买限制)"
+      "PurchaseRestrictedCountries": "限制购买的国家",
+      "AllowPurchaseFromRestrictedCountries": "允许在限购国家购买",
+      "(Buy Restrict)": "(购买限制)"
     },
     "td>p,td>span": {
       "Hidden.": " 隐藏成就\n",
@@ -370,7 +370,7 @@
       "Steam Release Calendar": "Steam 发售日历",
       "Steam Game Release Summary": "Steam 游戏发售汇总",
       "How can you help SteamDB": "我该如何帮助 SteamDB",
-      "Free Packages":"免费 Sub"
+      "Free Packages": "免费 Sub"
     },
     "h2,h2 *": {
       "SteamDB in numbers": "Steam 统计数据",
@@ -469,7 +469,7 @@
       "Why are upcoming sales marked as unconfirmed?": "为什么即将到来的销售标记为未确认?",
       "Do you know when the next sale is and what discounts will it have?": "SteamDB 是如何得知下一次促销的时间以及折扣情况的?",
       "Any SteamID format is accepted, enter anything you want and we will convert it on the fly for you.": " 输入 SteamID 的任意形式, 我们将会自动将其转换为 SteamID.",
-      "This page is generated dynamically and lists most free packages that can be activated if you own base game, including demos.":"此页面是基于您拥有的游戏动态生成的, 列出了您拥有基础游戏的免费DLC, FOD, 以及免费试玩版."
+      "This page is generated dynamically and lists most free packages that can be activated if you own base game, including demos.": "此页面是基于您拥有的游戏动态生成的, 列出了您拥有基础游戏的免费DLC, FOD, 以及免费试玩版."
     },
     ".header-disclaimer": {
       "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB 是一个业余项目, 与 Valve 或 Steam 无关.",
@@ -844,7 +844,7 @@
       "British Pound": " 英镑 GBP",
       "Canadian Dollar": " 加拿大元 CAD",
       "Chilean Peso": " 智利比索 CLP",
-      "Chinese Yuan": " 人民币 RMB",
+      "Chinese Yuan": " 人民币 CNY",
       "CIS - U.S. Dollar": " 独联体国家 USD",
       "Colombian Peso": " 哥伦比亚比索 COP",
       "Costa Rican Colon": " 哥斯达黎加科朗 CRC",
@@ -866,7 +866,7 @@
       "Russian Ruble": " 俄罗斯卢布 RUB",
       "Saudi Riyal": " 沙特里亚尔 SAR",
       "Singapore Dollar": " 新加坡元 SGD",
-      "South African Rand": " 南非兰特 R",
+      "South African Rand": " 南非兰特 ZAR",
       "South Asia - USD": " 南亚 - USD",
       "South Korean Won": " 韩国元 KRW",
       "Swiss Franc": " 瑞士法郎 CHF",
@@ -878,8 +878,6 @@
       "Uruguayan Peso": " 乌拉圭比索 UYU",
       "Vietnamese Dong": " 越南盾 VND",
       "Filter by feature or OS": "按特性或者系统过滤",
-      "Linux & SteamOS": "",
-      "macOS": "",
       "Multi-player": "多人",
       "Single-player": "单人",
       "Valve Anti-Cheat enabled": "启用VAC反作弊",
@@ -918,10 +916,6 @@
       "PvP": "玩家对战",
       "Additional High-Quality Audio": "额外高品质音频",
       "Steam China Workshop": "蒸汽平台创意工坊",
-      "HTC Vive": "",
-      "Oculus Rift": "",
-      "Windows Mixed Reality": "",
-      "Valve Index": "",
       "VR: Tracked Motion Controllers": "VR: 定位运动控制器",
       "VR: Gamepad": "VR: 控制器",
       "VR: Keyboard / Mouse": "VR: 键盘/鼠标",

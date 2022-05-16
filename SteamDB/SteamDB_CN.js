@@ -4,7 +4,7 @@
 // @namespace           https://blog.chrxw.com
 // @supportURL          https://blog.chrxw.com/scripts.html
 // @contributionURL     https://afdian.net/@chr233
-// @version             1.30
+// @version             1.31
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
