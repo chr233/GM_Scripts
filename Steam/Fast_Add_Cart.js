@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         3.2
+// @version         3.3
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -235,8 +235,13 @@
 
                         const rows = document.querySelectorAll("#search_resultsRows>a");
                         for (let row of rows) {
+                            if (row.className.includes("ds_owned") || row.className.includes("ds_ignored")) {
+                                continue;
+                            }
+
                             const url = row.href;
                             const title = row.querySelector("span.title")?.textContent ?? "null";
+
 
                             let match = url.match(regFull);
                             if (match) {
