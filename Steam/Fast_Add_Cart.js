@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         3.1
+// @version         3.2
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -77,6 +77,9 @@
             "networkRequestError": "网络请求失败",
             "unknownError": "未知错误",
             "unrecognizedResult": "返回了未知结果",
+            "batchExtract": "批量提取",
+            "batchExtractDone": "批量提取完成",
+            "batchDesc": "AppID已提取, 可以在购物车页批量导入",
         },
         "EN": {
             "langName": "English",
@@ -132,6 +135,9 @@
             "networkRequestError": "Network request failed",
             "unknownError": "Unknown error",
             "unrecognizedResult": "Returned unrecognized result",
+            "batchExtract": "Extract Items",
+            "batchExtractDone": "Batch Extract Done",
+            "batchDesc": "AppID list now saved, goto cart page to use batch import.",
         }
     }
 
@@ -203,6 +209,51 @@
                             addButton(relatedNode);
                         }
                     });
+                }
+
+                const searchBar = document.querySelector(".searchbar>.searchbar_left");
+                if (searchBar !== null) {
+                    let btn = document.createElement("button");
+                    btn.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        const savedCart = GM_getValue("btnv6_blue_hoverfade btn_small") ?? "";
+                        const cartItems = savedCart.split("\n");
+                        const regFull = new RegExp(/((app|a|bundle|b|sub|s)\/(\d+))/);
+                        const regShort = new RegExp(/^(([\s]*|)(\d+))/);
+                        const dataMap = new Set();
+
+                        for (let line of cartItems) {
+                            let match = line.match(regFull) ?? line.match(regShort);
+                            if (match) {
+                                let [_, link, _1, _2] = match;
+                                dataMap.add(link);
+                            }
+                        }
+
+                        const now = new Date().toLocaleString();
+                        cartItems.push(`========【${now}】=========`);
+
+                        const rows = document.querySelectorAll("#search_resultsRows>a");
+                        for (let row of rows) {
+                            const url = row.href;
+                            const title = row.querySelector("span.title")?.textContent ?? "null";
+
+                            let match = url.match(regFull);
+                            if (match) {
+                                let [_, link, _1, _2] = match;
+
+                                if (!dataMap.has(link)) {
+                                    cartItems.push(`${link} #${title}`);
+                                }
+                            }
+                        }
+                        GM_setValue("fac_cart", cartItems.join("\n"));
+                        const dialog = showAlert(t("batchExtractDone"), t("batchDesc"), true);
+                        setTimeout(() => { dialog.Dismiss(); }, 1500);
+                    }, false);
+                    btn.className = "btnv6_blue_hoverfade btn_small";
+                    btn.innerHTML = `<span>${t("batchExtract")}</span>`;
+                    searchBar.appendChild(btn);
                 }
             }
         }, 500);
@@ -335,7 +386,7 @@
         const btnHistory = genBtn(`📜${t("history")}`, t("historyDesc"), () => {
             window.location.href = "https://help.steampowered.com/zh-cn/accountdata/ShoppingCartHistory";
         });
-        const btnBack = genBtn(`↩️${t("goBackDesc")}`, t("goBackDesc"), () => {
+        const btnBack = genBtn(`↩️${t("goBack")}`, t("goBackDesc"), () => {
             window.location.href = "https://store.steampowered.com/cart/";
         });
         const btnForget = genBtn(`⚠️${t("clear")}`, t("clearDesc"), () => {
