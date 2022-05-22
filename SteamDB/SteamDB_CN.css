@@ -21,6 +21,8 @@
   color: white;
   font-size: 12px;
   border-radius: 0px;
+  display: inline-block;
+  height: 30px;
 }
 .sdc > div.sdc-links > a:last-child {
   width: 100%;

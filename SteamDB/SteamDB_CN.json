@@ -8,7 +8,7 @@
     "贡献名单": ["Chr_", "joejoe5", "cyb233", "lyzlyslyc"]
   },
   "STATIC": {
-    "ul>li,ul>li>a,ul>li>share-action,.header-navbar>div>a,.header-login>span": {
+    "ul>li,ul>li>a,ul>li>share-action,.header-navbar>a,.header-login>span": {
       "About": " 关于",
       "Blog": "博客",
       "Discord": "Discord",
