@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         3.3
+// @version         3.4
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -29,9 +29,12 @@
             "facInputBoxPlaceHolder": "一行一条, 自动忽略【#】后面的内容, 支持的格式如下: (自动保存)",
             "storeLink": "商店链接",
             "steamDBLink": "DB链接",
-            "import": "批量导入",
-            "importDesc": "从文本框批量添加购物车",
+            "import": "批量导入(正序)",
+            "importDesc": "从文本框批量添加购物车(从上到下导入)",
             "importDesc2": "当前页面无法导入购物车",
+            "importReverse": "批量导入(倒序)",
+            "importDescReverse": "从文本框批量添加购物车(从下到上导入)",
+            "importDesc2Reverse": "当前页面无法导入购物车",
             "export": "导出",
             "exportDesc": "将购物车内容导出至文本框",
             "exportConfirm": "输入框中含有内容, 请选择操作?",
@@ -43,11 +46,11 @@
             "reset": "清除",
             "resetDesc": "清除文本框和已保存的数据",
             "resetConfirm": "您确定要清除文本框和已保存的数据吗？",
-            "history": "历史",
+            "history": "购物车历史",
             "historyDesc": "查看购物车历史记录",
             "goBack": "返回",
             "goBackDesc": "返回你当前的购物车",
-            "clear": "清空",
+            "clear": "清空购物车",
             "clearDesc": "清空购物车",
             "clearConfirm": "您确定要移除所有您购物车中的物品吗？",
             "clearDone": "文本框内容和保存的数据已清除",
@@ -346,13 +349,19 @@
 
         const btnArea = document.createElement("div");
         const btnImport = genBtn(`🔼${t("import")}`, t("importDesc"), async () => {
-            inputBox.value = await importCart(inputBox.value);
+            inputBox.value = await importCart(inputBox.value, false);
+            window.location.reload();
+        });
+        const btnImport2 = genBtn(`🔼${t("importReverse")}`, t("importDescReverse"), async () => {
+            inputBox.value = await importCart(inputBox.value, true);
             window.location.reload();
         });
         const histryPage = pathname.search("history") !== -1;
         if (histryPage) {
             btnImport.disabled = true;
             btnImport.title = t("importDesc2");
+            btnImport2.disabled = true;
+            btnImport2.title = t("importDesc2Reverse");
         }
 
         const btnExport = genBtn(`🔽${t("export")}`, t("exportDesc"), () => {
@@ -404,6 +413,7 @@
             const { script: { version } } = GM_info;
             showAlert(`${t("helpTitle")} ${version}`, [
                 `<p>【🔼${t("import")}】${t("importDesc")}</p>`,
+                `<p>【🔼${t("importReverse")}】${t("importDescReverse")}</p>`,
                 `<p>【🔽${t("export")}】${t("exportDesc")}</p>`,
                 `<p>【📋${t("copy")}】${t("copyDesc")}</p>`,
                 `<p>【🗑️${t("reset")}】${t("resetDesc")}。</p>`,
@@ -416,21 +426,28 @@
         });
 
         btnArea.appendChild(btnImport);
+        btnArea.appendChild(btnImport2);
         btnArea.appendChild(btnExport);
         btnArea.appendChild(genSpan(" | "));
-        btnArea.appendChild(btnCopy);
-        btnArea.appendChild(btnClear);
-        btnArea.appendChild(genSpan(" | "));
-        btnArea.appendChild(histryPage ? btnBack : btnHistory);
-        btnArea.appendChild(genSpan(" | "));
-        btnArea.appendChild(btnForget);
-        btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnHelp);
+
 
         continer.appendChild(btnArea);
         btnArea.appendChild(genBr());
         btnArea.appendChild(genBr());
         continer.appendChild(inputBox);
+
+        const btnArea2 = document.querySelector("div.continue_shopping_ctn");
+        btnArea2.innerHTML = "";
+
+        btnArea2.appendChild(btnCopy);
+        btnArea2.appendChild(btnClear);
+        btnArea2.appendChild(genSpan(" | "));
+        btnArea2.appendChild(histryPage ? btnBack : btnHistory);
+        btnArea2.appendChild(genSpan(" | "));
+        btnArea2.appendChild(btnForget);
+
+
 
         window.addEventListener("beforeunload", () => { GM_setValue("fac_cart", inputBox.value); })
     }
@@ -440,7 +457,7 @@
     if (cart_btn !== null) { cart_btn.style.display = ""; }
 
     //导入购物车
-    function importCart(text) {
+    function importCart(text, reverse = false) {
         return new Promise(async (resolve, reject) => {
             const regFull = new RegExp(/(app|a|bundle|b|sub|s)\/(\d+)/);
             const regShort = new RegExp(/^([\s]*|)(\d+)/);
@@ -452,7 +469,10 @@
                 let txt = document.getElementById("fac_diag");
                 if (txt !== null) {
                     clearInterval(timer);
-                    for (let line of text.split("\n").reverse()) {
+
+                    const txts = reverse ? text.split("\n").reverse() : text.split("\n");
+
+                    for (let line of txts) {
                         if (line.trim() === "") {
                             continue;
                         }
