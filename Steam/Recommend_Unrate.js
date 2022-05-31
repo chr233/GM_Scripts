@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.10
+// @version         1.11
 // @description     批量撤回评测点赞/有趣
 // @description:zh-CN  批量撤回评测点赞/有趣
 // @author          Chr_
@@ -28,6 +28,7 @@
         "$$步兵|骑兵",
         "$$pan|share|weiyun|lanzou|baidu",
         "链接已删除",
+        "steam://install",
         "/s/",
     ].join("\n");
 
