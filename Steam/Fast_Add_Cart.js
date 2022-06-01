@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         3.4
+// @version         3.5
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -34,7 +34,6 @@
             "importDesc2": "当前页面无法导入购物车",
             "importReverse": "批量导入(倒序)",
             "importDescReverse": "从文本框批量添加购物车(从下到上导入)",
-            "importDesc2Reverse": "当前页面无法导入购物车",
             "export": "导出",
             "exportDesc": "将购物车内容导出至文本框",
             "exportConfirm": "输入框中含有内容, 请选择操作?",
@@ -90,9 +89,11 @@
             "facInputBoxPlaceHolder": "One line one item, ignore the content after #, support format: (auto save)",
             "storeLink": "Store link",
             "steamDBLink": "DB link",
-            "import": "Import",
-            "importDesc": "Batch add cart from textbox",
+            "import": "Import(Asc)",
+            "importDesc": "Batch add cart from textbox (from top to bottom)",
             "importDesc2": "Current page can't import cart",
+            "importReverse": "Import(Desc)",
+            "importDescReverse": "Batch add cart from textbox (from bottom to top)",
             "export": "Export",
             "exportDesc": "Export cart content to textbox",
             "exportConfirm": "Textbox contains content, please choose operation?",
@@ -361,7 +362,7 @@
             btnImport.disabled = true;
             btnImport.title = t("importDesc2");
             btnImport2.disabled = true;
-            btnImport2.title = t("importDesc2Reverse");
+            btnImport2.title = t("importDesc2");
         }
 
         const btnExport = genBtn(`🔽${t("export")}`, t("exportDesc"), () => {
