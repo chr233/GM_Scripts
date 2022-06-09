@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.7
+// @version         2.8
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_
@@ -31,7 +31,7 @@
             const b = document.createElement("button");
             b.textContent = txt;
             b.addEventListener("click", foo);
-            b.style.cssText = "font-size: 10px;margin: 2px;";
+            b.style.cssText = "font-size: 14px;margin: 2px;";
             return b;
         }
 
@@ -45,7 +45,7 @@
 
         const label = document.createElement("label");
         label.textContent = " 复制为: ";
-        label.style.fontSize = "10px";
+        label.style.fontSize = "14px";
         divBtns.appendChild(label);
 
         const btnCopyTxt = genBtn("纯文本", copyTxt);
@@ -82,6 +82,7 @@
             b.className = "hb_sc";
             b.addEventListener("click", () => { ele.innerHTML = ""; });
             b.textContent = "×";
+            b.title = "隐藏Key(刷新恢复)";
             b.style.cssText = "position: relative;left: -30px;top: -100px;";
             return b;
         }
