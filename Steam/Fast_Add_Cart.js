@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         3.5
+// @version         3.6
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -47,12 +47,14 @@
             "resetConfirm": "您确定要清除文本框和已保存的数据吗？",
             "history": "购物车历史",
             "historyDesc": "查看购物车历史记录",
+            "reload": "刷新",
+            "reloadDesc": "重新读取保存的购物车内容",
+            "reloadConfirm": "您确定要重新读取保存的购物车数据吗？",
             "goBack": "返回",
             "goBackDesc": "返回你当前的购物车",
             "clear": "清空购物车",
             "clearDesc": "清空购物车",
             "clearConfirm": "您确定要移除所有您购物车中的物品吗？",
-            "clearDone": "文本框内容和保存的数据已清除",
             "help": "帮助",
             "helpDesc": "显示帮助",
             "helpTitle": "插件版本",
@@ -104,15 +106,17 @@
             "copyDone": "Copy to clipboard success",
             "reset": "Reset",
             "resetDesc": "Clear textbox and saved data",
-            "resetConfirm": "Are you sure to clear textbox and saved data?",
+            "resetConfirm": "Are you sure to clear textbox and saved cart data?",
             "history": "History",
             "historyDesc": "View cart history",
+            "reload": "Reload",
+            "reloadDesc": "Reload saved cart date",
+            "reloadConfirm": "Are you sure to reload saved cart data?",
             "goBack": "Back",
             "goBackDesc": "Back to your cart",
             "clear": "Clear",
             "clearDesc": "Clear cart",
             "clearConfirm": "Are you sure to remove all items in your cart?",
-            "clearDone": "Textbox content and saved data has been cleared",
             "help": "Help",
             "helpDesc": "Show help",
             "helpTitle": "Plugin Version",
@@ -348,6 +352,9 @@
 
         fitInputBox();
 
+        const originResetBtn = document.querySelector("div.remove_ctn");
+        if (originResetBtn != null) { originResetBtn.style.display = "none"; }
+
         const btnArea = document.createElement("div");
         const btnImport = genBtn(`🔼${t("import")}`, t("importDesc"), async () => {
             inputBox.value = await importCart(inputBox.value, false);
@@ -367,8 +374,8 @@
 
         const btnExport = genBtn(`🔽${t("export")}`, t("exportDesc"), () => {
             let currentValue = inputBox.value.trim();
+            const now = new Date().toLocaleString();
             if (currentValue !== "") {
-                const now = new Date().toLocaleString();
                 ShowConfirmDialog("", t("exportConfirm"), t("exportConfirmReplace"), t("exportConfirmAppend"))
                     .done(() => {
                         inputBox.value = `========【${now}】=========\n` + exportCart();
@@ -381,7 +388,7 @@
                         }
                     });
             } else {
-                inputBox.value = exportCart();
+                inputBox.value = `========【${now}】=========\n` + exportCart();
                 fitInputBox();
             }
         });
@@ -395,7 +402,14 @@
                     inputBox.value = "";
                     GM_setValue("fac_cart", "");
                     fitInputBox();
-                    showAlert(t("tips"), t("clearDone"), true);
+                });
+        });
+        const btnReload = genBtn(`🔃${t("reload")}`, t("reloadDesc"), () => {
+            ShowConfirmDialog("", t("reloadConfirm"), t("ok"), t("no"))
+                .done(() => {
+                    const s = GM_getValue("fac_cart") ?? "";
+                    inputBox.value = s;
+                    fitInputBox();
                 });
         });
         const btnHistory = genBtn(`📜${t("history")}`, t("historyDesc"), () => {
@@ -443,6 +457,7 @@
 
         btnArea2.appendChild(btnCopy);
         btnArea2.appendChild(btnClear);
+        btnArea2.appendChild(btnReload);
         btnArea2.appendChild(genSpan(" | "));
         btnArea2.appendChild(histryPage ? btnBack : btnHistory);
         btnArea2.appendChild(genSpan(" | "));
@@ -521,7 +536,7 @@
                                 lines.push(`${type}/${subID} #${t("noSubFound")}`);
                             }
                         }
-                        txt.value = lines.join("\n");
+                        txt.value = reverse ? lines.reverse().join("\n") : lines.join("\n");
                         txt.scrollTop = txt.scrollHeight;
                     }
                 }
