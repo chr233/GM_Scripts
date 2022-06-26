@@ -2,7 +2,7 @@
 // @name         Delete_My_Comment
 // @name:zh-CN   批量删除个人资料留言
 // @namespace    https://blog.chrxw.com
-// @version      1.0
+// @version      1.1
 // @description  批量删除在别人个人资料下的留言
 // @description:zh-CN  批量删除在别人个人资料下的留言
 // @author       Chr_
@@ -157,12 +157,14 @@
                     }
                 }
                 else {
-                    log('2 无留言记录,跳过')
+                    log('3 无留言记录,跳过')
                 }
             } else {
-                log('1 读取失败');
+                log('2 读取失败');
             }
         }
+
+        log('1 运行结束');
 
         function makePromise(steamid, gid) {
             return new Promise((resolve, reject) => {
