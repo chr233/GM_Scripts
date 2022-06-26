@@ -1,0 +1,23 @@
+.dmc_panel {
+  padding: 15px;
+}
+
+.dmc_span {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.dmc_ipt {
+  text-align: center;
+  width: 50px;
+}
+
+.dmc_txt {
+  margin-top: 10px;
+  width: 100%;
+  height: 300px;
+}
+
+.dmc_hide {
+  display: none;
+}
