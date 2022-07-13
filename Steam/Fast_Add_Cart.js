@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         3.6
+// @version         3.7
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -29,10 +29,10 @@
             "facInputBoxPlaceHolder": "一行一条, 自动忽略【#】后面的内容, 支持的格式如下: (自动保存)",
             "storeLink": "商店链接",
             "steamDBLink": "DB链接",
-            "import": "批量导入(正序)",
+            "import": "导入(正序)",
             "importDesc": "从文本框批量添加购物车(从上到下导入)",
             "importDesc2": "当前页面无法导入购物车",
-            "importReverse": "批量导入(倒序)",
+            "importReverse": "导入(倒序)",
             "importDescReverse": "从文本框批量添加购物车(从下到上导入)",
             "export": "导出",
             "exportDesc": "将购物车内容导出至文本框",
@@ -84,6 +84,9 @@
             "batchExtract": "批量提取",
             "batchExtractDone": "批量提取完成",
             "batchDesc": "AppID已提取, 可以在购物车页批量导入",
+            "onlyOnsale": " 仅限折扣游戏",
+            "onlyOnsaleDesc": "勾选后批量导入时仅导入正在打折的游戏.",
+            "notOnSale": "尚未打折, 跳过",
         },
         "EN": {
             "langName": "English",
@@ -146,6 +149,9 @@
             "batchExtract": "Extract Items",
             "batchExtractDone": "Batch Extract Done",
             "batchDesc": "AppID list now saved, goto cart page to use batch import.",
+            "onlyOnsale": " Only on sale",
+            "onlyOnsaleDesc": "If checked, script will ignore games that is not on sale when import cart.",
+            "notOnSale": "Not on sale, skip",
         }
     }
 
@@ -332,17 +338,37 @@
             span.textContent = text;
             return span;
         };
-        const inputBox = document.createElement("textarea");
-        inputBox.className = "fac_inputbox";
-        inputBox.placeholder = [t("facInputBoxPlaceHolder"),
+        function genTxt(value, placeholder) {
+            const t = document.createElement("textarea");
+            t.className = "fac_inputbox";
+            t.placeholder = placeholder;
+            t.value = value;
+            return t;
+        };
+        function genChk(name,title, checked = false) {
+            const l = document.createElement('label');
+            const i = document.createElement('input');
+            const s = genSpan(name);
+            i.textContent = name;
+            i.title = title;
+            i.type = 'checkbox';
+            i.className = 'fac_checkbox';
+            i.checked = checked;
+            l.appendChild(i);
+            l.appendChild(s);
+            return [l, i];
+        };
+
+        const savedCart = GM_getValue("fac_cart") ?? "";
+        const placeHolder = [t("facInputBoxPlaceHolder"),
         `1. ${t("storeLink")}: https://store.steampowered.com/app/xxx`,
         `2. ${t("steamDBLink")}:  https://steamdb.info/app/xxx`,
             "3. appID:       xxx a/xxx app/xxx",
             "4. subID:       s/xxx sub/xxx",
             "5. bundleID:    b/xxx bundle/xxx"
         ].join("\n");
-        const savedCart = GM_getValue("fac_cart") ?? "";
-        inputBox.value = savedCart;
+
+        const inputBox = genTxt(savedCart, placeHolder);
 
         function fitInputBox() {
             inputBox.style.height = Math.min(inputBox.value.split('\n').length * 20 + 20, 900).toString() + "px";
@@ -355,13 +381,15 @@
         const originResetBtn = document.querySelector("div.remove_ctn");
         if (originResetBtn != null) { originResetBtn.style.display = "none"; }
 
+        const [lblDiscount, chkDiscount] = genChk(t("onlyOnsale"),t("onlyOnsaleDesc"), GM_getValue("fac_discount") ?? false);
+
         const btnArea = document.createElement("div");
         const btnImport = genBtn(`🔼${t("import")}`, t("importDesc"), async () => {
-            inputBox.value = await importCart(inputBox.value, false);
+            inputBox.value = await importCart(inputBox.value, false, chkDiscount.checked);
             window.location.reload();
         });
         const btnImport2 = genBtn(`🔼${t("importReverse")}`, t("importDescReverse"), async () => {
-            inputBox.value = await importCart(inputBox.value, true);
+            inputBox.value = await importCart(inputBox.value, true, chkDiscount.checked);
             window.location.reload();
         });
         const histryPage = pathname.search("history") !== -1;
@@ -371,6 +399,7 @@
             btnImport2.disabled = true;
             btnImport2.title = t("importDesc2");
         }
+
 
         const btnExport = genBtn(`🔽${t("export")}`, t("exportDesc"), () => {
             let currentValue = inputBox.value.trim();
@@ -429,6 +458,7 @@
             showAlert(`${t("helpTitle")} ${version}`, [
                 `<p>【🔼${t("import")}】${t("importDesc")}</p>`,
                 `<p>【🔼${t("importReverse")}】${t("importDescReverse")}</p>`,
+                `<p>【✅${t("onlyOnsale")}】${t("onlyOnsaleDesc")}</p>`,
                 `<p>【🔽${t("export")}】${t("exportDesc")}</p>`,
                 `<p>【📋${t("copy")}】${t("copyDesc")}</p>`,
                 `<p>【🗑️${t("reset")}】${t("resetDesc")}。</p>`,
@@ -442,10 +472,11 @@
 
         btnArea.appendChild(btnImport);
         btnArea.appendChild(btnImport2);
+        btnArea.appendChild(lblDiscount);
+        btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnExport);
         btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnHelp);
-
 
         continer.appendChild(btnArea);
         btnArea.appendChild(genBr());
@@ -463,9 +494,10 @@
         btnArea2.appendChild(genSpan(" | "));
         btnArea2.appendChild(btnForget);
 
-
-
-        window.addEventListener("beforeunload", () => { GM_setValue("fac_cart", inputBox.value); })
+        window.addEventListener("beforeunload", () => {
+            GM_setValue("fac_cart", inputBox.value);
+            GM_setValue("fac_discount", chkDiscount.checked);
+        })
     }
 
     //始终在右上角显示购物车按钮
@@ -473,7 +505,7 @@
     if (cart_btn !== null) { cart_btn.style.display = ""; }
 
     //导入购物车
-    function importCart(text, reverse = false) {
+    function importCart(text, reverse = false, onlyOnSale = false) {
         return new Promise(async (resolve, reject) => {
             const regFull = new RegExp(/(app|a|bundle|b|sub|s)\/(\d+)/);
             const regShort = new RegExp(/^([\s]*|)(\d+)/);
@@ -530,8 +562,12 @@
                             try {
                                 let subInfos = await getGameSubs(subID);
                                 let [sID, subName, discount, price] = subInfos[0];
-                                let [succ, msg] = await addCart("sub", sID, subID);
-                                lines.push(`${type}/${subID} #${subName} - ${discount}${price} ${msg}`);
+                                if (onlyOnSale && discount.length === 0) {
+                                    lines.push(`${type}/${subID} #${subName} - ${discount}${price} ${t("notOnSale")}`);
+                                } else {
+                                    let [succ, msg] = await addCart("sub", sID, subID);
+                                    lines.push(`${type}/${subID} #${subName} - ${discount}${price} ${msg}`);
+                                }
                             } catch (e) {
                                 lines.push(`${type}/${subID} #${t("noSubFound")}`);
                             }
@@ -753,7 +789,7 @@
                 snr: "1_5_9__403",
             }
             data[`${type}id`] = String(subID);
-            let s = [];
+            let s = '';
             for (let k in data) {
                 s += `${k}=${encodeURIComponent(data[k])}&`;
             }
