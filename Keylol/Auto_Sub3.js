@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.22
+// @version         2.23
 // @description     一键快乐-3
 // @description:zh-CN  一键快乐-3
 // @author          Chr_
@@ -35,6 +35,7 @@ const Vregex = /plugin\.php\?id=steamcn_lottery:view&lottery_id=46&hash=(.+)&rol
 
 (() => {
     'use strict';
+    if (!document.querySelector('.index_left_detail')) { return; }
     loadCFG();
     addBtns();
     if (VShow) {
@@ -72,7 +73,7 @@ function addBtns() {
 
     btnSwitch.id = 'btnSwitch1';
     btnSwitch.title = '点这里开启/隐藏控制面板';
-    btnSwitch.textContent='关注重点 - Auto Sub 3';
+    btnSwitch.textContent = '关注重点 - Auto Sub 3';
     btnSwitch.style.cssText = 'width: auto;padding: 0 5px;cursor: pointer;z-index: 1';
     btnSwitch.addEventListener('click', switchPanel);
 
@@ -122,19 +123,19 @@ function bool2txt(bool) {
 }
 // 隐藏面板
 function switchPanel() {
-    let btnSwitch = document.getElementById( 'btnSwitch1');
+    let btnSwitch = document.getElementById('btnSwitch1');
     let panel1 = document.getElementById('panel54');
     let panel2 = document.getElementById('panelOri');
     if (panel1.style.display == 'none') {
-        btnSwitch.textContent = 'Auto Sub 3 - By Chr_ - V '  + Ver;
+        btnSwitch.textContent = 'Auto Sub 3 - By Chr_ - V ' + Ver;
         panel1.style.display = 'block';
         panel2.style.display = 'none';
-        VShow=true;
+        VShow = true;
     } else {
         btnSwitch.textContent = '关注重点 - Auto Sub 3';
         panel1.style.display = 'none';
         panel2.style.display = 'block';
-        VShow=false;
+        VShow = false;
     }
     saveCFG();
 }
