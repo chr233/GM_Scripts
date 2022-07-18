@@ -1,0 +1,44 @@
+.pd_div {
+  vertical-align: middle;
+}
+
+.pd_panel {
+  background: rgba(58, 58, 58, 0.5);
+  position: fixed;
+  top: 50%;
+  right: 0px;
+  text-align: center;
+  transform: translate(0px, -50%);
+  z-index: 100;
+  padding: 5px;
+  border-radius: 5px 0 0 5px;
+}
+
+.pd_panel > *:not(:last-child) {
+  margin-right: 5px;
+}
+
+.pd_panel > hr {
+  margin: 5px 0 5px;
+}
+
+.pd_panel > span {
+  color: #fff;
+}
+
+.pd_panel > iframe {
+  width: 200px;
+  height: 200px;
+}
+
+.pd_added::before {
+  content: "✅";
+}
+
+.pd_not_added::before {
+  content: "❌";
+}
+
+.pd_done::before {
+  content: "🤔";
+}
