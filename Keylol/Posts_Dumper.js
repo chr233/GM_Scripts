@@ -3,7 +3,7 @@
 // @name:zh-CN   帖子导出工具
 // @name         Posts_Dumper
 // @namespace    https://blog.chrxw.com
-// @version      1.1
+// @version      1.2
 // @description:zh-CN  导出帖子内容到数据库
 // @description  导出帖子内容到数据库
 // @author       Chr_
@@ -135,6 +135,7 @@ setTimeout(async () => {
 
         panel.appendChild(statusTips);
         panel.appendChild(genHr());
+
         if (status) {
             panel.appendChild(btnGrubNew);
             panel.appendChild(btnGrubAll);
@@ -147,14 +148,7 @@ setTimeout(async () => {
             panel.appendChild(btnControl);
             panel.appendChild(genHr());
             panel.appendChild(tempIframe);
-        }
-        else {
-            panel.appendChild(genSpan('请检查软件是否运行以及端口是否被占用'));
-        }
 
-        document.body.appendChild(panel);
-
-        if (status) {
             document.getElementById('autopbn').addEventListener('click', async () => {
                 setTimeout(async () => {
                     await freshPostList();
@@ -164,6 +158,16 @@ setTimeout(async () => {
             //判断是否已抓取
             await freshPostList();
         }
+        else {
+            panel.appendChild(genSpan('请检查软件是否运行以及端口是否被占用'));
+
+            setTimeout(() => {
+                panel.style.display = 'none';
+            }, 3000);
+        }
+
+        document.body.appendChild(panel);
+
     } else if (ifNeedGrub()) {//抓取帖子内容
         const tid = grubTid(location.href);
         const post_url = genUrl(tid);
