@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         3.7
+// @version         3.8
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -84,8 +84,9 @@
             "batchExtract": "批量提取",
             "batchExtractDone": "批量提取完成",
             "batchDesc": "AppID已提取, 可以在购物车页批量导入",
-            "onlyOnsale": " 仅限折扣游戏",
+            "onlyOnsale": " 仅打折",
             "onlyOnsaleDesc": "勾选后批量导入时仅导入正在打折的游戏.",
+            "onlyOnsaleDesc2": "勾选后批量导出时仅导出正在打折的游戏.",
             "notOnSale": "尚未打折, 跳过",
         },
         "EN": {
@@ -151,6 +152,7 @@
             "batchDesc": "AppID list now saved, goto cart page to use batch import.",
             "onlyOnsale": " Only on sale",
             "onlyOnsaleDesc": "If checked, script will ignore games that is not on sale when import cart.",
+            "onlyOnsaleDesc2": "If checked, script will ignore games that is not on sale when export cart.",
             "notOnSale": "Not on sale, skip",
         }
     }
@@ -345,7 +347,7 @@
             t.value = value;
             return t;
         };
-        function genChk(name,title, checked = false) {
+        function genChk(name, title, checked = false) {
             const l = document.createElement('label');
             const i = document.createElement('input');
             const s = genSpan(name);
@@ -381,7 +383,7 @@
         const originResetBtn = document.querySelector("div.remove_ctn");
         if (originResetBtn != null) { originResetBtn.style.display = "none"; }
 
-        const [lblDiscount, chkDiscount] = genChk(t("onlyOnsale"),t("onlyOnsaleDesc"), GM_getValue("fac_discount") ?? false);
+        const [lblDiscount, chkDiscount] = genChk(t("onlyOnsale"), t("onlyOnsaleDesc"), GM_getValue("fac_discount") ?? false);
 
         const btnArea = document.createElement("div");
         const btnImport = genBtn(`🔼${t("import")}`, t("importDesc"), async () => {
@@ -400,6 +402,7 @@
             btnImport2.title = t("importDesc2");
         }
 
+        const [lblDiscount2, chkDiscount2] = genChk(t("onlyOnsale"), t("onlyOnsaleDesc2"), GM_getValue("fac_discount2") ?? false);
 
         const btnExport = genBtn(`🔽${t("export")}`, t("exportDesc"), () => {
             let currentValue = inputBox.value.trim();
@@ -407,20 +410,21 @@
             if (currentValue !== "") {
                 ShowConfirmDialog("", t("exportConfirm"), t("exportConfirmReplace"), t("exportConfirmAppend"))
                     .done(() => {
-                        inputBox.value = `========【${now}】=========\n` + exportCart();
+                        inputBox.value = `========【${now}】=========\n` + exportCart(chkDiscount2.checked);
                         fitInputBox();
                     })
                     .fail((bool) => {
                         if (bool) {
-                            inputBox.value = currentValue + `\n========【${now}】=========\n` + exportCart();
+                            inputBox.value = currentValue + `\n========【${now}】=========\n` + exportCart(chkDiscount2.checked);
                             fitInputBox();
                         }
                     });
             } else {
-                inputBox.value = `========【${now}】=========\n` + exportCart();
+                inputBox.value = `========【${now}】=========\n` + exportCart(chkDiscount2.checked);
                 fitInputBox();
             }
         });
+
         const btnCopy = genBtn(`📋${t("copy")}`, t("copyDesc"), () => {
             GM_setClipboard(inputBox.value, "text");
             showAlert(t("tips"), t("copyDone"), true);
@@ -460,6 +464,7 @@
                 `<p>【🔼${t("importReverse")}】${t("importDescReverse")}</p>`,
                 `<p>【✅${t("onlyOnsale")}】${t("onlyOnsaleDesc")}</p>`,
                 `<p>【🔽${t("export")}】${t("exportDesc")}</p>`,
+                `<p>【✅${t("onlyOnsale")}】${t("onlyOnsaleDesc2")}</p>`,
                 `<p>【📋${t("copy")}】${t("copyDesc")}</p>`,
                 `<p>【🗑️${t("reset")}】${t("resetDesc")}。</p>`,
                 `<p>【📜${t("history")}】${t("historyDesc")}</p>`,
@@ -475,6 +480,7 @@
         btnArea.appendChild(lblDiscount);
         btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnExport);
+        btnArea.appendChild(lblDiscount2);
         btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnHelp);
 
@@ -497,6 +503,7 @@
         window.addEventListener("beforeunload", () => {
             GM_setValue("fac_cart", inputBox.value);
             GM_setValue("fac_discount", chkDiscount.checked);
+            GM_setValue("fac_discount2", chkDiscount2.checked);
         })
     }
 
@@ -583,16 +590,25 @@
         });
     }
     //导出购物车
-    function exportCart() {
-        const regMatch = new RegExp(/(app|sub|bundle)_(\d+)/);
+    function exportCart(onlyOnsale = false) {
+        const regMatch = new RegExp(/(app|sub|bundle)_(\d+)/i);
         let data = [];
-        for (let item of document.querySelectorAll("div.cart_item_list>div.cart_row ")) {
+        for (let item of document.querySelectorAll("div.cart_item_list>div.cart_row")) {
+            const priceEle = item.querySelector("div.cart_item_price");
+            const discount = priceEle?.classList.contains('with_discount') ? "🔖 " : "";
+            const price = priceEle.querySelector('div.price')?.textContent ?? "Null";
+
             let itemKey = item.getAttribute("data-ds-itemkey");
             let name = item.querySelector(".cart_item_desc>a").innerText.trim();
             let match = itemKey.toLowerCase().match(regMatch);
             if (match) {
                 let [_, type, id] = match;
-                data.push(`${type}/${id} #${name}`);
+
+                if (onlyOnsale && discount.length === 0) {
+                    continue;
+                }
+
+                data.push(`${type}/${id} #${name} ${discount}💳${price}`);
             }
         }
         return data.join("\n");
