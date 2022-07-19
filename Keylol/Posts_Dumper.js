@@ -3,7 +3,7 @@
 // @name:zh-CN   帖子导出工具
 // @name         Posts_Dumper
 // @namespace    https://blog.chrxw.com
-// @version      1.0
+// @version      1.1
 // @description:zh-CN  导出帖子内容到数据库
 // @description  导出帖子内容到数据库
 // @author       Chr_
@@ -67,7 +67,7 @@ setTimeout(async () => {
         const statusTips = genSpan(status ? '连接成功' : '连接失败');
 
         const btnGrubNew = genBtn('抓取尚未记录的', async () => {
-            const postLists = treadList.querySelectorAll("tr>th:nth-child(2)>a.pd_not_added.xst");
+            const postLists = treadList.querySelectorAll("th.common>a.pd_not_added.xst,th.new>a.pd_not_added.xst,th.lock>a.pd_not_added.xst");
             const total = postLists.length;
             if (total > 0) {
                 statusTips.textContent = `开始抓取,共 ${total} 篇`;
@@ -91,7 +91,7 @@ setTimeout(async () => {
         });
 
         const btnGrubAll = genBtn('抓取所有', async () => {
-            const postLists = treadList.querySelectorAll("tr>th:nth-child(2)>a.xst");
+            const postLists = treadList.querySelectorAll("th.common>a.xst,th.new>a.xst,th.lock>a.xst");
             const total = postLists.length;
             if (total > 0) {
                 statusTips.textContent = `开始抓取,共 ${total} 篇`;
@@ -184,6 +184,10 @@ setTimeout(async () => {
                 case 'STYLE':
                 case 'IMG':
                     return;
+                case "DIV":
+                    if (node.classList.contains('aimg_tip')) {
+                        return;
+                    }
             }
 
             if (node.nodeType === Node.TEXT_NODE) {
@@ -233,7 +237,7 @@ setTimeout(async () => {
     //显示是否已经抓取
     async function freshPostList() {
         const tidSet = await getPostIds();
-        const postLists = treadList.querySelectorAll("tr>th:nth-child(2)>a.xst");
+        const postLists = treadList.querySelectorAll("th.common>a.xst,th.new>a.xst,th.lock>a.xst");
         for (let postTag of postLists) {
             const tid = grubTid(postTag.href);
 
