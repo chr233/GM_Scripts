@@ -3,14 +3,14 @@
 // @name:zh-CN   帖子导出工具
 // @name         Posts_Dumper
 // @namespace    https://blog.chrxw.com
-// @version      1.3
+// @version      1.4
 // @description:zh-CN  导出帖子内容到数据库
 // @description  导出帖子内容到数据库
 // @author       Chr_
 // @match        https://keylol.com/*
 // @match        https://dev.keylol.com/*
 // @connect      127.0.0.1
-// @connect      httpbin.org
+// @connect      store.steampowered.com
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
 // @grant        GM_setValue
@@ -71,6 +71,10 @@ setTimeout(async () => {
         const panel = genDiv('pd_panel');
 
         const tempIframe = genIframe();
+        const tempIframe2 = genIframe();
+        const tempIframe3 = genIframe();
+
+        const tempIFrames = [tempIframe, tempIframe2, tempIframe3];
 
         const status = await testBackend();
 
@@ -81,17 +85,23 @@ setTimeout(async () => {
             const total = postLists.length;
             if (total > 0) {
                 statusTips.textContent = `开始抓取,共 ${total} 篇`;
+                const workTread = tempIFrames.length;
+                for (let i = 0; i < total; i += workTread) {
+                    const max = Math.min(i + workTread, total)
+                    const tasks = [];
+                    for (let j = i; j < max; j++) {
+                        const postTag = postLists[j];
+                        const tid = grubTid(postTag.href);
+                        const url = genUrl(tid) + '?utm=114514';
+                        tempIFrames[j - i].src = url;
+                        postTag.classList.remove('pd_not_added');
+                        postTag.classList.add('pd_done');
+                        tasks.push(waitUnitlDone(tid));
+                    }
 
-                for (let i = 0; i < total; i++) {
-                    const postTag = postLists[i];
-                    const tid = grubTid(postTag.href);
-                    const url = genUrl(tid) + '?utm=114514';
-                    tempIframe.src = url;
-                    const result = await waitUnitlDone(tid);
-                    statusTips.textContent = `进度 ${i}/${total} TID ${tid} ${result}`;
-                    GM_deleteValue(tid);
-                    postTag.classList.remove('pd_not_added');
-                    postTag.classList.add('pd_done');
+                    await Promise.all(tasks);
+
+                    statusTips.textContent = `抓取进度 ${max}/${total}`;
                 }
                 statusTips.textContent = '抓取结束';
             } else {
@@ -105,18 +115,23 @@ setTimeout(async () => {
             const total = postLists.length;
             if (total > 0) {
                 statusTips.textContent = `开始抓取,共 ${total} 篇`;
+                const workTread = tempIFrames.length;
+                for (let i = 0; i < total; i += workTread) {
+                    const max = Math.min(i + workTread, total)
+                    const tasks = [];
+                    for (let j = i; j < max; j++) {
+                        const postTag = postLists[j];
+                        const tid = grubTid(postTag.href);
+                        const url = genUrl(tid) + '?utm=114514';
+                        tempIFrames[j - i].src = url;
+                        postTag.classList.remove('pd_not_added');
+                        postTag.classList.add('pd_done');
+                        tasks.push(waitUnitlDone(tid));
+                    }
 
-                for (let i = 0; i < total; i++) {
-                    const postTag = postLists[i];
-                    const tid = grubTid(postTag.href);
-                    const url = genUrl(tid) + '?utm=114514';
-                    tempIframe.src = url;
-                    const result = await waitUnitlDone(tid);
-                    statusTips.textContent = `进度 ${i}/${total} TID ${tid} ${result}`;
-                    GM_deleteValue(tid);
-                    postTag.classList.remove('pd_not_added');
-                    postTag.classList.remove('pd_added');
-                    postTag.classList.add('pd_done');
+                    await Promise.all(tasks);
+
+                    statusTips.textContent = `抓取进度 ${max}/${total}`;
                 }
                 statusTips.textContent = '抓取结束';
             } else {
@@ -137,7 +152,6 @@ setTimeout(async () => {
             const url = genUrl(tid) + '?utm=114514';
             tempIframe.src = url;
             const result = await waitUnitlDone(tid);
-            GM_deleteValue(tid);
             postTag.classList.remove('pd_not_added');
             postTag.classList.remove('pd_added');
             postTag.classList.add('pd_done');
@@ -182,6 +196,10 @@ setTimeout(async () => {
             panel.appendChild(btnControl);
             panel.appendChild(genHr());
             panel.appendChild(tempIframe);
+            panel.appendChild(genBr());
+            panel.appendChild(tempIframe2);
+            panel.appendChild(genBr());
+            panel.appendChild(tempIframe3);
 
             document.getElementById('autopbn').addEventListener('click', async () => {
                 setTimeout(async () => {
@@ -251,18 +269,40 @@ setTimeout(async () => {
 
         const steamLinks = document.querySelectorAll("a[href^='https://store.steampowered.com/'],a[href^='https://steamdb.info/app/']");
         const grubAppid = new RegExp(/app\/(\d+)\/?/);
-        const steamAppIDs = new Set();
+        const appIDsSet = new Set();
         for (const ele of steamLinks) {
             const href = ele.href;
             if (href) {
                 const appID = parseInt(grubAppid.exec(href)?.[1] ?? 0);
                 if (appID > 0) {
-                    steamAppIDs.add(appID);
+                    appIDsSet.add(appID);
                 }
             }
         }
-        const game_list = [...steamAppIDs].join(' | ');
-        const data = { tid, post_url, post_title, author_nick, author_uid, post_date, content, game_list };
+
+        const appIDs = [...appIDsSet];
+        const bbcodes = [];
+        const excels = [];
+
+        const tasks = [];
+        for (let appid of appIDs) {
+            tasks.push(getGameName(appid));
+        }
+
+        const values = await Promise.all(tasks);
+
+        for (let [succ, name, appid] of values) {
+            if (!succ) {
+                name = `【${name ?? '读取出错'}】`;
+            }
+            bbcodes.push(`[url=https://store.steampowered.com/app/${appid}/]${name}[/url]`);
+            excels.push(`${name} https://store.steampowered.com/app/${appid}/`);
+        }
+
+        const game_list = appIDs.join(' | ');
+        const game_bbcode = bbcodes.join('\n');
+        const game_excel = excels.join('\r\n');
+        const data = { tid, post_url, post_title, author_nick, author_uid, post_date, content, game_list, game_bbcode, game_excel };
         console.log(data);
         try {
             GM_setValue(tid, '抓取完成');
@@ -336,12 +376,14 @@ setTimeout(async () => {
                 if (fin) {
                     clearInterval(t1);
                     clearInterval(t2);
+                    GM_deleteValue(tid);
                     resolve(fin);
                 }
             }, 50);
 
             t2 = setTimeout(() => {
                 clearInterval(t1);
+                GM_deleteValue(tid);
                 resolve('操作超时');
             }, 10000);
         });
@@ -392,6 +434,20 @@ setTimeout(async () => {
                 .catch((reason) => {
                     console.log(reason);
                     resolve(false);
+                });
+        });
+    }
+    //获取游戏名
+    function getGameName(appid) {
+        return new Promise((resolve, reject) => {
+            $http.get(`https://store.steampowered.com/api/appdetails?appids=${appid}&l=schinese`)
+                .then((response) => {
+                    const { success, data } = response[appid];
+                    resolve([success, data['name'], appid]);
+                })
+                .catch((reason) => {
+                    console.log(reason);
+                    resolve(false, reason, appid);
                 });
         });
     }
@@ -482,7 +538,7 @@ GM_addStyle(`
   
   .pd_panel > iframe {
     width: 200px;
-    height: 200px;
+    height: 100px;
   }
   
   .pd_added::before {
