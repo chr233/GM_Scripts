@@ -538,7 +538,7 @@ GM_addStyle(`
   
   .pd_panel > iframe {
     width: 200px;
-    height: 100px;
+    height: 50px;
   }
   
   .pd_added::before {
