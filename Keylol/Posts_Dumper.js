@@ -3,7 +3,7 @@
 // @name:zh-CN   帖子导出工具
 // @name         Posts_Dumper
 // @namespace    https://blog.chrxw.com
-// @version      1.2
+// @version      1.3
 // @description:zh-CN  导出帖子内容到数据库
 // @description  导出帖子内容到数据库
 // @author       Chr_
@@ -53,9 +53,19 @@ setTimeout(async () => {
             const b = document.createElement('hr');
             return b;
         }
+        function genBr() {
+            const b = document.createElement('br');
+            return b;
+        }
         function genIframe() {
             const i = document.createElement('iframe');
             return i
+        }
+        function genText() {
+            const t = document.createElement('input');
+            t.placeholder = '帖子ID';
+            t.className = 'pd_text';
+            return t;
         }
 
         const panel = genDiv('pd_panel');
@@ -115,6 +125,27 @@ setTimeout(async () => {
             await freshPostList();
         });
 
+        const txtTid = genText();
+        const btnGrubOne = genBtn('手动抓取', async () => {
+
+            const tid = parseInt(txtTid.value);
+            if (!(tid > 0)) {
+                alert('请输入整数 TID');
+                return;
+            }
+            statusTips.textContent = `TID ${tid} 开始抓取`;
+            const url = genUrl(tid) + '?utm=114514';
+            tempIframe.src = url;
+            const result = await waitUnitlDone(tid);
+            GM_deleteValue(tid);
+            postTag.classList.remove('pd_not_added');
+            postTag.classList.remove('pd_added');
+            postTag.classList.add('pd_done');
+            statusTips.textContent = `TID ${tid} ${result}`;
+
+            await freshPostList();
+        });
+
         const btnExportExcel = genBtn('导出Excel', () => {
             window.open(`http://${host}:${port}/api/excel`)
         });
@@ -129,7 +160,7 @@ setTimeout(async () => {
             }
         });
 
-        const btnControl = genBtn('打开管理面板', () => {
+        const btnControl = genBtn('在管理面板浏览数据', () => {
             window.open(`http://${host}:${port}/index.html`);
         });
 
@@ -139,6 +170,9 @@ setTimeout(async () => {
         if (status) {
             panel.appendChild(btnGrubNew);
             panel.appendChild(btnGrubAll);
+            panel.appendChild(genHr());
+            panel.appendChild(txtTid);
+            panel.appendChild(btnGrubOne);
             panel.appendChild(genHr());
             panel.appendChild(btnExportExcel);
             panel.appendChild(btnExportBBCode);
@@ -186,6 +220,7 @@ setTimeout(async () => {
                 case 'A':
                 case 'IFRAME':
                 case 'STYLE':
+                case 'SCRIPT':
                 case 'IMG':
                     return;
                 case "DIV":
@@ -226,7 +261,7 @@ setTimeout(async () => {
                 }
             }
         }
-        const game_list = [...steamAppIDs].join('|');
+        const game_list = [...steamAppIDs].join(' | ');
         const data = { tid, post_url, post_title, author_nick, author_uid, post_date, content, game_list };
         console.log(data);
         try {
@@ -303,7 +338,7 @@ setTimeout(async () => {
                     clearInterval(t2);
                     resolve(fin);
                 }
-            }, 100);
+            }, 50);
 
             t2 = setTimeout(() => {
                 clearInterval(t1);
@@ -450,15 +485,20 @@ GM_addStyle(`
     height: 200px;
   }
   
-  .pd_added::before{
-      content: "✅";
+  .pd_added::before {
+    content: "✅";
   }
   
-  .pd_not_added::before{
+  .pd_not_added::before {
     content: "❌";
   }
-
-  .pd_done::before{
+  
+  .pd_done::before {
     content: "🤔";
+  }
+  
+  .pd_text {
+    width: 90px;
+    text-align: center;
   }
 `);
