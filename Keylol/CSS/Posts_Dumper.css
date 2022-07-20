@@ -42,3 +42,8 @@
 .pd_done::before {
   content: "🤔";
 }
+
+.pd_text {
+  width: 90px;
+  text-align: center;
+}
