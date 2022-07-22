@@ -2,7 +2,7 @@
 // @name:zh-CN         IG礼物链接提取
 // @name               Extract_Gift_link_Indiegala
 // @namespace          https://blog.chrxw.com/
-// @version            0.3
+// @version            0.4
 // @description:zh-CN  Indiegala礼物链接提取
 // @description        Indiegala礼物链接提取
 // @author             Chr_
@@ -55,10 +55,10 @@
                 let giftLink = gift.querySelector("a").href;
                 let giftPass = gift.querySelector("div:last-child>span").textContent;
                 if (old.indexOf(giftLink.substring(38,)) >= 0) {
-                    console.log(`重复的礼物链接${giftLink.substring(38,)}`);
+                    console.log(`重复的礼物链接 ${giftLink.substring(38,)}`);
                     continue;
                 }
-                list.push(`IG慈善包链接：（${giftLink}）{r}IG慈善包密码：（${giftPass}）{r}`);
+                list.push(`IG慈善包链接：（ ${giftLink} ）{r}IG慈善包密码：（ ${giftPass} ）{r}`);
             }
             if (list.length > 0) {
                 if (txt.value !== "") {
