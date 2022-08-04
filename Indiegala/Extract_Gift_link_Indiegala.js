@@ -2,7 +2,7 @@
 // @name:zh-CN         IG礼物链接提取
 // @name               Extract_Gift_link_Indiegala
 // @namespace          https://blog.chrxw.com/
-// @version            0.4
+// @version            0.5
 // @description:zh-CN  Indiegala礼物链接提取
 // @description        Indiegala礼物链接提取
 // @author             Chr_
@@ -14,43 +14,52 @@
 
 (() => {
     "use strict";
+
+    let GObjs = {};
+
     addbtn();
     function addbtn() {
         let area = document.querySelector("div.profile-private-page-user");
         let dv1 = document.createElement("div");
         let dv2 = document.createElement("div");
-        let btn1 = document.createElement("button");
-        let btn2 = document.createElement("button");
-        let btn3 = document.createElement("button");
-        let txt = document.createElement("textarea");
+        let dv3 = document.createElement("div");
+        let btnExtractGift = document.createElement("button");
+        let btnExtractKey = document.createElement("button");
+        let btnCopy = document.createElement("button");
+        let btnClear = document.createElement("button");
+        let txtResult = document.createElement("textarea");
         dv1.style.cssText = "margin: 12px 0;display: flex;";
         dv2.style.cssText = "margin: 0 12px;display: block;";
-        btn1.addEventListener("click", extract);
-        btn2.addEventListener("click", copy);
-        btn3.addEventListener("click", clear);
-        btn1.style.cssText = "display: inherit;";
-        btn3.style.cssText = "float: right;";
-        btn1.textContent = "提取礼物链接";
-        btn2.textContent = "复制";
-        btn3.textContent = "×";
-        btn2.id = "btnCopy";
-        txt.style.cssText = "width: 70%;white-space: nowrap;overflow: scroll;";
-        txt.id = "extractLinks";
-        dv2.appendChild(btn1);
-        dv2.appendChild(btn2);
-        dv2.appendChild(btn3);
+        dv3.style.cssText = "margin: 0 12px;display: block;";
+        btnExtractGift.addEventListener("click", extractGift);
+        btnExtractKey.addEventListener("click", extractKey);
+        btnCopy.addEventListener("click", copy);
+        btnClear.addEventListener("click", clear);
+        btnExtractGift.style.cssText = "display: inherit;";
+        btnClear.style.cssText = "float: right;";
+        btnExtractGift.textContent = "提取礼物链接";
+        btnExtractKey.textContent = "提取Key";
+        btnCopy.textContent = "复制";
+        btnClear.textContent = "×";
+        btnCopy.id = "btnCopy";
+        txtResult.style.cssText = "width: 70%;white-space: nowrap;overflow: scroll;";
+        txtResult.id = "extractLinks";
+        dv2.appendChild(btnExtractGift);
+        dv2.appendChild(btnExtractKey);
+        dv3.appendChild(btnCopy);
+        dv3.appendChild(btnClear);
         dv1.appendChild(dv2);
-        dv1.appendChild(txt);
+        dv1.appendChild(txtResult);
+        dv1.appendChild(dv3);
         area.appendChild(dv1);
+        Object.assign(GObjs, { txtResult, btnCopy })
     }
-
-    function extract() {
-        let txt = document.getElementById("extractLinks");
-        let btn2 = document.getElementById("btnCopy");
+    function extractGift() {
+        const { txtResult } = GObjs;
         let gifts = document.querySelectorAll("div.profile-private-page-library-gifts div.profile-private-page-library-gift-title > div.overflow-auto");
         if (gifts.length > 0) {
             let list = [];
-            let old = txt.value;
+            let old = txtResult.value;
             for (let gift of gifts) {
                 let giftLink = gift.querySelector("a").href;
                 let giftPass = gift.querySelector("div:last-child>span").textContent;
@@ -61,25 +70,53 @@
                 list.push(`IG慈善包链接：（ ${giftLink} ）{r}IG慈善包密码：（ ${giftPass} ）{r}`);
             }
             if (list.length > 0) {
-                if (txt.value !== "") {
-                    txt.value += "\n";
+                if (txtResult.value !== "") {
+                    txtResult.value += "\n";
                 }
-                txt.value += list.join("\n");
+                txtResult.value += list.join("\n");
             }
         } else {
             alert("未找到可识别的礼物链接");
         }
-        btn2.click();
+        copy();
+    }
+    function extractKey() {
+        const { txtResult } = GObjs;
+        let cols = document.querySelectorAll("div.profile-private-page-library-key-cont.overflow-auto");
+        if (cols.length > 0) {
+            let list = [];
+            let old = txtResult.value;
+            for (let col of cols) {
+                const gameName = col.querySelector("div.profile-private-page-library-title-row-full")?.title ?? "";
+                const gameKey = col.querySelector("input")?.value ?? "";
+
+                if (old.indexOf(gameKey) >= 0) {
+                    console.log(`重复的key ${giftLink.substring(38,)}`);
+                    continue;
+                }
+                list.push(`${gameName}  ${gameKey}`);
+            }
+            if (list.length > 0) {
+                if (txtResult.value !== "") {
+                    txtResult.value += "\n";
+                }
+                txtResult.value += list.join("\n");
+            }
+        } else {
+            alert("未找到可识别的Key信息");
+        }
+        copy();
     }
     function copy() {
-        let txt = document.getElementById("extractLinks");
-        GM_setClipboard(txt.value, "text");
-        let btn2 = document.getElementById("btnCopy");
-        btn2.textContent = "已复制";
-        setTimeout(() => { btn2.textContent = "复制"; }, 1000);
+        const { btnCopy, txtResult } = GObjs;
+        GM_setClipboard(txtResult.value, "text");
+        btnCopy.textContent = "已复制";
+        setTimeout(() => { btnCopy.textContent = "复制"; }, 1000);
     }
     function clear() {
-        let txt = document.getElementById("extractLinks");
-        txt.value = "";
+        const { txtResult } = GObjs;
+        if (confirm("确定要清空吗？")) {
+            txtResult.value = "";
+        }
     }
 })();
