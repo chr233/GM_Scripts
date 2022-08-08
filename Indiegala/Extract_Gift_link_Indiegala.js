@@ -2,7 +2,7 @@
 // @name:zh-CN         IG礼物链接提取
 // @name               Extract_Gift_link_Indiegala
 // @namespace          https://blog.chrxw.com/
-// @version            0.5
+// @version            0.6
 // @description:zh-CN  Indiegala礼物链接提取
 // @description        Indiegala礼物链接提取
 // @author             Chr_
