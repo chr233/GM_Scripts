@@ -2,7 +2,7 @@
 // @name:zh-CN         IG礼物链接提取
 // @name               Extract_Gift_link_Indiegala
 // @namespace          https://blog.chrxw.com/
-// @version            0.6
+// @version            0.7
 // @description:zh-CN  Indiegala礼物链接提取
 // @description        Indiegala礼物链接提取
 // @author             Chr_
@@ -42,7 +42,7 @@
         btnCopy.textContent = "复制";
         btnClear.textContent = "×";
         btnCopy.id = "btnCopy";
-        txtResult.style.cssText = "width: 70%;white-space: nowrap;overflow: scroll;";
+        txtResult.style.cssText = "width: 70%;white-space: nowrap;";
         txtResult.id = "extractLinks";
         dv2.appendChild(btnExtractGift);
         dv2.appendChild(btnExtractKey);
@@ -56,7 +56,7 @@
     }
     function extractGift() {
         const { txtResult } = GObjs;
-        let gifts = document.querySelectorAll("div.profile-private-page-library-gifts div.profile-private-page-library-gift-title > div.overflow-auto");
+        let gifts = document.querySelectorAll("ul.profile-private-page-library-sublist-active div.profile-private-page-library-gifts div.profile-private-page-library-gift-title > div.overflow-auto");
         if (gifts.length > 0) {
             let list = [];
             let old = txtResult.value;
@@ -67,7 +67,7 @@
                     console.log(`重复的礼物链接 ${giftLink.substring(38,)}`);
                     continue;
                 }
-                list.push(`IG慈善包链接：（ ${giftLink} ）{r}IG慈善包密码：（ ${giftPass} ）{r}`);
+                list.push(`IG慈善包链接：（ ${giftLink} ）IG慈善包密码：（ ${giftPass} ）`);
             }
             if (list.length > 0) {
                 if (txtResult.value !== "") {
@@ -82,7 +82,7 @@
     }
     function extractKey() {
         const { txtResult } = GObjs;
-        let cols = document.querySelectorAll("div.profile-private-page-library-key-cont.overflow-auto");
+        let cols = document.querySelectorAll("ul.profile-private-page-library-sublist-active div.profile-private-page-library-key-cont.overflow-auto");
         if (cols.length > 0) {
             let list = [];
             let old = txtResult.value;
