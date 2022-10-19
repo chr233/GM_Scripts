@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.1
+// @version         1.2
 // @description     判断是否已经回过贴
 // @description:zh-CN  判断是否已经回过贴
 // @author          Chr_
@@ -41,7 +41,9 @@
                 tips.href = testUrl;
             }
             else {
-                showError("❌还没回过贴子");
+                tips.addEventListener("click", () => {
+                    showError("❌还没回过贴子");
+                });
             }
             btnArea.appendChild(tips);
         });
