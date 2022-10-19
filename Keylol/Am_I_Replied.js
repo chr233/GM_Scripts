@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.0.0
+// @version         1.1
 // @description     判断是否已经回过贴
 // @description:zh-CN  判断是否已经回过贴
 // @author          Chr_
@@ -30,13 +30,19 @@
     }
 
     fetch(testUrl)
-        .then(res => res.text())
-        .then(html => {
-            console.log(html);
-            const text = html.includes("未定义操作") ? "❌还没回过贴子" : "✅已经回过贴了";
+        .then((res) => res.text())
+        .then((html) => {
+            const replied = !html.includes("未定义操作");
             const btnArea = document.getElementById("pgt");
-            const span = document.createElement("span");
-            span.textContent = text;
-            btnArea.appendChild(span);
+            const text = replied ? "✅已经回过贴了" : "❌还没回过贴子";
+            const tips = document.createElement("a");
+            tips.textContent = text;
+            if (replied) {
+                tips.href = testUrl;
+            }
+            else {
+                showError("❌还没回过贴子");
+            }
+            btnArea.appendChild(tips);
         });
 })();
