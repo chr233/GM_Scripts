@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.8
+// @version         2.9
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_
@@ -12,6 +12,7 @@
 // @icon            https://blog.chrxw.com/favicon.ico
 // @require         https://lib.baomitu.com/html2canvas/1.4.1/html2canvas.min.js
 // @include         https://www.humblebundle.com/downloads?key=*
+// @include         https://zh.humblebundle.com/downloads?key=*
 // @grant           GM_setClipboard
 // ==/UserScript==
 
