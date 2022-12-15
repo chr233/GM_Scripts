@@ -2,7 +2,7 @@
 // @name:zh-CN         IG礼物链接提取
 // @name               Extract_Gift_link_Indiegala
 // @namespace          https://blog.chrxw.com/
-// @version            0.7
+// @version            0.8
 // @description:zh-CN  Indiegala礼物链接提取
 // @description        Indiegala礼物链接提取
 // @author             Chr_
@@ -56,7 +56,7 @@
     }
     function extractGift() {
         const { txtResult } = GObjs;
-        let gifts = document.querySelectorAll("ul.profile-private-page-library-sublist-active div.profile-private-page-library-gifts div.profile-private-page-library-gift-title > div.overflow-auto");
+        let gifts = document.querySelectorAll("div[ref=bundle] ul.profile-private-page-library-sublist-active div.profile-private-page-library-gifts div.profile-private-page-library-gift-title > div.overflow-auto");
         if (gifts.length > 0) {
             let list = [];
             let old = txtResult.value;
