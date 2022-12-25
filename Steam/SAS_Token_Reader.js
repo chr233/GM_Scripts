@@ -2,7 +2,7 @@
 // @name         SAS_Token_Reader
 // @name:zh-CN   SAS_获取Token
 // @namespace    https://blog.chrxw.com
-// @version      1.4
+// @version      1.5
 // @description  Steam获取打赏Token
 // @description:zh-CN  Steam获取打赏Token
 // @author       Chr_
@@ -21,17 +21,13 @@
     'use strict';
     //机器人账号
     let GBots = {};
-    //打赏历史记录
-    let GHistory = {};
-    //打赏目标,Steam_ID
-    let GTarget = '';
 
     loadConf();
 
     graphGUI();
     flashList();
 
-    // panelSwitch();
+    panelSwitch();
 
     saveConf();
 
@@ -159,10 +155,12 @@
         let acAdd = genButton('添加当前账号', accountAdd);
         let acDel = genButton('删除选中', accountDel);
         let acUpdate = genButton('刷新所有账号点数', flashAllAccounts);
+        let acDump = genButton('导出所有账号', dumpAllAccounts);
 
         accountBtns.appendChild(acAdd);
         accountBtns.appendChild(acDel);
         accountBtns.appendChild(acUpdate);
+        accountBtns.appendChild(acDump);
 
         accountPanel.appendChild(accountTitle);
         accountPanel.appendChild(accountList);
@@ -345,7 +343,16 @@
             showAlert('错误', '未选中账户', false);
         }
     }
-
+    //导出所有账户
+    function dumpAllAccounts() {
+        let data = [];
+        for (let steamID in GBots) {
+            const { token, nick } = GBots[steamID];
+            data.push(`${steamID}, ${token}, ${nick}`);
+        }
+        setClipboard(data.join('\n'));
+        showAlert('成功', '已复制到剪贴板', true);
+    }
     //选择账户
     function accountSelect() {
         let botList = document.getElementById('AAM_Bots');
@@ -391,18 +398,10 @@
     function loadConf() {
         const bots = GM_getValue('bots');
         GBots = isEmptyObject(bots) ? {} : bots;
-
-        const hs = GM_getValue('history');
-        GHistory = isEmptyObject(hs) ? {} : hs;
-
-        const target = GM_getValue('target');
-        GTarget = target ? target : '';
     }
     //保存设置
     function saveConf() {
         GM_setValue('bots', GBots);
-        GM_setValue('history', GHistory);
-        GM_setValue('target', GTarget);
     }
     //是不是空对象
     function isEmptyObject(obj) {
@@ -559,14 +558,14 @@ GM_addStyle(`
     text-align: center;
   }
   .aam_account {
-    width: 400px;
+    width:400px;
   }
   .aam_account > * {
     width: 100%;
     margin-bottom: 2px;
   }
   .aam_account_btns > * {
-    margin-right: 5px;
+    margin-right: 2px;
   }
   
 `);
