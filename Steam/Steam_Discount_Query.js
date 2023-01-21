@@ -128,7 +128,7 @@ GM_addStyle(`
     }
     div.wishlist_row > button.sdq_listbtns {
         top: 35%;
-        right: 40%;
+        right: 35%;
         position: absolute;
     }
     button.sdq_listbtns_show,
