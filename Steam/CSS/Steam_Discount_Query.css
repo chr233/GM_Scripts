@@ -6,10 +6,13 @@ button.sdq_listbtns {
 }
 div.wishlist_row > button.sdq_listbtns {
   top: 35%;
-  right: 35%;
+  right: 33%;
   position: absolute;
 }
 button.sdq_listbtns_show,
 div.wishlist_row:hover button.sdq_listbtns {
   display: block;
+}
+button.sdq_listbtns_alert {
+  color: red;
 }

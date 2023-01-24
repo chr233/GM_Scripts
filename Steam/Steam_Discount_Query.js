@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.0
+// @version         1.1
 // @description:zh-CN  查询折扣截止日期
 // @description     Query when the discounts expired
 // @author          Chr_
@@ -57,11 +57,14 @@
     //显示折扣结束时间
     async function displaySaleEnds(appID, ele) {
         ele.enabled = false;
-        ele.className+=" sdq_listbtns_show";
+        ele.className += " sdq_listbtns_show";
         ele.textContent = "🔍……";
         fetchSaleEnds(appID)
             .then((endDate) => {
                 ele.textContent = endDate;
+                if (endDate.search(":") !== -1) {
+                    ele.className += " sdq_listbtns_alert";
+                }
             })
             .catch((err) => {
                 let done = showAlert("网络错误", `<p>${err}</p>`, false);
@@ -94,7 +97,7 @@
                                 const date = new Date(timestamp);
 
                                 if (date.getDate() === date.getDate()) {
-                                    endDate = `${date.getMonth() + 1} 月 ${date.getDate()} 日`;
+                                    endDate = `${date.getMonth() + 1} 月 ${date.getDate()} 日 ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
                                 } else {
                                     endDate = "解析失败";
                                 }
@@ -120,19 +123,22 @@
 })();
 
 GM_addStyle(`
-    button.sdq_listbtns {
-        display: none;
-        position: relative;
-        z-index: 100;
-        padding: 1px;
-    }
-    div.wishlist_row > button.sdq_listbtns {
-        top: 35%;
-        right: 35%;
-        position: absolute;
-    }
-    button.sdq_listbtns_show,
-    div.wishlist_row:hover button.sdq_listbtns {
-        display: block;
-    }
-    `);
+button.sdq_listbtns {
+    display: none;
+    position: relative;
+    z-index: 100;
+    padding: 1px;
+  }
+  div.wishlist_row > button.sdq_listbtns {
+    top: 35%;
+    right: 33%;
+    position: absolute;
+  }
+  button.sdq_listbtns_show,
+  div.wishlist_row:hover button.sdq_listbtns {
+    display: block;
+  }
+  button.sdq_listbtns_alert {
+    color: red;
+  }
+`);
