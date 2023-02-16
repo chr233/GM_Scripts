@@ -11,7 +11,7 @@
 // @match               https://steamdb.info/*
 // @license             AGPL-3.0
 // @icon                https://blog.chrxw.com/favicon.ico
-// @resource            data https://cf.chrxw.com/SteamDB/SteamDB_CN.json
+// @resource            data https://raw.chrxw.com/GM_Scripts/master/SteamDB/SteamDB_CN.json
 // @grant               GM_addStyle
 // @grant               GM_getResourceText
 // @grant               GM_registerMenuCommand
