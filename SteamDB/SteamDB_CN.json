@@ -5,7 +5,7 @@
     "STATIC说明": "key为CSS选择器,value为翻译字典. 只匹配被选择的元素中的textNode元素",
     "INPUT说明": "key为placeholder内容,value为翻译文本",
     "DYNAMIC说明": "暂未实装",
-    "贡献名单": ["Chr_", "joejoe5", "cyb233", "lyzlyslyc"]
+    "贡献名单": ["Chr_", "joejoe5", "cyb233", "lyzlyslyc", "悠久の蝶"]
   },
   "STATIC": {
     "ul>li,ul>li>a,ul>li>share-action,.header-navbar>a,.header-login>span": {
@@ -20,6 +20,7 @@
       "Charts": "图表",
       "Calculator": "计算器",
       "Patch notes": "补丁说明",
+      "Search": "搜索",
       "Instant search": "渐进式搜索",
       "When is next sale?": "下一次大促?",
       "Tracking": " 追踪",
@@ -46,6 +47,8 @@
       "Most followed games": "最受关注的游戏",
       "Most wishlisted games": "最多愿望单的游戏",
       "Profile badges": "个人资料徽章",
+      "Developers": "开发商",
+      "Publishers": "发行商",
       "Account": " 账户",
       "Sign in via Steam": "登陆 Steam",
       "Free packages": "免费 SUB",
@@ -63,6 +66,7 @@
       "Online": "在线",
       "Share": " 分享",
       "Unwatch": "停止监视",
+      "players live on Steam": " 当前在线",
       "players right now": " 当前在线",
       "24-hour peak": " 24小时峰值",
       "all-time peak": " 历史峰值 ",
@@ -102,17 +106,22 @@
       "Created": "创建时间",
       "SUB ID": "Sub ID",
       "SUBID": "Sub ID",
-      "BILLING TYPE": "购买类型",
       "Billing Type": "购买类型",
-      "Last Update": "最后更新",
+      "BILLING TYPE": "购买类型",
+      "Last Update": "最近更新",
       "AppID": "APP ID",
+      "APPID": "APP ID",
       "Max Size": "最大尺寸",
+      "MAX SIZE": "最大尺寸",
       "Extra Info": "额外信息",
+      "EXTRA INFO": "额外信息",
       "Description": "描述",
+      "DESCRIPTION": "描述",
       "Build ID": "编译 ID",
       "Time Updated": "更新时间",
-      "KEY": "项目名称",
+      "TIME UPDATED": "更新时间",
       "Key": "项目名称",
+      "KEY": "项目名称",
       "Value": "值",
       "VALUE": "值",
       "PLATFORM": "平台",
@@ -128,6 +137,7 @@
       "PRICE": "价格",
       "DEPOT UPDATE": "资产更新",
       "APP UPDATE": "APP更新",
+      "App Type": "APP类型",
       "APP TYPE": "APP类型",
       "LAST UPDATE": "最近更新",
       "Game": "游戏",
@@ -165,9 +175,45 @@
       "Suggested Price": " 建议定价",
       "FILE NAME": "文件名",
       "TYPE": "类型",
-      "SIZE": "大小"
+      "SIZE": "大小",
+      "INTERFACE": "界面",
+      "FULL AUDIO": "完全音频",
+      "SUBTITLES": "字幕",
+      "ACHIEVEMENTS": "成就"
     },
-    "td,td>a": {
+    "tr>td,tr>td>span": {
+      "Depot from": "资产来自 ",
+      "Simplified Chinese": "简体中文",
+      "Traditional Chinese": "繁体中文",
+      "English": "英语",
+      "French": "法语",
+      "Italian": "意大利语",
+      "German": "德语",
+      "Spanish - Spain": "西班牙语 - 西班牙",
+      "Spanish - Latin America": "西班牙语 - 拉丁美洲",
+      "Arabic": "阿拉伯语",
+      "Bulgarian": "保加利亚语",
+      "Czech": "捷克语",
+      "Danish": "丹麦语",
+      "Dutch": "荷兰语",
+      "Finnish": "芬兰语",
+      "Greek": "希腊语",
+      "Hungarian": "匈牙利语",
+      "Korean": "韩语",
+      "Japanese": "日语",
+      "Norwegian": "挪威语",
+      "Polish": "波兰语",
+      "Portuguese - Portugal": "葡萄牙语 - 葡萄牙",
+      "Portuguese - Brazil": "葡萄牙语 - 巴西",
+      "Romanian": "罗马尼亚语",
+      "Russian": "俄语",
+      "Swedish": "瑞典语",
+      "Thai": "泰语",
+      "Turkish": "土耳其语",
+      "Ukrainian": "乌克兰语",
+      "Vietnamese": "越南语"
+    },
+    "td,td>a,td>small": {
       "Yes": "✅是",
       "No": "❌否",
       "Free": "免费",
@@ -176,6 +222,7 @@
       "Store Name": "商店名称",
       "Developer": "开发商",
       "Publisher": "发行商",
+      "Franchise": "系列作品",
       "Supported Systems": "支持的操作系统",
       "Last Change Number": "最后更改序号",
       "Last Record Update": "最后更新时间",
@@ -236,9 +283,14 @@
       "Steam vanity id": "Steam 自定义 ID",
       "FiveM's hex format": "FiveM 的十六进制格式",
       "Executable": "可执行文件名",
+      "Arguments": "参数",
       "Launch Type": "启动类型",
       "Unspecified": "未指定",
+      "Description": "描述",
       "Operating System": "操作系统",
+      "CPU Architecture": "CPU 架构",
+      "Beta Branch": "Beta 分支",
+      "Owns DLC": "拥有 DLC",
       "installdir": "安装文件夹名",
       "steam_china_only": "蒸汽平台限定",
       "LoadAllBeforeLaunch": "启动前加载所有资源",
@@ -288,6 +340,7 @@
       "Last Known Name": "最后已知名称",
       "Store or CD Key": "商店购买 和 CDkey",
       "baselanguages": "基础语言",
+      "hasdepotsindlc": "DLC资产",
       "workshopdepot": "创意工坊资产",
       "eulas": "用户协议",
       "3rd-Party Account": "第三方平台账号",
@@ -377,7 +430,7 @@
       "Recent app events": "最近更新的APP",
       "Recent package events": "最近更新的SUB",
       "Our latest blog post": "最新博客文章",
-      "Store Prices": "各区商店价格",
+      "Steam prices in all regions": "各区商店价格",
       "High-resolution Steam charts": "高分辨率 Steam 图表",
       "Additional Information": "附加信息",
       "Downloadable Content": "DLC 列表",
@@ -413,12 +466,15 @@
       "Known restrictions": "已知限制",
       "Community Items": "社区物品",
       "Files": "文件列表",
-      "Lifetime concurrent players on Steam": "同时在线数预测",
+      "Steam charts": "Steam 图表",
+      "Lifetime player count history": "在线玩家统计历史",
       "Steam game hub followers chart": "Steam 社区中心关注者图表",
       "Monthly breakdown": "月度明细",
       "Depots in this package": "此 SUB 包含的资产",
       "Apps in this package": "此 SUB 包含的 APP",
-      "Stats": "统计数据"
+      "Stats": "统计数据",
+      "Price history": "价格历史",
+      "Supported Languages": "支持的语言"
     },
     "h3,h3>a": {
       "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
@@ -442,7 +498,11 @@
       "Save File Locations": "存档位置",
       "Localization Strings": "本地化字符串",
       "Technical Item Data": "开发者数据",
-      "User Tags": "用户标签"
+      "User tags": "用户标签",
+      "Concurrent players": "同时在线",
+      "Twitch stats": "Twitch 数据",
+      "Store data": "商店数据",
+      "Owner estimations": "拥有人数估计"
     },
     "h4,h4>span": {
       "Concurrent players": "同时在线",
@@ -458,18 +518,20 @@
       "Badge breakdown": "徽章明细",
       "Profile Customizations": "自定义个人主页"
     },
-    ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a,.container>div>p,.container>p": {
+    ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a,.container>div>p,.container>p,.selected>p,.selected>p>a": {
       "This third-party website gives you better insight into the": "这个第三方网站可让您更好地了解 ",
       "Steam": "Steam",
       "platform and everything in its database.": " 平台及其数据库中的所有内容.",
-      "Look through our FAQ": "查阅FAQ",
-      "if you have any questions about SteamDB,": " 如果您有任何问题关于SteamDB 的问题, ",
-      "join our Discord": "加入 Discord 频道",
+      "Look through our frequently asked questions": "查阅常见问题FAQ",
+      "to learn more about SteamDB,": "来更深入地了解SteamDB，",
+      "join our Discord": "加入我们的 Discord 频道",
       "Follow @SteamDB on Twitter": "在 Twitter 上关注 @SteamDB",
       "Why are upcoming sales marked as unconfirmed?": "为什么即将到来的销售标记为未确认?",
       "Do you know when the next sale is and what discounts will it have?": "SteamDB 是如何得知下一次促销的时间以及折扣情况的?",
       "Any SteamID format is accepted, enter anything you want and we will convert it on the fly for you.": " 输入 SteamID 的任意形式, 我们将会自动将其转换为 SteamID.",
-      "This page is generated dynamically and lists most free packages that can be activated if you own base game, including demos.": "此页面是基于您拥有的游戏动态生成的, 列出了您拥有基础游戏的免费DLC, FOD, 以及免费试玩版."
+      "This page is generated dynamically and lists most free packages that can be activated if you own base game, including demos.": "此页面是基于您拥有的游戏动态生成的, 列出了您拥有基础游戏的免费DLC, FOD, 以及免费试玩版.",
+      "Based on the configuration above, this is where we think the save files are located.": "根据以上配置，我们认为存档文件所在位置如下.",
+      "Read more about cloud saves in Steamworks documentation.": "查阅 Steamworks 文档以了解更多关于云存档的信息."
     },
     ".header-disclaimer": {
       "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB 是一个业余项目, 与 Valve 或 Steam 无关.",
@@ -483,10 +545,12 @@
       "You are currently signed in as": "你当前登录账号的 SteamID 是 ",
       ". Click this or your avatar in the navbar to view your profile.": " . 点击此处或者导航栏上的头像来查看你的个人资料."
     },
-    ".events-title>span,.events-title>a,#events>.d-flex>a": {
+    ".events-title>span,.events-title>a,.d-flex>a,#events>.d-flex>a": {
       "Steam Sale Events": "Steam 促销活动 ",
       "Browse and filter all current deals": "浏览和过滤正在进行的促销活动",
-      "View all previous sale events…": "查看所有过去的促销活动…"
+      "View all previous sale events…": "查看所有过去的促销活动…",
+      "Steam News Pop-ups": "Steam 新闻广告",
+      "View all previous popups…": "查看所有过去的新闻广告…"
     },
     ".container-stats em": {
       "apps in database": "APP总数",
@@ -517,6 +581,10 @@
       "SteamDB has been running ad-free since 2012.": "SteamDB 自2012建立以来一直没有任何广告.",
       "Find out how you can contribute.": "查看我能为 SteamDB 做什么."
     },
+    ".armored-headcrab>span,.armored-headcrab>span>b": {
+      "SteamDB has been running ad-free since 2012.": "SteamDB 自2012建立以来一直无广告运营.",
+      "Donate or contribute.": "捐赠或贡献."
+    },
     ".app-links>a,.app-links>a>span": {
       "Wishlist": "愿望单",
       "Follow": "关注",
@@ -535,18 +603,23 @@
       "Patch Notes": "补丁说明",
       "Apps": " APP ",
       "Prices": " 价格 ",
+      "Price history": " 价格历史 ",
       "Charts": " 图表 ",
       "Information": " 信息 ",
+      "App info": " APP信息 ",
       "Packages": " SUB ",
       "DLCs": " DLC ",
       "Depots": " 资产 ",
       "Configuration": " 配置 ",
+      "Cloud saves": " 云存档 ",
       "Cloud Saves": " 云存档 ",
       "Achievements": " 成就 ",
       "Community": " 社区 ",
       "Screenshots": " 截图 ",
       "Linked apps": " 关联 APP ",
+      "Related apps": " 关联 APP ",
       "History": " 历史 ",
+      "Update history": " 更新历史 ",
       "Games": " 游戏 ",
       "Localization": " 本地化 ",
       "Files": " 文件 ",
@@ -562,9 +635,11 @@
     "a.badge-donator": {
       "DONATOR": " 贡献者"
     },
-    ".prices>div": {
-      "Account Value": "账户价值",
-      "lowest prices — today's prices": "最低价值 - 今日价值"
+    "a.badge-donator": {
+      "DONATOR": " 贡献者"
+    },
+    ".header-two-things>a": {
+      "In-Game": "游戏中"
     },
     ".warning-no-games *": {
       "Game playtime is hidden by default on Steam, you can change": "游戏时间默认在Steam上是隐藏的, 你可以改变 ",
@@ -591,9 +666,9 @@
       "Previous": "上一页",
       "Next": "下一页"
     },
-    ".price-table-suggestions>div": {
-      "Click on a currency name to load price history for that currency.": " 点击货币名称来显示该货币的价格历史.",
-      "Valve suggested prices are displayed on packages page.": " Valve 建议定价仅在 SUB 页面显示."
+    "div.price-table-suggestions,div.chart-container": {
+      "Click on a currency name to load price history for that particular currency.": " 点击货币名称来显示该货币的价格历史.",
+      "Valve suggested prices are shown on package pages.": " Valve 建议定价仅在 SUB 页面显示."
     },
     ".text-center,.text-center>a": {
       "We limit upcoming releases view to 30 days by default.": "\n我们默认只显示未来30天内发布的游戏.",
@@ -820,7 +895,7 @@
     ".tab-pane>p": {
       "This app is not included in any package known to us. As packages now require tokens, SteamDB needs a token to access package info.": "此 APP 没有包含在我们已知的任何 SUB 中. 因为读取 SUB 信息需要访问凭据, 所以 SteamDB 暂时无法获取该 SUB 的信息."
     },
-    ".community-item,.community-item>div,.community-item>b": {
+    ".community-item,.community-item>div,.community-item>b,.span12>p": {
       "Level 1": "\n1 级",
       "Level 2": "\n2 级",
       "Level 3": "\n3 级",
@@ -833,7 +908,8 @@
       "2,000 points": "2,000 点数",
       "3,000 points": "3,000 点数",
       "10,000 points": "10,000 点数",
-      "Booster pack 1": "补充包 1"
+      "Booster pack 1": "补充包 1",
+      "Click on a card to view large image.": "点击卡片查看大图."
     },
     "option,.ms-drop span,.currency-selector>.btn,a.btn-tag,td.price-line,.label-link": {
       "U.S. Dollar": " 美元 USD",
