@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.5
+// @version         1.6
 // @description     判断是否已经回过贴
 // @description:zh-CN  判断是否已经回过贴
 // @author          Chr_
@@ -59,6 +59,10 @@
         document.querySelector(query) ??
         document.querySelector("#postlist td.plc div.authi>span.pipe") ??
         document.querySelector("#m_nav>.nav");
+
+      if (btnArea === null) {
+        return;
+      }
       const text = replied ? "✅已经回过贴了" : "❌还没回过贴子";
 
       const tips = document.createElement("a");
