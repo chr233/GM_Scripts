@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.23
+// @version         2.24
 // @description     一键快乐-3
 // @description:zh-CN  一键快乐-3
 // @author          Chr_
@@ -87,7 +87,7 @@ function addBtns() {
     aLP.href = Vroll;
     aLP.title = '前往轮盘页';
     let img54 = document.createElement('img');
-    img54.src = 'https://cf.chrxw.com/Static/keylol.png';
+    img54.src = 'https://raw.chrxw.com/GM_Scripts/master/Static/keylol.png';
     img54.alt = '总之这里是54的名言';
     img54.style.cssText = 'float: right;margin-top: -28px;height: 100%;'
     aLP.appendChild(img54);
