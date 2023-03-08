@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.17
+// @version         2.18
 // @description     Hikari_Field入库游戏检测
 // @description:zh-CN  Hikari_Field入库游戏检测
 // @author          Chr_
@@ -12,7 +12,7 @@
 // @include         https://store.hikarifield.co.jp/libraries
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
-// @resource        data https://cf.chrxw.com/Keylol/Data/Hikari_Field_Helper.json
+// @resource        data https://raw.chrxw.com/GM_Scripts/master/Keylol/Data/Hikari_Field_Helper.json
 // @grant           GM_getResourceText
 // @grant           GM_setValue
 // @grant           GM_getValue
