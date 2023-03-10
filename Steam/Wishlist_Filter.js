@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.2
+// @version         1.3
 // @description     愿望单游戏过滤器
 // @description:zh-CN  愿望单游戏过滤器
 // @author          Chr_
@@ -20,7 +20,7 @@
   "use strict";
 
   // 过滤器设置
-  const filterConofig = [-1, -1, -1, -1];
+  const filterConofig = [-1, -1, -1, -1, -1, -1, -1, -1];
 
   // 控件数组
   const domObj = {};
@@ -64,24 +64,38 @@
     let divWsHeader = document.querySelector("div.wishlist_header");
     if (divWsHeader != null) {
       const btnDiv = genDiv("wf_panel");
-      const btnHide = genBtn("重置过滤", resetFilter, "重置过滤器");
-      const btnShow = genBtn("应用过滤", applyFilter, "应用过滤条件");
+      const btnReset = genBtn("重置过滤", resetFilter, "重置过滤器");
+      const btnApply = genBtn("应用过滤", applyFilter, "应用过滤条件");
       const iptMinRate = genNumber("最低", "最低好评率", null, 100, 0);
       const iptMaxRate = genNumber("最高", "最高好评率", null, 100, 0);
       const iptMinRecommmend = genNumber("最低", "最低评价数", null, 99999, 0);
       const iptMaxRecommmend = genNumber("最高", "最高评价数", null, 99999, 0);
+      const iptMinDiscount = genNumber("最低", "最低折扣", null, 100, 0);
+      const iptMaxDiscount = genNumber("最高", "最高折扣", null, 100, 0);
+      // const iptMinPrice = genNumber("最低", "最低价格", null, 99999, 0);
+      // const iptMaxPrice = genNumber("最高", "最高加个", null, 99999, 0);
       const line1 = genP();
-      line1.appendChild(genSpan("按好评率过滤:"));
+      line1.appendChild(genSpan("按好评率:"));
       line1.appendChild(iptMinRate);
       line1.appendChild(iptMaxRate);
-      line1.appendChild(btnHide);
       const line2 = genP();
-      line2.appendChild(genSpan("按评价数过滤:"));
+      line2.appendChild(genSpan("按评价数:"));
       line2.appendChild(iptMinRecommmend);
       line2.appendChild(iptMaxRecommmend);
-      line2.appendChild(btnShow);
+      const line3 = genP();
+      line3.appendChild(genSpan("按折扣:"));
+      line3.appendChild(iptMinDiscount);
+      line3.appendChild(iptMaxDiscount);
+      const line4= genP();
+      // line2.appendChild(genSpan("按价格:"));
+      // line2.appendChild(iptMinPrice);
+      // line2.appendChild(iptMaxPrice);
+      line4.appendChild(btnReset);
+      line4.appendChild(btnApply);
       btnDiv.appendChild(line1);
       btnDiv.appendChild(line2);
+      btnDiv.appendChild(line3);
+      btnDiv.appendChild(line4);
       divWsHeader.appendChild(btnDiv);
 
       Object.assign(domObj, {
@@ -89,6 +103,10 @@
         iptMaxRate,
         iptMinRecommmend,
         iptMaxRecommmend,
+        iptMinDiscount,
+        iptMaxDiscount,
+        // iptMinPrice,
+        // iptMaxPrice,
       });
 
       loadConfig();
@@ -101,9 +119,15 @@
     filterConofig[1] = -1;
     filterConofig[2] = -1;
     filterConofig[3] = -1;
+    filterConofig[4] = -1;
+    filterConofig[5] = -1;
+    filterConofig[6] = -1;
+    filterConofig[7] = -1;
     loadInput();
     saveConfig();
-    for (let ele of document.querySelectorAll("#wishlist_ctn>div.wishlist_row")) {
+    for (let ele of document.querySelectorAll(
+      "#wishlist_ctn>div.wishlist_row"
+    )) {
       filterGame(ele);
     }
   }
@@ -111,7 +135,9 @@
   function applyFilter() {
     saveInput();
     saveConfig();
-    for (let ele of document.querySelectorAll("#wishlist_ctn>div.wishlist_row")) {
+    for (let ele of document.querySelectorAll(
+      "#wishlist_ctn>div.wishlist_row"
+    )) {
       filterGame(ele);
     }
   }
@@ -124,98 +150,168 @@
 
   //加载输入
   function loadInput() {
-    const { iptMinRate, iptMaxRate, iptMinRecommmend, iptMaxRecommmend } =
-      domObj;
+    const {
+      iptMinRate,
+      iptMaxRate,
+      iptMinRecommmend,
+      iptMaxRecommmend,
+      iptMinDiscount,
+      iptMaxDiscount,
+      // iptMinPrice,
+      // iptMaxPrice,
+    } = domObj;
     iptMinRate.value = filterConofig[0] === -1 ? "" : filterConofig[0];
     iptMaxRate.value = filterConofig[1] === -1 ? "" : filterConofig[1];
     iptMinRecommmend.value = filterConofig[2] === -1 ? "" : filterConofig[2];
     iptMaxRecommmend.value = filterConofig[3] === -1 ? "" : filterConofig[3];
+    iptMinDiscount.value = filterConofig[4] === -1 ? "" : filterConofig[4];
+    iptMaxDiscount.value = filterConofig[5] === -1 ? "" : filterConofig[5];
+    // iptMinPrice.value = filterConofig[6] === -1 ? "" : filterConofig[6];
+    // iptMaxPrice.value = filterConofig[7] === -1 ? "" : filterConofig[7];
   }
 
   //读取输入
   function saveInput() {
-    const { iptMinRate, iptMaxRate, iptMinRecommmend, iptMaxRecommmend } =
-      domObj;
+    const {
+      iptMinRate,
+      iptMaxRate,
+      iptMinRecommmend,
+      iptMaxRecommmend,
+      iptMinDiscount,
+      iptMaxDiscount,
+      // iptMinPrice,
+      // iptMaxPrice,
+    } = domObj;
 
     filterConofig[0] = tryParseInt(iptMinRate.value);
     filterConofig[1] = tryParseInt(iptMaxRate.value);
     filterConofig[2] = tryParseInt(iptMinRecommmend.value);
     filterConofig[3] = tryParseInt(iptMaxRecommmend.value);
+    filterConofig[4] = tryParseInt(iptMinDiscount.value);
+    filterConofig[5] = tryParseInt(iptMaxDiscount.value);
+    // filterConofig[6] = tryParseInt(iptMinPrice.value);
+    // filterConofig[7] = tryParseInt(iptMaxPrice.value);
   }
 
   //加载设置
   function loadConfig() {
-    filterConofig[0] = tryParseInt(window.localStorage["wf_min_rate"]);
-    filterConofig[1] = tryParseInt(window.localStorage["wf_max_rate"]);
-    filterConofig[2] = tryParseInt(window.localStorage["wf_min_rec"]);
-    filterConofig[3] = tryParseInt(window.localStorage["wf_max_rec"]);
+    filterConofig[0] = tryParseInt(localStorage["wf_min_rate"]);
+    filterConofig[1] = tryParseInt(localStorage["wf_max_rate"]);
+    filterConofig[2] = tryParseInt(localStorage["wf_min_rec"]);
+    filterConofig[3] = tryParseInt(localStorage["wf_max_rec"]);
+    filterConofig[4] = tryParseInt(localStorage["wf_min_discount"]);
+    filterConofig[5] = tryParseInt(localStorage["wf_max_discount"]);
+    // filterConofig[6] = tryParseInt(localStorage["wf_min_price"]);
+    // filterConofig[7] = tryParseInt(localStorage["wf_max_price"]);
   }
   //保存设置
   function saveConfig() {
-    window.localStorage["wf_min_rate"] =
+    localStorage["wf_min_rate"] =
       filterConofig[0] === -1 ? "" : filterConofig[0];
-    window.localStorage["wf_max_rate"] =
+    localStorage["wf_max_rate"] =
       filterConofig[1] === -1 ? "" : filterConofig[1];
-    window.localStorage["wf_min_rec"] =
+    localStorage["wf_min_rec"] =
       filterConofig[2] === -1 ? "" : filterConofig[2];
-    window.localStorage["wf_max_rec"] =
+    localStorage["wf_max_rec"] =
       filterConofig[3] === -1 ? "" : filterConofig[3];
+    localStorage["wf_min_discount"] =
+      filterConofig[4] === -1 ? "" : filterConofig[4];
+    localStorage["wf_max_discount"] =
+      filterConofig[5] === -1 ? "" : filterConofig[5];
+    // localStorage["wf_min_price"] =
+    //   filterConofig[6] === -1 ? "" : filterConofig[6];
+    // localStorage["wf_max_price"] =
+    //   filterConofig[7] === -1 ? "" : filterConofig[7];
   }
 
   const matchReview = RegExp(/([0-9,.]+%?) \D+ ([0-9,.]+%?)/);
   const matchDot = RegExp(/[,.]/g);
 
-  function matchText(text) {
-    const match = text.match(matchReview);
-
+  //解析评测结果
+  function parseReviewText(text) {
     let rate = -1;
     let recomment = -1;
 
-    if (match != null) {
+    const match = text.match(matchReview);
+    if (match) {
       const [_, v1, v2] = match;
       if (v1.endsWith("%")) {
-        rate = tryParseInt(v1.substring(0, v1.length - 1).replace(matchDot, ""));
-        recomment = tryParseInt(v2);
+        rate = tryParseInt(
+          v1.substring(0, v1.length - 1).replace(matchDot, "")
+        );
+        recomment = tryParseInt(v2.replace(matchDot, ""));
       } else {
-        rate = tryParseInt(v2.substring(0, v2.length - 1).replace(matchDot, ""));
-        recomment = tryParseInt(v1);
+        rate = tryParseInt(
+          v2.substring(0, v2.length - 1).replace(matchDot, "")
+        );
+        recomment = tryParseInt(v1.replace(matchDot, ""));
       }
     }
     return [rate, recomment];
   }
 
+  const matchDiscount = RegExp(/-([0-9]+)%/);
+
+  function parseDiscount(text) {
+    const match = text.match(matchDiscount);
+    if (match) {
+      const [_, v1] = match;
+      return tryParseInt(v1);
+    }
+    return -1;
+  }
+
   function parseGame(ele) {
-    const review = ele
-      .querySelector("div.game_review_summary")
-      ?.getAttribute("data-tooltip-text");
-    const [ramin, ramax, remin, remax] = filterConofig;
-    if (
-      (remin === -1 && remax === -1 && ramin === -1 && ramax === -1) ||
-      review == null
-    ) {
-      return true;
+    const [ramin, ramax, remin, remax, dmin, dmax, pmin, pmax] = filterConofig;
+
+    if (remin !== -1 || remax !== -1 || ramin !== -1 || ramax !== -1) {
+      const review = ele
+        .querySelector("div.game_review_summary")
+        ?.getAttribute("data-tooltip-text");
+
+      if (review) {
+        const [rate, recomment] = parseReviewText(review);
+
+        if (rate !== -1) {
+          if (ramin !== -1 && rate < ramin) {
+            return false;
+          }
+          if (ramax !== -1 && rate > ramax) {
+            return false;
+          }
+        }
+
+        if (recomment !== -1) {
+          if (remin !== -1 && recomment < remin) {
+            return false;
+          }
+          if (remax !== -1 && recomment > remax) {
+            return false;
+          }
+        }
+      }
     }
 
-    const [rate, recomment] = matchText(review);
+    if (dmin !== -1 || dmax !== -1) {
+      const discount = ele
+        .querySelector("div.discount_pct")
+        ?.textContent.strip();
 
-    if (rate !== -1) {
-      if (ramin !== -1 && rate < ramin) {
-        return false;
-      }
-      if (ramax !== -1 && rate > ramax) {
-        return false;
+      if (discount) {
+        const dis = parseDiscount(discount);
+
+        console.log(discount, dis)
+
+        if (dis !== -1) {
+          if (dmin !== -1 && dis < dmin) {
+            return false;
+          }
+          if (dmax !== -1 && dis > dmax) {
+            return false;
+          }
+        }
       }
     }
-
-    if (recomment !== -1) {
-      if (remin !== -1 && recomment < remin) {
-        return false;
-      }
-      if (remax !== -1 && recomment > remax) {
-        return false;
-      }
-    }
-
     return true;
   }
 
