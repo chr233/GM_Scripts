@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.0
+// @version         1.1
 // @description     愿望单游戏过滤器
 // @description:zh-CN  愿望单游戏过滤器
 // @author          Chr_
@@ -162,7 +162,8 @@
       filterConofig[3] === -1 ? "" : filterConofig[3];
   }
 
-  const matchReview = RegExp(/(\d+%?) \D+ (\d+%?)/);
+  const matchReview = RegExp(/([0-9,.]+%?) \D+ ([0-9,.]+%?)/);
+  const matchDot = RegExp(/[,.]/g);
 
   function matchText(text) {
     const match = text.match(matchReview);
@@ -173,10 +174,10 @@
     if (match != null) {
       const [_, v1, v2] = match;
       if (v1.endsWith("%")) {
-        rate = tryParseInt(v1.substring(0, v1.length - 1));
+        rate = tryParseInt(v1.substring(0, v1.length - 1).replace(matchDot, ""));
         recomment = tryParseInt(v2);
       } else {
-        rate = tryParseInt(v2.substring(0, v2.length - 1));
+        rate = tryParseInt(v2.substring(0, v2.length - 1).replace(matchDot, ""));
         recomment = tryParseInt(v1);
       }
     }
