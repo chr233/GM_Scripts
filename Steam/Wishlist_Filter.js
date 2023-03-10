@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.1
+// @version         1.2
 // @description     愿望单游戏过滤器
 // @description:zh-CN  愿望单游戏过滤器
 // @author          Chr_
@@ -181,9 +181,6 @@
         recomment = tryParseInt(v1);
       }
     }
-
-    console.log(text, rate, recomment);
-
     return [rate, recomment];
   }
 
