@@ -1,0 +1,18 @@
+div.wf_panel {
+  position: absolute;
+  right: 0;
+}
+
+div.wf_panel > p > button {
+  padding: 0 10px;
+}
+div.wf_panel > p > input {
+  width: 50px;
+}
+div.wf_panel > p > *:not(:last-child) {
+  margin-right: 10px;
+}
+
+#wishlist_ctn > div.wf_hide {
+  opacity: 0.3;
+}
