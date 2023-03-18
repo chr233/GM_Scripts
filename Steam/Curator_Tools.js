@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.1
+// @version         1.2
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -30,7 +30,6 @@
         ) ?? [null, null, null];
 
         if (curator !== null && appid !== null) {
-          console.log("Curator_Tools: appid", appid);
           const btnArea = document.querySelector("div.titleframe");
           const btn = genBtn(
             "删除该评测",
@@ -40,25 +39,30 @@
           btnArea.appendChild(btn);
         }
       } else {
-        const tdList = document.querySelectorAll(
-          "#RecentReferralsRows>table>tbody>tr>td:last-child,#TopReferralsRows>table>tbody>tr>td:last-child"
+        injectBtn();
+
+        let lastCount = document.querySelectorAll(
+          "#RecentReferralsRows td>.ct_div,#TopReferralsRows td>.ct_div"
+        ).length;
+
+        const spanList = document.querySelectorAll(
+          "#RecentReferrals_controls>span,#RecentReferrals_controls>span>span,#TopReferrals_controls>span,#TopReferrals_controls>span>span"
         );
-        for (let td of tdList) {
-          const a = td.childNodes[0];
-          const div = genDiv("ct_div");
-          div.appendChild(a);
-          td.appendChild(div);
-
-          const [_, curator, appid] = a.href.match(
-            /\/curator\/([^\/]+)\/admin\/review_create\/(\d+)/
-          ) ?? [null, null, null];
-
-          if (curator !== null && appid !== null) {
-            const btn = genBtn("删", "ct_btn", async () =>
-              deleteReview(curator, appid, td)
-            );
-            div.appendChild(btn);
-          }
+        for (let span of spanList) {
+          span.addEventListener("click", () => {
+            const t = setInterval(() => {
+              const count = document.querySelectorAll(
+                "#RecentReferralsRows td>.ct_div,#TopReferralsRows td>.ct_div"
+              ).length;
+              if (count != lastCount) {
+                clearInterval(t);
+                injectBtn();
+                lastCount = document.querySelectorAll(
+                  "#RecentReferralsRows td>.ct_div,#TopReferralsRows td>.ct_div"
+                ).length;
+              }
+            }, 500);
+          });
         }
       }
     }
@@ -102,7 +106,7 @@
                 if (location.pathname.includes("review_create")) {
                   location.pathname = `/curator/${curator}/admin/reviews_manage`;
                 } else {
-                  ele.style.display = "none";
+                  ele.style.opacity = "0.5";
                 }
               }, 500);
             } else {
@@ -115,6 +119,34 @@
           });
       }
     );
+  }
+
+  function injectBtn() {
+    const tdList = document.querySelectorAll(
+      "#RecentReferralsRows>table>tbody>tr>td:last-child,#TopReferralsRows>table>tbody>tr>td:last-child"
+    );
+    for (let td of tdList) {
+      const a = td.childNodes[0];
+
+      if (a.nodeName !== "A") {
+        continue;
+      }
+
+      const div = genDiv("ct_div");
+      div.appendChild(a);
+      td.appendChild(div);
+
+      const [_, curator, appid] = a.href.match(
+        /\/curator\/([^\/]+)\/admin\/review_create\/(\d+)/
+      ) ?? [null, null, null];
+
+      if (curator !== null && appid !== null) {
+        const btn = genBtn("删", "ct_btn", async () =>
+          deleteReview(curator, appid, td)
+        );
+        div.appendChild(btn);
+      }
+    }
   }
 
   function showAlert(text, succ = true) {
