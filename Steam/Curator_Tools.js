@@ -4,13 +4,11 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.2
+// @version         1.3
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
-// @include         https://store.steampowered.com/curator/*/admin/review_create/*
-// @include         https://store.steampowered.com/curator/*/admin/stats/
-// @include         https://store.steampowered.com/curator/*/admin/stats
+// @include         https://store.steampowered.com/curator/*
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
 // @grant           GM_addStyle
@@ -24,7 +22,7 @@
     if (location.pathname !== lastPathname) {
       lastPathname = location.pathname;
 
-      if (location.pathname.includes("review_create")) {
+      if (location.pathname.includes("admin/review_create")) {
         const [_, curator, appid] = lastPathname.match(
           /\/curator\/([^\/]+)\/admin\/review_create\/(\d+)/
         ) ?? [null, null, null];
@@ -38,7 +36,7 @@
           );
           btnArea.appendChild(btn);
         }
-      } else {
+      } else if (location.pathname.includes("admin/stats")) {
         injectBtn();
 
         let lastCount = document.querySelectorAll(
@@ -106,7 +104,9 @@
                 if (location.pathname.includes("review_create")) {
                   location.pathname = `/curator/${curator}/admin/reviews_manage`;
                 } else {
-                  ele.style.opacity = "0.5";
+                  if (ele) {
+                    ele.style.opacity = "0.5";
+                  }
                 }
               }, 500);
             } else {
@@ -142,7 +142,7 @@
 
       if (curator !== null && appid !== null) {
         const btn = genBtn("删", "ct_btn", async () =>
-          deleteReview(curator, appid, td)
+          deleteReview(curator, appid, td.parentNode)
         );
         div.appendChild(btn);
       }
