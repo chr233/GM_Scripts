@@ -1,0 +1,81 @@
+.aam_panel,
+.aam_work {
+  padding: 10px;
+  display: flex;
+}
+.aam_work {
+  z-index: 500 !important;
+}
+.aam_busy {
+  width: 100%;
+  height: 100%;
+  z-index: 700;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: table;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.1s;
+}
+.aam_busy_content {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.aam_left {
+  width: 61%;
+  padding-right: 10px;
+}
+.aam_award {
+  width: 39%;
+}
+.aam_list,
+.aam_select,
+.aam_input,
+.aam_textarea {
+  background-color: #fff !important;
+  color: #000 !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+.aam_input {
+  width: 98% !important;
+  text-align: center;
+}
+.aam_list {
+  height: 230px;
+}
+.aam_textarea {
+  height: calc(100% - 85px);
+  width: calc(100% - 45px);
+  resize: none;
+  font-size: 12px;
+}
+.aam_left > div > *,
+.aam_award:not(span, button) > * {
+  width: 100%;
+  margin-bottom: 5px;
+}
+.aam_btns > button:not(:last-child) {
+  margin-right: 4px;
+}
+.aam_award_btns {
+  z-index: 600;
+  bottom: 10px;
+  position: absolute;
+}
+.aam_work > * {
+  position: absolute;
+}
+.aam_work > span {
+  bottom: 12%;
+  left: 70px;
+}
+.aam_work > button {
+  bottom: 11%;
+}
+.aam_a {
+  margin-left: 110px;
+}
