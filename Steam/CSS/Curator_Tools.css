@@ -1,0 +1,19 @@
+.ct_btn {
+  padding: 3px;
+}
+td {
+  height: 100%;
+}
+.ct_div {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 25px;
+  width: 40px;
+}
+tr > td > .ct_div > .ct_btn {
+  display: none;
+}
+tr:hover > td > .ct_div > .ct_btn {
+  display: block;
+}
