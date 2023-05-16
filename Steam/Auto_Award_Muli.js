@@ -2,11 +2,12 @@
 // @name         Auto_Award_Muli
 // @name:zh-CN   Steam自动打赏【极速多账户版】
 // @namespace    https://blog.chrxw.com
-// @version      1.6
+// @version      1.7
 // @description  Steam自动打赏 — 极速多账户版
 // @description:zh-CN  Steam自动打赏 — 极速多账户版
 // @author       Chr_
-// @include      /https://steamcommunity\.com/(id|profiles)/[^\/]+/?$/
+// @include      /^https:\/\/steamcommunity\.com\/id\/[^/]+/?$/
+// @include      /^https:\/\/steamcommunity\.com\/profiles\/\d+/?$/
 // @connect      steamcommunity.com
 // @connect      steampowered.com
 // @license      AGPL-3.0
@@ -25,6 +26,7 @@
     // 多语言
     const LANG = {
         'ZH': {
+            'done': '完成',
             'changeLang': '修改语言',
             'langName': '中文',
             'operating': '操作进行中……',
@@ -41,7 +43,7 @@
             'clearHistory': '清空历史',
             'reloadHistory': '刷新历史',
             'feedBack': '作者',
-            'feedBackTitle':'觉得好用也欢迎给我打赏',
+            'feedBackTitle': '觉得好用也欢迎给我打赏',
             'notSelected': '---未选择---',
             'steamID64': 'Steam 64位 ID',
             'awardPoints': '打赏点数(收到)',
@@ -154,9 +156,17 @@
             'parseDataFailedMaybeNetworkError': '解析数据失败, 可能是Token失效或者网络错误',
             'typeError': 'type错误',
             'networkError': '网络错误',
-            'parseError': '解析出错'
+            'parseError': '解析出错',
+            'importAccount': '手动导入账号',
+            'importAccountSteamId64': '请输入Steam64位ID',
+            'importAccountInvalidSteamId64': '请输入正确的SteamID',
+            'importAccountGetToken': '请访问【 https://store.steampowered.com/pointssummary/ajaxgetasyncconfig 】,并把所有内容粘贴到下面',
+            'importAccountNickName': '请输入机器人显示昵称',
+            'importAccountNickNameTips': '手动添加',
+            'importAccountSuccess': '添加账号成功, 请手动刷新点数',
         },
         'EN': {
+            'done': 'Done',
             'changeLang': 'Change Language',
             'langName': 'English',
             'operating': 'Operating……',
@@ -173,7 +183,7 @@
             'clearHistory': 'Clear',
             'reloadHistory': 'Reload',
             'feedBack': 'Author',
-            'feedBackTitle':'觉得好用也欢迎给我打赏',
+            'feedBackTitle': '觉得好用也欢迎给我打赏',
             'notSelected': '---Not Selected---',
             'steamID64': 'Steam 64 ID',
             'awardPoints': 'Points (Receive)',
@@ -286,7 +296,14 @@
             'parseDataFailedMaybeNetworkError': 'Parse data failed, maybe token expired or network error',
             'typeError': 'Type Error',
             'networkError': 'Network Error',
-            'parseError': 'Parse Error'
+            'parseError': 'Parse Error',
+            'importAccount': '手动导入账号',
+            'importAccountSteamId64': '请输入Steam64位ID',
+            'importAccountInvalidSteamId64': '请输入正确的SteamID',
+            'importAccountGetToken': '请访问【 https://store.steampowered.com/pointssummary/ajaxgetasyncconfig 】,并把所有内容粘贴到下面',
+            'importAccountNickName': '请输入机器人显示昵称',
+            'importAccountNickNameTips': '手动添加',
+            'importAccountSuccess': '添加账号成功, 请手动刷新点数',
         }
     }
 
@@ -331,6 +348,33 @@
         }
         GM_setValue("lang", language);
         window.location.reload();
+    });
+
+    GM_registerMenuCommand(t("importAccount"), () => {
+        const steamID = prompt(t("importAccountSteamId64"));
+        const v_steamID = parseInt(steamID);
+        if (v_steamID !== v_steamID) {
+            alert(t("importAccountInvalidSteamId64"));
+            return;
+        }
+        const ajaxJson = prompt(t("importAccountGetToken"));
+        const json = JSON.parse(ajaxJson);
+        const token = json?.data?.webapi_token;
+        if (!token) {
+            alert(t("parseError"));
+            return;
+        }
+
+        let botCount = 0;
+        for (let _ in GBots) {
+            botCount++;
+        }
+        const nick = prompt(t("importAccountNickName"), `${t("importAccountNickNameTips")} ${botCount}`);
+
+        alert(t("importAccountSuccess"));
+        GBots[steamID] = { nick, token, points: -1 }
+        GM_setValue('bots', GBots);
+        flashBotList();
     });
 
     //机器人账号
@@ -544,7 +588,7 @@
 
         const awardPanel = genDiv('aam_award');
         const feedbackLink = genA(t('feedBack'), 'https://steamcommunity.com/id/Chr_/');
-        feedbackLink.title=t('feedBackTitle');
+        feedbackLink.title = t('feedBackTitle');
         const awardBot = genSelect([[t('notSelected'), '']], null);
         const awardSteamID = genInput('', t('steamID64'), false);
         const awardPoints = genInput('', t('awardPoints'), true);
