@@ -5,7 +5,7 @@
     "STATIC说明": "key为CSS选择器,value为翻译字典. 只匹配被选择的元素中的textNode元素",
     "INPUT说明": "key为placeholder内容,value为翻译文本",
     "DYNAMIC说明": "暂未实装",
-    "贡献名单": ["Chr_", "joejoe5", "cyb233", "lyzlyslyc", "悠久の蝶"]
+    "贡献名单": ["Chr_", "joejoe5", "cyb233", "lyzlyslyc", "悠久の蝶", "shiquda"]
   },
   "STATIC": {
     "ul>li,ul>li>a,ul>li>share-action,.header-navbar>a,.header-login>span": {
