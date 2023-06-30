@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.3
+// @version         1.4
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -35,6 +35,13 @@
             async () => await deleteReview(curator, appid)
           );
           btnArea.appendChild(btn);
+          const link = genA("https://store.steampowered.com/app/" + appid);
+          const btn2 = genBtn(
+            "商店页",
+            "ct_btn"
+          );
+          link.appendChild(btn2);
+          btnArea.appendChild(link);
         }
       } else if (location.pathname.includes("admin/stats")) {
         injectBtn();
@@ -73,7 +80,12 @@
     btn.addEventListener("click", foo);
     return btn;
   }
-
+  function genA(url) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    return a;
+  }
   function genDiv(cls) {
     const div = document.createElement("div");
     div.className = cls;
@@ -157,6 +169,7 @@
 GM_addStyle(`
 .ct_btn {
   padding: 3px;
+  margin-right: 10px;
 }
 td {
   height: 100%;
