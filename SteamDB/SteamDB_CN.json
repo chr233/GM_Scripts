@@ -1,17 +1,24 @@
 {
   "DOC": {
-    "更新时间": "2021-12-17",
+    "更新时间": "2023-08-13",
     "文档说明": "STATIC: 静态元素字典, INPUT: 输入框字典, DYNAMIC: 动态元素字典",
     "STATIC说明": "key为CSS选择器,value为翻译字典. 只匹配被选择的元素中的textNode元素",
     "INPUT说明": "key为placeholder内容,value为翻译文本",
     "DYNAMIC说明": "暂未实装",
-    "贡献名单": ["Chr_", "joejoe5", "cyb233", "lyzlyslyc", "悠久の蝶"]
+    "贡献名单": [
+      "Chr_",
+      "joejoe5",
+      "cyb233",
+      "lyzlyslyc",
+      "悠久の蝶"
+    ]
   },
   "STATIC": {
     "ul>li,ul>li>a,ul>li>share-action,.header-navbar>a,.header-login>span": {
       "About": " 关于",
       "Blog": "博客",
       "Discord": "Discord",
+      "Discord Bot": "Discord 机器人",
       "FAQ & help": "FAQ & 帮助",
       "Donate & contribute": "捐赠 & 贡献",
       "Browser extension": "浏览器插件",
@@ -19,6 +26,9 @@
       "Sales": "促销",
       "Charts": "图表",
       "Calculator": "计算器",
+      "Patches": "补丁",
+      "Calendar": "日历",
+      "Find games": "查找游戏",
       "Patch notes": "补丁说明",
       "Search": "搜索",
       "Instant search": "渐进式搜索",
@@ -54,6 +64,8 @@
       "Free packages": "免费 SUB",
       "Sign in": "登录",
       "Your page": "个人主页",
+      "Your calculator": "你的账号价值",
+      "Your games": "你的游戏列表",
       "Watch list": "监视列表",
       "Settings": "设置",
       "Sign out": "登出",
@@ -1444,6 +1456,9 @@
       "Boss Rush": "BossRush",
       "- Filter by tag -": "- 根据标签过滤 -",
       "- Filter by category -": "- 根据类别过滤 -"
+    },
+    ".global-announcement>div>a": {
+      "Follow SteamDB curator": "关注 SteamDB 鉴赏家"
     }
   },
   "INPUT": {
