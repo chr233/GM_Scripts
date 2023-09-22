@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Dingxingwen
+// @name         Dingxinwen
 // @name:zh-CN   答题助手
 // @namespace    https://blog.chrxw.com
 // @version      1.42
