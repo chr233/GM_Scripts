@@ -1,17 +1,18 @@
 {
   "DOC": {
-    "更新时间": "2021-12-17",
+    "更新时间": "2023-08-13",
     "文档说明": "STATIC: 静态元素字典, INPUT: 输入框字典, DYNAMIC: 动态元素字典",
     "STATIC说明": "key为CSS选择器,value为翻译字典. 只匹配被选择的元素中的textNode元素",
     "INPUT说明": "key为placeholder内容,value为翻译文本",
     "DYNAMIC说明": "暂未实装",
-    "贡献名单": ["Chr_", "joejoe5", "cyb233", "lyzlyslyc", "悠久の蝶"]
+    "贡献名单": ["Chr_", "joejoe5", "cyb233", "lyzlyslyc", "悠久の蝶", "shiquda"]
   },
   "STATIC": {
     "ul>li,ul>li>a,ul>li>share-action,.header-navbar>a,.header-login>span": {
       "About": " 关于",
       "Blog": "博客",
       "Discord": "Discord",
+      "Discord Bot": "Discord 机器人",
       "FAQ & help": "FAQ & 帮助",
       "Donate & contribute": "捐赠 & 贡献",
       "Browser extension": "浏览器插件",
@@ -19,6 +20,9 @@
       "Sales": "促销",
       "Charts": "图表",
       "Calculator": "计算器",
+      "Patches": "补丁",
+      "Calendar": "日历",
+      "Find games": "查找游戏",
       "Patch notes": "补丁说明",
       "Search": "搜索",
       "Instant search": "渐进式搜索",
@@ -54,6 +58,8 @@
       "Free packages": "免费 SUB",
       "Sign in": "登录",
       "Your page": "个人主页",
+      "Your calculator": "你的账号价值",
+      "Your games": "你的游戏列表",
       "Watch list": "监视列表",
       "Settings": "设置",
       "Sign out": "登出",
@@ -99,6 +105,10 @@
       "Lowest Recorded Price": "历史最低价格",
       "Month": "月",
       "Peak": "峰值",
+      "Average": "平均值",
+      "Avg % Gain": "平均值的增长率",
+      "% Gain": "增长率",
+      "Gain": "增长量",
       "Min Daily Peak": "Min Daily Peak",
       "Avg Daily Peak": "Avg Daily Peak",
       "Twitch Peak": "Twitch 高峰",
@@ -474,7 +484,8 @@
       "Apps in this package": "此 SUB 包含的 APP",
       "Stats": "统计数据",
       "Price history": "价格历史",
-      "Supported Languages": "支持的语言"
+      "Supported Languages": "支持的语言",
+      "Lookup a SteamID and calculate the value of any Steam account": "查询 SteamID 并计算任何 Steam 账号的价值."
     },
     "h3,h3>a": {
       "Want to calculate value of your own Steam account?": "想算出你自己的Steam账户的价值吗？",
@@ -516,7 +527,8 @@
       "Games by time played": "按游玩时长排序",
       "Products by cost": "按产品价格排序",
       "Badge breakdown": "徽章明细",
-      "Profile Customizations": "自定义个人主页"
+      "Profile Customizations": "自定义个人主页",
+      "Filters": "筛选器"
     },
     ".container-hello>div>p,.container-hello>div>p>a,.container>div>p>a,.container>div>p,.container>p,.selected>p,.selected>p>a": {
       "This third-party website gives you better insight into the": "这个第三方网站可让您更好地了解 ",
@@ -531,7 +543,9 @@
       "Any SteamID format is accepted, enter anything you want and we will convert it on the fly for you.": " 输入 SteamID 的任意形式, 我们将会自动将其转换为 SteamID.",
       "This page is generated dynamically and lists most free packages that can be activated if you own base game, including demos.": "此页面是基于您拥有的游戏动态生成的, 列出了您拥有基础游戏的免费DLC, FOD, 以及免费试玩版.",
       "Based on the configuration above, this is where we think the save files are located.": "根据以上配置，我们认为存档文件所在位置如下.",
-      "Read more about cloud saves in Steamworks documentation.": "查阅 Steamworks 文档以了解更多关于云存档的信息."
+      "Read more about cloud saves in Steamworks documentation.": "查阅 Steamworks 文档以了解更多关于云存档的信息.",
+      "Price does not take into account what you already own.": "显示的价格不包含您已拥有的游戏的价格",
+      "Deleted bundles, bundles with no price in your currency, and bundles with no base discount are hidden from this page. You can use search in the navbar.": "已删除的捆绑包、没有以您的货币计价的捆绑包以及没有基本折扣的捆绑包将在此页面上隐藏.您可以使用导航栏中的搜索功能."
     },
     ".header-disclaimer": {
       "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB 是一个业余项目, 与 Valve 或 Steam 无关.",
@@ -651,7 +665,8 @@
       "Average price per hour": "每小时平均价值 ",
       "Hours on record": "记录时间 ",
       "Average playtime": "平均游戏时间 ",
-      "Private": "私密"
+      "Private": "私密",
+      "Today's prices": "现在的价值 "
     },
     ".tabnav-steam-links>div,.tabnav-steam-links>a": {
       "STEAM LINKS": "Steam 链接",
@@ -698,6 +713,8 @@
       "Filter by feature or OS": "按特性或者系统过滤",
       "Filter by type (No DLC)": "按类型过滤 (不包含DLC)",
       "Filter by user tags": "按用户标签过滤",
+      "Filter by system": "按系统过滤",
+      "Filter by features": "按功能特色过滤",      
       "Compare with others…": "和其他项比较...",
       "Embed this chart on your website": "将此图表嵌入您的网站",
       "Set your currency": " 设置您的货币 ",
@@ -730,7 +747,14 @@
       "Hide owned games": "隐藏已拥有游戏",
       "Show only historical lows": "仅显示新史低",
       "Show only matching lows": "仅显示平史低",
-      "Hide ignored games": "隐藏忽略的游戏"
+      "Hide ignored games": "隐藏忽略的游戏",
+      "Show only 2-year lows": "仅显示两年内史低 "
+    },
+    ".current-sale-filters>span": {
+      "Currently applied page filters:": "目前正在应用的筛选器："
+    },
+    ".header-subtitle": {
+      "products match your filters": " 款游戏满足您的筛选规则"
     },
     "#js-sale-countdown>a,.header-sales-bottom>a": {
       "When is the next Steam Sale?": "下一次 Steam 特卖是什么时候？",
@@ -738,6 +762,16 @@
     },
     ".highest-discount-major": {
       "new historical low": "新史低"
+    },
+    ".span6>label,.span6>label>i": {
+      "Show \"Must Purchase Together\"": "显示“不可补齐”的捆绑包",
+      "Show \"Complete The Set\"": "显示“可补齐”的捆绑包",
+      "Show giftable": "显示可送礼的捆绑包",
+      "Show only bundles currently on sale": "仅显示正在特卖的捆绑包",
+      "Show only bundles that have products on your wishlist": "仅显示含有在愿望单中游戏的捆绑包",
+      "Hide \"Must Purchase Together\" if any products are owned": "隐藏含有已拥有游戏的“不可补齐”的捆绑包",
+      "Hide complete bundles": "隐藏已买齐的捆绑包",
+      "(all products owned in a bundle)": "(捆绑包中的每个游戏均已拥有)"
     },
     ".fancy-price,.fancy-range>label": {
       "Price": "\n售价\n",
@@ -796,6 +830,9 @@
       "Steam Status FAQ": "Steam 状态 FAQ",
       "Privacy": "隐私"
     },
+    ".prices>div": {
+      "Account value": "账号价值"
+    },
     "panel>p": {
       "We track every new build on Steam, and try connect these builds to announcements by the game developers in their hub.": "我们跟踪 Steam 上的每个版本更新, 并尝试将这些更新与游戏开发者发布的更新公告联系起来.",
       "We also automatically display the list of changed files for every single patch.": "我们还为每个更新自动显示文件改动列表."
@@ -804,9 +841,15 @@
       "Blue discount": "蓝色折扣",
       "Product has not been this cheap before (new historical low)": " 新史低 (当前价格比之前的历史最低价格还要低)",
       "Green discount": "绿色折扣",
+      "Purple discount": "紫色折扣",
+      "Blue count": " 蓝色折扣",
+      "Green count": " 绿色折扣",
       "Product is priced on par with lowest recorded price": " 平史低 (当前价格和之前的历史最低价格相同)",
+      "Product is priced on par with lowest recorded price in last two years": " 平两年内史低 (产品的价格与过去两年中最低记录相同)",
       "Looking for bundles? Take a look at our bundles page": "想查询捆绑包? 点击前往捆绑包折扣分页",
-      "View all previous Steam sales and their dates": "浏览之前所有的 Steam 促销活动"
+      "View all previous Steam sales and their dates": "浏览之前所有的 Steam 促销活动",
+      "You own over half of apps in a bundle": " 您已拥有超过半数游戏的捆绑包",
+      "You own apps in this bundle": " 您已拥有游戏的捆绑包"      
     },
     ".faq_question>a,.faq_answer>p,.faq_answer>p>b,.faq_answer>p>a,.faq_answer>p>a>b": {
       "How to contact you?": "如何联系你",
@@ -895,6 +938,12 @@
     ".tab-pane>p": {
       "This app is not included in any package known to us. As packages now require tokens, SteamDB needs a token to access package info.": "此 APP 没有包含在我们已知的任何 SUB 中. 因为读取 SUB 信息需要访问凭据, 所以 SteamDB 暂时无法获取该 SUB 的信息."
     },
+    ".footer-copyright>div>p,.footer-copyright>div>p>a": {
+      "SteamDB is a hobby project and is not affiliated with Valve or Steam. All times on the site are UTC.": "SteamDB是一个爱好项目，与 Valve 或 Steam 无关.网站上的所有时间均为协调世界时（UTC）.",
+      "Fair use disclaimer": "合理使用声明",
+      "Privacy": "隐私条款",
+      "Steam and the Steam logo are trademarks of Valve Corporation. All other trademarks are property of their respective owners.": "Steam 和 Steam 标识是Valve Corporation的商标.所有其他商标均归其各自所有者所有."
+    },
     ".community-item,.community-item>div,.community-item>b,.span12>p": {
       "Level 1": "\n1 级",
       "Level 2": "\n2 级",
@@ -911,7 +960,7 @@
       "Booster pack 1": "补充包 1",
       "Click on a card to view large image.": "点击卡片查看大图."
     },
-    "option,.ms-drop span,.currency-selector>.btn,a.btn-tag,td.price-line,.label-link": {
+    "option,.ms-drop span,.currency-selector>.btn,a.btn-tag,td.price-line,.label-link,.sale-filter": {
       "U.S. Dollar": " 美元 USD",
       "Euro": " 欧元 EUR",
       "Argentine Peso": " 阿根廷比索 ARS",
@@ -992,6 +1041,7 @@
       "PvP": "玩家对战",
       "Additional High-Quality Audio": "额外高品质音频",
       "Steam China Workshop": "蒸汽平台创意工坊",
+      "Tracked Controller Support": "定位控制器支持",
       "VR: Tracked Motion Controllers": "VR: 定位运动控制器",
       "VR: Gamepad": "VR: 控制器",
       "VR: Keyboard / Mouse": "VR: 键盘/鼠标",
@@ -1003,6 +1053,7 @@
       "Early Access": "抢先体验",
       "Profile Features Limited": "个人资料功能受限",
       "Low Confidence Metric": "Steam 正在了解该游戏",
+      "Steam is learning": "Steam 正在了解...",      
       "Adult Only": "成人内容",
       "Filter by type (No DLC)": "按类型过滤 (不包含DLC)",
       "Games only": "只显示 游戏",
@@ -1012,6 +1063,7 @@
       "Series only": "仅显示 系列",
       "DLCs only": "只显示 DLC",
       "Music only": "只显示 音乐",
+      "Your owned games": "已拥有的游戏",
       "DLCs for owned games (sale)": "已拥有游戏的DLC (促销中)",
       "DLCs for owned games (all)": "已拥有游戏的DLC (全部)",
       "Your watch list": "你的监视列表",
@@ -1444,6 +1496,9 @@
       "Boss Rush": "BossRush",
       "- Filter by tag -": "- 根据标签过滤 -",
       "- Filter by category -": "- 根据类别过滤 -"
+    },
+    ".global-announcement>div>a": {
+      "Follow SteamDB curator": "关注 SteamDB 鉴赏家"
     }
   },
   "INPUT": {
