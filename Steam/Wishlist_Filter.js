@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.4
+// @version         1.5
 // @description     愿望单游戏过滤器
 // @description:zh-CN  愿望单游戏过滤器
 // @author          Chr_
@@ -64,6 +64,10 @@
     let divWsHeader = document.querySelector("div.wishlist_header");
     if (divWsHeader != null) {
       const btnDiv = genDiv("wf_panel");
+      btnDiv.addEventListener('click', (e) => {
+        e.preventDefault();
+      });
+
       const btnReset = genBtn("重置过滤", resetFilter, "重置过滤器");
       const btnApply = genBtn("应用过滤", applyFilter, "应用过滤条件");
       const iptMinRate = genNumber("最低", "最低好评率", null, 100, 0);

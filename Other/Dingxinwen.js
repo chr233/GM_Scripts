@@ -2,13 +2,13 @@
 // @name         Dingxinwen
 // @name:zh-CN   答题助手
 // @namespace    https://blog.chrxw.com
-// @version      1.42
+// @version      2.0
 // @description  从steamdb.keylol.com获取愿望单数据
 // @author       Chr_
 // @include      https://static.dingxinwen.com/*
 // @icon         https://blog.chrxw.com/favicon.ico
+// @license      AGPL-3.0
 // ==/UserScript==
-
 
 
 (function () {
@@ -54,11 +54,19 @@
             for (const desc of descs) {
                 const text = desc.textContent.trim()
                 if (right.includes(text)) {
-                    console.log("click", text)
+                    console.log(text)
                     desc.click()
                 }
             }
 
+            setTimeout(() => {
+                const count = document.querySelectorAll(".question__options--item.selected").length
+                if (count === 0) {
+                    location.reload()
+                } else {
+                    document.querySelector("uni-button.next")?.click()
+                }
+            }, 1000);
         }
 
     }, 500);
