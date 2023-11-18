@@ -4,7 +4,7 @@
 // @namespace           https://blog.chrxw.com
 // @supportURL          https://blog.chrxw.com/scripts.html
 // @contributionURL     https://afdian.net/@chr233
-// @version             1.34
+// @version             1.35
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -38,6 +38,16 @@
   let Locales;
 
   if (DEBUG) {
+    const genBtn = (text, fun, cls = null) => {
+      const btn = document.createElement("button");
+      btn.textContent = text;
+      btn.addEventListener("click", fun);
+      if (cls !== null) {
+        btn.className = cls;
+      }
+      return btn;
+    }
+
     const template = `{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"LABEL":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}`;
     const box = document.createElement("div");
     box.className = "sdc";
@@ -46,9 +56,7 @@
     const action = document.createElement("div");
     action.className = "sdc-links";
     box.appendChild(action);
-    const btnSave = document.createElement("a");
-    btnSave.innerText = "💾 保存并应用";
-    btnSave.addEventListener("click", () => {
+    const btnSave = genBtn("💾 保存并应用", () => {
       const raw = text.value.trim();
       if (!raw) {
         alert("翻译文本不能为空!!!");
@@ -63,16 +71,12 @@
       }
     });
     action.appendChild(btnSave);
-    const btnReset = document.createElement("a");
-    btnReset.textContent = "🗑️ 清空文本";
-    btnReset.addEventListener("click", () => {
+    const btnReset = genBtn("🗑️ 清空文本", () => {
       window.localStorage["sdb_lang"] = template;
       window.location.reload();
     });
     action.appendChild(btnReset);
-    const btnOnline = document.createElement("a");
-    btnOnline.textContent = "📄 当前在线文本";
-    btnOnline.addEventListener("click", () => {
+    const btnOnline = genBtn("📄 当前在线文本", () => {
       if (confirm("替换为在线版本后当前所做修改将会丢失, 确定要继续吗?")) {
         text.value = GM_getResourceText("data");
       }
@@ -183,12 +187,14 @@
   console.log("迷茫同学:\n『没有恶意 请问直接用谷歌翻译整个网页不香吗』")
 
   // 添加按钮
-  const headerUl=document.querySelector(".header-menu-container>div>ul:nth-child(1)");
-  const footerUl=document.querySelector(".footer-container>div>ul:nth-child(1)");
-  const scriptLink = document.createElement("li");
-  scriptLink.innerHTML = `<a href="https://blog.chrxw.com" target="_blank">SteamDB 汉化 V${version}</a>`;
-  headerUl.appendChild(scriptLink);
-  footerUl.appendChild(scriptLink.cloneNode(true));
+  setTimeout(() => {
+    const headerUl = document.querySelector(".header-menu-container>div>ul:nth-child(1)");
+    const footerUl = document.querySelector(".footer-container>div>ul:nth-child(1)");
+    const scriptLink = document.createElement("li");
+    scriptLink.innerHTML = `<a href="https://blog.chrxw.com" target="_blank">SteamDB 汉化 V${version}</a>`;
+    headerUl?.appendChild(scriptLink);
+    footerUl.appendChild(scriptLink.cloneNode(true));
+  }, 500);
 
   // 添加样式
   GM_addStyle(`
@@ -208,7 +214,7 @@
     width: 150px;
     margin: 5px;
   }
-  .sdc > div.sdc-links > a {
+  .sdc > div.sdc-links > * {
     width: 100%;
     margin-bottom: 10px;
     background-color: #213145;
@@ -224,11 +230,6 @@
     margin-bottom: 0px;
     color: #67c1f5;
     background-color: #273b4b;
-  }
-  @media (min-width: 1300px) {
-    .tabbable > .tabnav .tabnav-tabs {
-      flex-direction: column;
-    }
   }
 `);
 })(); 

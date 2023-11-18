@@ -14,7 +14,7 @@
   width: 150px;
   margin: 5px;
 }
-.sdc > div.sdc-links > a {
+.sdc > div.sdc-links > * {
   width: 100%;
   margin-bottom: 10px;
   background-color: #213145;
@@ -30,9 +30,4 @@
   margin-bottom: 0px;
   color: #67c1f5;
   background-color: #273b4b;
-}
-@media (min-width: 1300px) {
-  .tabbable > .tabnav .tabnav-tabs {
-    flex-direction: column;
-  }
 }
