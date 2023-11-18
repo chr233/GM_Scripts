@@ -31,3 +31,8 @@
   color: #67c1f5;
   background-color: #273b4b;
 }
+@media (min-width: 1300px) {
+  .tabbable > .tabnav .tabnav-tabs {
+    flex-direction: column;
+  }
+}

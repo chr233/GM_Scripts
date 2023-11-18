@@ -4,7 +4,7 @@
 // @namespace           https://blog.chrxw.com
 // @supportURL          https://blog.chrxw.com/scripts.html
 // @contributionURL     https://afdian.net/@chr233
-// @version             1.33
+// @version             1.34
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -224,6 +224,11 @@
     margin-bottom: 0px;
     color: #67c1f5;
     background-color: #273b4b;
+  }
+  @media (min-width: 1300px) {
+    .tabbable > .tabnav .tabnav-tabs {
+      flex-direction: column;
+    }
   }
 `);
 })(); 
