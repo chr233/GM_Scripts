@@ -1,0 +1,12 @@
+.fp_div > * {
+  margin-right: 10px;
+}
+.fp_div > input {
+  width: 50px;
+}
+.fp_div2 > textarea {
+  width: 100%;
+  height: 100px;
+  font-size: 14px;
+  resize: vertical;
+}
