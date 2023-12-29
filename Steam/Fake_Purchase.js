@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.1
+// @version         1.2
 // @description     一键批量卡单
 // @description:zh-CN  一键批量卡单
 // @author          Chr_
@@ -178,7 +178,7 @@
         {
           method: "POST",
           credentials: "include",
-          body: `gidShoppingCart=${cartGid}&gidShoppingCart=${cartGid}&gidReplayOfTransID=-1&bUseAccountCart=0&PaymentMethod=steamaccount&bIsGift=1&GifteeAccountID=${giftAccountId}&GifteeEmail=&GifteeName=${recipient_name}&GiftMessage=${message_text}&Sentiment=%E7%A5%9D%E4%BD%A0%E5%A5%BD%E8%BF%90&Signature=${signature}&ScheduledSendOnDate=0&sessionid=${sessionId}`,
+          body: `gidShoppingCart=${cartGid}&gidReplayOfTransID=-1&bUseAccountCart=0&PaymentMethod=steamaccount&bIsGift=1&GifteeAccountID=${giftAccountId}&GifteeEmail=&GifteeName=${recipient_name}&GiftMessage=${message_text}&Sentiment=%E7%A5%9D%E4%BD%A0%E5%A5%BD%E8%BF%90&Signature=${signature}&ScheduledSendOnDate=0&sessionid=${sessionId}`,
           headers: {
             "content-type":
               "application/x-www-form-urlencoded; charset=UTF-8",
