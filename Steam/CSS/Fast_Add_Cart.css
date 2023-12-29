@@ -27,13 +27,13 @@ div.game_purchase_action > button.fac_listbtns {
   bottom: 8px;
 }
 button.fac_cartbtns {
-  padding: 5px 10px;
+  padding: 5px 8px;
 }
 button.fac_cartbtns:not(:last-child) {
-  margin-right: 5px;
+  margin-right: 4px;
 }
 button.fac_cartbtns:not(:first-child) {
-  margin-left: 5px;
+  margin-left: 4px;
 }
 a.tab_item:hover button.fac_listbtns,
 a.search_result_row:hover button.fac_listbtns,
