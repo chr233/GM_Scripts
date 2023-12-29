@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.0
+// @version         1.1
 // @description     一键批量卡单
 // @description:zh-CN  一键批量卡单
 // @author          Chr_
@@ -205,7 +205,7 @@
   function getFinalPrice(transId, purchaseType) {
     return new Promise((resolve, reject) => {
       fetch(
-        `https://checkout.steampowered.com/checkout/getfinalprice/?count=1&transid=${transId}&purchasetype={purchaseType}&microtxnid=-1&cart=${cartGid}&gidReplayOfTransID=-1`,
+        `https://checkout.steampowered.com/checkout/getfinalprice/?count=1&transid=${transId}&purchasetype=${purchaseType}&microtxnid=-1&cart=${cartGid}&gidReplayOfTransID=-1`,
         {
           method: "POST",
           credentials: "include",
