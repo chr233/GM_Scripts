@@ -1,0 +1,13 @@
+.bg_div2 {
+  padding: 4px 8px !important;
+}
+.bg_div2 > * {
+  width: 100%;
+}
+.bg_div2 > textarea {
+  height: 100px;
+  font-size: 14px;
+  resize: vertical;
+  width: 98%;
+  padding: 3px;
+}

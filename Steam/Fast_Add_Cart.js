@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         3.10
+// @version         3.11
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -46,7 +46,7 @@
             reset: "清除",
             resetDesc: "清除文本框和已保存的数据",
             resetConfirm: "您确定要清除文本框和已保存的数据吗？",
-            history: "购物车历史",
+            history: "历史",
             historyDesc: "查看购物车历史记录",
             reload: "刷新",
             reloadDesc: "重新读取保存的购物车内容",
@@ -408,6 +408,7 @@
             i.type = "checkbox";
             i.className = "fac_checkbox";
             i.checked = checked;
+            l.title = title;
             l.appendChild(i);
             l.appendChild(s);
             return [l, i];
@@ -481,9 +482,18 @@
             GM_getValue("fac_discount2") ?? false
         );
 
+        const [lblSlowMode, chkSlowMode] = genChk(
+            "精确导入/导出",
+            "导出时读取每个AppID, 获得精确的SubID, 但是会减慢导出速度",
+            GM_getValue("fac_discount") ?? false
+        );
+
         const btnExport = genBtn(`🔽${t("export")}`, t("exportDesc"), () => {
             let currentValue = inputBox.value.trim();
             const now = new Date().toLocaleString();
+
+            const exportFunc = chkSlowMode.checked ? exportCartSlow : exportCart;
+
             if (currentValue !== "") {
                 ShowConfirmDialog(
                     "",
@@ -494,7 +504,7 @@
                     .done(() => {
                         inputBox.value =
                             `========【${now}】=========\n` +
-                            exportCart(chkDiscount2.checked);
+                            exportFunc(chkDiscount2.checked);
                         fitInputBox();
                     })
                     .fail((bool) => {
@@ -502,13 +512,13 @@
                             inputBox.value =
                                 currentValue +
                                 `\n========【${now}】=========\n` +
-                                exportCart(chkDiscount2.checked);
+                                exportFunc(chkDiscount2.checked);
                             fitInputBox();
                         }
                     });
             } else {
                 inputBox.value =
-                    `========【${now}】=========\n` + exportCart(chkDiscount2.checked);
+                    `========【${now}】=========\n` + exportFunc(chkDiscount2.checked);
                 fitInputBox();
             }
         });
@@ -591,6 +601,8 @@
         btnArea2.appendChild(histryPage ? btnBack : btnHistory);
         btnArea2.appendChild(genSpan(" | "));
         btnArea2.appendChild(btnForget);
+        btnArea2.appendChild(genSpan(" | "));
+        btnArea2.appendChild(lblSlowMode);
 
         window.addEventListener("beforeunload", () => {
             GM_setValue("fac_cart", inputBox.value);
@@ -721,6 +733,35 @@
         }
         return data.join("\n");
     }
+    //导出购物车, 精确模式
+    function exportCartSlow(onlyOnsale = false) {
+        const regMatch = new RegExp(/(app|sub|bundle)_(\d+)/i);
+        let data = [];
+        for (let item of document.querySelectorAll(
+            "div.cart_item_list>div.cart_row"
+        )) {
+            const priceEle = item.querySelector("div.cart_item_price");
+            const discount = priceEle?.classList.contains("with_discount")
+                ? "🔖 "
+                : "";
+            const price = priceEle.querySelector("div.price")?.textContent ?? "Null";
+
+            let itemKey = item.getAttribute("data-ds-itemkey");
+            let name = item.querySelector(".cart_item_desc>a").innerText.trim();
+            let match = itemKey.toLowerCase().match(regMatch);
+            if (match) {
+                let [_, type, id] = match;
+
+                if (onlyOnsale && discount.length === 0) {
+                    continue;
+                }
+
+                data.push(`${type}/${id} #${name} ${discount}💳${price}`);
+            }
+        }
+        return data.join("\n");
+    }
+
     //添加按钮
     function addButton(element) {
         if (element.getAttribute("added") !== null) {
@@ -995,6 +1036,63 @@
                 });
         });
     }
+    //
+    function getGameSubs(appID) {
+        return new Promise((resolve, reject) => {
+            const regPure = new RegExp(/ - [^-]*$/, "");
+            const regSymbol = new RegExp(/[>-] ([^>-]+) [\d.]+$/, "");
+            const lang = document.cookie.replace(
+                /(?:(?:^|.*;\s*)Steam_Language\s*\=\s*([^;]*).*$)|^.*$/,
+                "$1"
+            );
+            fetch(
+                `https://store.steampowered.com/api/appdetails?appids=${appID}&lang=${lang}`,
+                {
+                    method: "GET",
+                    credentials: "include",
+                }
+            )
+                .then(async (response) => {
+                    if (response.ok) {
+                        let data = await response.json();
+                        let result = data[appID];
+                        if (result.success !== true) {
+                            reject(t("unrecognizedResult"));
+                        }
+                        let subInfos = [];
+                        for (let pkg of result.data.package_groups) {
+                            for (let sub of pkg.subs) {
+                                const {
+                                    packageid,
+                                    option_text,
+                                    percent_savings_text,
+                                    price_in_cents_with_discount,
+                                } = sub;
+                                if (price_in_cents_with_discount > 0 && !option_text.includes("Commercial License")) {
+                                    //排除免费SUB 以及商业许可
+                                    const symbol = option_text.match(regSymbol)?.pop();
+                                    const subName = option_text.replace(regPure, "");
+                                    const price =
+                                        "💳" + price_in_cents_with_discount / 100 + " " + symbol;
+                                    const discount =
+                                        percent_savings_text !== " "
+                                            ? "🔖" + percent_savings_text + " "
+                                            : "";
+                                    subInfos.push([packageid, subName, discount, price]);
+                                }
+                            }
+                        }
+                        console.info(subInfos);
+                        resolve(subInfos);
+                    } else {
+                        reject(t("networkRequestError"));
+                    }
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
     //添加购物车,只支持subID和bundleID
     function addCart(type = "sub", subID, appID = null) {
         window.localStorage["fac_subid"] = subID;
@@ -1051,73 +1149,72 @@
 })();
 
 GM_addStyle(`
-    button.fac_listbtns {
-        display: none;
-        position: relative;
-        z-index: 100;
-        padding: 1px;
-    }
-    a.search_result_row > button.fac_listbtns {
-        top: -25px;
-        left: 300px;
-    }
-    a.tab_item > button.fac_listbtns {
-        top: -40px;
-        left: 330px;
-    }
-    a.recommendation_link > button.fac_listbtns {
-        bottom: 10px;
-        right: 10px;
-        position: absolute;
-    }
-    div.wishlist_row > button.fac_listbtns {
-        top: 35%;
-        right: 30%;
-        position: absolute;
-    }
-    div.game_purchase_action > button.fac_listbtns {
-        right: 8px;
-        bottom: 8px;
-    }
-    button.fac_cartbtns {
-        padding: 5px 10px;
-    }
-    button.fac_cartbtns:not(:last-child) {
-        margin-right: 5px;
-    }
-    button.fac_cartbtns:not(:first-child) {
-        margin-left: 5px;
-    }
-    a.tab_item:hover button.fac_listbtns,
-    a.search_result_row:hover button.fac_listbtns,
-    div.recommendation:hover button.fac_listbtns,
-    div.wishlist_row:hover button.fac_listbtns {
-        display: block;
-    }
-    div.game_purchase_action:hover > button.fac_listbtns {
-        display: inline;
-    }
-    button.fac_choose {
-        padding: 1px;
-        margin: 2px 5px;
-    }
-    textarea.fac_inputbox {
-        height: 130px;
-        resize: vertical;
-        font-size: 10px;
-        min-height: 130px;
-    }
-    textarea.fac_diag {
-        height: 150px;
-        width: 600px;
-        resize: vertical;
-        font-size: 10px;
-        margin-bottom: 5px;
-        padding: 5px;
-        background-color: rgba(0, 0, 0, 0.4);
-        color: #fff;
-        border: 1 px solid #000;
-        border-radius: 3 px;
-        box-shadow: 1px 1px 0px #45556c;
-    } 
-    `);
+  button.fac_listbtns {
+    display: none;
+    position: relative;
+    z-index: 100;
+    padding: 1px;
+  }
+  a.search_result_row > button.fac_listbtns {
+    top: -25px;
+    left: 300px;
+  }
+  a.tab_item > button.fac_listbtns {
+    top: -40px;
+    left: 330px;
+  }
+  a.recommendation_link > button.fac_listbtns {
+    bottom: 10px;
+    right: 10px;
+    position: absolute;
+  }
+  div.wishlist_row > button.fac_listbtns {
+    top: 35%;
+    right: 30%;
+    position: absolute;
+  }
+  div.game_purchase_action > button.fac_listbtns {
+    right: 8px;
+    bottom: 8px;
+  }
+  button.fac_cartbtns {
+    padding: 5px 8px;
+  }
+  button.fac_cartbtns:not(:last-child) {
+    margin-right: 4px;
+  }
+  button.fac_cartbtns:not(:first-child) {
+    margin-left: 4px;
+  }
+  a.tab_item:hover button.fac_listbtns,
+  a.search_result_row:hover button.fac_listbtns,
+  div.recommendation:hover button.fac_listbtns,
+  div.wishlist_row:hover button.fac_listbtns {
+    display: block;
+  }
+  div.game_purchase_action:hover > button.fac_listbtns {
+    display: inline;
+  }
+  button.fac_choose {
+    padding: 1px;
+    margin: 2px 5px;
+  }
+  textarea.fac_inputbox {
+    resize: vertical;
+    font-size: 10px;
+    min-height: 130px;
+  }
+  textarea.fac_diag {
+    height: 150px;
+    width: 600px;
+    resize: vertical;
+    font-size: 10px;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    border: 1 px solid #000;
+    border-radius: 3 px;
+    box-shadow: 1px 1px 0px #45556c;
+  }
+`);
