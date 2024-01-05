@@ -4,12 +4,12 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.1
+// @version         1.2
 // @description     一键替换成指定展柜
 // @description:zh-CN  一键替换成指定展柜
 // @author          Chr_
-// @include        /^https:\/\/steamcommunity\.com\/id\/[^/]+\/edit\/showcases\/?$/
-// @include        /^https:\/\/steamcommunity\.com\/profiles\/\d+\/edit\/showcases\/?$/
+// @include        /^https:\/\/steamcommunity\.com\/id\/[^/]+\/edit\/?/
+// @include        /^https:\/\/steamcommunity\.com\/profiles\/\d+\/edit\/?/
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
 // ==/UserScript==
