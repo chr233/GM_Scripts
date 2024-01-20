@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.2
+// @version         1.3
 // @description     一键批量卡单
 // @description:zh-CN  一键批量卡单
 // @author          Chr_
@@ -32,6 +32,10 @@
     const purchaseType = match[1];
 
     if (purchaseType === "gift") {
+      document.getElementById("gift_recipient_name").value = localStorage.getItem("gift_recipient_name") ?? "";
+      document.getElementById("gift_message_text").value = localStorage.getItem("gift_message_text") ?? "";
+      document.getElementById("gift_signature").value = localStorage.getItem("gift_signature") ?? "";
+
       const inputs = document.querySelectorAll('input[name="friend_radio"]');
       for (let i of inputs) {
         i.addEventListener("click", () => {
@@ -172,6 +176,16 @@
       const recipient_name = document.getElementById("gift_recipient_name").value;
       const message_text = document.getElementById("gift_message_text").value;
       const signature = document.getElementById("gift_signature").value;
+
+      if (recipient_name) {
+        localStorage.setItem("gift_recipient_name", recipient_name);
+      }
+      if (message_text) {
+        localStorage.setItem("gift_message_text", message_text);
+      }
+      if (signature) {
+        localStorage.setItem("gift_signature", signature);
+      }
 
       fetch(
         `https://checkout.steampowered.com/checkout/inittransaction/`,
