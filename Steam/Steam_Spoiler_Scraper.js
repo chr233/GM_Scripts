@@ -4,10 +4,10 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.2
+// @version         1.3
 // @description     Steam 隐藏内容刮刀
 // @author          Chr_
-// @include         /https://steamcommunity\.com/sharedfiles/filedetails/\?id=\d+?$/
+// @match           https://steamcommunity.com/*
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
 // ==/UserScript==
