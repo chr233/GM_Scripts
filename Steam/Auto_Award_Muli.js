@@ -2,7 +2,7 @@
 // @name         Auto_Award_Muli
 // @name:zh-CN   Steam自动打赏【极速多账户版】
 // @namespace    https://blog.chrxw.com
-// @version      1.8
+// @version      1.9
 // @description  Steam自动打赏 — 极速多账户版
 // @description:zh-CN  Steam自动打赏 — 极速多账户版
 // @author       Chr_
@@ -1589,11 +1589,11 @@
                 preg = /共 (\d+) 项条目/;
                 break;
             case 's':
-                subPath = 'screenshots/?l=schinese';
+                subPath = 'screenshots/?l=schinese&appid=0&sort=newestfirst&browsefilter=myfiles&view=grid';
                 preg = /共 (\d+) 张/;
                 break;
             case 'i':
-                subPath = 'images/?l=schinese';
+                subPath = 'images/?l=schinese&appid=0&sort=newestfirst&browsefilter=myfiles&view=grid';
                 preg = /共 (\d+) 张/;
                 break;
             default:
