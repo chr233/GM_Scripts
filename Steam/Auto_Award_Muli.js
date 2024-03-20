@@ -2,7 +2,7 @@
 // @name         Auto_Award_Muli
 // @name:zh-CN   Steam自动打赏【极速多账户版】
 // @namespace    https://blog.chrxw.com
-// @version      1.7
+// @version      1.9
 // @description  Steam自动打赏 — 极速多账户版
 // @description:zh-CN  Steam自动打赏 — 极速多账户版
 // @author       Chr_
@@ -10,6 +10,7 @@
 // @include      /^https:\/\/steamcommunity\.com\/profiles\/\d+/?$/
 // @connect      steamcommunity.com
 // @connect      steampowered.com
+// @connect      api.steampowered.com
 // @license      AGPL-3.0
 // @icon         https://blog.chrxw.com/favicon.ico
 // @grant        GM_setValue
@@ -44,7 +45,7 @@
             'reloadHistory': '刷新历史',
             'feedBack': '作者',
             'feedBackTitle': '觉得好用也欢迎给我打赏',
-            'notSelected': '---未选择---',
+            'notSelected': '---自动使用当前登录账号---',
             'steamID64': 'Steam 64位 ID',
             'awardPoints': '打赏点数(收到)',
             'recommands': '评测',
@@ -184,7 +185,7 @@
             'reloadHistory': 'Reload',
             'feedBack': 'Author',
             'feedBackTitle': '觉得好用也欢迎给我打赏',
-            'notSelected': '---Not Selected---',
+            'notSelected': '---Use Current Account---',
             'steamID64': 'Steam 64 ID',
             'awardPoints': 'Points (Receive)',
             'recommands': 'Recommands',
@@ -925,7 +926,7 @@
         }
     }
     //保存打赏设置
-    function applyAwardConfig() {
+    async function applyAwardConfig() {
         const {
             awardBtnStart, awardBtnStop,
             awardBot, awardSteamID, awardPoints,
@@ -943,6 +944,29 @@
         if (!awardRecommand.checked) { type += 2; }
         if (!awardScreenshot.checked) { type += 4; }
         if (!awardImage.checked) { type += 8; }
+
+        if (bot == '') {
+            // 未选择机器人则自动使用当前登录账号
+            loadScreen(true, t('fetchLoginAccount'));
+            steamID = g_steamID;
+            const nick = document.querySelector("#account_pulldown")?.textContent?.trim();
+            if (steamID && nick) {
+                try {
+                    loadScreen(true, t('fetchToken'));
+                    const token = await getToken();
+                    loadScreen(true, t('fetchPoints'));
+                    const points = await getPoints(steamID, token);
+                    GBots[steamID] = { nick: nick, token: token, points }
+                    GM_setValue('bots', GBots);
+                    flashBotList();
+                    bot = steamID;
+                } catch (reason) {
+                    showAlert(t('error'), reason, false);
+                } finally {
+                    loadScreen(false, null);
+                }
+            }
+        }
 
         if (bot == '') {
             showAlert(t('error'), t('notSelectedAwardBotsTips'), false);
@@ -1592,11 +1616,11 @@
                 preg = /共 (\d+) 项条目/;
                 break;
             case 's':
-                subPath = 'screenshots/?l=schinese';
+                subPath = 'screenshots/?l=schinese&appid=0&sort=newestfirst&browsefilter=myfiles&view=grid';
                 preg = /共 (\d+) 张/;
                 break;
             case 'i':
-                subPath = 'images/?l=schinese';
+                subPath = 'images/?l=schinese&appid=0&sort=newestfirst&browsefilter=myfiles&view=grid';
                 preg = /共 (\d+) 张/;
                 break;
             default:
@@ -1719,11 +1743,11 @@ class Request {
                         resolve(responseText);
                     }
                 } else {
-                    console.error(t('networkError'));
+                    console.error("网络错误");
                     console.log(readyState);
                     console.log(status);
                     console.log(response);
-                    reject(t('parseError'));
+                    reject("解析失败");
                 }
             }
             GM_xmlhttpRequest(opt);
