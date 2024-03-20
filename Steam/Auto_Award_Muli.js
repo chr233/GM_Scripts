@@ -2,7 +2,7 @@
 // @name         Auto_Award_Muli
 // @name:zh-CN   Steam自动打赏【极速多账户版】
 // @namespace    https://blog.chrxw.com
-// @version      1.9
+// @version      2.0
 // @description  Steam自动打赏 — 极速多账户版
 // @description:zh-CN  Steam自动打赏 — 极速多账户版
 // @author       Chr_
@@ -1508,8 +1508,11 @@
     function getMySteamID() {
         return new Promise((resolve, reject) => {
             try {
-                const steamID = g_sessionID;
+                const steamID = g_steamID;
                 const nick = document.querySelector("div.playerAvatar>a>img")?.getAttribute("alt");
+
+                console.log(steamID)
+                console.log(nick)
 
                 if (nick && steamID) {
                     resolve({ nick, steamID });
@@ -1541,11 +1544,13 @@
             try {
                 let token = document.querySelector("#application_config")?.getAttribute("data-loyalty_webapi_token");
 
+                console.log(token)
+
                 if (isEmptyObject(token)) {
                     reject(t('steamStoreNotLogin'));
                 }
                 else {
-                    token = token.replace(/"/g, "");
+                    token =token.replace(/"/g, "");
                     resolve(token);
                 }
             } catch (err) {
