@@ -2,7 +2,7 @@
 // @name         Auto_Award_Muli
 // @name:zh-CN   Steam自动打赏【极速多账户版】
 // @namespace    https://blog.chrxw.com
-// @version      2.0
+// @version      2.1
 // @description  Steam自动打赏 — 极速多账户版
 // @description:zh-CN  Steam自动打赏 — 极速多账户版
 // @author       Chr_
@@ -1511,9 +1511,6 @@
                 const steamID = g_steamID;
                 const nick = document.querySelector("div.playerAvatar>a>img")?.getAttribute("alt");
 
-                console.log(steamID)
-                console.log(nick)
-
                 if (nick && steamID) {
                     resolve({ nick, steamID });
                 } else {
@@ -1522,29 +1519,12 @@
             } catch (err) {
                 reject(err);
             }
-
-            // $http.getText('https://store.steampowered.com/account/?l=english')
-            //     .then((text) => {
-            //         let match1 = text.match(/pageheader">([\s\S]+)'s account/);
-            //         let match2 = text.match(/Steam ID: (\d+)/);
-
-            //         if (match1 && match2) {
-            //             resolve({ nick: match1[1], steamID: match2[1] });
-            //         } else {
-            //             reject(t('steamStoreNotLogin'));
-            //         }
-            //     })
-            //     .catch((reason) => {
-            //         reject(reason);
-            //     });
         });
     }
     function getToken() {
         return new Promise((resolve, reject) => {
             try {
                 let token = document.querySelector("#application_config")?.getAttribute("data-loyalty_webapi_token");
-
-                console.log(token)
 
                 if (isEmptyObject(token)) {
                     reject(t('steamStoreNotLogin'));
@@ -1556,17 +1536,6 @@
             } catch (err) {
                 reject(err);
             }
-
-            // $http.get('https://store.steampowered.com/pointssummary/ajaxgetasyncconfig')
-            //     .then(({ data }) => {
-            //         if (isEmptyObject(data)) {
-            //             reject(t('steamStoreNotLogin'));
-            //         }
-            //         resolve(data.webapi_token);
-            //     })
-            //     .catch((reason) => {
-            //         reject(reason);
-            //     });
         });
     }
     function getPoints(steamID, token) {
