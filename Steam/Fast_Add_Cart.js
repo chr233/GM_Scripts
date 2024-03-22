@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         4.0
+// @version         4.1
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -463,7 +463,6 @@
                 inputBox.value,
                 chkDiscount.checked
             );
-            window.location.reload();
         });
 
         const histryPage = pathname.search("history") !== -1;
@@ -638,7 +637,7 @@
                 if (txt) {
                     clearInterval(timer);
 
-                    const txts = reverse ? text.split("\n").reverse() : text.split("\n");
+                    const txts = text.split("\n");
 
                     const result = [];
 
@@ -733,7 +732,6 @@
                                                     result.push(`sub/${packageid} #app/${appid} #排除 #${name} 💳 ${price}`);
                                                 }
                                             } else if (bundleid) {
-
                                                 if (!onlyOnSale) {
                                                     result.push(`bundle/${bundleid} #app/${appid} #${name} 💳 ${price}`);
                                                     targetBundleIds.push(bundleid);
@@ -749,15 +747,15 @@
 
                                 for (let { packageid, bundleid, purchase_option_name: name, discount_pct: discount, formatted_final_price: price } of purchase_options) {
                                     if (discount) {
-                                        if (packageid) {
+                                        if (packageid && subIds.includes(packageid)) {
                                             result.push(`sub/${packageid} #${name} 💳 ${price} 🔖 ${discount}`);
                                             targetSubIds.push(packageid);
-                                        } else if (bundleid) {
+                                        } else if (bundleid && bundleIds.includes(bundleid)) {
                                             result.push(`bundle/${bundleid} #${name} 💳 ${price} 🔖 ${discount}`);
                                             targetBundleIds.push(bundleid);
                                         }
                                     } else {
-                                        if (packageid) {
+                                        if (packageid && subIds.includes(packageid)) {
                                             if (!onlyOnSale) {
                                                 result.push(`sub/${packageid} #${name} 💳 ${price}`);
                                                 targetSubIds.push(packageid);
@@ -765,7 +763,7 @@
                                                 result.push(`sub/${packageid} #排除 #${name} 💳 ${price}`);
 
                                             }
-                                        } else if (bundleid) {
+                                        } else if (bundleid && bundleIds.includes(bundleid)) {
                                             if (!onlyOnSale) {
                                                 result.push(`bundle/${bundleid} #${name} 💳 ${price}`);
                                                 targetBundleIds.push(bundleid);
@@ -787,6 +785,10 @@
                             dialog.Dismiss();
 
                             resolve(result.join("\n"));
+
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1000);
 
                         } else {
                             txt.textContent = "4/4 尚未输入有效内容";
