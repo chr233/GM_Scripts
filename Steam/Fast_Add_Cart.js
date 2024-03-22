@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         3.11
+// @version         4.0
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -30,11 +30,9 @@
                 "一行一条, 自动忽略【#】后面的内容, 支持的格式如下: (自动保存)",
             storeLink: "商店链接",
             steamDBLink: "DB链接",
-            import: "导入(正序)",
+            import: "导入",
             importDesc: "从文本框批量添加购物车(从上到下导入)",
             importDesc2: "当前页面无法导入购物车",
-            importReverse: "导入(倒序)",
-            importDescReverse: "从文本框批量添加购物车(从下到上导入)",
             export: "导出",
             exportDesc: "将购物车内容导出至文本框",
             exportConfirm: "输入框中含有内容, 请选择操作?",
@@ -97,11 +95,9 @@
                 "One line one item, ignore the content after #, support format: (auto save)",
             storeLink: "Store link",
             steamDBLink: "DB link",
-            import: "Import(Asc)",
+            import: "Import",
             importDesc: "Batch add cart from textbox (from top to bottom)",
             importDesc2: "Current page can't import cart",
-            importReverse: "Import(Desc)",
-            importDescReverse: "Batch add cart from textbox (from bottom to top)",
             export: "Export",
             exportDesc: "Export cart content to textbox",
             exportConfirm: "Textbox contains content, please choose operation?",
@@ -168,9 +164,8 @@
         GM_setValue("lang", language);
     }
     // 获取翻译文本
-    function t(key) {
-        return LANG[language][key] || key;
-    }
+    const t = (key) => LANG[language][key] || key;
+
     {
         // 自动弹出提示
         const languageTips = GM_getValue("languageTips", true);
@@ -198,19 +193,27 @@
                     });
             }
         }
+        //注册菜单
+        GM_registerMenuCommand(`${t("changeLang")} (${t("langName")})`, () => {
+            switch (language) {
+                case "EN":
+                    language = "ZH";
+                    break;
+                case "ZH":
+                    language = "EN";
+                    break;
+            }
+            GM_setValue("lang", language);
+            window.location.reload();
+        });
     }
-    GM_registerMenuCommand(`${t("changeLang")} (${t("langName")})`, () => {
-        switch (language) {
-            case "EN":
-                language = "ZH";
-                break;
-            case "ZH":
-                language = "EN";
-                break;
-        }
-        GM_setValue("lang", language);
-        window.location.reload();
-    });
+
+    //获取商店语言和区域
+    const { LANGUAGE: storeLanguage, COUNTRY: userCountry } = JSON.parse(document.querySelector("#application_config")?.getAttribute("data-config") ?? "");
+    const { webapi_token: accessToken } = JSON.parse(document.querySelector("#application_config")?.getAttribute("data-store_user_config") ?? "");
+
+    const G_Objs = {};
+
     //初始化
     const pathname = window.location.pathname;
     if (
@@ -219,162 +222,169 @@
         pathname.startsWith("/tags/")
     ) {
         //搜索页,主页,标签页
-        let timer = setInterval(() => {
-            let containers = document.querySelectorAll(
-                [
-                    "#search_resultsRows",
-                    "#tab_newreleases_content",
-                    "#tab_topsellers_content",
-                    "#tab_upcoming_content",
-                    "#tab_specials_content",
-                    "#NewReleasesRows",
-                    "#TopSellersRows",
-                    "#ConcurrentUsersRows",
-                    "#TopRatedRows",
-                    "#ComingSoonRows",
-                ].join(",")
-            );
-            if (containers.length > 0) {
-                for (let container of containers) {
-                    clearInterval(timer);
-                    for (let ele of container.children) {
-                        addButton(ele);
-                    }
-                    container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
-                        if (relatedNode.parentElement === container) {
-                            addButton(relatedNode);
-                        }
-                    });
-                }
+        return;
 
-                const searchBar = document.querySelector(".searchbar>.searchbar_left");
-                if (searchBar !== null) {
-                    let btn = document.createElement("button");
-                    btn.addEventListener(
-                        "click",
-                        (e) => {
-                            e.preventDefault();
-                            const savedCart =
-                                GM_getValue("btnv6_blue_hoverfade btn_small") ?? "";
-                            const cartItems = savedCart.split("\n");
-                            const regFull = new RegExp(/((app|a|bundle|b|sub|s)\/(\d+))/);
-                            const regShort = new RegExp(/^(([\s]*|)(\d+))/);
-                            const dataMap = new Set();
+        // let timer = setInterval(() => {
+        //     let containers = document.querySelectorAll(
+        //         [
+        //             "#search_resultsRows",
+        //             "#tab_newreleases_content",
+        //             "#tab_topsellers_content",
+        //             "#tab_upcoming_content",
+        //             "#tab_specials_content",
+        //             "#NewReleasesRows",
+        //             "#TopSellersRows",
+        //             "#ConcurrentUsersRows",
+        //             "#TopRatedRows",
+        //             "#ComingSoonRows",
+        //         ].join(",")
+        //     );
+        //     if (containers.length > 0) {
+        //         for (let container of containers) {
+        //             clearInterval(timer);
+        //             for (let ele of container.children) {
+        //                 addButton(ele);
+        //             }
+        //             container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
+        //                 if (relatedNode.parentElement === container) {
+        //                     addButton(relatedNode);
+        //                 }
+        //             });
+        //         }
 
-                            for (let line of cartItems) {
-                                let match = line.match(regFull) ?? line.match(regShort);
-                                if (match) {
-                                    let [_, link, _1, _2] = match;
-                                    dataMap.add(link);
-                                }
-                            }
+        //         const searchBar = document.querySelector(".searchbar>.searchbar_left");
+        //         if (searchBar !== null) {
+        //             let btn = document.createElement("button");
+        //             btn.addEventListener(
+        //                 "click",
+        //                 (e) => {
+        //                     e.preventDefault();
+        //                     const savedCart =
+        //                         GM_getValue("btnv6_blue_hoverfade btn_small") ?? "";
+        //                     const cartItems = savedCart.split("\n");
+        //                     const regFull = new RegExp(/((app|a|bundle|b|sub|s)\/(\d+))/);
+        //                     const regShort = new RegExp(/^(([\s]*|)(\d+))/);
+        //                     const dataMap = new Set();
 
-                            const now = new Date().toLocaleString();
-                            cartItems.push(`========【${now}】=========`);
+        //                     for (let line of cartItems) {
+        //                         let match = line.match(regFull) ?? line.match(regShort);
+        //                         if (match) {
+        //                             let [_, link, _1, _2] = match;
+        //                             dataMap.add(link);
+        //                         }
+        //                     }
 
-                            const rows = document.querySelectorAll("#search_resultsRows>a");
-                            for (let row of rows) {
-                                if (
-                                    row.className.includes("ds_owned") ||
-                                    row.className.includes("ds_ignored")
-                                ) {
-                                    continue;
-                                }
+        //                     const now = new Date().toLocaleString();
+        //                     cartItems.push(`========【${now}】=========`);
 
-                                const url = row.href;
-                                const title =
-                                    row.querySelector("span.title")?.textContent ?? "null";
+        //                     const rows = document.querySelectorAll("#search_resultsRows>a");
+        //                     for (let row of rows) {
+        //                         if (
+        //                             row.className.includes("ds_owned") ||
+        //                             row.className.includes("ds_ignored")
+        //                         ) {
+        //                             continue;
+        //                         }
 
-                                let match = url.match(regFull);
-                                if (match) {
-                                    let [_, link, _1, _2] = match;
+        //                         const url = row.href;
+        //                         const title =
+        //                             row.querySelector("span.title")?.textContent ?? "null";
 
-                                    if (!dataMap.has(link)) {
-                                        cartItems.push(`${link} #${title}`);
-                                    }
-                                }
-                            }
-                            GM_setValue("fac_cart", cartItems.join("\n"));
-                            const dialog = showAlert(
-                                t("batchExtractDone"),
-                                t("batchDesc"),
-                                true
-                            );
-                            setTimeout(() => {
-                                dialog.Dismiss();
-                            }, 1500);
-                        },
-                        false
-                    );
-                    btn.className = "btnv6_blue_hoverfade btn_small";
-                    btn.innerHTML = `<span>${t("batchExtract")}</span>`;
-                    searchBar.appendChild(btn);
-                }
-            }
-        }, 500);
+        //                         let match = url.match(regFull);
+        //                         if (match) {
+        //                             let [_, link, _1, _2] = match;
+
+        //                             if (!dataMap.has(link)) {
+        //                                 cartItems.push(`${link} #${title}`);
+        //                             }
+        //                         }
+        //                     }
+        //                     GM_setValue("fac_cart", cartItems.join("\n"));
+        //                     const dialog = showAlert(
+        //                         t("batchExtractDone"),
+        //                         t("batchDesc"),
+        //                         true
+        //                     );
+        //                     setTimeout(() => {
+        //                         dialog.Dismiss();
+        //                     }, 1500);
+        //                 },
+        //                 false
+        //             );
+        //             btn.className = "btnv6_blue_hoverfade btn_small";
+        //             btn.innerHTML = `<span>${t("batchExtract")}</span>`;
+        //             searchBar.appendChild(btn);
+        //         }
+        //     }
+        // }, 500);
     } else if (
         pathname.startsWith("/publisher/") ||
         pathname.startsWith("/franchise/") ||
         pathname.startsWith("/developer/")
     ) {
         //发行商主页
-        let timer = setInterval(() => {
-            let container = document.getElementById("RecommendationsRows");
-            if (container != null) {
-                clearInterval(timer);
-                for (let ele of container.querySelectorAll("a.recommendation_link")) {
-                    addButton(ele);
-                }
-                container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
-                    if (relatedNode.nodeName === "DIV") {
-                        for (let ele of relatedNode.querySelectorAll(
-                            "a.recommendation_link"
-                        )) {
-                            addButton(ele);
-                        }
-                    }
-                });
-            }
-        }, 500);
+        return;
+
+        // let timer = setInterval(() => {
+        //     let container = document.getElementById("RecommendationsRows");
+        //     if (container != null) {
+        //         clearInterval(timer);
+        //         for (let ele of container.querySelectorAll("a.recommendation_link")) {
+        //             addButton(ele);
+        //         }
+        //         container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
+        //             if (relatedNode.nodeName === "DIV") {
+        //                 for (let ele of relatedNode.querySelectorAll(
+        //                     "a.recommendation_link"
+        //                 )) {
+        //                     addButton(ele);
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }, 500);
     } else if (
         pathname.startsWith("/app/") ||
         pathname.startsWith("/sub/") ||
         pathname.startsWith("/bundle/")
     ) {
         //商店详情页
-        let timer = setInterval(() => {
-            let container = document.getElementById("game_area_purchase");
-            if (container != null) {
-                clearInterval(timer);
-                for (let ele of container.querySelectorAll(
-                    "div.game_area_purchase_game"
-                )) {
-                    addButton2(ele);
-                }
-            }
-        }, 500);
+        return;
+
+        // let timer = setInterval(() => {
+        //     let container = document.getElementById("game_area_purchase");
+        //     if (container != null) {
+        //         clearInterval(timer);
+        //         for (let ele of container.querySelectorAll(
+        //             "div.game_area_purchase_game"
+        //         )) {
+        //             addButton2(ele);
+        //         }
+        //     }
+        // }, 500);
     } else if (pathname.startsWith("/wishlist/")) {
         //愿望单页
-        let timer = setInterval(() => {
-            let container = document.getElementById("wishlist_ctn");
-            if (container != null) {
-                clearInterval(timer);
+        return;
 
-                for (let ele of container.querySelectorAll("div.wishlist_row")) {
-                    addButton3(ele);
-                }
-                container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
-                    if (relatedNode.nodeName === "DIV") {
-                        for (let ele of relatedNode.querySelectorAll("div.wishlist_row")) {
-                            addButton3(ele);
-                        }
-                    }
-                });
-            }
-        }, 500);
-    } else if (pathname.startsWith("/cart/")) {
+        // let timer = setInterval(() => {
+        //     let container = document.getElementById("wishlist_ctn");
+        //     if (container != null) {
+        //         clearInterval(timer);
+
+        //         for (let ele of container.querySelectorAll("div.wishlist_row")) {
+        //             addButton3(ele);
+        //         }
+        //         container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
+        //             if (relatedNode.nodeName === "DIV") {
+        //                 for (let ele of relatedNode.querySelectorAll("div.wishlist_row")) {
+        //                     addButton3(ele);
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }, 500);
+    } else if (pathname.startsWith("/cart")) {
         //购物车页
-        const continer = document.querySelector("div.cart_area_body");
 
         function genBr() {
             return document.createElement("br");
@@ -433,7 +443,7 @@
         }
 
         inputBox.addEventListener("input", fitInputBox);
-
+        G_Objs.inputBox = inputBox;
         fitInputBox();
 
         const originResetBtn = document.querySelector("div.remove_ctn");
@@ -446,34 +456,22 @@
             t("onlyOnsaleDesc"),
             GM_getValue("fac_discount") ?? false
         );
+        G_Objs.chkDiscount = chkDiscount;
 
-        const btnArea = document.createElement("div");
         const btnImport = genBtn(`🔼${t("import")}`, t("importDesc"), async () => {
             inputBox.value = await importCart(
                 inputBox.value,
-                false,
                 chkDiscount.checked
             );
             window.location.reload();
         });
-        const btnImport2 = genBtn(
-            `🔼${t("importReverse")}`,
-            t("importDescReverse"),
-            async () => {
-                inputBox.value = await importCart(
-                    inputBox.value,
-                    true,
-                    chkDiscount.checked
-                );
-                window.location.reload();
-            }
-        );
+
         const histryPage = pathname.search("history") !== -1;
         if (histryPage) {
             btnImport.disabled = true;
             btnImport.title = t("importDesc2");
-            btnImport2.disabled = true;
-            btnImport2.title = t("importDesc2");
+            // btnImport2.disabled = true;
+            // btnImport2.title = t("importDesc2");
         }
 
         const [lblDiscount2, chkDiscount2] = genChk(
@@ -481,18 +479,13 @@
             t("onlyOnsaleDesc2"),
             GM_getValue("fac_discount2") ?? false
         );
+        G_Objs.chkDiscount2 = chkDiscount2;
 
-        const [lblSlowMode, chkSlowMode] = genChk(
-            "精确导入/导出",
-            "导出时读取每个AppID, 获得精确的SubID, 但是会减慢导出速度",
-            GM_getValue("fac_discount") ?? false
-        );
-
-        const btnExport = genBtn(`🔽${t("export")}`, t("exportDesc"), () => {
+        const btnExport = genBtn(`🔽${t("export")}`, t("exportDesc"), async () => {
             let currentValue = inputBox.value.trim();
             const now = new Date().toLocaleString();
 
-            const exportFunc = chkSlowMode.checked ? exportCartSlow : exportCart;
+            var data = await exportCart(chkDiscount2.checked);
 
             if (currentValue !== "") {
                 ShowConfirmDialog(
@@ -502,23 +495,18 @@
                     t("exportConfirmAppend")
                 )
                     .done(() => {
-                        inputBox.value =
-                            `========【${now}】=========\n` +
-                            exportFunc(chkDiscount2.checked);
+                        inputBox.value = `========【${now}】=========\n` + data;
                         fitInputBox();
                     })
                     .fail((bool) => {
                         if (bool) {
-                            inputBox.value =
-                                currentValue +
-                                `\n========【${now}】=========\n` +
-                                exportFunc(chkDiscount2.checked);
+                            inputBox.value = currentValue + `\n========【${now}】=========\n` + data;
                             fitInputBox();
                         }
                     });
             } else {
                 inputBox.value =
-                    `========【${now}】=========\n` + exportFunc(chkDiscount2.checked);
+                    `========【${now}】=========\n` + exportCart(chkDiscount2.checked);
                 fitInputBox();
             }
         });
@@ -550,7 +538,14 @@
         });
         const btnForget = genBtn(`⚠️${t("clear")}`, t("clearDesc"), () => {
             ShowConfirmDialog("", t("clearConfirm"), t("ok"), t("no")).done(() => {
-                ForgetCart();
+                deleteAccountCart()
+                    .then(() => {
+                        location.reload();
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        showAlert("出错", err, false);
+                    });
             });
         });
         const btnHelp = genBtn(`🔣${t("help")}`, t("helpDesc"), () => {
@@ -561,7 +556,6 @@
                 `${t("helpTitle")} ${version}`,
                 [
                     `<p>【🔼${t("import")}】${t("importDesc")}</p>`,
-                    `<p>【🔼${t("importReverse")}】${t("importDescReverse")}</p>`,
                     `<p>【✅${t("onlyOnsale")}】${t("onlyOnsaleDesc")}</p>`,
                     `<p>【🔽${t("export")}】${t("exportDesc")}</p>`,
                     `<p>【✅${t("onlyOnsale")}】${t("onlyOnsaleDesc2")}</p>`,
@@ -577,8 +571,9 @@
             );
         });
 
+        const btnArea = document.createElement("div");
         btnArea.appendChild(btnImport);
-        btnArea.appendChild(btnImport2);
+        // btnArea.appendChild(btnImport2);
         btnArea.appendChild(lblDiscount);
         btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnExport);
@@ -586,14 +581,7 @@
         btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnHelp);
 
-        continer.appendChild(btnArea);
-        btnArea.appendChild(genBr());
-        btnArea.appendChild(genBr());
-        continer.appendChild(inputBox);
-
-        const btnArea2 = document.querySelector("div.continue_shopping_ctn");
-        btnArea2.innerHTML = "";
-
+        const btnArea2 = document.createElement("div");
         btnArea2.appendChild(btnCopy);
         btnArea2.appendChild(btnClear);
         btnArea2.appendChild(btnReload);
@@ -601,15 +589,31 @@
         btnArea2.appendChild(histryPage ? btnBack : btnHistory);
         btnArea2.appendChild(genSpan(" | "));
         btnArea2.appendChild(btnForget);
-        btnArea2.appendChild(genSpan(" | "));
-        btnArea2.appendChild(lblSlowMode);
 
         window.addEventListener("beforeunload", () => {
             GM_setValue("fac_cart", inputBox.value);
             GM_setValue("fac_discount", chkDiscount.checked);
             GM_setValue("fac_discount2", chkDiscount2.checked);
         });
+
+        //等待购物车加载完毕, 显示额外面板
+        const timer = setInterval(() => {
+            const continer = document.querySelector("div[data-featuretarget='react-root']>div>div:last-child>div:last-child>div:first-child>div:last-child");
+            if (continer) {
+                clearInterval(timer);
+                continer.appendChild(btnArea);
+                continer.appendChild(genBr());
+                continer.appendChild(inputBox);
+                continer.appendChild(genBr());
+                continer.appendChild(btnArea2);
+            }
+        }, 500);
+
     }
+
+    // getStoreItem([730], null, null).then((data) => console.log(data)).catch(err => console.error(err))
+    getAccountCart().then((data) => console.log(data)).catch(err => console.error(err))
+    // addItemsToAccountCart(null, [28627]).then((data) => console.log(data)).catch(err => console.error(err))
 
     //始终在右上角显示购物车按钮
     const cart_btn = document.getElementById("store_header_cart_btn");
@@ -618,530 +622,461 @@
     }
 
     //导入购物车
-    function importCart(text, reverse = false, onlyOnSale = false) {
-        return new Promise(async (resolve, reject) => {
-            const regFull = new RegExp(/(app|a|bundle|b|sub|s)\/(\d+)/);
-            const regShort = new RegExp(/^([\s]*|)(\d+)/);
-            let lines = [];
+    function importCart(text, onlyOnSale = false) {
+        const regFull = new RegExp(/(app|a|bundle|b|sub|s)\/(\d+)/);
+        const regShort = new RegExp(/^([\s]*|)(\d+)/);
 
-            let dialog = showAlert(
-                t("importingTitle"),
-                `<textarea id="fac_diag" class="fac_diag">${t("operation")}</textarea>`,
+        return new Promise(async (resolve, reject) => {
+            const dialog = showAlert(
+                "导出购物车",
+                `<h2 id="fac_diag" class="fac_diag">${t("operation")}</h2>`,
                 true
             );
 
-            let timer = setInterval(async () => {
+            const timer = setInterval(async () => {
                 let txt = document.getElementById("fac_diag");
-                if (txt !== null) {
+                if (txt) {
                     clearInterval(timer);
 
                     const txts = reverse ? text.split("\n").reverse() : text.split("\n");
 
-                    for (let line of txts) {
-                        if (line.trim() === "") {
-                            continue;
-                        }
-                        let match = line.match(regFull) ?? line.match(regShort);
-                        if (!match) {
-                            if (line.search("=====") === -1) {
-                                let tmp = line.split("#")[0];
-                                lines.push(`${tmp} #${t("formatError")}`);
-                            } else {
-                                lines.push(line);
-                            }
-                            continue;
-                        }
-                        let [_, type, subID] = match;
-                        switch (type.toLowerCase()) {
-                            case "":
-                            case "a":
-                            case "app":
-                                type = "app";
-                                break;
-                            case "s":
-                            case "sub":
-                                type = "sub";
-                                break;
-                            case "b":
-                            case "bundle":
-                                type = "bundle";
-                                break;
-                            default:
-                                let tmp = line.split("#")[0];
-                                lines.push(`${tmp} #${t("formatError")}`);
+                    const result = [];
+
+                    const appIds = [];
+                    const subIds = [];
+                    const bundleIds = [];
+
+                    const targetSubIds = [];
+                    const targetBundleIds = [];
+
+                    try {
+                        txt.textContent = "0/4 开始读取输入信息";
+
+                        for (let line of txts) {
+                            if (line.trim() === "") {
                                 continue;
+                            }
+                            const tmp = line.split("#")[0];
+
+                            const match = line.match(regFull) ?? line.match(regShort);
+                            if (!match) {
+                                if (line.search("=====") === -1) {
+                                    result.push(`${tmp} #${t("formatError")}`);
+                                } else {
+                                    result.push(line);
+                                }
+                                continue;
+                            }
+
+                            let [_, type, subID] = match;
+                            subID = parseInt(subID);
+                            if (subID !== subID) {
+                                result.push(`${tmp} #${t("formatError")}`);
+                                continue;
+                            }
+
+                            switch (type.toLowerCase()) {
+                                case "":
+                                case "a":
+                                case "app":
+                                    type = "app";
+                                    appIds.push(subID);
+                                    break;
+                                case "s":
+                                case "sub":
+                                    type = "sub";
+                                    subIds.push(subID);
+                                    break;
+                                case "b":
+                                case "bundle":
+                                    type = "bundle";
+                                    bundleIds.push(subID);
+                                    break;
+                                default:
+                                    result.push(`${tmp} #${t("formatError")}`);
+                                    continue;
+                            }
                         }
 
-                        if (type === "sub" || type === "bundle") {
-                            let [succ, msg] = await addCart(type, subID, "");
-                            lines.push(`${type}/${subID} #${msg}`);
-                        } else {
-                            try {
-                                let subInfos = await getGameSubs(subID);
-                                let [sID, subName, discount, price] = subInfos[0];
-                                if (onlyOnSale && discount.length === 0) {
-                                    lines.push(
-                                        `${type}/${subID} #${subName} - ${discount}${price} ${t(
-                                            "notOnSale"
-                                        )}`
-                                    );
-                                } else {
-                                    let [succ, msg] = await addCart("sub", sID, subID);
-                                    lines.push(
-                                        `${type}/${subID} #${subName} - ${discount}${price} ${msg}`
-                                    );
+                        const count = appIds.length + subIds.length + bundleIds.length;
+                        txt.textContent = `1/4 成功读取 ${count} 个输入内容`;
+
+                        if (count > 0) {
+                            txt.textContent = "1/4 开始读取游戏信息";
+                            const store_items = await getStoreItem(appIds, subIds, bundleIds);
+
+                            console.log(store_items);
+
+                            txt.textContent = "2/4 读取游戏信息成功";
+
+                            for (let { appid, purchase_options } of store_items) {
+                                if (!purchase_options) { continue; }
+
+                                //输入值包含AppId, 解析可购买项
+                                if (appIds.includes(appid)) {
+                                    if (purchase_options.length >= 1) {
+                                        const { packageid, bundleid, purchase_option_name: name, discount_pct: discount, formatted_final_price: price } = purchase_options[0];
+                                        if (discount) {
+                                            if (packageid) {
+                                                result.push(`sub/${packageid} #app/${appid} #${name} 💳 ${price} 🔖 ${discount}`);
+                                                targetSubIds.push(packageid);
+                                            } else if (bundleid) {
+                                                result.push(`bundle/${bundleid} #app/${appid} #${name} 💳 ${price} 🔖 ${discount}`);
+                                                targetBundleIds.push(bundleid);
+                                            }
+                                        } else {
+                                            if (packageid) {
+                                                if (!onlyOnSale) {
+                                                    result.push(`sub/${packageid} #app/${appid} #${name} 💳 ${price}`);
+                                                    targetSubIds.push(packageid);
+                                                } else {
+                                                    result.push(`sub/${packageid} #app/${appid} #排除 #${name} 💳 ${price}`);
+                                                }
+                                            } else if (bundleid) {
+
+                                                if (!onlyOnSale) {
+                                                    result.push(`bundle/${bundleid} #app/${appid} #${name} 💳 ${price}`);
+                                                    targetBundleIds.push(bundleid);
+                                                } else {
+                                                    result.push(`bundle/${bundleid} #app/${appid} #排除 #${name} 💳 ${price}`);
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        result.push(`${tmp} #无可购买项目`);
+                                    }
                                 }
-                            } catch (e) {
-                                lines.push(`${type}/${subID} #${t("noSubFound")}`);
+
+                                for (let { packageid, bundleid, purchase_option_name: name, discount_pct: discount, formatted_final_price: price } of purchase_options) {
+                                    if (discount) {
+                                        if (packageid) {
+                                            result.push(`sub/${packageid} #${name} 💳 ${price} 🔖 ${discount}`);
+                                            targetSubIds.push(packageid);
+                                        } else if (bundleid) {
+                                            result.push(`bundle/${bundleid} #${name} 💳 ${price} 🔖 ${discount}`);
+                                            targetBundleIds.push(bundleid);
+                                        }
+                                    } else {
+                                        if (packageid) {
+                                            if (!onlyOnSale) {
+                                                result.push(`sub/${packageid} #${name} 💳 ${price}`);
+                                                targetSubIds.push(packageid);
+                                            } else {
+                                                result.push(`sub/${packageid} #排除 #${name} 💳 ${price}`);
+
+                                            }
+                                        } else if (bundleid) {
+                                            if (!onlyOnSale) {
+                                                result.push(`bundle/${bundleid} #${name} 💳 ${price}`);
+                                                targetBundleIds.push(bundleid);
+                                            } else {
+                                                result.push(`bundle/${bundleid} #排除 #${name} 💳 ${price}`);
+                                            }
+                                        }
+                                    }
+                                }
                             }
+
+                            txt.textContent = "3/4 解析游戏信息成功";
+
+                            const data = await addItemsToAccountCart(targetSubIds, targetBundleIds, false);
+                            console.log(data);
+
+                            txt.textContent = "4/4 导入购物车成功";
+
+                            dialog.Dismiss();
+
+                            resolve(result.join("\n"));
+
+                        } else {
+                            txt.textContent = "4/4 尚未输入有效内容";
+                            resolve(result.join("\n"));
                         }
-                        txt.value = reverse ? lines.reverse().join("\n") : lines.join("\n");
-                        txt.scrollTop = txt.scrollHeight;
+
+                    } catch (err) {
+                        txt.textContent = "导出购物车失败";
+                        console.error(err);
+                        resolve(result.join("\n"));
                     }
                 }
-
-                dialog.Dismiss();
-                resolve(lines.join("\n"));
             }, 200);
         });
     }
     //导出购物车
-    function exportCart(onlyOnsale = false) {
-        const regMatch = new RegExp(/(app|sub|bundle)_(\d+)/i);
-        let data = [];
-        for (let item of document.querySelectorAll(
-            "div.cart_item_list>div.cart_row"
-        )) {
-            const priceEle = item.querySelector("div.cart_item_price");
-            const discount = priceEle?.classList.contains("with_discount")
-                ? "🔖 "
-                : "";
-            const price = priceEle.querySelector("div.price")?.textContent ?? "Null";
-
-            let itemKey = item.getAttribute("data-ds-itemkey");
-            let name = item.querySelector(".cart_item_desc>a").innerText.trim();
-            let match = itemKey.toLowerCase().match(regMatch);
-            if (match) {
-                let [_, type, id] = match;
-
-                if (onlyOnsale && discount.length === 0) {
-                    continue;
-                }
-
-                data.push(`${type}/${id} #${name} ${discount}💳${price}`);
-            }
-        }
-        return data.join("\n");
-    }
-    //导出购物车, 精确模式
-    function exportCartSlow(onlyOnsale = false) {
-        const regMatch = new RegExp(/(app|sub|bundle)_(\d+)/i);
-        let data = [];
-        for (let item of document.querySelectorAll(
-            "div.cart_item_list>div.cart_row"
-        )) {
-            const priceEle = item.querySelector("div.cart_item_price");
-            const discount = priceEle?.classList.contains("with_discount")
-                ? "🔖 "
-                : "";
-            const price = priceEle.querySelector("div.price")?.textContent ?? "Null";
-
-            let itemKey = item.getAttribute("data-ds-itemkey");
-            let name = item.querySelector(".cart_item_desc>a").innerText.trim();
-            let match = itemKey.toLowerCase().match(regMatch);
-            if (match) {
-                let [_, type, id] = match;
-
-                if (onlyOnsale && discount.length === 0) {
-                    continue;
-                }
-
-                data.push(`${type}/${id} #${name} ${discount}💳${price}`);
-            }
-        }
-        return data.join("\n");
-    }
-
-    //添加按钮
-    function addButton(element) {
-        if (element.getAttribute("added") !== null) {
-            return;
-        }
-        element.setAttribute("added", "");
-
-        if (element.href === undefined) {
-            return;
-        }
-
-        let appID = (element.href.match(/\/app\/(\d+)/) ?? [null, null])[1];
-        if (appID === null) {
-            return;
-        }
-
-        let btn = document.createElement("button");
-        btn.addEventListener(
-            "click",
-            (e) => {
-                chooseSubs(appID);
-                e.preventDefault();
-            },
-            false
-        );
-        btn.className = "fac_listbtns";
-        btn.textContent = "🛒";
-        element.appendChild(btn);
-    }
-    //添加按钮
-    function addButton2(element) {
-        if (element.getAttribute("added") !== null) {
-            return;
-        }
-        element.setAttribute("added", "");
-        let type, subID;
-
-        let parentElement = element.parentElement;
-
-        if (parentElement.hasAttribute("data-ds-itemkey")) {
-            let itemKey = parentElement.getAttribute("data-ds-itemkey");
-            let match = itemKey.toLowerCase().match(/(app|sub|bundle)_(\d+)/);
-            if (match) {
-                [, type, subID] = match;
-            }
-        } else if (
-            parentElement.hasAttribute("data-ds-bundleid") ||
-            parentElement.hasAttribute("data-ds-subid")
-        ) {
-            subID =
-                parentElement.getAttribute("data-ds-subid") ??
-                parentElement.getAttribute("data-ds-bundleid");
-            type = parentElement.hasAttribute("data-ds-subid") ? "sub" : "bundle";
-        } else {
-            let match = element.id.match(/cart_(\d+)/);
-            if (match) {
-                type = "sub";
-                [, subID] = match;
-            }
-        }
-
-        if (type === undefined || subID === undefined) {
-            console.warn(t("addCartErrorSubNotFount"));
-            return;
-        }
-
-        const btnBar = element.querySelector("div.game_purchase_action");
-        const firstItem = element.querySelector("div.game_purchase_action_bg");
-        if (
-            btnBar === null ||
-            firstItem == null ||
-            type === undefined ||
-            subID === undefined
-        ) {
-            return;
-        }
-        let appID = (window.location.pathname.match(/\/(app)\/(\d+)/) ?? [
-            null,
-            null,
-            null,
-        ])[2];
-        let btn = document.createElement("button");
-        btn.addEventListener(
-            "click",
-            async () => {
-                let dialog = showAlert(
-                    t("operation"),
-                    `<p>${t("addCartTips")}</p>`,
-                    true
-                );
-                let [succ, msg] = await addCart(type, subID, appID);
-                let done = showAlert(t("operationDone"), `<p>${msg}</p>`, succ);
-                setTimeout(() => {
-                    done.Dismiss();
-                }, 1200);
-                dialog.Dismiss();
-                if (succ) {
-                    let acBtn = btnBar.querySelector("div[class='btn_addtocart']>a");
-                    if (acBtn) {
-                        acBtn.href = "https://store.steampowered.com/cart/";
-                        acBtn.innerHTML = `\n\t\n<span>${t("inCart")}</span>\n\t\n`;
-                    }
-                }
-            },
-            false
-        );
-        btn.className = "fac_listbtns";
-        btn.textContent = "🛒";
-        btnBar.insertBefore(btn, firstItem);
-    }
-    //添加按钮
-    function addButton3(element) {
-        if (element.getAttribute("added") !== null) {
-            return;
-        }
-        element.setAttribute("added", "");
-
-        let appID = element.getAttribute("data-app-id");
-        if (appID === null) {
-            return;
-        }
-
-        let btn = document.createElement("button");
-        btn.addEventListener(
-            "click",
-            (e) => {
-                chooseSubs(appID);
-                e.preventDefault();
-            },
-            false
-        );
-        btn.className = "fac_listbtns";
-        btn.textContent = "🛒";
-        element.appendChild(btn);
-    }
-    //选择SUB
-    async function chooseSubs(appID) {
-        let dialog = showAlert(t("operation"), `<p>${t("fetchingSubs")}</p>`, true);
-        getGameSubs(appID)
-            .then(async (subInfos) => {
-                if (subInfos.length === 0) {
-                    showAlert(
-                        t("addCartError"),
-                        `<p>${t("noSubFound")}, ${t("noSubDesc")}.</p>`,
-                        false
-                    );
-                    dialog.Dismiss();
-                    return;
-                } else {
-                    if (subInfos.length === 1) {
-                        let [subID, subName, discount, price] = subInfos[0];
-                        await addCart("sub", subID, appID);
-                        let done = showAlert(
-                            t("addCartSuccess"),
-                            `<p>${subName} - ${discount}${price}</p>`,
-                            true
-                        );
-                        setTimeout(() => {
-                            done.Dismiss();
-                        }, 1200);
-                        dialog.Dismiss();
-                    } else {
-                        let dialog2 = showAlert(
-                            t("chooseSub"),
-                            "<div id=fac_choose></div>",
-                            true
-                        );
-                        dialog.Dismiss();
-                        await new Promise((resolve) => {
-                            let timer = setInterval(() => {
-                                if (document.getElementById("fac_choose") !== null) {
-                                    clearInterval(timer);
-                                    resolve();
-                                }
-                            }, 200);
-                        });
-                        let divContiner = document.getElementById("fac_choose");
-                        for (let [subID, subName, discount, price] of subInfos) {
-                            let btn = document.createElement("button");
-                            btn.addEventListener("click", async () => {
-                                let dialog = showAlert(
-                                    t("operation"),
-                                    `<p>${t("add")} ${subName} - ${discount}${price} ${t(
-                                        "toCart"
-                                    )}</p>`,
-                                    true
-                                );
-                                dialog2.Dismiss();
-                                let [succ, msg] = await addCart("sub", subID, appID);
-                                let done = showAlert(
-                                    msg,
-                                    `<p>${subName} - ${discount}${price}</p>`,
-                                    succ
-                                );
-                                setTimeout(() => {
-                                    done.Dismiss();
-                                }, 1200);
-                                dialog.Dismiss();
-                            });
-                            btn.textContent = `🛒${t("addCart")}`;
-                            btn.className = "fac_choose";
-                            let p = document.createElement("p");
-                            p.textContent = `${subName} - ${discount}${price}`;
-                            p.appendChild(btn);
-                            divContiner.appendChild(p);
-                        }
-                    }
-                }
-            })
-            .catch((err) => {
-                let done = showAlert(t("networkError"), `<p>${err}</p>`, false);
-                setTimeout(() => {
-                    done.Dismiss();
-                }, 2000);
-                dialog.Dismiss();
-            });
-    }
-    //读取sub信息
-    function getGameSubs(appID) {
-        return new Promise((resolve, reject) => {
-            const regPure = new RegExp(/ - [^-]*$/, "");
-            const regSymbol = new RegExp(/[>-] ([^>-]+) [\d.]+$/, "");
-            const lang = document.cookie.replace(
-                /(?:(?:^|.*;\s*)Steam_Language\s*\=\s*([^;]*).*$)|^.*$/,
-                "$1"
+    async function exportCart(onlyOnsale = false) {
+        return new Promise(async (resolve, reject) => {
+            const dialog = showAlert(
+                "导出购物车",
+                `<h2 id="fac_diag" class="fac_diag">${t("operation")}</h2>`,
+                true
             );
-            fetch(
-                `https://store.steampowered.com/api/appdetails?appids=${appID}&lang=${lang}`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
-            )
-                .then(async (response) => {
-                    if (response.ok) {
-                        let data = await response.json();
-                        let result = data[appID];
-                        if (result.success !== true) {
-                            reject(t("unrecognizedResult"));
-                        }
-                        let subInfos = [];
-                        for (let pkg of result.data.package_groups) {
-                            for (let sub of pkg.subs) {
-                                const {
-                                    packageid,
-                                    option_text,
-                                    percent_savings_text,
-                                    price_in_cents_with_discount,
-                                } = sub;
-                                if (price_in_cents_with_discount > 0 && !option_text.includes("Commercial License")) {
-                                    //排除免费SUB 以及商业许可
-                                    const symbol = option_text.match(regSymbol)?.pop();
-                                    const subName = option_text.replace(regPure, "");
-                                    const price =
-                                        "💳" + price_in_cents_with_discount / 100 + " " + symbol;
-                                    const discount =
-                                        percent_savings_text !== " "
-                                            ? "🔖" + percent_savings_text + " "
-                                            : "";
-                                    subInfos.push([packageid, subName, discount, price]);
+
+            const timer = setInterval(async () => {
+                let txt = document.getElementById("fac_diag");
+                if (txt) {
+                    clearInterval(timer);
+
+                    const result = [];
+
+                    const subIds = [];
+                    const bundleIds = [];
+                    const gameNames = {};
+
+                    try {
+                        txt.textContent = "0/4 开始读取账号购物车";
+
+                        const { line_items } = await getAccountCart();
+
+                        if (line_items) {
+                            for (let { packageid, bundleid } of line_items) {
+                                if (packageid) {
+                                    subIds.push(packageid);
+                                }
+                                else if (bundleid) {
+                                    bundleIds.push(bundleid);
                                 }
                             }
                         }
-                        console.info(subInfos);
-                        resolve(subInfos);
-                    } else {
-                        reject(t("networkRequestError"));
-                    }
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
-    }
-    //
-    function getGameSubs(appID) {
-        return new Promise((resolve, reject) => {
-            const regPure = new RegExp(/ - [^-]*$/, "");
-            const regSymbol = new RegExp(/[>-] ([^>-]+) [\d.]+$/, "");
-            const lang = document.cookie.replace(
-                /(?:(?:^|.*;\s*)Steam_Language\s*\=\s*([^;]*).*$)|^.*$/,
-                "$1"
-            );
-            fetch(
-                `https://store.steampowered.com/api/appdetails?appids=${appID}&lang=${lang}`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
-            )
-                .then(async (response) => {
-                    if (response.ok) {
-                        let data = await response.json();
-                        let result = data[appID];
-                        if (result.success !== true) {
-                            reject(t("unrecognizedResult"));
-                        }
-                        let subInfos = [];
-                        for (let pkg of result.data.package_groups) {
-                            for (let sub of pkg.subs) {
-                                const {
-                                    packageid,
-                                    option_text,
-                                    percent_savings_text,
-                                    price_in_cents_with_discount,
-                                } = sub;
-                                if (price_in_cents_with_discount > 0 && !option_text.includes("Commercial License")) {
-                                    //排除免费SUB 以及商业许可
-                                    const symbol = option_text.match(regSymbol)?.pop();
-                                    const subName = option_text.replace(regPure, "");
-                                    const price =
-                                        "💳" + price_in_cents_with_discount / 100 + " " + symbol;
-                                    const discount =
-                                        percent_savings_text !== " "
-                                            ? "🔖" + percent_savings_text + " "
-                                            : "";
-                                    subInfos.push([packageid, subName, discount, price]);
+
+                        const count = subIds.length + bundleIds.length;
+                        txt.textContent = `1/4 成功读取 ${count} 个购物车内容`;
+
+                        if (count > 0) {
+                            txt.textContent = "1/4 开始读取游戏信息";
+                            const store_items = await getStoreItem(null, subIds, bundleIds);
+                            txt.textContent = "2/4 读取游戏信息成功";
+
+                            for (let { purchase_options } of store_items) {
+                                if (!purchase_options) { continue; }
+
+                                for (let { packageid, bundleid, purchase_option_name, discount_pct } of purchase_options) {
+                                    let key;
+                                    if (packageid) {
+                                        key = `sub/${packageid}`;
+                                    } else if (bundleid) {
+                                        key = `bundle/${bundleid}`;
+                                    }
+                                    else {
+                                        continue;
+                                    }
+                                    gameNames[key] = [`${purchase_option_name}`, discount_pct];
                                 }
                             }
-                        }
-                        console.info(subInfos);
-                        resolve(subInfos);
-                    } else {
-                        reject(t("networkRequestError"));
-                    }
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
-    }
-    //添加购物车,只支持subID和bundleID
-    function addCart(type = "sub", subID, appID = null) {
-        window.localStorage["fac_subid"] = subID;
-        return new Promise((resolve, reject) => {
-            let data = {
-                action: "add_to_cart",
-                originating_snr: "1_store-navigation__",
-                sessionid: document.cookie.replace(
-                    /(?:(?:^|.*;\s*)sessionid\s*\=\s*([^;]*).*$)|^.*$/,
-                    "$1"
-                ),
-                snr: "1_5_9__403",
-            };
-            data[`${type}id`] = String(subID);
-            let s = "";
-            for (let k in data) {
-                s += `${k}=${encodeURIComponent(data[k])}&`;
-            }
-            fetch("https://store.steampowered.com/cart/", {
-                method: "POST",
-                credentials: "include",
-                body: s,
-                headers: {
-                    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-                },
-            })
-                .then(async (response) => {
-                    if (response.ok) {
-                        let data = await response.text();
-                        if (appID !== null) {
-                            const regIfSucc = new RegExp("app/" + appID);
-                            if (data.search(regIfSucc) !== -1) {
-                                resolve([true, t("addCartSuccess")]);
-                            } else {
-                                resolve([false, t("addCartError")]);
+
+                            txt.textContent = "3/4 解析游戏信息成功";
+                            txt.textContent = "3/4 开始导出购物车信息";
+                            if (line_items) {
+                                for (let { packageid, bundleid, price_when_added: { formatted_amount } } of line_items) {
+                                    let key;
+                                    if (packageid) {
+                                        key = `sub/${packageid}`;
+                                    } else if (bundleid) {
+                                        key = `bundle/${bundleid}`;
+                                    }
+                                    const [name, discount] = gameNames[key] ?? "_";
+                                    if (discount) {
+                                        result.push(`${key} #${name} 💳 ${formatted_amount} 🔖 ${discount}`)
+                                    } else if (!onlyOnsale) {
+                                        result.push(`${key} #${name} 💳 ${formatted_amount}`)
+                                    }
+                                }
                             }
+
+                            txt.textContent = "3/4 导出购物车信息成功";
+                            dialog.Dismiss();
+
+                            resolve(result.join("\n"));
+
                         } else {
-                            resolve([true, t("addCartSuccess")]);
+                            txt.textContent = "4/4 购物车内容为空";
+                            resolve(result.join("\n"));
                         }
+
+                    } catch (err) {
+                        txt.textContent = "读取账号购物车失败";
+                        console.error(err);
+                        resolve(result.join("\n"));
+                    }
+                }
+            }, 200);
+        });
+    }
+
+    // 获取游戏详情
+    function getStoreItem(appIds = null, subIds = null, bundleIds = null) {
+        return new Promise((resolve, reject) => {
+            const ids = [];
+            if (appIds) {
+                for (let x of appIds) {
+                    ids.push({ appid: x });
+                }
+            }
+            if (subIds) {
+                for (let x of subIds) {
+                    ids.push({ packageid: x });
+                }
+            }
+            if (bundleIds) {
+                for (let x of bundleIds) {
+                    ids.push({ bundleid: x });
+                }
+            }
+
+            if (ids.length === 0) {
+                reject([false, "未提供有效ID"]);
+            }
+
+            const payload = {
+                ids,
+                context: {
+                    language: storeLanguage,
+                    country_code: userCountry,
+                    steam_realm: "1"
+                },
+                data_request: {
+                    include_all_purchase_options: true
+                }
+            };
+            const json = encodeURI(JSON.stringify(payload));
+            fetch(
+                `https://api.steampowered.com/IStoreBrowseService/GetItems/v1/?input_json=${json}`,
+                {
+                    method: "GET",
+                }
+            )
+                .then(async (response) => {
+                    if (response.ok) {
+                        const { response: { store_items } } = await response.json();
+                        resolve(store_items);
                     } else {
-                        resolve([false, t("networkRequestError")]);
+                        reject(t("networkRequestError"));
                     }
                 })
                 .catch((err) => {
-                    console.error(err);
-                    resolve([false, `${t("unknownError")}: ${err}`]);
+                    reject(err);
                 });
         });
     }
+
+    //读取购物车
+    function getAccountCart() {
+        return new Promise((resolve, reject) => {
+            fetch(
+                `https://api.steampowered.com/IAccountCartService/GetCart/v1/?access_token=${accessToken}`,
+                {
+                    method: "GET",
+                }
+            )
+                .then(async (response) => {
+                    if (response.ok) {
+                        const { response: { cart } } = await response.json();
+                        resolve(cart);
+                    } else {
+                        reject(t("networkRequestError"));
+                    }
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+    //添加购物车
+    function addItemsToAccountCart(subIds = null, bundleIds = null, isPrivate = false) {
+        return new Promise((resolve, reject) => {
+            const items = [];
+            if (subIds) {
+                for (let x of subIds) {
+                    items.push({ packageid: x });
+                }
+            }
+            if (bundleIds) {
+                for (let x of bundleIds) {
+                    items.push({ bundleid: x });
+                }
+            }
+            if (items.length === 0) {
+                reject([false, "未提供有效ID"]);
+            }
+
+            for (let x of items) {
+                x["gift_info"] = null; //giftInfo;
+                x["flags"] = {
+                    is_gift: false,
+                    is_private: isPrivate == true
+                };
+            }
+
+            const payload = {
+                user_country: userCountry,
+                items,
+                navdata: {
+                    domain: "store.steampowered.com",
+                    controller: "default",
+                    method: "default",
+                    submethod: "",
+                    feature: "spotlight",
+                    depth: 1,
+                    countrycode: userCountry,
+                    webkey: 0,
+                    is_client: false,
+                    curator_data: {
+                        clanid: null,
+                        listid: null
+                    },
+                    is_likely_bot: false,
+                    is_utm: false
+                }
+            };
+            const json = JSON.stringify(payload);
+
+            fetch(
+                `https://api.steampowered.com/IAccountCartService/AddItemsToCart/v1/?access_token=${accessToken}`,
+                {
+                    method: "POST",
+                    body: `input_json=${json}`,
+                    headers: {
+                        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                    },
+                }
+            )
+                .then(async (response) => {
+                    if (response.ok) {
+                        const { response: { cart } } = await response.json();
+                        resolve(cart);
+                    } else {
+                        reject(t("networkRequestError"));
+                    }
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+    //删除购物车
+    function deleteAccountCart() {
+        return new Promise((resolve, reject) => {
+            fetch(
+                `https://api.steampowered.com/IAccountCartService/DeleteCart/v1/?access_token=${accessToken}`,
+                {
+                    method: "POST",
+                }
+            )
+                .then(async (response) => {
+                    if (response.ok) {
+                        const { response: { line_item_ids, cart } } = await response.json();
+                        resolve([line_item_ids, cart]);
+                    } else {
+                        reject(t("networkRequestError"));
+                    }
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
     //显示提示
     function showAlert(title, text, succ = true) {
         return ShowAlertDialog(`${succ ? "✅" : "❌"}${title}`, text);
@@ -1149,7 +1084,7 @@
 })();
 
 GM_addStyle(`
-  button.fac_listbtns {
+button.fac_listbtns {
     display: none;
     position: relative;
     z-index: 100;
@@ -1201,20 +1136,13 @@ GM_addStyle(`
   }
   textarea.fac_inputbox {
     resize: vertical;
-    font-size: 10px;
+    font-size: 12px;
     min-height: 130px;
-  }
-  textarea.fac_diag {
-    height: 150px;
-    width: 600px;
-    resize: vertical;
-    font-size: 10px;
-    margin-bottom: 5px;
-    padding: 5px;
-    background-color: rgba(0, 0, 0, 0.4);
+    width: 98%;
+    background: #3d4450;
     color: #fff;
-    border: 1 px solid #000;
-    border-radius: 3 px;
-    box-shadow: 1px 1px 0px #45556c;
+    padding: 1%;
+    border: gray;
+    border-radius: 5px;
   }
 `);

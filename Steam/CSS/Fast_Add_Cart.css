@@ -50,19 +50,12 @@ button.fac_choose {
 }
 textarea.fac_inputbox {
   resize: vertical;
-  font-size: 10px;
+  font-size: 12px;
   min-height: 130px;
-}
-textarea.fac_diag {
-  height: 150px;
-  width: 600px;
-  resize: vertical;
-  font-size: 10px;
-  margin-bottom: 5px;
-  padding: 5px;
-  background-color: rgba(0, 0, 0, 0.4);
+  width: 98%;
+  background: #3d4450;
   color: #fff;
-  border: 1 px solid #000;
-  border-radius: 3 px;
-  box-shadow: 1px 1px 0px #45556c;
+  padding: 1%;
+  border: gray;
+  border-radius: 5px;
 }
