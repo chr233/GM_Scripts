@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         4.1
+// @version         4.2
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -611,7 +611,7 @@
     }
 
     // getStoreItem([730], null, null).then((data) => console.log(data)).catch(err => console.error(err))
-    getAccountCart().then((data) => console.log(data)).catch(err => console.error(err))
+    // getAccountCart().then((data) => console.log(data)).catch(err => console.error(err))
     // addItemsToAccountCart(null, [28627]).then((data) => console.log(data)).catch(err => console.error(err))
 
     //始终在右上角显示购物车按钮
