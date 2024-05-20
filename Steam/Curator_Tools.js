@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.5
+// @version         1.6
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -18,6 +18,8 @@
 (() => {
   "use strict";
   let lastPathname = "";
+  let lastCount = 0;
+
   setInterval(() => {
     if (location.pathname !== lastPathname) {
       lastPathname = location.pathname;
@@ -45,8 +47,9 @@
         }
       } else if (location.pathname.includes("admin/stats")) {
         injectBtn();
+        injectGotoBtn();
 
-        let lastCount = document.querySelectorAll(
+        lastCount = document.querySelectorAll(
           "#RecentReferralsRows td>.ct_div,#TopReferralsRows td>.ct_div"
         ).length;
 
@@ -54,20 +57,7 @@
           "#RecentReferrals_controls>span,#RecentReferrals_controls>span>span,#TopReferrals_controls>span,#TopReferrals_controls>span>span"
         );
         for (let span of spanList) {
-          span.addEventListener("click", () => {
-            const t = setInterval(() => {
-              const count = document.querySelectorAll(
-                "#RecentReferralsRows td>.ct_div,#TopReferralsRows td>.ct_div"
-              ).length;
-              if (count != lastCount) {
-                clearInterval(t);
-                injectBtn();
-                lastCount = document.querySelectorAll(
-                  "#RecentReferralsRows td>.ct_div,#TopReferralsRows td>.ct_div"
-                ).length;
-              }
-            }, 500);
-          });
+          span.addEventListener("click", updateInjectBtn);
         }
       }
     }
@@ -138,6 +128,22 @@
     );
   }
 
+  function updateInjectBtn() {
+    const t = setInterval(() => {
+      const count = document.querySelectorAll(
+        "#RecentReferralsRows td>.ct_div,#TopReferralsRows td>.ct_div"
+      ).length;
+      if (count != lastCount) {
+        clearInterval(t);
+        injectBtn();
+        lastCount = document.querySelectorAll(
+          "#RecentReferralsRows td>.ct_div,#TopReferralsRows td>.ct_div"
+        ).length;
+      }
+    }, 500);
+  }
+
+
   function injectBtn() {
     const tdList = document.querySelectorAll(
       "#RecentReferralsRows>table>tbody>tr>td:last-child,#TopReferralsRows>table>tbody>tr>td:last-child"
@@ -192,6 +198,39 @@
     }
   }
 
+  function injectGotoBtn() {
+    const recentController = new CAjaxPagingControls(g_RecentReferralsPagingData, g_RecentReferralsPagingData['url']);
+    const recentCtn = document.querySelector("#RecentReferrals_ctn > div:nth-child(2)");
+    recentCtn.appendChild(genBtn("跳转到...", "ct_btn2", () => {
+      gotoPage(recentController);
+    }));
+
+    const topController = new CAjaxPagingControls(g_TopReferralsPagingData, g_TopReferralsPagingData['url']);
+    const topCtn = document.querySelector("#TopReferrals_ctn > div:nth-child(2)");
+    topCtn.appendChild(genBtn("跳转到...", "ct_btn2", () => {
+      gotoPage(topController);
+    }));
+  }
+
+  function gotoPage(controller) {
+    const dialog = ShowPromptDialog("请输入页码", "", "跳转", "取消");
+
+    dialog.done((txt) => {
+      const page = parseInt(txt);
+      if (page !== page || page < 1) {
+        showAlert("请输入有效数字", false);
+        return;
+      }
+
+      controller.GoToPage(page - 1, true);
+      updateInjectBtn();
+    });
+
+    dialog.fail(() => {
+      dialog.Dismiss();
+    });
+  }
+
   function showAlert(text, succ = true) {
     return ShowAlertDialog(`${succ ? "✅" : "❌"}`, text);
   }
@@ -227,6 +266,10 @@
 GM_addStyle(`
 .ct_btn {
   padding: 3px;
+  margin-right: 10px;
+}
+.ct_btn2 {
+  padding: 0 3px;
   margin-right: 10px;
 }
 td {
