@@ -1,0 +1,26 @@
+div.panel_szl {
+  float: right;
+  margin-right: 2%;
+  margin-top: -2%;
+  display: inline-flex;
+}
+div.panel_szl > * {
+  margin-left: 6px;
+}
+div.container_szl {
+  align-items: center;
+  display: flex;
+}
+button.btn_szl {
+  width: 75px;
+  border-radius: 2px;
+  border: none;
+  padding: 1px;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none !important;
+  color: #fff !important;
+  background: #acb5bd;
+  background: -webkit-linear-gradient(top, #acb5bd 5%, #414a52 95%);
+  background: linear-gradient(to bottom, #acb5bd 5%, #414a52 95%);
+}
