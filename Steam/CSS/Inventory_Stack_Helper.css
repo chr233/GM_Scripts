@@ -1,0 +1,17 @@
+div.ish_container {
+  display: inline;
+}
+
+div.ish_container > * {
+  margin-right: 10px;
+}
+
+input.ish_inputbox {
+  width: 80px;
+  padding: 5px;
+}
+
+input.ish_short {
+  width: 50px;
+  padding: 5px;
+}
