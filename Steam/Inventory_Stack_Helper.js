@@ -1,18 +1,18 @@
 // ==UserScript==
-// @name:zh-CN      Steam 库存物品堆叠工具
-// @name            Inventory_Stack_Helper
-// @namespace       https://blog.chrxw.com
-// @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
-// @version         1.0
-// @description     Steam 物品堆叠工具
-// @author          Chr_
-// @match           https://steamcommunity.com/profiles/*/inventory*
-// @match           https://steamcommunity.com/id/*/inventory*
-// @license         AGPL-3.0
-// @icon            https://blog.chrxw.com/favicon.ico
-// @grant           GM_registerMenuCommand
-// @grant           GM_addStyle
+// @name:zh-CN         Steam 库存物品堆叠工具
+// @name               Inventory_Stack_Helper
+// @namespace          https://blog.chrxw.com
+// @supportURL         https://blog.chrxw.com/scripts.html
+// @contributionURL    https://afdian.net/@chr233
+// @version            1.1
+// @description        Steam 物品堆叠工具
+// @description:zh-CN  Steam 物品堆叠工具
+// @author             Chr_
+// @match              https://steamcommunity.com/profiles/*/inventory*
+// @match              https://steamcommunity.com/id/*/inventory*
+// @license            AGPL-3.0
+// @icon               https://blog.chrxw.com/favicon.ico
+// @grant              GM_addStyle
 // ==/UserScript==
 
 // 初始化
@@ -113,12 +113,13 @@
         const { iptAppId, iptContextId } = GObjs;
         const { appid, contextid } = g_ActiveInventory;
 
-        if (appid == 753 && contextid == "0") {
-            contextid = "6";
-        }
-
         iptAppId.value = appid ?? "0";
-        iptContextId.value = contextid ?? "2";
+
+        if (appid == 753) {
+            iptContextId.value = "6";
+        } else {
+            iptContextId.value = contextid ?? "2";
+        }
     }
 
     function doStack() {
@@ -164,6 +165,12 @@
 
                     for (let item of assets) {
                         const { classid } = item;
+
+                        // 只处理宝珠和宝珠袋
+                        if (appId === 753 && (classid != "667924416" && classid != "667933237")) {
+                            continue;
+                        }
+
                         if (!itemGroup[classid]) {
                             itemGroup[classid] = [];
                             typeCount++;
@@ -205,6 +212,7 @@
                 spStatus.textContent = "";
                 btnStack.style.display = null;
                 btnUnstack.style.display = null;
+                g_ActiveInventory.m_owner.ReloadInventory(appId, contextId);
             });
     }
 
@@ -248,7 +256,12 @@
                     const itemGroup = [];
 
                     for (let item of assets) {
-                        const { amount } = item;
+                        const { classid, amount } = item;
+
+                        // 只处理宝珠和宝珠袋
+                        if (appId === 753 && (classid != "667924416" && classid != "667933237")) {
+                            continue;
+                        }
 
                         const num = parseInt(amount);
                         if (num > 1) {
@@ -290,6 +303,7 @@
                 spStatus.textContent = "";
                 btnStack.style.display = null;
                 btnUnstack.style.display = null;
+                g_ActiveInventory.m_owner.ReloadInventory(appId, contextId);
             });
     }
 
