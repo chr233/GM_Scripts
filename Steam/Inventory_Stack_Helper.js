@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.net/@chr233
-// @version            1.3
+// @version            1.4
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -196,15 +196,16 @@
                     const totalType = todoList.length;
                     spStatus.textContent = `堆叠中 [种类 0/${totalType} 请求 0/${totalReq} 0.00%]`;
 
-                    let j = 1;
+                    let type = 1;
+                    let req = 1;
                     for (let items of todoList) {
                         for (let i = 1; i < items.length; i++) {
                             await stackItem(iptAppId.value, items[i].assetid, items[0].assetid, items[i].amount);
                             await asyncDelay(delay);
                             const percent = (100 * i / totalReq).toFixed(2);
-                            spStatus.textContent = `堆叠中 [种类 ${j}/${totalType} 请求 ${i}/${totalReq} ${percent}%]`;
+                            spStatus.textContent = `堆叠中 [种类 ${type}/${totalType} 请求 ${req++}/${totalReq} ${percent}%]`;
                         }
-                        j++;
+                        type++;
                     }
 
                 } else {
@@ -285,16 +286,17 @@
 
                     spStatus.textContent = `反堆叠中 [种类 0/${totalType} 请求 0/${totalReq} 0.00%]`;
 
-                    let j = 1;
+                    let type = 1;
+                    let req = 1;
 
                     for (let item of itemGroup) {
                         for (let i = 1; i < item.amount; i++) {
                             await unStackItem(iptAppId.value, item.assetid, 1);
                             await asyncDelay(delay);
                             const percent = (100 * i / totalReq).toFixed(2);
-                            spStatus.textContent = `反堆叠中 [种类 ${j}/${totalType} 请求 ${i}/${totalReq} ${percent}%]`;
+                            spStatus.textContent = `反堆叠中 [种类 ${type}/${totalType} 请求 ${req++}/${totalReq} ${percent}%]`;
                         }
-                        j++;
+                        type++;
                     }
                 } else {
                     ShowAlertDialog("提示", "库存读取失败, 请检查 AppId 和 ContextId 是否填写正确");

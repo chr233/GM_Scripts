@@ -12,6 +12,6 @@ input.ish_inputbox {
 }
 
 input.ish_inputbox:nth-of-type(3),
-input.ish_inputbox:nth-of-type(4){
+input.ish_inputbox:nth-of-type(4) {
   width: 50px;
 }
