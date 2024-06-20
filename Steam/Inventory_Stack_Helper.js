@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.net/@chr233
-// @version            1.1
+// @version            1.2
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -46,10 +46,11 @@
         span.textContent = text;
         return span;
     }
-    function genNumber(value, placeholder, clsName) {
+    function genNumber(value, placeholder, title) {
         const t = document.createElement("input");
-        t.className = clsName ?? "ish_inputbox";
+        t.className = "ish_inputbox";
         t.placeholder = placeholder;
+        t.title = title;
         t.type = "number";
         t.value = value;
         return t;
@@ -62,18 +63,17 @@
         container.className = "ish_container"
         btnArea.insertBefore(container, btnArea.firstChild);
 
-        const iptAppId = genNumber("", "AppId");
-        const iptContextId = genNumber("", "ContextId");
-        const iptDelay = genNumber("500", "延时", "ish_short");
-        const iptAmount = genNumber("500", "数量", "ish_short");
+        const iptAppId = genNumber("", "2923300", "AppId");
+        const iptContextId = genNumber("", "2", "ContextId");
+        const iptDelay = genNumber("500", "延时", "网络请求发送间隔");
+        const iptAmount = genNumber("500", "数量", "加载库存物品数量上限");
 
-        const btnFitInv = genBtn("库存", "设置为当前库存", doFitInventory);
         const btnStack = genBtn("堆叠", "堆叠库存中的物品", doStack);
         const btnUnstack = genBtn("反堆叠", "取消堆叠库存中的物品", doUnstack);
         const btnHelp = genBtn("❓", "查看帮助", doHelp);
         const spStatus = genSpan("");
 
-        container.appendChild(btnFitInv);
+        container.appendChild(genSpan("库存"));
         container.appendChild(iptAppId);
         container.appendChild(iptContextId);
 
@@ -87,7 +87,14 @@
         container.appendChild(btnHelp);
         container.appendChild(spStatus);
 
-        return { iptAppId, iptContextId, iptDelay, iptAmount, btnFitInv, btnStack, btnUnstack, spStatus };
+        document.querySelectorAll('div.games_list_tabs>a').forEach(tab => {
+            tab.addEventListener("click", doFitInventory);
+        });
+
+        document.querySelector("#responsive_inventory_select")?.addEventListener("change", doFitInventory);
+
+
+        return { iptAppId, iptContextId, iptDelay, iptAmount, btnStack, btnUnstack, btnHelp, spStatus };
     }
 
     function doHelp() {
@@ -102,7 +109,7 @@
                 "<p>【上限】: 读取库存物品的数量上限, 默认为 500, 如果物品很多, 可以按照实际情况适当调大</p>",
                 "<p>【堆叠】: 将指定库存中的同类物品堆叠到一起</p>",
                 "<p>【反堆叠】: 将指定库存中的已堆叠物品拆分成单个物品</p>",
-                `<p>【<a href="https://keylol.com/t747892-1-1" target="_blank">发布帖</a>】 【<a href="https://blog.chrxw.com/scripts.html" target="_blank">脚本反馈</a>】</p>`,
+                `<p>【<a href="https://keylol.com/t954659-1-1" target="_blank">发布帖</a>】 【<a href="https://blog.chrxw.com/scripts.html" target="_blank">脚本反馈</a>】</p>`,
                 `<p>【Developed by <a href="https://steamcommunity.com/id/Chr_" target="_blank">Chr_</a>】 【当前版本 ${version}】</p>`,
             ].join("<br>")
 
@@ -123,7 +130,7 @@
     }
 
     function doStack() {
-        const { iptAppId, iptContextId, iptDelay, iptAmount, btnStack, btnUnstack, spStatus } = GObjs;
+        const { iptAppId, iptContextId, iptDelay, iptAmount, btnStack, btnUnstack, btnHelp, spStatus } = GObjs;
 
         const appId = parseInt(iptAppId.value);
         const contextId = parseInt(iptContextId.value);
@@ -149,6 +156,7 @@
         spStatus.textContent = "堆叠中 [正在加载库存]";
         btnStack.style.display = "none";
         btnUnstack.style.display = "none";
+        btnHelp.style.display = "none";
 
         loadInventory(appId, contextId, amount)
             .then(async (inv) => {
@@ -161,8 +169,6 @@
                 if (assets) {
                     const itemGroup = {};
 
-                    let typeCount = 0;
-
                     for (let item of assets) {
                         const { classid } = item;
 
@@ -173,28 +179,30 @@
 
                         if (!itemGroup[classid]) {
                             itemGroup[classid] = [];
-                            typeCount++;
                         }
                         itemGroup[classid].push(item);
                     }
 
-                    spStatus.textContent = `堆叠中 [0/${typeCount} 0%]`;
-
-                    let j = 1;
-
+                    let totalReq = 0;
+                    const todoList = [];
                     for (let classId in itemGroup) {
                         const items = itemGroup[classId];
-
-                        if (items.length <= 1) {
-                            spStatus.textContent = `堆叠中 [${j++}/${typeCount} 100%]`;
-                            continue;
+                        if (items.length > 1) {
+                            todoList.push(items);
+                            totalReq += items.length - 1;
                         }
+                    }
 
+                    const totalType = todoList.length;
+                    spStatus.textContent = `堆叠中 [种类 0/${totalType} 请求 0/${totalReq} 0.00%]`;
+
+                    let j = 1;
+                    for (let items of todoList) {
                         for (let i = 1; i < items.length; i++) {
                             await stackItem(iptAppId.value, items[i].assetid, items[0].assetid, items[i].amount);
                             await asyncDelay(delay);
                             const percent = (100 * i / items.length).toFixed(2);
-                            spStatus.textContent = `堆叠中 [${j}/${typeCount} ${percent}%]`;
+                            spStatus.textContent = `堆叠中 [种类 ${j}/${totalType} 请求 ${i}/${totalReq} ${percent}%]`;
                         }
                         j++;
                     }
@@ -212,12 +220,13 @@
                 spStatus.textContent = "";
                 btnStack.style.display = null;
                 btnUnstack.style.display = null;
+                btnHelp.style.display = null;
                 g_ActiveInventory.m_owner.ReloadInventory(appId, contextId);
             });
     }
 
     function doUnstack() {
-        const { iptAppId, iptContextId, iptDelay, iptAmount, btnStack, btnUnstack, spStatus } = GObjs;
+        const { iptAppId, iptContextId, iptDelay, iptAmount, btnStack, btnUnstack, btnHelp, spStatus } = GObjs;
 
         const appId = parseInt(iptAppId.value);
         const contextId = parseInt(iptContextId.value);
@@ -243,6 +252,7 @@
         spStatus.textContent = "反堆叠中 [正在加载库存]";
         btnStack.style.display = "none";
         btnUnstack.style.display = "none";
+        btnHelp.style.display = "none";
 
         loadInventory(appId, contextId, amount)
             .then(async (inv) => {
@@ -254,7 +264,7 @@
                 const { assets } = inv;
                 if (assets) {
                     const itemGroup = [];
-
+                    let totalReq = 0;
                     for (let item of assets) {
                         const { classid, amount } = item;
 
@@ -267,26 +277,22 @@
                         if (num > 1) {
                             item.amount = num;
                             itemGroup.push(item);
+                            totalReq += num - 1;
                         }
                     }
 
-                    const typeCount = itemGroup.length;
+                    const totalType = itemGroup.length;
 
-                    spStatus.textContent = `反堆叠中 [0/${typeCount} 0%]`;
+                    spStatus.textContent = `反堆叠中 [种类 0/${totalType} 请求 0/${totalReq} 0.00%]`;
 
                     let j = 1;
 
                     for (let item of itemGroup) {
-                        if (item.amount <= 1) {
-                            spStatus.textContent = `反堆叠中 [${j++}/${typeCount} 100%]`;
-                            continue;
-                        }
-
                         for (let i = 1; i < item.amount; i++) {
                             await unStackItem(iptAppId.value, item.assetid, 1);
                             await asyncDelay(delay);
                             const percent = (100 * i / item.amount).toFixed(2);
-                            spStatus.textContent = `反堆叠中 [${j}/${typeCount} ${percent}%]`;
+                            spStatus.textContent = `反堆叠中 [种类 ${j}/${totalType} 请求 ${i}/${totalReq} ${percent}%]`;
                         }
                         j++;
                     }
@@ -303,6 +309,7 @@
                 spStatus.textContent = "";
                 btnStack.style.display = null;
                 btnUnstack.style.display = null;
+                btnHelp.style.display = null;
                 g_ActiveInventory.m_owner.ReloadInventory(appId, contextId);
             });
     }
@@ -368,7 +375,7 @@
                 })
                 .catch((err) => {
                     console.error(err);
-                    reject(`确认付款失败 ${err}`);
+                    reject(`堆叠物品失败 ${err}`);
                 });
         });
     }
@@ -395,7 +402,7 @@
                 })
                 .catch((err) => {
                     console.error(err);
-                    reject(`确认付款失败 ${err}`);
+                    reject(`取消堆叠物品失败 ${err}`);
                 });
         });
     }
@@ -407,16 +414,16 @@ div.ish_container {
 }
 
 div.ish_container > * {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 input.ish_inputbox {
-  width: 80px;
+  width: 70px;
   padding: 5px;
 }
 
-input.ish_short {
+input.ish_inputbox:nth-of-type(3),
+input.ish_inputbox:nth-of-type(4){
   width: 50px;
-  padding: 5px;
 }
 `);
