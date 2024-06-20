@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.net/@chr233
-// @version            1.2
+// @version            1.3
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -201,7 +201,7 @@
                         for (let i = 1; i < items.length; i++) {
                             await stackItem(iptAppId.value, items[i].assetid, items[0].assetid, items[i].amount);
                             await asyncDelay(delay);
-                            const percent = (100 * i / items.length).toFixed(2);
+                            const percent = (100 * i / totalReq).toFixed(2);
                             spStatus.textContent = `堆叠中 [种类 ${j}/${totalType} 请求 ${i}/${totalReq} ${percent}%]`;
                         }
                         j++;
@@ -291,7 +291,7 @@
                         for (let i = 1; i < item.amount; i++) {
                             await unStackItem(iptAppId.value, item.assetid, 1);
                             await asyncDelay(delay);
-                            const percent = (100 * i / item.amount).toFixed(2);
+                            const percent = (100 * i / totalReq).toFixed(2);
                             spStatus.textContent = `反堆叠中 [种类 ${j}/${totalType} 请求 ${i}/${totalReq} ${percent}%]`;
                         }
                         j++;
