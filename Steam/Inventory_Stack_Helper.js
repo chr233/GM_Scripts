@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.net/@chr233
-// @version            1.5
+// @version            1.6
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -30,6 +30,7 @@
 
     const GObjs = addPanel();
     loadSetting();
+    doFitInventory();
 
     //==================================================================================================
 
@@ -92,7 +93,6 @@
         });
 
         document.querySelector("#responsive_inventory_select")?.addEventListener("change", doFitInventory);
-
 
         return { iptAppId, iptContextId, iptDelay, iptAmount, btnStack, btnUnstack, btnHelp, spStatus };
     }
@@ -193,21 +193,24 @@
                         }
                     }
 
-                    const totalType = todoList.length;
-                    spStatus.textContent = `堆叠中 [种类 0/${totalType} 请求 0/${totalReq} 0.00%]`;
+                    if (totalReq > 0) {
+                        const totalType = todoList.length;
+                        spStatus.textContent = `堆叠中 [种类 0/${totalType} 请求 0/${totalReq} 0.00%]`;
 
-                    let type = 1;
-                    let req = 1;
-                    for (let items of todoList) {
-                        for (let i = 1; i < items.length; i++) {
-                            await stackItem(iptAppId.value, items[i].assetid, items[0].assetid, items[i].amount);
-                            await asyncDelay(delay);
-                            const percent = (100 * req / totalReq).toFixed(2);
-                            spStatus.textContent = `堆叠中 [种类 ${type}/${totalType} 请求 ${req++}/${totalReq} ${percent}%]`;
+                        let type = 1;
+                        let req = 1;
+                        for (let items of todoList) {
+                            for (let i = 1; i < items.length; i++) {
+                                await stackItem(iptAppId.value, items[i].assetid, items[0].assetid, items[i].amount);
+                                await asyncDelay(delay);
+                                const percent = (100 * req / totalReq).toFixed(2);
+                                spStatus.textContent = `堆叠中 [种类 ${type}/${totalType} 请求 ${req++}/${totalReq} ${percent}%]`;
+                            }
+                            type++;
                         }
-                        type++;
                     }
 
+                    ShowAlertDialog("提示", totalReq > 0 ? "堆叠操作完成" : "无可堆叠物品");
                 } else {
                     ShowAlertDialog("提示", "库存读取失败, 请检查 AppId 和 ContextId 是否填写正确");
                 }
@@ -217,7 +220,6 @@
                 console.error(err);
             })
             .finally(() => {
-                ShowAlertDialog("提示", "堆叠操作完成");
                 spStatus.textContent = "";
                 btnStack.style.display = null;
                 btnUnstack.style.display = null;
@@ -282,22 +284,26 @@
                         }
                     }
 
-                    const totalType = itemGroup.length;
+                    if (totalReq > 0) {
+                        const totalType = itemGroup.length;
 
-                    spStatus.textContent = `反堆叠中 [种类 0/${totalType} 请求 0/${totalReq} 0.00%]`;
+                        spStatus.textContent = `反堆叠中 [种类 0/${totalType} 请求 0/${totalReq} 0.00%]`;
 
-                    let type = 1;
-                    let req = 1;
+                        let type = 1;
+                        let req = 1;
 
-                    for (let item of itemGroup) {
-                        for (let i = 1; i < item.amount; i++) {
-                            await unStackItem(iptAppId.value, item.assetid, 1);
-                            await asyncDelay(delay);
-                            const percent = (100 * req / totalReq).toFixed(2);
-                            spStatus.textContent = `反堆叠中 [种类 ${type}/${totalType} 请求 ${req++}/${totalReq} ${percent}%]`;
+                        for (let item of itemGroup) {
+                            for (let i = 1; i < item.amount; i++) {
+                                await unStackItem(iptAppId.value, item.assetid, 1);
+                                await asyncDelay(delay);
+                                const percent = (100 * req / totalReq).toFixed(2);
+                                spStatus.textContent = `反堆叠中 [种类 ${type}/${totalType} 请求 ${req++}/${totalReq} ${percent}%]`;
+                            }
+                            type++;
                         }
-                        type++;
                     }
+
+                    ShowAlertDialog("提示", totalReq > 0 ? "反堆叠操作完成" : "无可反堆叠物品");
                 } else {
                     ShowAlertDialog("提示", "库存读取失败, 请检查 AppId 和 ContextId 是否填写正确");
                 }
@@ -307,7 +313,6 @@
                 console.error(err);
             })
             .finally(() => {
-                ShowAlertDialog("提示", "反堆叠操作完成");
                 spStatus.textContent = "";
                 btnStack.style.display = null;
                 btnUnstack.style.display = null;
@@ -318,16 +323,16 @@
 
     function loadSetting() {
         const { iptAppId, iptContextId, iptDelay, iptAmount } = GObjs;
-        iptAppId.value = localStorage.getItem("ish_appId") ?? "";
-        iptContextId.value = localStorage.getItem("ish_contextId") ?? "";
+        // iptAppId.value = localStorage.getItem("ish_appId") ?? "";
+        // iptContextId.value = localStorage.getItem("ish_contextId") ?? "";
         iptDelay.value = localStorage.getItem("ish_delay") ?? "500";
         iptAmount.value = localStorage.getItem("ish_amount") ?? "500";
     }
 
     function saveSetting() {
         const { iptAppId, iptContextId, iptDelay, iptAmount } = GObjs;
-        localStorage.setItem("ish_appId", iptAppId.value);
-        localStorage.setItem("ish_contextId", iptContextId.value);
+        // localStorage.setItem("ish_appId", iptAppId.value);
+        // localStorage.setItem("ish_contextId", iptContextId.value);
         localStorage.setItem("ish_delay", iptDelay.value);
         localStorage.setItem("ish_amount", iptAmount.value);
     }
