@@ -4,11 +4,11 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.0
+// @version         1.1
 // @description     优化回收流程
-// @description:zh-CN  优化回收流程
+// @description:zh-CN  添加删除按钮
 // @author          Chr_
-// @include         https://www.dailyindiegame.com/account_page.html
+// @include         https://www.dailyindiegame.com/account_*.html
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
 // @grant           GM_addStyle
@@ -47,9 +47,6 @@
         const [lblAlert, chkAlert] = genChk("直接回收", "回收前是否弹出提示框", false);
         const btnAllTradeIn = genBtn("全部回收", "回收所有选中的游戏", doTradeIn);
 
-        document.body.appendChild(lblAlert);
-        document.body.appendChild(btnAllTradeIn);
-
         const tradeInLinks = document.querySelectorAll("a[href^='account_buyback']");
         for (let link of tradeInLinks) {
             const href = link.href;
@@ -77,7 +74,7 @@
             }
 
             for (let link of tradeInLinks) {
-                if(link.disabled){
+                if (link.disabled) {
                     continue;
                 }
 
@@ -87,6 +84,11 @@
                     link.disabled = true;
                 }
             }
+        }
+
+        if (tradeInLinks.length > 0) {
+            document.body.appendChild(lblAlert);
+            document.body.appendChild(btnAllTradeIn);
         }
     }
 
