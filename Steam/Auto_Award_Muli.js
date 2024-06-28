@@ -2,7 +2,7 @@
 // @name         Auto_Award_Muli
 // @name:zh-CN   Steam自动打赏【极速多账户版】
 // @namespace    https://blog.chrxw.com
-// @version      2.1
+// @version      2.2
 // @description  Steam自动打赏 — 极速多账户版
 // @description:zh-CN  Steam自动打赏 — 极速多账户版
 // @author       Chr_
@@ -948,18 +948,17 @@
         if (bot == '') {
             // 未选择机器人则自动使用当前登录账号
             loadScreen(true, t('fetchLoginAccount'));
-            steamID = g_steamID;
             const nick = document.querySelector("#account_pulldown")?.textContent?.trim();
-            if (steamID && nick) {
+            if (g_steamID && nick) {
                 try {
                     loadScreen(true, t('fetchToken'));
                     const token = await getToken();
                     loadScreen(true, t('fetchPoints'));
-                    const points = await getPoints(steamID, token);
-                    GBots[steamID] = { nick: nick, token: token, points }
+                    const points = await getPoints(g_steamID, token);
+                    GBots[g_steamID] = { nick: nick, token: token, points }
                     GM_setValue('bots', GBots);
                     flashBotList();
-                    bot = steamID;
+                    bot = g_steamID;
                 } catch (reason) {
                     showAlert(t('error'), reason, false);
                 } finally {
@@ -1159,7 +1158,7 @@
                         const [succNew, newReactions] = await getAwardRecords(token, target_type, steamID);
                         if (!succNew) {
                             print(t('fetchAwardItemFailedRetryIn2Min'));
-                            await aiosleep(2000);
+                            await aiosleep(2500);
                             continue;
                         }
                         const diffReactions = filterDiffReactions(newReactions, GoldReactions);
@@ -1207,7 +1206,7 @@
                             page--;
                             if (++j < 3) {
                                 print(t('fetchAwardItemFailedRetryIn2Min'));
-                                await aiosleep(2000);
+                                await aiosleep(2500);
                                 continue;
                             } else {
                                 print(t('fetchAwardItemFailedSkip'));
@@ -1299,7 +1298,7 @@
                     }
                 }
                 if (workflow.length > 0) {
-                    await aiosleep(1000);
+                    await aiosleep(1500);
                 }
             }
         } else {
