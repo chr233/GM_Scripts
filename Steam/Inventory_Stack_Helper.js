@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.net/@chr233
-// @version            1.7
+// @version            1.8
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -350,28 +350,42 @@
             fetch(`https://steamcommunity.com/inventory/${g_steamID}/${appId}/${contextId}?l=${g_strLanguage}&count=${count}`)
                 .then(async (response) => {
                     response.json().then(json => {
-                        resolve(json);
-                    })
-                })
-                .catch((err) => {
-                    fetch(`https://steamcommunity.com/inventory/${g_steamID}/${appId}/${contextId}?l=${g_strLanguage}&count=${count}`)
-                        .then(async (response) => {
-                            response.json().then(json => {
-                                resolve(json);
-                            })
-                        })
-                        .catch((err) => {
+                        if (json) {
+                            resolve(json);
+                        } else {
                             fetch(`https://steamcommunity.com/inventory/${g_steamID}/${appId}/${contextId}?l=${g_strLanguage}&count=${count}`)
                                 .then(async (response) => {
                                     response.json().then(json => {
-                                        resolve(json);
+                                        if (json) {
+                                            resolve(json);
+                                        } else {
+                                            fetch(`https://steamcommunity.com/inventory/${g_steamID}/${appId}/${contextId}?l=${g_strLanguage}&count=${count}`)
+                                                .then(async (response) => {
+                                                    response.json().then(json => {
+                                                        if (json) {
+                                                            resolve(json);
+                                                        } else {
+
+                                                        }
+                                                    })
+                                                })
+                                                .catch((err) => {
+                                                    console.error(err);
+                                                    reject(`读取库存失败 ${err}`);
+                                                });
+                                        }
                                     })
                                 })
                                 .catch((err) => {
                                     console.error(err);
                                     reject(`读取库存失败 ${err}`);
                                 });
-                        });
+                        }
+                    })
+                })
+                .catch((err) => {
+                    console.error(err);
+                    reject(`读取库存失败 ${err}`);
                 });
         })
     }
