@@ -4,7 +4,7 @@
 // @namespace           https://blog.chrxw.com
 // @supportURL          https://blog.chrxw.com/scripts.html
 // @contributionURL     https://afdian.net/@chr233
-// @version             1.36
+// @version             1.37
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -22,11 +22,6 @@
   "use strict";
   const DEBUG = window.localStorage["dbg_mode"] == "开";
   const OUTPUT = window.localStorage["out_word"] == "开";
-
-  if (location.search.includes("__cf_chl_tk")) {
-    console.log("检测到CF盾, 不执行脚本");
-    return;
-  }
 
   GM_registerMenuCommand(`调试汉化文本: 【${DEBUG ? "开" : "关"}】`, () => {
     window.localStorage["dbg_mode"] = DEBUG ? "关" : "开";
@@ -198,7 +193,7 @@
     const scriptLink = document.createElement("li");
     scriptLink.innerHTML = `<a href="https://blog.chrxw.com" target="_blank">SteamDB 汉化 V${version}</a>`;
     headerUl?.appendChild(scriptLink);
-    footerUl.appendChild(scriptLink.cloneNode(true));
+    footerUl?.appendChild(scriptLink.cloneNode(true));
   }, 500);
 
   // 添加样式
