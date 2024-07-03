@@ -4,9 +4,9 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.0
-// @description     按照共同群组或者隐私设置管理好友
-// @description:zh-CN  按照共同群组或者隐私设置管理好友
+// @version         1.1
+// @description     按照共同群组管理好友
+// @description:zh-CN  按照共同群组管理好友
 // @author          Chr_
 // @include         https://steamcommunity.com/id/*/friends/
 // @include         https://steamcommunity.com/profiles/*/friends/
@@ -83,9 +83,6 @@
                 }
             }
         }
-
-        console.log(friendList);
-
     }
 
     function enforceToManageMode() {
@@ -100,7 +97,6 @@
             const eles = document.querySelectorAll("#search_results>.friend_block_v2.selected");
 
             if (eles.length > 0) {
-
                 ShowConfirmDialog(
                     "需要如何处理已经勾选的项目?",
                     "",
@@ -120,6 +116,8 @@
                     }
                     resolve();
                 });
+            }else{
+                resolve();
             }
         });
     }
