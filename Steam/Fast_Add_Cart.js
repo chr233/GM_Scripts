@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         4.2
+// @version         4.3
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -627,7 +627,7 @@
 
         return new Promise(async (resolve, reject) => {
             const dialog = showAlert(
-                "导出购物车",
+                "导入购物车",
                 `<h2 id="fac_diag" class="fac_diag">${t("operation")}</h2>`,
                 true
             );
