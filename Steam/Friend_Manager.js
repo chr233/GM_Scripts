@@ -8,88 +8,138 @@
 // @description     按照共同群组或者隐私设置管理好友
 // @description:zh-CN  按照共同群组或者隐私设置管理好友
 // @author          Chr_
-// @include         https://store.steampowered.com/curator/*
+// @include         https://steamcommunity.com/id/*/friends/
+// @include         https://steamcommunity.com/profiles/*/friends/
+// @include         https://steamcommunity.com/id/*/friends
+// @include         https://steamcommunity.com/profiles/*/friends
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
-// @grant           GM_addStyle
+// @grant           GM_registerMenuCommand
 // ==/UserScript==
 
 // 初始化
 (() => {
     "use strict";
-    let lastPathname = "";
-    let lastCount = 0;
 
-    setInterval(() => {
-        if (location.pathname !== lastPathname) {
-            lastPathname = location.pathname;
+    GM_registerMenuCommand("选择在群组中的好友", () => doSelectInGroup(true));
+    GM_registerMenuCommand("选择不在群组中的好友", () => doSelectInGroup(false));
 
-            if (location.pathname.includes("admin/review_create")) {
-                const [_, curator, appid] = lastPathname.match(
-                    /\/curator\/([^\/]+)\/admin\/review_create\/(\d+)/
-                ) ?? [null, null, null];
+    async function doSelectInGroup(mode) {
+        enforceToManageMode();
+        await showOperationDialog();
 
-                if (curator !== null && appid !== null) {
-                    const btnArea = document.querySelector("div.titleframe");
-                    const btn = genBtn(
-                        "删除该评测",
-                        "ct_btn",
-                        async () => await deleteReview(curator, appid)
-                    );
-                    btnArea.appendChild(btn);
-                    const link = genA("https://store.steampowered.com/app/" + appid);
-                    const btn2 = genBtn(
-                        "商店页",
-                        "ct_btn"
-                    );
-                    link.appendChild(btn2);
-                    btnArea.appendChild(link);
-                }
-            } else if (location.pathname.includes("admin/stats")) {
-                injectBtn();
-                injectGotoBtn();
+        const groupLink = await showInputGroupLinkDialog();
+        const match = groupLink.match(/^(?:https:\/\/steamcommunity\.com\/groups\/)?([^/\s]+)\/?/)
 
-                lastCount = document.querySelectorAll(
-                    "#RecentReferralsRows td>.ct_div,#TopReferralsRows td>.ct_div"
-                ).length;
+        if (!match) {
+            ShowAlertDialog("提示", "群组链接错误, 无法完成操作");
+            return;
+        }
 
-                const spanList = document.querySelectorAll(
-                    "#RecentReferrals_controls>span,#RecentReferrals_controls>span>span,#TopReferrals_controls>span,#TopReferrals_controls>span>span"
-                );
-                for (let span of spanList) {
-                    span.addEventListener("click", updateInjectBtn);
+        const group = match[1];
+
+        const friendList = new Set();
+
+        let page = 1;
+        let dialog = ShowDialog("提示", `正在读取共同好友列表, 第 ${page} 页, 已读取 ${friendList.size} 个好友`);
+        while (true) {
+            const result = await getGroupFriendList(group, page++);
+            for (let id of result) {
+                friendList.add(id);
+            }
+
+            dialog?.Dismiss();
+            if (result.length < 51) {
+                dialog = ShowDialog("提示", `读取完成, 共读取 ${friendList.size} 个好友`);
+                setTimeout(() => {
+                    dialog?.Dismiss();
+                }, 1000);
+                break;
+            } else {
+                dialog = ShowDialog("提示", `正在读取共同好友列表, 第 ${page} 页, 已读取 ${friendList.size} 个好友`);
+            }
+        }
+
+        if (friendList.size === 0) {
+            ShowAlertDialog("提示", "未获取到共同好友, 群组链接可能无效");
+            return;
+        }
+
+        const eles = document.querySelectorAll("#search_results>.friend_block_v2");
+        const regex = /steamcommunity\.com\/((?:id\/[^"]+)|(?:profiles\/\d+))/;
+        for (let ele of eles) {
+            const profileLink = ele.querySelector("a")?.href;
+            if (profileLink) {
+                const m = profileLink.match(regex);
+                if (m) {
+                    const id = m[1];
+                    if (mode === friendList.has(id)) {
+                        ele.classList.add("selected");
+                        const input = ele.querySelector("div.indicator.select_friend>input");
+                        if (input) {
+                            input.checked = true;
+                        }
+                    }
                 }
             }
         }
-    }, 500);
 
-    function genBtn(text, cls, foo) {
-        const btn = document.createElement("button");
-        btn.textContent = text;
-        btn.className = cls;
-        btn.addEventListener("click", foo);
-        return btn;
-    }
-    function genA(url) {
-        const a = document.createElement("a");
-        a.href = url;
-        a.target = "_blank";
-        return a;
-    }
-    function genDiv(cls) {
-        const div = document.createElement("div");
-        div.className = cls;
-        return div;
-    }
-    function genSpan(name) {
-        const span = document.createElement("span");
-        span.textContent = name;
-        return span;
+        console.log(friendList);
+
     }
 
+    function enforceToManageMode() {
+        const ele = document.querySelector("#search_results>.friend_block_v2");
+        if (!ele.classList.contains("manage")) {
+            ToggleManageFriends();
+        }
+    }
+
+    function showOperationDialog() {
+        return new Promise((resolve, reject) => {
+            const eles = document.querySelectorAll("#search_results>.friend_block_v2.selected");
+
+            if (eles.length > 0) {
+
+                ShowConfirmDialog(
+                    "需要如何处理已经勾选的项目?",
+                    "",
+                    "不做处理",
+                    "取消勾选"
+                ).done(() => {
+                    resolve();
+                }).fail((bool) => {
+                    if (bool) {
+                        for (let ele of eles) {
+                            ele.classList.remove("selected");
+                            const input = ele.querySelector("div.indicator.select_friend>input");
+                            if (input) {
+                                input.checked = false;
+                            }
+                        }
+                    }
+                    resolve();
+                });
+            }
+        });
+    }
+
+    function showInputGroupLinkDialog() {
+        return new Promise((resolve, reject) => {
+            ShowPromptDialog(
+                "请输入群组链接",
+                "例如 https://steamcommunity.com/groups/keylol-player-club",
+                "查找好友"
+            ).done((text) => {
+                resolve(text.trim());
+            }).fail(() => {
+                resolve(null);
+            });
+        });
+    }
 
     //读取群组共同好友
-    function getReviewType(group, page = 1) {
+    function getGroupFriendList(group, page = 1) {
         return new Promise((resolve, reject) => {
             fetch(`https://steamcommunity.com/groups/${group}/members/?friends=1&p=${page}`, {
                 method: "GET",
@@ -127,29 +177,3 @@
     }
 })();
 
-GM_addStyle(`
-  .ct_btn {
-    padding: 3px;
-    margin-right: 10px;
-  }
-  .ct_btn2 {
-    padding: 0 3px;
-    margin-right: 10px;
-  }
-  td {
-    height: 100%;
-  }
-  .ct_div {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    height: 25px;
-    width: 40px;
-  }
-  tr > td > .ct_div > .ct_btn {
-    display: none;
-  }
-  tr:hover > td > .ct_div > .ct_btn {
-    display: block;
-  }
-  `);
