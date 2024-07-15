@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.net/@chr233
-// @version            1.8
+// @version            1.9
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -64,6 +64,10 @@
         container.className = "ish_container"
         btnArea.insertBefore(container, btnArea.firstChild);
 
+        const hiddenContainer = document.createElement("div");
+        hiddenContainer.style.display="none";
+        container.appendChild(hiddenContainer);
+
         const iptAppId = genNumber("", "2923300", "AppId");
         const iptContextId = genNumber("", "2", "ContextId");
         const iptDelay = genNumber("500", "延时", "网络请求发送间隔");
@@ -74,14 +78,14 @@
         const btnHelp = genBtn("❓", "查看帮助", doHelp);
         const spStatus = genSpan("");
 
-        container.appendChild(genSpan("库存"));
-        container.appendChild(iptAppId);
-        container.appendChild(iptContextId);
+        hiddenContainer.appendChild(genSpan("库存"));
+        hiddenContainer.appendChild(iptAppId);
+        hiddenContainer.appendChild(iptContextId);
 
-        container.appendChild(genSpan("延时"));
-        container.appendChild(iptDelay);
-        container.appendChild(genSpan("上限"));
-        container.appendChild(iptAmount);
+        hiddenContainer.appendChild(genSpan("延时"));
+        hiddenContainer.appendChild(iptDelay);
+        hiddenContainer.appendChild(genSpan("上限"));
+        hiddenContainer.appendChild(iptAmount);
 
         container.appendChild(btnStack);
         container.appendChild(btnUnstack);
@@ -104,9 +108,6 @@
 
         ShowAlertDialog("帮助",
             [
-                "<p>【库存】: 获取当前激活的库存, 自动填入 AppId 和 ContextId</p>",
-                "<p>【延时】: 发送每个网络请求之间的间隔, 建议设置为 100 以上</p>",
-                "<p>【上限】: 读取库存物品的数量上限, 默认为 500, 如果物品很多, 可以按照实际情况适当调大</p>",
                 "<p>【堆叠】: 将指定库存中的同类物品堆叠到一起</p>",
                 "<p>【反堆叠】: 将指定库存中的已堆叠物品拆分成单个物品</p>",
                 `<p>【<a href="https://keylol.com/t954659-1-1" target="_blank">发布帖</a>】 【<a href="https://blog.chrxw.com/scripts.html" target="_blank">脚本反馈</a>】</p>`,
