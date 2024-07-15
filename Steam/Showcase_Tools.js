@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.2
+// @version         1.3
 // @description     一键替换成指定展柜
 // @description:zh-CN  一键替换成指定展柜
 // @author          Chr_
@@ -17,6 +17,8 @@
 // 初始化
 (() => {
   "use strict";
+
+  let first = true;
 
   function getAvilebleShowcases() {
     const select = document.querySelector("select[name='profile_showcase[]']");
@@ -51,6 +53,11 @@
   }
 
   function doReplace(slot) {
+    if (first) {
+      first = false;
+      ShowAlertDialog("提示", "本脚本已经失效, 请手动卸载");
+    }
+
     const avilableIds = getAvilebleShowcases();
 
     if (avilableIds.length === 0) {
