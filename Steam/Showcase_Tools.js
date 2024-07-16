@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.3
+// @version         1.4
 // @description     一键替换成指定展柜
 // @description:zh-CN  一键替换成指定展柜
 // @author          Chr_
@@ -55,7 +55,7 @@
   function doReplace(slot) {
     if (first) {
       first = false;
-      ShowAlertDialog("提示", "本脚本已经失效, 请手动卸载");
+      ShowAlertDialog("提示", "部分展柜保存异常，可能与Steam有关");
     }
 
     const avilableIds = getAvilebleShowcases();
