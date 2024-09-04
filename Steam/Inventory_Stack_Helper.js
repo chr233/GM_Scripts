@@ -65,7 +65,7 @@
         btnArea.insertBefore(container, btnArea.firstChild);
 
         const hiddenContainer = document.createElement("div");
-        hiddenContainer.style.display="none";
+        hiddenContainer.style.display = "none";
         container.appendChild(hiddenContainer);
 
         const iptAppId = genNumber("", "2923300", "AppId");
