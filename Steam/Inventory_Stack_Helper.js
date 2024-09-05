@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.net/@chr233
-// @version            2.0
+// @version            2.1
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -24,7 +24,7 @@
         token = token.replace(/"/g, "");
     }
     else {
-        ShowAlertDialog("读取Token失败, 可能需要重新登录");
+        ShowAlertDialog("提示", "读取Token失败, 可能需要重新登录");
         return;
     }
 
