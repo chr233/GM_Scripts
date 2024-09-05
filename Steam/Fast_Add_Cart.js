@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         4.3
+// @version         4.4
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -224,99 +224,6 @@
         //搜索页,主页,标签页
         return;
 
-        // let timer = setInterval(() => {
-        //     let containers = document.querySelectorAll(
-        //         [
-        //             "#search_resultsRows",
-        //             "#tab_newreleases_content",
-        //             "#tab_topsellers_content",
-        //             "#tab_upcoming_content",
-        //             "#tab_specials_content",
-        //             "#NewReleasesRows",
-        //             "#TopSellersRows",
-        //             "#ConcurrentUsersRows",
-        //             "#TopRatedRows",
-        //             "#ComingSoonRows",
-        //         ].join(",")
-        //     );
-        //     if (containers.length > 0) {
-        //         for (let container of containers) {
-        //             clearInterval(timer);
-        //             for (let ele of container.children) {
-        //                 addButton(ele);
-        //             }
-        //             container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
-        //                 if (relatedNode.parentElement === container) {
-        //                     addButton(relatedNode);
-        //                 }
-        //             });
-        //         }
-
-        //         const searchBar = document.querySelector(".searchbar>.searchbar_left");
-        //         if (searchBar !== null) {
-        //             let btn = document.createElement("button");
-        //             btn.addEventListener(
-        //                 "click",
-        //                 (e) => {
-        //                     e.preventDefault();
-        //                     const savedCart =
-        //                         GM_getValue("btnv6_blue_hoverfade btn_small") ?? "";
-        //                     const cartItems = savedCart.split("\n");
-        //                     const regFull = new RegExp(/((app|a|bundle|b|sub|s)\/(\d+))/);
-        //                     const regShort = new RegExp(/^(([\s]*|)(\d+))/);
-        //                     const dataMap = new Set();
-
-        //                     for (let line of cartItems) {
-        //                         let match = line.match(regFull) ?? line.match(regShort);
-        //                         if (match) {
-        //                             let [_, link, _1, _2] = match;
-        //                             dataMap.add(link);
-        //                         }
-        //                     }
-
-        //                     const now = new Date().toLocaleString();
-        //                     cartItems.push(`========【${now}】=========`);
-
-        //                     const rows = document.querySelectorAll("#search_resultsRows>a");
-        //                     for (let row of rows) {
-        //                         if (
-        //                             row.className.includes("ds_owned") ||
-        //                             row.className.includes("ds_ignored")
-        //                         ) {
-        //                             continue;
-        //                         }
-
-        //                         const url = row.href;
-        //                         const title =
-        //                             row.querySelector("span.title")?.textContent ?? "null";
-
-        //                         let match = url.match(regFull);
-        //                         if (match) {
-        //                             let [_, link, _1, _2] = match;
-
-        //                             if (!dataMap.has(link)) {
-        //                                 cartItems.push(`${link} #${title}`);
-        //                             }
-        //                         }
-        //                     }
-        //                     GM_setValue("fac_cart", cartItems.join("\n"));
-        //                     const dialog = showAlert(
-        //                         t("batchExtractDone"),
-        //                         t("batchDesc"),
-        //                         true
-        //                     );
-        //                     setTimeout(() => {
-        //                         dialog.Dismiss();
-        //                     }, 1500);
-        //                 },
-        //                 false
-        //             );
-        //             btn.className = "btnv6_blue_hoverfade btn_small";
-        //             btn.innerHTML = `<span>${t("batchExtract")}</span>`;
-        //             searchBar.appendChild(btn);
-        //         }
-        //     }
-        // }, 500);
     } else if (
         pathname.startsWith("/publisher/") ||
         pathname.startsWith("/franchise/") ||
@@ -325,24 +232,6 @@
         //发行商主页
         return;
 
-        // let timer = setInterval(() => {
-        //     let container = document.getElementById("RecommendationsRows");
-        //     if (container != null) {
-        //         clearInterval(timer);
-        //         for (let ele of container.querySelectorAll("a.recommendation_link")) {
-        //             addButton(ele);
-        //         }
-        //         container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
-        //             if (relatedNode.nodeName === "DIV") {
-        //                 for (let ele of relatedNode.querySelectorAll(
-        //                     "a.recommendation_link"
-        //                 )) {
-        //                     addButton(ele);
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }, 500);
     } else if (
         pathname.startsWith("/app/") ||
         pathname.startsWith("/sub/") ||
@@ -351,38 +240,10 @@
         //商店详情页
         return;
 
-        // let timer = setInterval(() => {
-        //     let container = document.getElementById("game_area_purchase");
-        //     if (container != null) {
-        //         clearInterval(timer);
-        //         for (let ele of container.querySelectorAll(
-        //             "div.game_area_purchase_game"
-        //         )) {
-        //             addButton2(ele);
-        //         }
-        //     }
-        // }, 500);
     } else if (pathname.startsWith("/wishlist/")) {
         //愿望单页
         return;
 
-        // let timer = setInterval(() => {
-        //     let container = document.getElementById("wishlist_ctn");
-        //     if (container != null) {
-        //         clearInterval(timer);
-
-        //         for (let ele of container.querySelectorAll("div.wishlist_row")) {
-        //             addButton3(ele);
-        //         }
-        //         container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
-        //             if (relatedNode.nodeName === "DIV") {
-        //                 for (let ele of relatedNode.querySelectorAll("div.wishlist_row")) {
-        //                     addButton3(ele);
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }, 500);
     } else if (pathname.startsWith("/cart")) {
         //购物车页
 
@@ -469,8 +330,6 @@
         if (histryPage) {
             btnImport.disabled = true;
             btnImport.title = t("importDesc2");
-            // btnImport2.disabled = true;
-            // btnImport2.title = t("importDesc2");
         }
 
         const [lblDiscount2, chkDiscount2] = genChk(
@@ -508,6 +367,14 @@
                     `========【${now}】=========\n` + exportCart(chkDiscount2.checked);
                 fitInputBox();
             }
+        });
+
+        const btnConvertToGift = genBtn("转送礼", "将购物车项目转换为送礼", () => {
+            editCart(true, false);
+        });
+
+        const btnConvertToSelf = genBtn("转自用", "将购物车项目转换为为自己购买", () => {
+            editCart(false, false);
         });
 
         const btnCopy = genBtn(`📋${t("copy")}`, t("copyDesc"), () => {
@@ -578,6 +445,9 @@
         btnArea.appendChild(btnExport);
         btnArea.appendChild(lblDiscount2);
         btnArea.appendChild(genSpan(" | "));
+        btnArea.appendChild(btnConvertToGift);
+        btnArea.appendChild(btnConvertToSelf);
+        btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnHelp);
 
         const btnArea2 = document.createElement("div");
@@ -607,7 +477,6 @@
                 continer.appendChild(btnArea2);
             }
         }, 500);
-
     }
 
     // getStoreItem([730], null, null).then((data) => console.log(data)).catch(err => console.error(err))
@@ -805,7 +674,7 @@
         });
     }
     //导出购物车
-    async function exportCart(onlyOnsale = false) {
+    function exportCart(onlyOnsale = false) {
         return new Promise(async (resolve, reject) => {
             const dialog = showAlert(
                 "导出购物车",
@@ -901,6 +770,131 @@
                     }
                 }
             }, 200);
+        });
+    }
+
+    //编辑购物车
+    async function editCart(setToGift = false, setToPrivate = false) {
+        const setGiftInfo = await inputGiftee(setToGift);
+
+        return new Promise(async (resolve, reject) => {
+            const dialog = showAlert(
+                "编辑购物车",
+                `<h2 id="fac_diag" class="fac_diag">${t("operation")}</h2>`,
+                true
+            );
+
+            const timer = setInterval(async () => {
+                let txt = document.getElementById("fac_diag");
+                if (txt) {
+                    clearInterval(timer);
+
+                    const lineItemIds = [];
+
+                    try {
+                        txt.textContent = "0/3 开始读取账号购物车";
+
+                        const { line_items } = await getAccountCart();
+
+                        if (line_items) {
+                            for (const { line_item_id, flags: { is_gift, is_private }, gift_info } of line_items) {
+                                const accountid_giftee = gift_info?.accountid_giftee?.toString() ?? "";
+
+                                console.log(line_item_id, is_gift, is_private, accountid_giftee)
+
+                                //跳过无需处理的id
+                                if (setToGift) {
+                                    if (is_gift && setGiftInfo?.accountid_giftee == accountid_giftee) {
+                                        continue;
+                                    }
+                                } else if (setToPrivate) {
+                                    if (is_private) {
+                                        continue;
+                                    }
+                                }
+                                else {
+                                    if (!is_gift && !is_private) {
+                                        continue;
+                                    }
+                                }
+
+                                lineItemIds.push(line_item_id);
+                            }
+                        }
+
+                        console.log(lineItemIds);
+
+                        const count = lineItemIds.length;
+                        txt.textContent = `1/3 共计 ${count} 个待修改购物车内容`;
+
+                        if (count > 0) {
+                            for (let i = 0; i < count; i++) {
+                                const itemId = lineItemIds[i];
+                                await editAccountCart(itemId, setToGift, setToPrivate, setGiftInfo);
+                                txt.textContent = `2/3 当前进度 ${i + 1} / ${count}`;
+                            }
+
+                            txt.textContent = "3/3 批量修改购物车成功";
+
+                            setTimeout(() => dialog.Dismiss(), 1000);
+                            resolve();
+                        } else {
+                            txt.textContent = "3/3 购物车无需修改";
+
+                            setTimeout(() => dialog.Dismiss(), 1000);
+                            resolve();
+                        }
+
+                    } catch (err) {
+                        txt.textContent = "读取账号购物车失败";
+                        console.error(err);
+                        resolve();
+                    }
+                }
+            }, 200);
+        });
+    }
+
+    const steamIdConvert = BigInt("0x110000100000000");
+
+    function inputGiftee(isGift = false) {
+        const nickname = document.querySelector("#account_pulldown")?.textContent?.trim() ?? "unknown";
+
+        return new Promise((resolve, reject) => {
+            if (!isGift) {
+                resolve(null);
+            } else {
+                ShowPromptDialog("提示", "请输入礼物接收人的 SteamID 或者好友代码, 可以留空", "确认", "跳过")
+                    .done(text => {
+                        try {
+                            let steamId = BigInt(text.trim());
+                            if (steamId == 0) {
+                                throw "输入数值有误";
+                            }
+
+                            if (steamId > steamIdConvert) {
+                                steamId -= steamIdConvert;
+                            }
+                            const giftInfo = {
+                                accountid_giftee: steamId.toString(),
+                                gift_message: {
+                                    gifteename: steamId.toString(),
+                                    message: "Send by Fast_Add_Cart",
+                                    sentiment: nickname,
+                                    signature: nickname
+                                },
+                                time_scheduled_send: 0
+                            }
+                            resolve(giftInfo);
+                        } catch (err) {
+                            ShowAlertDialog("提示", "输入数值有误")
+                                .then(() => resolve(null));
+                        }
+                    })
+                    .fail(() => {
+                        resolve(null);
+                    });
+            }
         });
     }
 
@@ -1046,6 +1040,46 @@
                     if (response.ok) {
                         const { response: { cart } } = await response.json();
                         resolve(cart);
+                    } else {
+                        reject(t("networkRequestError"));
+                    }
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+    //编辑购物车
+    function editAccountCart(itemId, isGift, isPrivate, giftInfo = null) {
+        return new Promise((resolve, reject) => {
+            const payload = {
+                line_item_id: itemId,
+                user_country: userCountry,
+                gift_info: giftInfo,
+                flags: {
+                    is_gift: isGift,
+                    is_private: isPrivate,
+                }
+            };
+            const json = JSON.stringify(payload);
+
+            console.log(json);
+
+            fetch(
+                `https://api.steampowered.com/IAccountCartService/ModifyLineItem/v1/?access_token=${accessToken}`,
+                {
+                    method: "POST",
+                    body: `input_json=${json}`,
+                    headers: {
+                        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                    },
+                }
+            )
+                .then(async (response) => {
+                    if (response.ok) {
+                        const { response: { line_item_ids, cart } } = await response.json();
+                        resolve([line_item_ids, cart]);
                     } else {
                         reject(t("networkRequestError"));
                     }
