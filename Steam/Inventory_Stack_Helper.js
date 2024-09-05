@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.net/@chr233
-// @version            1.9
+// @version            2.0
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -24,7 +24,7 @@
         token = token.replace(/"/g, "");
     }
     else {
-        ShowPromptDialog("读取Token失败, 可能需要重新登录");
+        ShowAlertDialog("读取Token失败, 可能需要重新登录");
         return;
     }
 
@@ -136,7 +136,7 @@
         const appId = parseInt(iptAppId.value);
         const contextId = parseInt(iptContextId.value);
         if (appId !== appId || contextId !== contextId) {
-            ShowAlertDialog("提示", "请检查 AppId 和 ContextId 是否填写正确");
+            ShowAlertDialog("提示", "读取库存失败, 请稍后重试");
             return;
         }
 
@@ -213,7 +213,7 @@
 
                     ShowAlertDialog("提示", totalReq > 0 ? "堆叠操作完成" : "无可堆叠物品");
                 } else {
-                    ShowAlertDialog("提示", "库存读取失败, 请检查 AppId 和 ContextId 是否填写正确");
+                    ShowAlertDialog("提示", "读取库存失败, 请稍后重试");
                 }
             })
             .catch((err) => {
