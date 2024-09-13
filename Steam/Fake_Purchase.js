@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.3
+// @version         1.4
 // @description     一键批量卡单
 // @description:zh-CN  一键批量卡单
 // @author          Chr_
@@ -19,32 +19,13 @@
   "use strict";
 
   const sessionId = g_sessionID;
-  const cartGid = document.getElementById("shopping_cart_gid")?.getAttribute("value");
-  const match = location.search.match(/purchasetype=([^&]+)/);
-  let giftAccountId = null;
 
   let fpValue = parseInt(localStorage.getItem("fpValue") ?? "5");
   if (fpValue !== fpValue) {
     fpValue = 5;
   }
 
-  if (sessionId && cartGid && match) {
-    const purchaseType = match[1];
-
-    if (purchaseType === "gift") {
-      document.getElementById("gift_recipient_name").value = localStorage.getItem("gift_recipient_name") ?? "";
-      document.getElementById("gift_message_text").value = localStorage.getItem("gift_message_text") ?? "";
-      document.getElementById("gift_signature").value = localStorage.getItem("gift_signature") ?? "";
-
-      const inputs = document.querySelectorAll('input[name="friend_radio"]');
-      for (let i of inputs) {
-        i.addEventListener("click", () => {
-          giftAccountId = i.value;
-          console.log(giftAccountId);
-        });
-      }
-    }
-
+  if (sessionId  ) {
     const logContainer = genTextArea();
     function log(msg) {
       if (logContainer.value) {
@@ -66,17 +47,12 @@
           btn.disabled = true;
           localStorage.setItem("fpValue", input.value);
 
-          if (purchaseType === "gift" && !giftAccountId) {
-            alert("收礼人Id不能为空");
-            return;
-          }
-
           for (let i = 1; i <= input.value; i++) {
             try {
-              const transId = purchaseType === "self" ? await initTransaction() : await initTransactionGift();
+              const transId =  await initTransaction();
               log(`${i} 初始化付款成功`);
               await asyncDelay(800);
-              const price = await getFinalPrice(transId, purchaseType);
+              const price = await getFinalPrice(transId);
               log(`${i} 购物车总价 ${price}`);
               await cancelTransaction(transId);
               log(`${i} 取消付款成功`);
@@ -147,52 +123,7 @@
         {
           method: "POST",
           credentials: "include",
-          body: `gidShoppingCart=${cartGid}&gidReplayOfTransID=-1&PaymentMethod=steamaccount&sessionid=${sessionId}`,
-          headers: {
-            "content-type":
-              "application/x-www-form-urlencoded; charset=UTF-8",
-          },
-        }
-      )
-        .then(response => {
-          response.json().then(json => {
-            const { success, transid } = json;
-            if (success === 1) {
-              resolve(transid);
-            } else {
-              reject("初始化付款失败");
-            }
-          })
-        })
-        .catch((err) => {
-          console.error(err);
-          reject(`初始化付款失败 ${err}`);
-        });
-    });
-  }
-  // 初始化付款
-  async function initTransactionGift() {
-    return new Promise((resolve, reject) => {
-      const recipient_name = document.getElementById("gift_recipient_name").value;
-      const message_text = document.getElementById("gift_message_text").value;
-      const signature = document.getElementById("gift_signature").value;
-
-      if (recipient_name) {
-        localStorage.setItem("gift_recipient_name", recipient_name);
-      }
-      if (message_text) {
-        localStorage.setItem("gift_message_text", message_text);
-      }
-      if (signature) {
-        localStorage.setItem("gift_signature", signature);
-      }
-
-      fetch(
-        `https://checkout.steampowered.com/checkout/inittransaction/`,
-        {
-          method: "POST",
-          credentials: "include",
-          body: `gidShoppingCart=${cartGid}&gidReplayOfTransID=-1&bUseAccountCart=0&PaymentMethod=steamaccount&bIsGift=1&GifteeAccountID=${giftAccountId}&GifteeEmail=&GifteeName=${recipient_name}&GiftMessage=${message_text}&Sentiment=%E7%A5%9D%E4%BD%A0%E5%A5%BD%E8%BF%90&Signature=${signature}&ScheduledSendOnDate=0&sessionid=${sessionId}`,
+          body: `gidShoppingCart=-1&gidReplayOfTransID=-1&bUseAccountCart=-1&PaymentMethod=steamaccount&sessionid=${sessionId}`,
           headers: {
             "content-type":
               "application/x-www-form-urlencoded; charset=UTF-8",
@@ -216,14 +147,14 @@
     });
   }
 
-  function getFinalPrice(transId, purchaseType) {
+  function getFinalPrice(transId) {
     return new Promise((resolve, reject) => {
       fetch(
-        `https://checkout.steampowered.com/checkout/getfinalprice/?count=1&transid=${transId}&purchasetype=${purchaseType}&microtxnid=-1&cart=${cartGid}&gidReplayOfTransID=-1`,
+        `https://checkout.steampowered.com/checkout/getfinalprice/?count=1&transid=${transId}&purchasetype=self&microtxnid=-1&cart=-1&gidReplayOfTransID=-1`,
         {
           method: "POST",
           credentials: "include",
-          body: `gidShoppingCart=${cartGid}&gidReplayOfTransID=-1&PaymentMethod=steamaccount&sessionid=${sessionId}`,
+          body: `gidShoppingCart=-1&gidReplayOfTransID=-1&PaymentMethod=steamaccount&sessionid=${sessionId}`,
           headers: {
             "content-type":
               "application/x-www-form-urlencoded; charset=UTF-8",
