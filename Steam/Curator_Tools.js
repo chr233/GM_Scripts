@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.7
+// @version         1.8
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -57,10 +57,17 @@
               link.appendChild(btn);
               btnArea.appendChild(link);
 
-              const link2 = genA("#");
-              const btn2 = genBtn("商店页", "ct_btn");
-              link2.appendChild(btn2);
-              btnArea.appendChild(link2);
+              const btn2 = genBtn(
+                "删除原先的评测",
+                "ct_btn",
+                async () => await deleteReview(curator, suggestAppId)
+              );
+              btnArea.appendChild(btn2);
+
+              const link3 = genA("#");
+              const btn3 = genBtn("商店页", "ct_btn");
+              link3.appendChild(btn3);
+              btnArea.appendChild(link3);
 
               const spStatus = genSpan("test");
               btnArea.appendChild(spStatus);
@@ -92,10 +99,13 @@
                         console.error(e);
                       });
 
-                    link2.href = `https://store.steampowered.com/app/${suggestAppId}`;
+                    link3.href = `https://store.steampowered.com/app/${suggestAppId}`;
+                    btn3.disabled = false;
+
                   } else {
                     spStatus.textContent = "未选择游戏";
-                    link2.href = "#";
+                    link3.href = "#";
+                    btn3.disabled = true;
                   }
                 }
               }, 500);
@@ -166,7 +176,9 @@
 
               setTimeout(() => {
                 if (location.pathname.includes("review_create")) {
-                  location.pathname = `/curator/${curator}/admin/reviews_manage`;
+                  if (location.pathname.includes(appid)) {
+                    location.pathname = `/curator/${curator}/admin/reviews_manage`;
+                  }
                 } else {
                   if (ele) {
                     ele.style.opacity = "0.5";
