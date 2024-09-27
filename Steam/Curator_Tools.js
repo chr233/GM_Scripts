@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.6
+// @version         1.7
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -26,24 +26,81 @@
 
       if (location.pathname.includes("admin/review_create")) {
         const [_, curator, appid] = lastPathname.match(
-          /\/curator\/([^\/]+)\/admin\/review_create\/(\d+)/
+          /\/curator\/([^\/]+)\/admin\/review_create\/?(\d+)?/
         ) ?? [null, null, null];
 
-        if (curator !== null && appid !== null) {
+        if (curator) {
           const btnArea = document.querySelector("div.titleframe");
-          const btn = genBtn(
-            "删除该评测",
-            "ct_btn",
-            async () => await deleteReview(curator, appid)
-          );
-          btnArea.appendChild(btn);
-          const link = genA("https://store.steampowered.com/app/" + appid);
-          const btn2 = genBtn(
-            "商店页",
-            "ct_btn"
-          );
-          link.appendChild(btn2);
-          btnArea.appendChild(link);
+
+          if (appid) {
+            const btn = genBtn(
+              "删除该评测",
+              "ct_btn",
+              async () => await deleteReview(curator, appid)
+            );
+            btnArea.appendChild(btn);
+            const link = genA(`https://store.steampowered.com/app/${appid}`);
+            const btn2 = genBtn(
+              "商店页",
+              "ct_btn"
+            );
+            link.appendChild(btn2);
+            btnArea.appendChild(link);
+          } else {
+            const appSuggest = document.querySelector("#app_suggest_id");
+            const reviewType = document.querySelector('textarea[name="blurb"]');
+            if (appSuggest && reviewType) {
+              let suggestAppId = null;
+
+              const btn = genBtn("编辑原先的评测", "ct_btn");
+              const link = genA("#");
+              link.appendChild(btn);
+              btnArea.appendChild(link);
+
+              const link2 = genA("#");
+              const btn2 = genBtn("商店页", "ct_btn");
+              link2.appendChild(btn2);
+              btnArea.appendChild(link2);
+
+              const spStatus = genSpan("test");
+              btnArea.appendChild(spStatus);
+
+              setInterval(() => {
+                if (appSuggest.value !== suggestAppId) {
+                  suggestAppId = appSuggest.value;
+                  btn.disabled = true;
+                  btn2.disabled = true;
+                  link.href = "#";
+
+                  if (suggestAppId) {
+                    spStatus.textContent = "正在获取评测内容";
+
+                    getReviewText(curator, suggestAppId)
+                      .then(text => {
+                        if (text) {
+                          spStatus.textContent = "读取完成";
+                          reviewType.value = text;
+                          btn.disabled = false;
+                          btn2.disabled = false;
+                          link.href = `https://store.steampowered.com/curator/${curator}/admin/review_create/${suggestAppId}`;
+                        } else {
+                          spStatus.textContent = "未写过评测";
+                        }
+                      })
+                      .catch(e => {
+                        spStatus.textContent = "读取失败";
+                        console.error(e);
+                      });
+
+                    link2.href = `https://store.steampowered.com/app/${suggestAppId}`;
+                  } else {
+                    spStatus.textContent = "未选择游戏";
+                    link2.href = "#";
+                  }
+                }
+              }, 500);
+            }
+          }
         }
       } else if (location.pathname.includes("admin/stats")) {
         injectBtn();
@@ -242,17 +299,50 @@
         method: "GET",
         credentials: "include",
       })
-        .then(async (response) => {
+        .then((response) => {
           if (response.ok) {
-            const data = await response.text();
-            const match = data.match(/"recommendation_state" value="(\d)" checked/);
-            if (match) {
-              resolve(parseInt(match[1]));
-            } else {
-              resolve(-1);
-            }
+            return response.text();
           } else {
             resolve(-2);
+          }
+        })
+        .then((data) => {
+          const match = data.match(/"recommendation_state" value="(\d)" checked/);
+          if (match) {
+            resolve(parseInt(match[1]));
+          } else {
+            resolve(-1);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          resolve(-3);
+        });
+    });
+  }
+
+  //获取写过的评测
+  function getReviewText(curatorId, appId) {
+    return new Promise((resolve, reject) => {
+      fetch(`https://store.steampowered.com/curator/${curatorId}/admin/review_create/${appId}`, {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            resolve(-2);
+          }
+        })
+        .then((data) => {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(data, "text/html");
+          const match = xmlDoc.querySelector('textarea[name="blurb"]');
+          if (match) {
+            resolve(match.value);
+          } else {
+            resolve(-1);
           }
         })
         .catch((err) => {
