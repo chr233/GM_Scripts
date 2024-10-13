@@ -5,7 +5,7 @@
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
 // @icon            https://blog.chrxw.com/favicon.ico
-// @version         2.3
+// @version         2.4
 // @description     快捷搜索steam商店
 // @description:zh-CN  快捷搜索steam商店
 // @author          Chr_
@@ -78,7 +78,7 @@
           btnRst.addEventListener("click", () => { window.open(appUrl); });
 
           const btnName = document.createElement("p");
-          btnName.textContent = `${appName}【${appPrice}】`
+          btnName.textContent = `${appName}【${appPrice}】`;
           btnRst.appendChild(btnName);
           btnRst.appendChild(document.createElement("br"));
 

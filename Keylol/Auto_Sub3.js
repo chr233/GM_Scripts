@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         2.24
+// @version         2.25
 // @description     一键快乐-3
 // @description:zh-CN  一键快乐-3
 // @author          Chr_
@@ -17,7 +17,7 @@
 // ==/UserScript==
 
 // 版本号
-const Ver = '2.17'
+const Ver = '2.17';
 // 上次-3时间
 let VLast = 0;
 // 今天还能不能-3
@@ -50,14 +50,14 @@ function addBtns() {
     function genButton(text, foo, id) {
         let b = document.createElement('button');
         b.textContent = text;
-        b.style.cssText = 'margin: 8px 5px;'
+        b.style.cssText = 'margin: 8px 5px;';
         b.addEventListener('click', foo);
         if (id) { b.id = id; }
         return b;
     }
     function genDiv(cls) {
         let d = document.createElement('div');
-        if (cls) { d.className = cls };
+        if (cls) { d.className = cls; };
         return d;
     }
     function genPanel(name, visiable) {
@@ -79,7 +79,7 @@ function addBtns() {
 
     let panelArea = document.querySelector('.index_navi_left');
     let panelOri = document.querySelector('.index_left_detail');
-    panelOri.id = 'panelOri'
+    panelOri.id = 'panelOri';
 
     let panel54 = genPanel('panel54');
 
@@ -89,7 +89,7 @@ function addBtns() {
     let img54 = document.createElement('img');
     img54.src = 'https://raw.chrxw.com/GM_Scripts/master/Static/keylol.png';
     img54.alt = '总之这里是54的名言';
-    img54.style.cssText = 'float: right;margin-top: -28px;height: 100%;'
+    img54.style.cssText = 'float: right;margin-top: -28px;height: 100%;';
     aLP.appendChild(img54);
 
     let btnArea = genDiv('btnArea');
@@ -247,7 +247,7 @@ function autoRoll() {
                     console.log(response.responseText);
                 } else {
                     showError('【出错了，淦】');
-                    console.error('出错')
+                    console.error('出错');
                 }
                 if (++v == 3) {
                     disableS3();
