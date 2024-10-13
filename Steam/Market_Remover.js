@@ -153,11 +153,11 @@ function clearGoal() {
     }
 }
 // 反馈
-function feedBack(){
+function feedBack() {
     window.open('https://blog.chrxw.com/scripts.html');
 }
 // 清除逗号
-function clearDot(num){
+function clearDot(num) {
     let t = num.replace(/,/g, '');
     return Number(t);
 }

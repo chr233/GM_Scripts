@@ -2,7 +2,7 @@
 // @name:zh-CN   补充包合成器增强
 // @name         Boosterpack_Enhance
 // @namespace    https://blog.chrxw.com
-// @version      1.0
+// @version      1.1
 // @description  补充包制作工具
 // @description:zh-CN  补充包制作工具
 // @author       Chr_
@@ -12,8 +12,8 @@
 // @icon         https://blog.chrxw.com/favicon.ico
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
-// @require      https://unpkg.com/tabulator-tables@6.3.0/dist/js/tabulator.min.js
-// @resource     css https://unpkg.com/tabulator-tables@6.3.0/dist/css/tabulator_midnight.min.css
+// @require      https://cdnjs.cloudflare.com/ajax/libs/tabulator/6.3.0/js/tabulator.min.js
+// @resource     css https://cdnjs.cloudflare.com/ajax/libs/tabulator/6.3.0/css/tabulator_midnight.min.css
 // ==/UserScript==
 
 (() => {

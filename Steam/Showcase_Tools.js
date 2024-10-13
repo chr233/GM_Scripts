@@ -47,7 +47,7 @@
       const slot = select.getAttribute("data-slot");
       btn.className = "st_btn";
       btn.textContent = "替换成指定展柜";
-      btn.addEventListener("click", () => { doReplace(slot) });
+      btn.addEventListener("click", () => { doReplace(slot); });
       bar.appendChild(btn);
     }
   }

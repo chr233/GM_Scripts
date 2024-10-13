@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         4.4
+// @version         4.5
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -746,9 +746,9 @@
                                     }
                                     const [name, discount] = gameNames[key] ?? "_";
                                     if (discount) {
-                                        result.push(`${key} #${name} 💳 ${formatted_amount} 🔖 ${discount}`)
+                                        result.push(`${key} #${name} 💳 ${formatted_amount} 🔖 ${discount}`);
                                     } else if (!onlyOnsale) {
-                                        result.push(`${key} #${name} 💳 ${formatted_amount}`)
+                                        result.push(`${key} #${name} 💳 ${formatted_amount}`);
                                     }
                                 }
                             }
@@ -800,7 +800,7 @@
                             for (const { line_item_id, flags: { is_gift, is_private }, gift_info } of line_items) {
                                 const accountid_giftee = gift_info?.accountid_giftee?.toString() ?? "";
 
-                                console.log(line_item_id, is_gift, is_private, accountid_giftee)
+                                console.log(line_item_id, is_gift, is_private, accountid_giftee);
 
                                 //跳过无需处理的id
                                 if (setToGift) {
@@ -884,7 +884,7 @@
                                     signature: nickname
                                 },
                                 time_scheduled_send: 0
-                            }
+                            };
                             resolve(giftInfo);
                         } catch (err) {
                             ShowAlertDialog("提示", "输入数值有误")

@@ -64,7 +64,7 @@
                 const dialog = ShowDialog("操作已取消");
                 setTimeout(() => { dialog.Dismiss(); }, 1000);
             });
-    }
+    };
     banner.appendChild(filter);
     hideArea.style.display = "none";
     function genBtn(ele) {
@@ -298,7 +298,7 @@
                         console.log(response);
                         reject('解析出错');
                     }
-                }
+                };
                 GM_xmlhttpRequest(opt);
             });
         }

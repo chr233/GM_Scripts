@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.7
+// @version         1.8
 // @description     显示Steam商店中隐藏的DLC（补丁）。
 // @description:zh-CN  显示Steam商店中隐藏的DLC（补丁）。
 // @author          Chr_
@@ -26,10 +26,10 @@
         let { dlc: dlc_list1 } = data;
         let dlc_list2 = getDLCsFromPage();
         if (dlc_list1 === null) {
-            console.log("未找到DLC")
+            console.log("未找到DLC");
             return;
         }
-        let hidden_dlcs = diffList(dlc_list1, dlc_list2)
+        let hidden_dlcs = diffList(dlc_list1, dlc_list2);
         console.log(hidden_dlcs);
 
         if (hidden_dlcs.length > 0) {
