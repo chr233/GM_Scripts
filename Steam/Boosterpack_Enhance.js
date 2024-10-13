@@ -3,8 +3,8 @@
 // @name         Boosterpack_Enhance
 // @namespace    https://blog.chrxw.com
 // @version      1.0
-// @description  补充包合成器增强
-// @description:zh-CN  补充包合成器增强
+// @description  补充包制作工具
+// @description:zh-CN  补充包制作工具
 // @author       Chr_
 // @match        https://steamcommunity.com/tradingcards/boostercreator*
 // @match        https://steamcommunity.com//tradingcards/boostercreator/*
@@ -12,8 +12,8 @@
 // @icon         https://blog.chrxw.com/favicon.ico
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
-// @require      https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js
-// @resource     css https://unpkg.com/tabulator-tables@6.2.5/dist/css/tabulator_midnight.min.css
+// @require      https://unpkg.com/tabulator-tables@6.3.0/dist/js/tabulator.min.js
+// @resource     css https://unpkg.com/tabulator-tables@6.3.0/dist/css/tabulator_midnight.min.css
 // ==/UserScript==
 
 (() => {
@@ -36,52 +36,51 @@
 
     window.addEventListener("beforeunload", saveFavorite);
 
+    function genDiv(cls) {
+        const d = document.createElement("div");
+        d.className = cls;
+        return d;
+    }
+    function genInput(cls) {
+        const i = document.createElement("input");
+        i.className = cls;
+        return i;
+    }
+    function genSpan(name) {
+        const s = document.createElement("span");
+        s.textContent = name;
+        return s;
+    }
+    function genCheckbox(name, cls, checked = false) {
+        const l = document.createElement("label");
+        const i = document.createElement("input");
+        const s = genSpan(name);
+        i.textContent = name;
+        i.title = name;
+        i.type = "checkbox";
+        i.className = "fac_checkbox";
+        i.checked = checked;
+        l.title = name;
+        l.appendChild(i);
+        l.appendChild(s);
+        return [l, i];
+    }
+    function genImage(url, cls = "bh-image") {
+        const i = document.createElement("img");
+        i.src = url;
+        i.className = cls;
+        return i;
+    }
+    function genButton(name, foo, cls = "bh-button") {
+        const b = document.createElement("button");
+        b.textContent = name;
+        b.title = name;
+        b.className = cls;
+        b.addEventListener("click", foo);
+        return b;
+    }
+
     function initPanel() {
-        function genDiv(cls) {
-            const d = document.createElement("div");
-            d.className = cls;
-            return d;
-        }
-        function genInput(cls) {
-            const i = document.createElement("input");
-            i.className = cls;
-            return i;
-        }
-        function genSpan(name) {
-            const s = document.createElement("span");
-            s.textContent = name;
-            return s;
-        }
-        function genCheckbox(name, cls, checked = false) {
-            const l = document.createElement("label");
-            const i = document.createElement("input");
-            const s = genSpan(name);
-            i.textContent = name;
-            i.title = name;
-            i.type = "checkbox";
-            i.className = "fac_checkbox";
-            i.checked = checked;
-            l.title = name;
-            l.appendChild(i);
-            l.appendChild(s);
-            return [l, i];
-        }
-
-        function genImage(url, cls = "bh-image") {
-            const i = document.createElement("img");
-            i.src = url;
-            i.className = cls;
-            return i;
-        }
-        function genButton(name, foo, cls = "bh-button") {
-            const b = document.createElement("button");
-            b.textContent = name;
-            b.title = name;
-            b.className = cls;
-            b.addEventListener("click", foo);
-            return b;
-        }
-
         const area = document.querySelector("div.booster_creator_area");
 
         const filterContainer = genDiv("bh-filter");
@@ -110,13 +109,27 @@
             updateFilter();
         }, "bh-button");
         filterContainer.appendChild(btnSearch);
+        filterContainer.appendChild(genSpan(""));
+
+        const tabledata = Object.values(g_boosterData);
+
+        const btnBatchCraft = genButton("批量合成收藏的包", async () => {
+            const favoriteItems = tabledata.filter(x => x.favorite && x.available);
+            if (favoriteItems.length === 0) {
+                alert("无可合成项目");
+            } else {
+                for (let fav of favoriteItems) {
+                    await doCraftBooster2(fav.appid, fav.contailer);
+                    await asleep(200);
+                }
+            }
+        }, "bh-button-right");
+        filterContainer.appendChild(btnBatchCraft);
 
         const tableContainer = genDiv("bh-table");
         area.appendChild(tableContainer);
 
-        var tabledata = Object.values(g_boosterData);
-
-        var rowMenu = [
+        const rowMenu = [
             {
                 label: "收藏 / 取消收藏",
                 action: doEditFavorite,
@@ -124,15 +137,16 @@
                 label: "合成补充包",
                 action: doCraftBooster,
             },
-        ]
+        ];
 
         const table = new Tabulator(tableContainer, {
-            height: 500, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-            data: tabledata, //assign data to table
-            layout: "fitDataStretch", //fit columns to width of table (optional)
+            height: 600,
+            data: tabledata,
+            layout: "fitDataStretch",
+            rowHeight: 40,
             rowContextMenu: rowMenu,
             initialSort: [
-                { column: "favorite", dir: "desc" }, //sort by this first
+                { column: "favorite", dir: "desc" },
             ],
             columns: [
                 { title: "AppId", field: "appid" },
@@ -174,19 +188,15 @@
 
         function doCraftBooster(e, row) {
             const appid = row.getCell("appid").getValue();
-            craftBoosterpack(appid)
-                .then((json) => {
-                    console.log(json);
-
-                })
-                .catch((err) => {
-                    console.error(err);
-                    alert("合成失败");
-                });
+            const available = row.getCell("available").getValue();
+            const container = row.getCell("container").getValue();
+            if (available) {
+                doCraftBooster2(appid, container);
+            }
         }
 
         function updateFilter() {
-            const filters = [{ field: "keywords", type: "like", value: iptSearch.value.trim() }];
+            const filters = [{ field: "keywords", type: "like", value: iptSearch.value.trim(), matchAll: true }];
             if (chkOnlyFavorite.checked) {
                 filters.push({ field: "favorite", type: "=", value: true });
             }
@@ -198,31 +208,45 @@
 
         function appImageFormatter(cell, formatterParams, onRendered) {
             const appid = cell.getValue();
-            const src = `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${appid}/capsule_231x87.jpg`
+            const src = `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${appid}/capsule_231x87.jpg`;
             const image = genImage(src, "be-row-image");
             return image;
         };
 
         function operatorFormatter(cell, formatterParams, onRendered) {
-            const contailer = genDiv();
             const data = cell.getRow().getData();
-
-            const benCraft = genButton("合成", (e) => doCraftBooster(e, cell.getRow()), "bh-button");
-
-            if (data.available_at_time) {
-                benCraft.disabled = true;
-                benCraft.textContent = data.available_at_time;
-            }
-
-            contailer.appendChild(benCraft);
-            return contailer;
+            return data.contailer;
         };
+    };
+
+    function doCraftBooster2(appid, contailer) {
+        let btn = contailer.querySelector("button");
+        if (btn) {
+            btn.disabled = true;
+        }
+        craftBoosterpack(appid)
+            .then((success) => {
+                if (success) {
+                    g_boosterData[appid].available = false;
+                    contailer.innerHTML = "";
+                    contailer.appendChild(genSpan("合成成功"));
+                    btn = null;
+                } else {
+                    btn.textContent = "合成失败";
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                btn.textContent = "合成失败";
+            }).finally(() => {
+                if (btn) {
+                    btn.disabled = false;
+                }
+            });
     }
 
     // 读取补充包列表
     async function initBoosterData() {
-        const matchSpace = new RegExp(/\s/g);
-
         const gemPrice2SetCount = {
             1200: 5,
             1000: 6,
@@ -235,7 +259,7 @@
             462: 13,
             429: 14,
             400: 15
-        }
+        };
 
         const currentData = parseBoosterData(document.body.innerHTML);
 
@@ -260,14 +284,25 @@
                 let keywords;
                 if (name === nameEn) {
                     fullName = name;
-                    keywords = `${appid}${name}`.replace(matchSpace, "").toLowerCase();
+                    keywords = `${appid} ${name}`.toLowerCase();
                 } else {
                     fullName = `${name} (${nameEn})`;
-                    keywords = `${appid}${name}${nameEn}`.replace(matchSpace, "").toLowerCase();
+                    keywords = `${appid} ${name} ${nameEn}`.toLowerCase();
                 }
 
                 const cardSet = gemPrice2SetCount[intPrice] ?? 0;
                 const favorite = g_faveriteBooster.has(`${appid}`);
+
+                //生成按钮
+                const contailer = genDiv();
+                if (!available_at_time) {
+                    const benCraft = genButton("合成补充包", (e) => doCraftBooster2(appid, contailer), "bh-button");
+                    contailer.appendChild(benCraft);
+                } else {
+                    const time = genSpan(available_at_time);
+                    time.className = "bh-tips";
+                    contailer.appendChild(time);
+                }
 
                 g_boosterData[appid] = {
                     appid,
@@ -279,17 +314,19 @@
                     available_at_time,
                     available: !unavailable,
                     favorite,
+                    contailer,
                 };
             }
         }
 
+        console.log(g_boosterData);
     }
 
     function parseBoosterData(html) {
         const matchJson = new RegExp(/CBoosterCreatorPage\.Init\(([\s\S]+}]),\s*parseFloat/);
         const result = html.match(matchJson);
         if (result) {
-            var json = result[1];
+            const json = result[1];
             return JSON.parse(json);
         } else {
             return [];
@@ -312,6 +349,7 @@
         localStorage.setItem("be_faviorite", value);
     }
 
+    // 加载第二语言
     function loadSecondLanguage(lang) {
         return new Promise((resolve, reject) => {
             fetch(
@@ -332,6 +370,7 @@
         });
     }
 
+    // 合成补充包
     function craftBoosterpack(appId) {
         return new Promise((resolve, reject) => {
             const formData = new FormData();
@@ -351,12 +390,21 @@
                     return response.json();
                 })
                 .then((json) => {
-                    resolve(json);
+                    if (json.purchase_result) {
+                        const { success } = json.purchase_result;
+                        resolve(success === 1);
+                    }
+                    resolve(false);
                 })
                 .catch((err) => {
                     reject(err);
                 });
         });
+    }
+
+    //异步延时
+    function asleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 })();
 
@@ -364,5 +412,18 @@ GM_addStyle(`
 img.be-row-image {
   width: 90px;
   height: auto;
+}
+div.bh-filter {
+  padding: 10px 0;
+}
+div.bh-filter > * {
+  margin-right: 10px;
+}
+button.bh-button-right {
+  position: absolute;
+  right: 10px;
+}
+span.bh-tips {
+  font-size: 10px;
 }
 `);
