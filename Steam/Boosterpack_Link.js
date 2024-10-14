@@ -34,7 +34,7 @@ window.addEventListener("load", () => {
                 } else {
                     let btnBoosterPack = document.createElement("button");
 
-                    btnBoosterPack.style.cssText = "position: absolute;right: 300px;top: 10px;z-index: 99;"
+                    btnBoosterPack.style.cssText = "position: absolute;right: 300px;top: 10px;z-index: 99;";
                     btnBoosterPack.addEventListener("click", () => {
                         window.open(`https://steamcommunity.com/tradingcards/boostercreator/#${appid}`);
                     });
@@ -42,7 +42,7 @@ window.addEventListener("load", () => {
 
                     let btnPointShop = document.createElement("button");
 
-                    btnPointShop.style.cssText = "position: absolute;right: 380px;top: 10px;z-index: 99;"
+                    btnPointShop.style.cssText = "position: absolute;right: 380px;top: 10px;z-index: 99;";
                     btnPointShop.addEventListener("click", () => {
                         window.open(`https://store.steampowered.com/points/shop/app/${appid}`);
                     });
@@ -65,7 +65,7 @@ window.addEventListener("load", () => {
         } else {
             let btnBoosterPack = document.createElement("button");
 
-            btnBoosterPack.style.cssText = "position: absolute;right: 300px;top: 10px;z-index: 99;"
+            btnBoosterPack.style.cssText = "position: absolute;right: 300px;top: 10px;z-index: 99;";
             btnBoosterPack.addEventListener("click", () => {
                 window.open(`https://steamcommunity.com/tradingcards/boostercreator/#${appid}`);
             });
@@ -73,7 +73,7 @@ window.addEventListener("load", () => {
 
             let btnPointShop = document.createElement("button");
 
-            btnPointShop.style.cssText = "position: absolute;right: 380px;top: 10px;z-index: 99;"
+            btnPointShop.style.cssText = "position: absolute;right: 380px;top: 10px;z-index: 99;";
             btnPointShop.addEventListener("click", () => {
                 window.open(`https://store.steampowered.com/points/shop/app/${appid}`);
             });
