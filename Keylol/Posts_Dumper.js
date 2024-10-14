@@ -59,7 +59,7 @@ setTimeout(async () => {
         }
         function genIframe() {
             const i = document.createElement('iframe');
-            return i
+            return i;
         }
         function genText() {
             const t = document.createElement('input');
@@ -87,7 +87,7 @@ setTimeout(async () => {
                 statusTips.textContent = `开始抓取,共 ${total} 篇`;
                 const workTread = tempIFrames.length;
                 for (let i = 0; i < total; i += workTread) {
-                    const max = Math.min(i + workTread, total)
+                    const max = Math.min(i + workTread, total);
                     const tasks = [];
                     for (let j = i; j < max; j++) {
                         const postTag = postLists[j];
@@ -117,7 +117,7 @@ setTimeout(async () => {
                 statusTips.textContent = `开始抓取,共 ${total} 篇`;
                 const workTread = tempIFrames.length;
                 for (let i = 0; i < total; i += workTread) {
-                    const max = Math.min(i + workTread, total)
+                    const max = Math.min(i + workTread, total);
                     const tasks = [];
                     for (let j = i; j < max; j++) {
                         const postTag = postLists[j];
@@ -161,11 +161,11 @@ setTimeout(async () => {
         });
 
         const btnExportExcel = genBtn('导出Excel', () => {
-            window.open(`http://${host}:${port}/api/excel`)
+            window.open(`http://${host}:${port}/api/excel`);
         });
 
         const btnExportBBCode = genBtn('导出BBCode', () => {
-            window.open(`http://${host}:${port}/api/bbcode`)
+            window.open(`http://${host}:${port}/api/bbcode`);
         });
 
         const btnResetDB = genBtn('重置数据库(删除所有数据)', async () => {
@@ -359,7 +359,7 @@ setTimeout(async () => {
         return new Promise((resolve, reject) => {
             $http.get(`http://${host}:${port}/api/test`)
                 .then((response) => {
-                    resolve(response?.code === 666)
+                    resolve(response?.code === 666);
                 })
                 .catch((reason) => {
                     resolve(false);
@@ -471,7 +471,7 @@ class Request {
         opt.data = data;
         opt.headers = {
             "Content-Type": "application/json"
-        }
+        };
         return this.#baseRequest(url, 'POST', opt, 'json');
     }
     delete(url, opt = {}) {
@@ -499,7 +499,7 @@ class Request {
                     console.log(response);
                     reject('解析出错');
                 }
-            }
+            };
             GM_xmlhttpRequest(opt);
         });
     }

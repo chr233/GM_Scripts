@@ -91,7 +91,7 @@
       appendChild(container, sendGiftLog);
     }, 500);
   } else {
-    console.log("sessionId或者cartGid为null")
+    console.log("sessionId或者cartGid为null");
   }
 
   function genBtn(text, foo) {
@@ -134,7 +134,7 @@
   function asyncDelay(ms) {
     return new Promise((resolve, _) => {
       setTimeout(resolve, ms);
-    })
+    });
   }
 
   async function batchSendGift(targetSteamIds, giftName, giftInfo, giftSign, log, log2) {
@@ -212,8 +212,8 @@
         log2(`${steamId}: 生成订单成功: ${transId}`);
 
       } catch (err) {
-        log(`送礼出错 ${err}`)
-        log2(`${steamId}: 送礼出错 ${err}`)
+        log(`送礼出错 ${err}`);
+        log2(`${steamId}: 送礼出错 ${err}`);
         await asyncDelay(2000);
       } finally {
         await asyncDelay(800);
@@ -224,15 +224,15 @@
       try {
         const price = await getFinalPrice(transId, "gift");
         log(`购物车总价 ${price}`);
-        const code = 1// await finalizeTransaction(transId);
+        const code = 1;// await finalizeTransaction(transId);
         log(`最终结算完成, 单号 ${transId}, 代码: ${code}, 总价 ${price}`);
         if (code === 22) {
-          log2(`最终结算完成, 总价 ${price}`)
+          log2(`最终结算完成, 总价 ${price}`);
         } else {
           log2(`最终结算, 代码: ${code}, 总价 ${price}`);
         }
       } catch (err) {
-        log2(`最终结算出错 ${err}`)
+        log2(`最终结算出错 ${err}`);
 
       }
     }
@@ -279,7 +279,7 @@
             } else {
               reject("初始化付款失败");
             }
-          })
+          });
         })
         .catch((err) => {
           console.error(err);
@@ -311,7 +311,7 @@
             } else {
               reject("初始化付款失败");
             }
-          })
+          });
         })
         .catch((err) => {
           console.error(err);
@@ -343,7 +343,7 @@
             } else {
               reject("获取最终价格失败");
             }
-          })
+          });
         })
         .catch((err) => {
           console.error(err);
@@ -375,7 +375,7 @@
             } else {
               reject("取消付款失败");
             }
-          })
+          });
         })
         .catch((err) => {
           console.error(err);
@@ -403,7 +403,7 @@
           response.json().then(json => {
             const { success } = json;
             resolve(success);
-          })
+          });
         })
         .catch((err) => {
           console.error(err);

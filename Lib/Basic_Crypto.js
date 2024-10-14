@@ -34,6 +34,6 @@ function base64Decode(enc) {
         return plain;
     } catch (e) {
         console.error(e);
-        return '**解码失败**'
+        return '**解码失败**';
     }
 }

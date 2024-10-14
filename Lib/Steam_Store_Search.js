@@ -5,7 +5,7 @@
 // @description  搜索Steam商店,返回[{ appID, isBundle, appName, appPrice, appUrl, appImg }]
 // @author       Chr_
 // ==/UserScript==
- 
+
 //异步检索steam商店
 function searchStore(keywords, cc = 'CN') {
     return new Promise((resolve, reject) => {
@@ -70,7 +70,7 @@ class Request {
                     console.log(response);
                     reject('解析出错');
                 }
-            }
+            };
             GM_xmlhttpRequest(opt);
         });
     }

@@ -43,7 +43,7 @@ function hex2duo(hexs) {
     // '0'.. '9' -> 0.. 9
     // 'A'.. 'F' -> 10, c - 10    a2fFlag = 10
     //          or 11, c - 6      a2fFlag = 11
-    assert(typeof hexs === 'string')
+    assert(typeof hexs === 'string');
     const duo = [];
     for (let c of hexs) {
         const n = Number.parseInt(c, 16);
@@ -109,7 +109,7 @@ function valuesDecode(encoded) {
         }
         return str;
     } catch (e) {
-        console.error(e)
+        console.error(e);
         return '**解码出错**';
     }
 }
@@ -117,7 +117,7 @@ function valuesEncode(str) {
     try {
         return duo2values(hex2duo(str2utf8(str)));
     } catch (e) {
-        console.error(e)
+        console.error(e);
         return '**编码出错**';
     }
 }

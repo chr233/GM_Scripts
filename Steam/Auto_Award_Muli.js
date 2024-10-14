@@ -306,7 +306,7 @@
             'importAccountNickNameTips': '手动添加',
             'importAccountSuccess': '添加账号成功, 请手动刷新点数',
         }
-    }
+    };
 
     // 判断语言
     let language = GM_getValue("lang", null);
@@ -373,7 +373,7 @@
         const nick = prompt(t("importAccountNickName"), `${t("importAccountNickNameTips")} ${botCount}`);
 
         alert(t("importAccountSuccess"));
-        GBots[steamID] = { nick, token, points: -1 }
+        GBots[steamID] = { nick, token, points: -1 };
         GM_setValue('bots', GBots);
         flashBotList();
     });
@@ -703,7 +703,7 @@
             })
             .then((points) => {
                 showAlert(t('success'), `<p>${t('addAccountSuccessTips1')}</p><p>${t('addAccountSuccessTips2')}: ${points} ${t('points')}</p>`, true);
-                GBots[v_steamID] = { nick: v_nick, token: v_token, points }
+                GBots[v_steamID] = { nick: v_nick, token: v_token, points };
                 GM_setValue('bots', GBots);
                 flashBotList();
             })
@@ -781,7 +781,7 @@
         const { accountList, awardBot } = GObjs;
         accountList.options.length = 0;
         awardBot.options.length = 0;
-        awardBot.options.add(new Option(t('notSelected'), ''))
+        awardBot.options.add(new Option(t('notSelected'), ''));
         let i = 1;
         let flag = false;
         if (!isEmptyObject(GBots)) {
@@ -789,7 +789,7 @@
                 const { nick, points } = GBots[steamID];
                 const pointsStr = parseInt(points).toLocaleString();
                 accountList.options.add(new Option(`${i} | ${nick} | ${steamID} | ${pointsStr} 点`, steamID));
-                awardBot.options.add(new Option(`${i++} | ${nick} | ${pointsStr} 点`, steamID))
+                awardBot.options.add(new Option(`${i++} | ${nick} | ${pointsStr} 点`, steamID));
                 if (steamID === bot) {
                     flag = true;
                     awardBot.selectedIndex = i - 1;
@@ -864,7 +864,7 @@
                                         data[type] = t('fetchError');
                                     }
                                 }
-                                let text = `<p>${t('nickName')}: ${nick}</p><p>${t('recommands')}: ${data.r}</p><p>${t('screenshots')}: ${data.s}</p><p>${t('artworks')}: ${data.i}</p><p>${t('totalPoints')}: ${sum.toLocaleString()}</p><p>*${t('calcTips')}*</p>`
+                                let text = `<p>${t('nickName')}: ${nick}</p><p>${t('recommands')}: ${data.r}</p><p>${t('screenshots')}: ${data.s}</p><p>${t('artworks')}: ${data.i}</p><p>${t('totalPoints')}: ${sum.toLocaleString()}</p><p>*${t('calcTips')}*</p>`;
                                 showAlert(t('tips'), text, true);
                             })
                             .finally(() => {
@@ -876,7 +876,7 @@
                     }
                 })
                 .catch((reason) => {
-                    showAlert(t('error'), `<p>${t('profileLoadFailedTips')}</p><p>${reason}</p>`, false)
+                    showAlert(t('error'), `<p>${t('profileLoadFailedTips')}</p><p>${reason}</p>`, false);
                     loadScreen(false, null);
                 });
         }
@@ -955,7 +955,7 @@
                     const token = await getToken();
                     loadScreen(true, t('fetchPoints'));
                     const points = await getPoints(g_steamID, token);
-                    GBots[g_steamID] = { nick: nick, token: token, points }
+                    GBots[g_steamID] = { nick: nick, token: token, points };
                     GM_setValue('bots', GBots);
                     flashBotList();
                     bot = g_steamID;
@@ -1046,7 +1046,7 @@
                         }
                     })
                     .catch((reason) => {
-                        showAlert(t('error'), `<p>${t('profileLoadFailedTips')}</p><p>${reason}</p>`, false)
+                        showAlert(t('error'), `<p>${t('profileLoadFailedTips')}</p><p>${reason}</p>`, false);
                     }).finally(() => {
                         loadScreen(false, null);
                     });
@@ -1111,10 +1111,10 @@
 
         if (token) {
             const workflow = [];
-            if (!Boolean(type & 8)) { workflow.push('i') };
-            if (!Boolean(type & 4)) { workflow.push('s') };
-            if (!Boolean(type & 2)) { workflow.push('r') };
-            if (!Boolean(type & 1)) { workflow.push('p') };
+            if (!Boolean(type & 8)) { workflow.push('i'); };
+            if (!Boolean(type & 4)) { workflow.push('s'); };
+            if (!Boolean(type & 2)) { workflow.push('r'); };
+            if (!Boolean(type & 1)) { workflow.push('p'); };
 
             while (GTask.work && workflow.length > 0) {
                 const award_type = workflow.pop();
@@ -1144,7 +1144,7 @@
                                 break;
                             }
                             coast = sumReactionsPoints(todoReactions);
-                            print(`【${target_name}】${t('beforeSendAward')}: ${todoReactions.length} ${t('itemAndTotal')}: ${coast.toLocaleString()} ${t('points')}`)
+                            print(`【${target_name}】${t('beforeSendAward')}: ${todoReactions.length} ${t('itemAndTotal')}: ${coast.toLocaleString()} ${t('points')}`);
                             const plist = [];
                             for (const id of todoReactions) {
                                 plist.push(sendAwardReaction(token, target_type, steamID, id));
@@ -1239,7 +1239,7 @@
                                         break;
                                     }
                                     coast = sumReactionsPoints(todoReactions);
-                                    print(`【${target_name}】${t('willAward')}: ${todoReactions.length} ${t('itemAndTotal')}: ${coast.toLocaleString()} ${t('points')}`)
+                                    print(`【${target_name}】${t('willAward')}: ${todoReactions.length} ${t('itemAndTotal')}: ${coast.toLocaleString()} ${t('points')}`);
                                     const plist = [];
                                     for (const id of todoReactions) {
                                         plist.push(sendAwardReaction(token, target_type, itemID, id));
@@ -1333,7 +1333,7 @@
             })
             .fail(() => {
                 if (cancel) { cancel(); }
-            })
+            });
     }
     //显示状态
     function showStatus(text, run = true) {
@@ -1394,7 +1394,7 @@
     function genProgressBar(percent) {
         const full_symbol = '⣿';
         const none_symbol = '⣀';
-        const percentStr = ` ${percent.toFixed(2)}%`
+        const percentStr = ` ${percent.toFixed(2)}%`;
         if (percent >= 100) {
             return full_symbol.repeat(40) + percentStr;
         } else {
@@ -1430,16 +1430,16 @@
         switch (style) {
             case 1:
                 print('#'.repeat(68));
-                return
+                return;
             case 2:
                 print('='.repeat(68));
-                return
+                return;
             case 3:
                 print('+'.repeat(68));
-                return
+                return;
             case 4:
                 print('~'.repeat(68));
-                return
+                return;
         }
     }
     //异步延时
@@ -1501,7 +1501,7 @@
     }
     //异步延时
     function aiosleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms))
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
     //====================================================================================
     function getMySteamID() {
@@ -1529,7 +1529,7 @@
                     reject(t('steamStoreNotLogin'));
                 }
                 else {
-                    token =token.replace(/"/g, "");
+                    token = token.replace(/"/g, "");
                     resolve(token);
                 }
             } catch (err) {
@@ -1722,7 +1722,7 @@ class Request {
                     console.log(response);
                     reject("解析失败");
                 }
-            }
+            };
             GM_xmlhttpRequest(opt);
         });
     }

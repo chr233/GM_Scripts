@@ -52,7 +52,7 @@
         dv1.appendChild(txtResult);
         dv1.appendChild(dv3);
         area.appendChild(dv1);
-        Object.assign(GObjs, { txtResult, btnCopy })
+        Object.assign(GObjs, { txtResult, btnCopy });
     }
     function extractGift() {
         const { txtResult } = GObjs;

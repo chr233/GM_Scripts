@@ -5,7 +5,7 @@
 // @description  异步Requests库
 // @author       Chr_
 // ==/UserScript==
- 
+
 //==============================================================
 class Request {
     constructor(timeout = 3000) {
@@ -44,7 +44,7 @@ class Request {
                     console.log(response);
                     reject('解析出错');
                 }
-            }
+            };
             GM_xmlhttpRequest(opt);
         });
     }

@@ -61,7 +61,7 @@
         const btnArea = document.querySelector("div.inventory_links");
 
         const container = document.createElement("div");
-        container.className = "ish_container"
+        container.className = "ish_container";
         btnArea.insertBefore(container, btnArea.firstChild);
 
         const hiddenContainer = document.createElement("div");
@@ -114,7 +114,7 @@
                 `<p>【Developed by <a href="https://steamcommunity.com/id/Chr_" target="_blank">Chr_</a>】 【当前版本 ${version}】</p>`,
             ].join("<br>")
 
-        )
+        );
     }
 
     function doFitInventory() {
@@ -368,27 +368,27 @@
                                                         } else {
 
                                                         }
-                                                    })
+                                                    });
                                                 })
                                                 .catch((err) => {
                                                     console.error(err);
                                                     reject(`读取库存失败 ${err}`);
                                                 });
                                         }
-                                    })
+                                    });
                                 })
                                 .catch((err) => {
                                     console.error(err);
                                     reject(`读取库存失败 ${err}`);
                                 });
                         }
-                    })
+                    });
                 })
                 .catch((err) => {
                     console.error(err);
                     reject(`读取库存失败 ${err}`);
                 });
-        })
+        });
     }
 
     // 堆叠物品
@@ -409,7 +409,7 @@
                     response.json().then(json => {
                         const { success } = json;
                         resolve(success);
-                    })
+                    });
                 })
                 .catch((err) => {
                     console.error(err);
@@ -436,7 +436,7 @@
                     response.json().then(json => {
                         const { success } = json;
                         resolve(success);
-                    })
+                    });
                 })
                 .catch((err) => {
                     console.error(err);

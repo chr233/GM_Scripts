@@ -82,7 +82,7 @@
         divArea.appendChild(iptPage);
         divArea.appendChild(txtLog);
         divArea.appendChild(divHide);
-        Object.assign(GObjs, { txtLog, divHide })
+        Object.assign(GObjs, { txtLog, divHide });
     }
 
     //批量删除留言
@@ -92,14 +92,14 @@
             const d = document.createElement('div');
             divHide.appendChild(d);
             return d;
-        }
+        };
         const log = (msg) => {
             if (txtLog.value) {
                 txtLog.value += "\n";
             }
             txtLog.value += msg;
             txtLog.scrollTop = txtLog.scrollHeight;
-        }
+        };
         log(`1 开始运行, 页码设置: ${startPage} / ${endPage}`);
         const baseUri = location.origin + location.pathname;
 
@@ -157,7 +157,7 @@
                     }
                 }
                 else {
-                    log('3 无留言记录,跳过')
+                    log('3 无留言记录,跳过');
                 }
             } else {
                 log('2 读取失败');
