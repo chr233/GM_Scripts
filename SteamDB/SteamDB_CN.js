@@ -46,7 +46,7 @@
         btn.className = cls;
       }
       return btn;
-    }
+    };
 
     const template = `{"DOC":{"更新时间":"调试模式","贡献名单":["调试模式"]},\n"STATIC":\n{\n\n},\n"INPUT":\n{\n\n},\n"LABEL":\n{\n\n},\n"DYNAMIC":\n{\n\n}\n}`;
     const box = document.createElement("div");
@@ -83,7 +83,7 @@
     });
     action.appendChild(btnOnline);
     const about = document.createElement('a');
-    about.href = "https://blog.chrxw.com"
+    about.href = "https://blog.chrxw.com";
     about.innerText = "🔗 By Chr_ © 2022";
     action.appendChild(about);
 
@@ -184,7 +184,7 @@
   console.log(`更新时间: ${update}`);
   console.log(`贡献名单: ${contribution.join(", ")}`);
   console.log("=================================");
-  console.log("迷茫同学:\n『没有恶意 请问直接用谷歌翻译整个网页不香吗』")
+  console.log("迷茫同学:\n『没有恶意 请问直接用谷歌翻译整个网页不香吗』");
 
   // 添加按钮
   setTimeout(() => {

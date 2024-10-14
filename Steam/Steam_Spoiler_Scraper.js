@@ -47,7 +47,7 @@
     // 刮开单个隐藏
     function scratch(ele) {
         let s = ele.currentTarget;
-        console.log(s.getAttribute("scratch"))
+        console.log(s.getAttribute("scratch"));
         if (s.getAttribute("scratch") != "on") {
             for (let e of s.querySelectorAll("*")) {
                 e.style.cssText = "visibility:visible;color:#fff;";

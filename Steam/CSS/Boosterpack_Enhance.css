@@ -2,3 +2,16 @@ img.be-row-image {
   width: 90px;
   height: auto;
 }
+div.bh-filter {
+  padding: 10px 0;
+}
+div.bh-filter > * {
+  margin-right: 10px;
+}
+button.bh-button-right {
+  position: absolute;
+  right: 10px;
+}
+span.bh-tips {
+  font-size: 10px;
+}

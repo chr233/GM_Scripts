@@ -20,7 +20,7 @@ let VReplys = [];
     "use strict";
     setTimeout(() => {
         addBtns();
-        initSelect()
+        initSelect();
     }, 1000);
     loadCFG();
 })();

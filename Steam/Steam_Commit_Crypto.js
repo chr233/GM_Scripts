@@ -60,7 +60,7 @@ function addPanel() {
     function genButton(text, foo, id) {
         let b = document.createElement('button');
         b.textContent = text;
-        b.style.cssText = 'vertical-align: inherit;padding: 0 5px;height: 24px;'
+        b.style.cssText = 'vertical-align: inherit;padding: 0 5px;height: 24px;';
         b.addEventListener('click', foo);
         if (id) { b.id = id; }
         return b;
@@ -68,7 +68,7 @@ function addPanel() {
     function genDiv(id) {
         let d = document.createElement('div');
         // d.style.cssText = 'vertical-align:middle;';
-        if (id) { d.id = id };
+        if (id) { d.id = id; };
         return d;
     }
     function genPanel(name, visiable) {
@@ -76,7 +76,7 @@ function addPanel() {
         d.style.cssText = 'background: rgba(58, 58, 58, 0.9);position: fixed;top: 50%;';
         d.style.cssText += 'text-align: center;transform: translate(0px, -50%);z-index: 1000;';
         d.style.cssText += 'border: 1px solid rgb(83, 83, 83);padding: 5px;';
-        d.style.cssText += 'transition:right 0.8s;right:-350px;width:310px;font-size:14px;'
+        d.style.cssText += 'transition:right 0.8s;right:-350px;width:310px;font-size:14px;';
         if (visiable) {
             d.style.right = '0';
         }
@@ -87,7 +87,7 @@ function addPanel() {
         d.style.cssText = 'background: rgba(58, 58, 58, 0.9);position: fixed;';
         d.style.cssText += 'text-align: center;transform: translate(0px, -50%);z-index: 2000;';
         d.style.cssText += 'border: 1px solid rgb(83, 83, 83);padding: 2px;visibility: none';
-        d.style.cssText += 'transition:visiable 0.8s;font-size:14px;'
+        d.style.cssText += 'transition:visiable 0.8s;font-size:14px;';
         if (visiable) {
             d.style.visibility = 'visible';
         }
@@ -156,7 +156,7 @@ function addPanel() {
     document.body.appendChild(panelFunc);
 
     let divTitle = genDiv();
-    divTitle.style.marginBottom = '5px'
+    divTitle.style.marginBottom = '5px';
     let lblTitle = genLabel(`SCC - V ${G_ver} - By `, null);
     let lblUrl = genA('Chr_', 'https://steamcommunity.com/id/Chr_');
     let lblFeed = genA('[反馈]', 'https://blog.chrxw.com/scripts.html');
@@ -176,13 +176,13 @@ function addPanel() {
     let selMode = genSelect('selMode', CryptoMode, G_CMode);
     let btnHelp = genButton('?', showHelp, 'btnHelp');
 
-    divMode.style.marginBottom = '5px'
+    divMode.style.marginBottom = '5px';
     divMode.appendChild(lblMode);
     divMode.appendChild(selMode);
     divMode.appendChild(genSpace());
     divMode.appendChild(btnHelp);
 
-    let divAction = genDiv()
+    let divAction = genDiv();
     let btnDecode = genButton('解密↓', decode, 'btnDecode');
     let btnEncode = genButton('加密↑', encode, 'btnEncode');
     let btnExchange = genButton('交换↕', exchange, 'btnExchange');
@@ -190,7 +190,7 @@ function addPanel() {
     let btnCopyEnc = genButton('复制密文', copyEnc, 'btnCopyEnc');
     // let btnExtract = genButton('提取链接🌐', null, 'btnExchange');
 
-    divAction.style.marginBottom = '5px'
+    divAction.style.marginBottom = '5px';
     divAction.appendChild(btnDecode);
     divAction.appendChild(genSpace());
     divAction.appendChild(btnEncode);

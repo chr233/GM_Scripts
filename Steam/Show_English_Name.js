@@ -38,7 +38,7 @@
                     if (ele_title != null) {
                         clearInterval(t);
                         const ele_path = document.querySelector("div.blockbg>a:last-child");
-                        let name_cur = ele_title.textContent
+                        let name_cur = ele_title.textContent;
                         if (name_cur.toLowerCase() != name_en.toLowerCase()) {
                             if (pure === "开") {
                                 name_en = pureName(name_en);
@@ -70,7 +70,7 @@
                         ele_title.addEventListener("dblclick", () => {
                             ShowConfirmDialog(`你想做什么呢？`, "", "复制游戏名", "搜索游戏名")
                                 .done(() => {
-                                    const setClipboard = (data) => { GM_setClipboard(data, "text"); }
+                                    const setClipboard = (data) => { GM_setClipboard(data, "text"); };
                                     if (name_cur == name_en) { setClipboard(name_cur); } else {
                                         ShowConfirmDialog(`要复制的游戏名称？`, "", name_cur, name_en)
                                             .done(() => { setClipboard(name_cur); })
