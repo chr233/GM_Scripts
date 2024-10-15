@@ -2,7 +2,7 @@
 // @name:zh-CN   补充包合成器增强
 // @name         Boosterpack_Enhance
 // @namespace    https://blog.chrxw.com
-// @version      1.1
+// @version      1.2
 // @description  补充包制作工具
 // @description:zh-CN  补充包制作工具
 // @author       Chr_
@@ -22,19 +22,12 @@
     const g_boosterData = {};
     const g_faveriteBooster = new Set();
 
-    GM_addStyle(GM_getResourceText("css"));
-
+    // 初始化
     setTimeout(async () => {
-
         loadFavorite();
-
         await initBoosterData();
-
         initPanel();
-
     }, 200);
-
-    window.addEventListener("beforeunload", saveFavorite);
 
     function genDiv(cls) {
         const d = document.createElement("div");
@@ -51,7 +44,7 @@
         s.textContent = name;
         return s;
     }
-    function genCheckbox(name, cls, checked = false) {
+    function genCheckbox(name, cls, key = null, checked = false) {
         const l = document.createElement("label");
         const i = document.createElement("input");
         const s = genSpan(name);
@@ -59,7 +52,7 @@
         i.title = name;
         i.type = "checkbox";
         i.className = "fac_checkbox";
-        i.checked = checked;
+        i.checked = localStorage.getItem(key) === "true";
         l.title = name;
         l.appendChild(i);
         l.appendChild(s);
@@ -95,10 +88,10 @@
         });
         filterContainer.appendChild(iptSearch);
 
-        const [lblOnlyFavorite, chkOnlyFavorite] = genCheckbox("仅显示已收藏", "bh-checkbox", false);
+        const [lblOnlyFavorite, chkOnlyFavorite] = genCheckbox("仅显示已收藏", "bh-checkbox", "bh-onlyfavorite", false);
         chkOnlyFavorite.addEventListener("change", updateFilter);
         filterContainer.appendChild(lblOnlyFavorite);
-        const [lblOnlyCraftable, chkOnlyCraftable] = genCheckbox("仅显示可合成", "bh-checkbox", false);
+        const [lblOnlyCraftable, chkOnlyCraftable] = genCheckbox("仅显示可合成", "bh-checkbox", "bh-onlycraftable", false);
         chkOnlyCraftable.addEventListener("change", updateFilter);
         filterContainer.appendChild(lblOnlyCraftable);
 
@@ -171,6 +164,14 @@
             iptSearch.value = appId;
             updateFilter();
         });
+
+        window.addEventListener("beforeunload", () => {
+            localStorage.setItem("bh-onlyfavorite", chkOnlyFavorite.checked);
+            localStorage.setItem("bh-onlycraftable", chkOnlyCraftable.checked);
+            saveFavorite();
+        });
+
+        updateFilter();
 
         function doEditFavorite(e, row) {
             const cell = row.getCell("favorite");
@@ -318,8 +319,6 @@
                 };
             }
         }
-
-        console.log(g_boosterData);
     }
 
     function parseBoosterData(html) {
@@ -408,6 +407,7 @@
     }
 })();
 
+GM_addStyle(GM_getResourceText("css"));
 GM_addStyle(`
 img.be-row-image {
   width: 90px;
