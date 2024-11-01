@@ -2,7 +2,7 @@
 // @name:zh-CN   补充包合成器增强
 // @name         Boosterpack_Enhance
 // @namespace    https://blog.chrxw.com
-// @version      1.2
+// @version      1.3
 // @description  补充包制作工具
 // @description:zh-CN  补充包制作工具
 // @author       Chr_
@@ -168,7 +168,6 @@
         window.addEventListener("beforeunload", () => {
             localStorage.setItem("bh-onlyfavorite", chkOnlyFavorite.checked);
             localStorage.setItem("bh-onlycraftable", chkOnlyCraftable.checked);
-            saveFavorite();
         });
 
         updateFilter();
