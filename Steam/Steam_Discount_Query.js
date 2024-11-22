@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.1
+// @version         1.2
 // @description:zh-CN  查询折扣截止日期
 // @description     Query when the discounts expired
 // @author          Chr_
@@ -17,41 +17,69 @@
 (async () => {
     "use strict";
     //初始化
-    let t = setInterval(() => {
-        let container = document.getElementById("wishlist_ctn");
+    const t = setInterval(() => {
+        const containers = document.querySelectorAll("div[class='Panel']");
+        let container = null;
+        for (let ele of containers) {
+            if (!ele.getAttribute("data-index")) {
+                container = ele.querySelector("div");
+                break;
+            }
+        }
+
         if (container != null) {
             clearInterval(t);
 
-            for (let ele of container.querySelectorAll("div.wishlist_row")) {
+            for (let ele of container.querySelectorAll("div[data-index]")) {
                 addQueryButton(ele);
             }
 
-            container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
-                if (relatedNode.nodeName === "DIV") {
-                    for (let ele of relatedNode.querySelectorAll("div.wishlist_row")) {
-                        addQueryButton(ele);
+            // 观察配置
+            const config = { childList: true, subtree: true };
+
+            // 回调函数
+            const callback = (mutationsList, observer) => {
+                for (let mutation of mutationsList) {
+                    if (mutation.type === 'childList') {
+                        for (let node of mutation.addedNodes) {
+                            if (node.nodeType === 1 && node.matches('div[data-index]')) {
+                                addQueryButton(node);
+                            }
+                        }
                     }
                 }
-            });
+            };
+
+            // 创建观察者实例
+            const observer = new MutationObserver(callback);
+
+            // 开始观察
+            observer.observe(container, config);
         }
-    }, 500);
+    }, 1000);
+
+    const matchAppId = /app\/(\d+)/;
 
     //添加按钮
     function addQueryButton(element) {
-        if (element.getAttribute("added_sdq") !== null) { return; }
-        element.setAttribute("added_sdq", "");
+        const href = element.querySelector("a")?.getAttribute("href");
 
-        let appID = element.getAttribute("data-app-id");
-        if (appID === null) { return; }
+        const match = href.match(matchAppId);
+        if (!match) {
+            return;
+        }
+        const appID = match[1];
 
-        let btn = document.createElement("button");
+        const ele = element.querySelector("div>div>div:nth-child(3)>div:nth-child(2)");
+
+        const btn = document.createElement("button");
         btn.addEventListener("click", (e) => {
             displaySaleEnds(appID, btn);
             e.preventDefault();
         }, false);
         btn.className = "sdq_listbtns";
         btn.textContent = "🔍";
-        element.appendChild(btn);
+        ele.appendChild(btn);
     }
 
     //显示折扣结束时间
@@ -124,7 +152,6 @@
 
 GM_addStyle(`
 button.sdq_listbtns {
-    display: none;
     position: relative;
     z-index: 100;
     padding: 1px;

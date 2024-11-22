@@ -209,8 +209,8 @@
     }
 
     //获取商店语言和区域
-    const { LANGUAGE: storeLanguage, COUNTRY: userCountry } = JSON.parse(document.querySelector("#application_config")?.getAttribute("data-config") ?? "");
-    const { webapi_token: accessToken } = JSON.parse(document.querySelector("#application_config")?.getAttribute("data-store_user_config") ?? "");
+    const { LANGUAGE: storeLanguage, COUNTRY: userCountry } = JSON.parse(document.querySelector("#application_config")?.getAttribute("data-config") ?? "{}");
+    const { webapi_token: accessToken } = JSON.parse(document.querySelector("#application_config")?.getAttribute("data-store_user_config") ?? "{}");
 
     const G_Objs = {};
 
