@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.net/@chr233
-// @version         1.2
+// @version         1.3
 // @description:zh-CN  查询折扣截止日期
 // @description     Query when the discounts expired
 // @author          Chr_
@@ -70,16 +70,18 @@
         }
         const appID = match[1];
 
-        const ele = element.querySelector("div>div>div:nth-child(3)>div:nth-child(2)");
+        const ele = element.querySelector("button")?.parentElement;
 
-        const btn = document.createElement("button");
-        btn.addEventListener("click", (e) => {
-            displaySaleEnds(appID, btn);
-            e.preventDefault();
-        }, false);
-        btn.className = "sdq_listbtns";
-        btn.textContent = "🔍";
-        ele.appendChild(btn);
+        if (ele) {
+            const btn = document.createElement("button");
+            btn.addEventListener("click", (e) => {
+                displaySaleEnds(appID, btn);
+                e.preventDefault();
+            }, false);
+            btn.className = "sdq_listbtns";
+            btn.textContent = "🔍";
+            ele.appendChild(btn);
+        }
     }
 
     //显示折扣结束时间
