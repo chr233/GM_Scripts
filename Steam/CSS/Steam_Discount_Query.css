@@ -1,8 +1,9 @@
 button.sdq_listbtns {
-  display: none;
-  position: relative;
+  position: absolute;
   z-index: 100;
   padding: 1px;
+  right: 20px;
+  top: 20px;
 }
 div.wishlist_row > button.sdq_listbtns {
   top: 35%;
@@ -11,7 +12,7 @@ div.wishlist_row > button.sdq_listbtns {
 }
 button.sdq_listbtns_show,
 div.wishlist_row:hover button.sdq_listbtns {
-  display: block;
+  display: flex;
 }
 button.sdq_listbtns_alert {
   color: red;
