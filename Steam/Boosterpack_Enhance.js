@@ -2,7 +2,7 @@
 // @name:zh-CN   补充包合成器增强
 // @name         Boosterpack_Enhance
 // @namespace    https://blog.chrxw.com
-// @version      1.3
+// @version      1.4
 // @description  补充包制作工具
 // @description:zh-CN  补充包制作工具
 // @author       Chr_
@@ -21,6 +21,7 @@
 
     const g_boosterData = {};
     const g_faveriteBooster = new Set();
+    let g_craftMode = "2";
 
     // 初始化
     setTimeout(async () => {
@@ -72,6 +73,18 @@
         b.addEventListener("click", foo);
         return b;
     }
+    function genOption(name, value) {
+        const o = document.createElement("option");
+        o.textContent = name;
+        o.value = value;
+        return o;
+    }
+    function genSelector() {
+        const s = document.createElement("select");
+        s.appendChild(genOption("可交易", "2"));
+        s.appendChild(genOption("不可交易", "3"));
+        return s;
+    }
 
     function initPanel() {
         const area = document.querySelector("div.booster_creator_area");
@@ -106,6 +119,16 @@
 
         const tabledata = Object.values(g_boosterData);
 
+        const divRight = genDiv("bh-right");
+        filterContainer.appendChild(divRight);
+
+        const selPackPrefer = genSelector();
+        selPackPrefer.addEventListener("change", (_) => {
+            g_craftMode = selPackPrefer.value;
+            console.log(g_craftMode);
+        })
+        divRight.appendChild(selPackPrefer);
+
         const btnBatchCraft = genButton("批量合成收藏的包", async () => {
             const favoriteItems = tabledata.filter(x => x.favorite && x.available);
             if (favoriteItems.length === 0) {
@@ -117,7 +140,7 @@
                 }
             }
         }, "bh-button-right");
-        filterContainer.appendChild(btnBatchCraft);
+        divRight.appendChild(btnBatchCraft);
 
         const tableContainer = genDiv("bh-table");
         area.appendChild(tableContainer);
@@ -375,7 +398,7 @@
             formData.append("sessionid", g_sessionID);
             formData.append("appid", appId);
             formData.append("series", "1");
-            formData.append("tradability_preference", "2");
+            formData.append("tradability_preference", g_craftMode);
 
             fetch(
                 "https://steamcommunity.com/tradingcards/ajaxcreatebooster/",
@@ -418,9 +441,13 @@ div.bh-filter {
 div.bh-filter > * {
   margin-right: 10px;
 }
-button.bh-button-right {
+div.bh-right {
+  display: inline;
   position: absolute;
   right: 10px;
+}
+div.bh-right > * {
+  margin-left: 10px;
 }
 span.bh-tips {
   font-size: 10px;

@@ -8,9 +8,13 @@ div.bh-filter {
 div.bh-filter > * {
   margin-right: 10px;
 }
-button.bh-button-right {
+div.bh-right {
+  display: inline;
   position: absolute;
   right: 10px;
+}
+div.bh-right > * {
+  margin-left: 10px;
 }
 span.bh-tips {
   font-size: 10px;
