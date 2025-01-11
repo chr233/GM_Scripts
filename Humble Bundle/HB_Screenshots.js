@@ -3,8 +3,8 @@
 // @name            HB_Screenshots
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
-// @version         2.9
+// @contributionURL https://afdian.com/@chr233
+// @version         2.10
 // @description     一键生成密钥截图
 // @description:zh-CN  一键生成密钥截图
 // @author          Chr_

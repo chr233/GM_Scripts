@@ -3,8 +3,8 @@
 // @name               Inventory_Stack_Helper
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
-// @contributionURL    https://afdian.net/@chr233
-// @version            2.1
+// @contributionURL    https://afdian.com/@chr233
+// @version            2.2
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_

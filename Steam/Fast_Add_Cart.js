@@ -3,8 +3,8 @@
 // @name            Fast_Add_Cart
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
-// @version         4.5
+// @contributionURL https://afdian.com/@chr233
+// @version         4.6
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_

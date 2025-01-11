@@ -3,8 +3,8 @@
 // @name            Batch_Gift
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
-// @version         1.0
+// @contributionURL https://afdian.com/@chr233
+// @version         1.1
 // @description     一键批量送礼
 // @description:zh-CN  一键批量送礼
 // @author          Chr_

@@ -3,8 +3,8 @@
 // @name            Fake_Purchase
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
-// @version         1.4
+// @contributionURL https://afdian.com/@chr233
+// @version         1.5
 // @description     一键批量卡单
 // @description:zh-CN  一键批量卡单
 // @author          Chr_

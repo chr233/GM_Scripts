@@ -3,8 +3,8 @@
 // @name:zh-CN      Steam显示英文游戏名
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
-// @version         1.17
+// @contributionURL https://afdian.com/@chr233
+// @version         1.18
 // @description     在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @description:zh-CN  在商店页显示双语游戏名称，双击名称可以快捷搜索。
 // @author          Chr_

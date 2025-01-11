@@ -3,8 +3,8 @@
 // @name            Auto_Sub3
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
-// @version         2.25
+// @contributionURL https://afdian.com/@chr233
+// @version         2.26
 // @description     一键快乐-3
 // @description:zh-CN  一键快乐-3
 // @author          Chr_

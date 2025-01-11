@@ -3,8 +3,8 @@
 // @name                  Steam_Zoom_Like
 // @namespace             https://blog.chrxw.com
 // @supportURL            https://blog.chrxw.com/scripts.html
-// @contributionURL       https://afdian.net/@chr233
-// @version               1.7
+// @contributionURL       https://afdian.com/@chr233
+// @version               1.8
 // @description:zh-CN     批量点赞Steam动态朋友圈, 原作者 Garen
 // @description           批量点赞Steam动态朋友圈, 原作者 Garen
 // @author                Garen, Chr_
