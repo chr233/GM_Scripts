@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.com/@chr233
-// @version            2.3
+// @version            2.4
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -148,6 +148,7 @@
         btnStack.style.display = "none";
         btnUnstack.style.display = "none";
         btnHelp.style.display = "none";
+        iptStackMax.style.display = "none";
 
         loadInventory(g_appId, g_contextId, amount)
             .then(async (inv) => {
@@ -247,6 +248,7 @@
                 btnStack.style.display = null;
                 btnUnstack.style.display = null;
                 btnHelp.style.display = null;
+                iptStackMax.style.display = null;
                 g_ActiveInventory.m_owner.ReloadInventory(appId, contextId);
             });
     }
@@ -274,6 +276,7 @@
         btnStack.style.display = "none";
         btnUnstack.style.display = "none";
         btnHelp.style.display = "none";
+        iptStackMax.style.display = "none";
 
         loadInventory(g_appId, g_contextId, amount)
             .then(async (inv) => {
@@ -335,6 +338,7 @@
                 btnStack.style.display = null;
                 btnUnstack.style.display = null;
                 btnHelp.style.display = null;
+                iptStackMax.style.display = null;
                 g_ActiveInventory.m_owner.ReloadInventory(appId, contextId);
             });
     }

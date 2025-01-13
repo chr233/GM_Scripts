@@ -3,8 +3,8 @@
 // @name            Steam_Discount_Query
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
-// @version         1.4
+// @contributionURL https://afdian.com/@chr233
+// @version         1.5
 // @description:zh-CN  查询折扣截止日期
 // @description     Query when the discounts expired
 // @author          Chr_
