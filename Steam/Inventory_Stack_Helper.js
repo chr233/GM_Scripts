@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.com/@chr233
-// @version            2.2
+// @version            2.3
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -18,6 +18,12 @@
 // 初始化
 (() => {
     "use strict";
+
+    let g_appId = 0;
+    let g_contextId = 2;
+
+    const delay = 300;
+    const amount = 5000;
 
     let token = document.querySelector("#application_config")?.getAttribute("data-loyalty_webapi_token");
     if (token) {
@@ -68,28 +74,21 @@
         hiddenContainer.style.display = "none";
         container.appendChild(hiddenContainer);
 
-        const iptAppId = genNumber("", "2923300", "AppId");
-        const iptContextId = genNumber("", "2", "ContextId");
-        const iptDelay = genNumber("500", "延时", "网络请求发送间隔");
-        const iptAmount = genNumber("500", "数量", "加载库存物品数量上限");
 
         const btnStack = genBtn("堆叠", "堆叠库存中的物品", doStack);
         const btnUnstack = genBtn("反堆叠", "取消堆叠库存中的物品", doUnstack);
+
+        const iptStackMax = genNumber("0", "堆叠上限", "物品堆叠上限, 留空或者0表示不设置堆叠上限");
+
         const btnHelp = genBtn("❓", "查看帮助", doHelp);
         const spStatus = genSpan("");
 
         hiddenContainer.appendChild(genSpan("库存"));
-        hiddenContainer.appendChild(iptAppId);
-        hiddenContainer.appendChild(iptContextId);
-
-        hiddenContainer.appendChild(genSpan("延时"));
-        hiddenContainer.appendChild(iptDelay);
-        hiddenContainer.appendChild(genSpan("上限"));
-        hiddenContainer.appendChild(iptAmount);
 
         container.appendChild(btnStack);
         container.appendChild(btnUnstack);
         container.appendChild(btnHelp);
+        container.appendChild(iptStackMax);
         container.appendChild(spStatus);
 
         document.querySelectorAll('div.games_list_tabs>a').forEach(tab => {
@@ -98,13 +97,11 @@
 
         document.querySelector("#responsive_inventory_select")?.addEventListener("change", doFitInventory);
 
-        return { iptAppId, iptContextId, iptDelay, iptAmount, btnStack, btnUnstack, btnHelp, spStatus };
+        return { btnStack, btnUnstack, iptStackMax, btnHelp, spStatus };
     }
 
     function doHelp() {
         const { script: { version } } = GM_info;
-
-        console.log(GM_info);
 
         ShowAlertDialog("帮助",
             [
@@ -118,38 +115,31 @@
     }
 
     function doFitInventory() {
-        const { iptAppId, iptContextId } = GObjs;
         const { appid, contextid } = g_ActiveInventory;
 
-        iptAppId.value = appid ?? "0";
+        g_appId = appid ?? "0";
+        g_contextId = contextid ?? "2";
 
-        if (appid == 753) {
-            iptContextId.value = "6";
-        } else {
-            iptContextId.value = contextid ?? "2";
+        if (g_appId == 753) {
+            g_contextId = "6";
         }
     }
 
     function doStack() {
-        const { iptAppId, iptContextId, iptDelay, iptAmount, btnStack, btnUnstack, btnHelp, spStatus } = GObjs;
+        const { btnStack, btnUnstack, iptStackMax, btnHelp, spStatus } = GObjs;
 
-        const appId = parseInt(iptAppId.value);
-        const contextId = parseInt(iptContextId.value);
-        if (appId !== appId || contextId !== contextId) {
-            ShowAlertDialog("提示", "读取库存失败, 请稍后重试");
+        if (g_appId !== g_appId || g_contextId !== g_contextId) {
+            ShowAlertDialog("提示", "库存状态无效");
             return;
         }
 
-        const delay = parseInt(iptDelay.value);
-        if (delay !== delay) {
-            ShowAlertDialog("提示", "请检查 延时 是否填写正确");
-            return;
-        }
-
-        const amount = parseInt(iptAmount.value);
-        if (amount !== amount) {
-            ShowAlertDialog("提示", "请检查 上限 是否填写正确");
-            return;
+        let stackMax = 0;
+        if (iptStackMax.value) {
+            stackMax = parseInt(iptStackMax.value);
+            if (stackMax !== stackMax) {
+                ShowAlertDialog("提示", "请检查 堆叠上限 是否填写正确");
+                return;
+            }
         }
 
         saveSetting();
@@ -159,7 +149,7 @@
         btnUnstack.style.display = "none";
         btnHelp.style.display = "none";
 
-        loadInventory(appId, contextId, amount)
+        loadInventory(g_appId, g_contextId, amount)
             .then(async (inv) => {
                 if (!inv) {
                     ShowAlertDialog("提示", "库存读取失败, 请检查 AppId 和 ContextId 是否填写正确");
@@ -174,13 +164,14 @@
                         const { classid } = item;
 
                         // 只处理宝珠和宝珠袋
-                        if (appId === 753 && (classid != "667924416" && classid != "667933237")) {
+                        if (g_appId === 753 && (classid != "667924416" && classid != "667933237")) {
                             continue;
                         }
 
                         if (!itemGroup[classid]) {
                             itemGroup[classid] = [];
                         }
+                        item.amount = parseInt(item.amount);
                         itemGroup[classid].push(item);
                     }
 
@@ -188,9 +179,40 @@
                     const todoList = [];
                     for (let classId in itemGroup) {
                         const items = itemGroup[classId];
-                        if (items.length > 1) {
-                            todoList.push(items);
-                            totalReq += items.length - 1;
+                        if (stackMax === 0) {
+                            if (items.length > 1) {
+                                todoList.push(items);
+                                totalReq += items.length - 1;
+                            }
+                        } else {
+                            const stacks = [];
+                            while (items.length > 0) {
+                                const item = items.pop();
+                                if (item.amount > stackMax) {
+                                    continue;
+                                }
+
+                                let added = false;
+                                for (let stack of stacks) {
+                                    if (stack.amount + item.amount <= stackMax) {
+                                        stack.list.push(item);
+                                        stack.amount += item.amount;
+                                        added = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!added) {
+                                    stacks.push({ list: [item,], amount: item.amount });
+                                }
+                            }
+
+                            for (let stack of stacks) {
+                                if (stack.list.length >= 1) {
+                                    todoList.push(stack.list);
+                                    totalReq += stack.list.length - 1;
+                                }
+                            }
                         }
                     }
 
@@ -202,7 +224,7 @@
                         let req = 1;
                         for (let items of todoList) {
                             for (let i = 1; i < items.length; i++) {
-                                await stackItem(iptAppId.value, items[i].assetid, items[0].assetid, items[i].amount);
+                                await stackItem(g_appId, items[i].assetid, items[0].assetid, items[i].amount);
                                 await asyncDelay(delay);
                                 const percent = (100 * req / totalReq).toFixed(2);
                                 spStatus.textContent = `堆叠中 [种类 ${type}/${totalType} 请求 ${req++}/${totalReq} ${percent}%]`;
@@ -230,25 +252,20 @@
     }
 
     function doUnstack() {
-        const { iptAppId, iptContextId, iptDelay, iptAmount, btnStack, btnUnstack, btnHelp, spStatus } = GObjs;
+        const { btnStack, btnUnstack, iptStackMax, btnHelp, spStatus } = GObjs;
 
-        const appId = parseInt(iptAppId.value);
-        const contextId = parseInt(iptContextId.value);
-        if (appId !== appId || contextId !== contextId) {
+        if (g_appId !== g_appId || g_contextId !== g_contextId) {
             ShowAlertDialog("提示", "请检查 AppId 和 ContextId 是否填写正确");
             return;
         }
 
-        const delay = parseInt(iptDelay.value);
-        if (delay !== delay) {
-            ShowAlertDialog("提示", "请检查 延时 是否填写正确");
-            return;
-        }
-
-        const amount = parseInt(iptAmount.value);
-        if (amount !== amount) {
-            ShowAlertDialog("提示", "请检查 上限 是否填写正确");
-            return;
+        let stackMax = 0;
+        if (iptStackMax.value) {
+            stackMax = parseInt(iptStackMax.value);
+            if (stackMax !== stackMax) {
+                ShowAlertDialog("提示", "请检查 堆叠上限 是否填写正确");
+                return;
+            }
         }
 
         saveSetting();
@@ -258,7 +275,7 @@
         btnUnstack.style.display = "none";
         btnHelp.style.display = "none";
 
-        loadInventory(appId, contextId, amount)
+        loadInventory(g_appId, g_contextId, amount)
             .then(async (inv) => {
                 if (!inv) {
                     ShowAlertDialog("提示", "库存读取失败, 请检查 AppId 和 ContextId 是否填写正确");
@@ -273,7 +290,7 @@
                         const { classid, amount } = item;
 
                         // 只处理宝珠和宝珠袋
-                        if (appId === 753 && (classid != "667924416" && classid != "667933237")) {
+                        if (g_appId === 753 && (classid != "667924416" && classid != "667933237")) {
                             continue;
                         }
 
@@ -295,7 +312,7 @@
 
                         for (let item of itemGroup) {
                             for (let i = 1; i < item.amount; i++) {
-                                await unStackItem(iptAppId.value, item.assetid, 1);
+                                await unStackItem(g_appId.value, item.assetid, 1);
                                 await asyncDelay(delay);
                                 const percent = (100 * req / totalReq).toFixed(2);
                                 spStatus.textContent = `反堆叠中 [种类 ${type}/${totalType} 请求 ${req++}/${totalReq} ${percent}%]`;
@@ -323,19 +340,13 @@
     }
 
     function loadSetting() {
-        const { iptAppId, iptContextId, iptDelay, iptAmount } = GObjs;
-        // iptAppId.value = localStorage.getItem("ish_appId") ?? "";
-        // iptContextId.value = localStorage.getItem("ish_contextId") ?? "";
-        iptDelay.value = localStorage.getItem("ish_delay") ?? "500";
-        iptAmount.value = localStorage.getItem("ish_amount") ?? "500";
+        const { iptStackMax } = GObjs;
+        iptStackMax.value = localStorage.getItem("ish_limit") ?? "0";
     }
 
     function saveSetting() {
-        const { iptAppId, iptContextId, iptDelay, iptAmount } = GObjs;
-        // localStorage.setItem("ish_appId", iptAppId.value);
-        // localStorage.setItem("ish_contextId", iptContextId.value);
-        localStorage.setItem("ish_delay", iptDelay.value);
-        localStorage.setItem("ish_amount", iptAmount.value);
+        const { iptStackMax } = GObjs;
+        localStorage.setItem("ish_limit", iptStackMax.value);
     }
 
     //==================================================================================================

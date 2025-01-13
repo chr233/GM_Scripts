@@ -2,7 +2,8 @@
 // @name         Auto_Award_Muli
 // @name:zh-CN   Steam自动打赏【极速多账户版】
 // @namespace    https://blog.chrxw.com
-// @version      2.2
+// @contributionURL    https://afdian.com/@chr233
+// @version      2.3
 // @description  Steam自动打赏 — 极速多账户版
 // @description:zh-CN  Steam自动打赏 — 极速多账户版
 // @author       Chr_
@@ -311,7 +312,7 @@
     // 判断语言
     let language = GM_getValue("lang", null);
     if (!(language in LANG)) {
-        showAlert('申明', `<p>本脚本现已免费提供</p><p>如果你在<a href="https://afdian.net/a/chr233">爱发电</a>以外的地方购买了本脚本, 请申请退款</p><p>觉得好用也欢迎给 <a href="https://steamcommunity.com/id/Chr_">作者</a> 打赏</p>`, true);
+        showAlert('申明', `<p>本脚本现已免费提供</p><p>如果你在<a href="https://afdian.com/a/chr233">爱发电</a>以外的地方购买了本脚本, 请申请退款</p><p>觉得好用也欢迎给 <a href="https://steamcommunity.com/id/Chr_">作者</a> 打赏</p>`, true);
         language = "ZH";
         GM_setValue("lang", language);
     }
