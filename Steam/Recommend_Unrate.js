@@ -3,8 +3,8 @@
 // @name            Recommend_Unrate
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
-// @version         1.11
+// @contributionURL https://afdian.com/@chr233
+// @version         1.12
 // @description     批量撤回评测点赞/有趣
 // @description:zh-CN  批量撤回评测点赞/有趣
 // @author          Chr_
