@@ -2,7 +2,7 @@
 // @name            Find_Extra_card
 // @name:zh-CN      Steam寻找多余的卡牌
 // @namespace       https://blog.chrxw.com
-// @version	        1.7
+// @version	        1.8
 // @description	    查找徽章满级但是仍然有卡牌的游戏
 // @description:zh-CN  查找徽章满级但是仍然有卡牌的游戏
 // @author          Chr_
@@ -20,9 +20,7 @@
     const SleepTime = 50; // 抓取间隔
 
     const { origin, pathname } = window.location;
-    const BadgeUrl = `${origin}${pathname}?sort=c&l=schinese&p=`;
-    const RegPureBadges = RegExp(/<div class="badges_sheet">[\s\S]+<div class="profile_paging">/);
-    const RegPureCards = RegExp(/<div class="badge_detail_tasks">[\s\S]+<div style="clear: left;">/);
+    const MatchAppId = /gamecards\/(\d+)/;
     const Line = "==============================\n";
 
     let isWorking = false;
@@ -42,15 +40,15 @@
             const { script: { version } } = GM_info;
             ShowAlertDialog(``, [
                 `<h2>【插件版本 ${version}】</h2>`,
-                `<p>【📇查找本页】：查找当前页面中,徽章已经满级(5级),但是库中仍然有多余卡牌的游戏</p>`,
-                `<p><strike>【📇查找全部】：暂不可用</strike></p>`,
+                `<p>【📇查找本页】：查找当前页面, 徽章已经满级(5级), 但是库中仍然有多余卡牌的游戏</p>`,
+                `<p>【📇查找全部】：查找所有徽章, 徽章已经满级(5级), 但是库中仍然有多余卡牌的游戏</p>`,
                 `<p>【<a href="https://keylol.com/t772471-1-1" target="_blank">发布帖</a>】 【<a href="https://blog.chrxw.com/scripts.html" target="_blank">脚本反馈</a>】 【Developed by <a href="https://steamcommunity.com/id/Chr_" target="_blank">Chr_</a>】</p>`
             ].join(""));
         });
-        // const btnFindAll = genBtn("📇查找全部", findAllExtraCard);
+        const btnFindAll = genBtn("📇查找全部", findAllExtraCard);
         const btnFindOne = genBtn("📇查找本页", findCurrExtraCard);
         bar.appendChild(btnHelp);
-        // bar.appendChild(btnFindAll);
+        bar.appendChild(btnFindAll);
         bar.appendChild(btnFindOne);
     }
     //读取当前页
@@ -60,7 +58,7 @@
         isWorking = true;
         btnAbort.disabled = false;
         title.innerText = "读取本页徽章信息";
-        text.value += `开始运行 线程数量:${WorkTread}\n${Line}【持有】/【一套】 | 【游戏名】\n` + Line;
+        text.value += `开始运行 线程数量:${WorkTread}\n${Line}【AppId】 | 【持有】/【一套】 | 【游戏名】\n` + Line;
 
         const box = document.querySelector(".maincontent>.badges_sheet");
         if (box !== null) {
@@ -74,15 +72,15 @@
                     const max = Math.min(i + WorkTread, badges.length);
                     const tasks = [];
                     for (let j = i; j < max; j++) {
-                        const [url, title] = badges[j];
-                        tasks.push(getCardInfo(url, title));
+                        const [url, name] = badges[j];
+                        tasks.push(getCardInfo(url, name));
                     }
                     const values = await Promise.all(tasks);
 
-                    for (const [succ, name, sum, total] of values) {
+                    for (const [succ, appId, name, sum, total] of values) {
                         if (succ && sum > 0) {
                             count++;
-                            text.value += `${sum} / ${total} | ${name}\n`;
+                            text.value += `${appId.padEnd(7)} | ${sum} / ${total} | ${name}\n`;
                         }
                     }
                     title.innerText = `运行进度 【 ${max} / ${badges.length} 】`;
@@ -99,12 +97,62 @@
     }
     //读取全部
     async function findAllExtraCard() {
-        // const res = await getCardInfo("233", "https://steamcommunity.com/id/Chr_/gamecards/630060/");
-        // console.log(res);
-        const textArea = document.querySelector("textarea");
-        textArea.className = "fec_text";
         const [title, text, btnAbort] = showDialog();
+        isWorking = true;
+        btnAbort.disabled = false;
+        title.innerText = "读取全部徽章信息";
+        text.value += `开始运行 线程数量:${WorkTread}\n${Line}【AppId】 | 【持有】/【一套】 | 【游戏名】\n` + Line;
+
+        let count = 0;
+        let page = 1;
+        while (isWorking) {
+            const ele = await getBadgeList(page++);
+
+            if(ele===null){
+                continue;
+            }
+
+            const box = ele.querySelector(".maincontent>.badges_sheet");
+            if (box !== null) {
+                const badges = parseDom2BadgeList(box);
+                if (badges === null) {
+                    break;
+                }
+                if (badges.length > 0) {
+                    title.innerText = `运行进度 第【${page - 1}】页 【 0 / ${badges.length} 】`;
+                    for (let i = 0; i < badges.length && isWorking; i += WorkTread) {
+                        const max = Math.min(i + WorkTread, badges.length);
+                        const tasks = [];
+                        for (let j = i; j < max; j++) {
+                            const [url, name] = badges[j];
+                            tasks.push(getCardInfo(url, name));
+                        }
+                        const values = await Promise.all(tasks);
+
+                        for (const [succ, appId, name, sum, total] of values) {
+                            if (succ && sum > 0) {
+                                count++;
+                                text.value += `${appId.padEnd(7)} | ${sum} / ${total} | ${name}\n`;
+                            }
+                        }
+                        title.innerText = `运行进度 第【${page - 1}】页 【 ${max} / ${badges.length} 】`;
+                        await aiosleep(SleepTime);
+                    }
+                }
+            }
+        }
+
+        if (count == 0) {
+            text.value += Line + "没有找到任何徽章\n";
+        } else {
+            text.value += Line + `共找到 ${count} 个徽章满级但仍有剩余卡牌的游戏\n`;
+        }
+
+        isWorking = false;
+        title.innerText = "运行结束";
+        btnAbort.disabled = true;
     }
+
     //显示提示框
     function showDialog() {
         const genBtn = (text, onclick) => {
@@ -153,32 +201,36 @@
     //解析徽章列表的DOM节点
     function parseDom2BadgeList(ele) {
         const badges = ele.querySelectorAll(".badge_row.is_link");
-        let maxBadges = [];
+        if (badges.length === 0) {
+            return null;
+        }
+
+        const maxBadges = [];
         for (const badge of badges) {
             const url = badge.querySelector("a.badge_row_overlay")?.href;
             const level = badge.querySelector(".badge_info_description>div:nth-child(2)")?.innerText.trim() ?? "0 级";
-            const title = badge.querySelector(".badge_title")?.innerText.trim() ?? "Null";
+            const title = badge.querySelector(".badge_title")?.innerText?.trim()?.split("\t")[0] ?? "Null";
             if (url && level && level.startsWith("5 级")) {
                 maxBadges.push([url, title]);
             }
         }
         return maxBadges;
     }
+
     //读取卡牌页面
     function getCardInfo(url, title) {
+        const matchUrl = url.match(MatchAppId);
         return new Promise((resolve, reject) => {
             fetch(url)
                 .then(res => res.text())
                 .then(html => {
-                    const pureHtml = RegPureCards.exec(html)[0];
-                    let box = document.createElement("div");
-                    box.style.display = "none";
-                    box.innerHTML = pureHtml;
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
 
-                    const cardCount = box.querySelectorAll(".badge_card_set_text_qty");
+                    const cardCount = doc.querySelectorAll(".badge_card_set_text_qty");
                     const cardTotal = cardCount.length;
 
-                    if (cardTotal === 0) { resolve([true, title, 0, 0]); }
+                    if (cardTotal === 0) { resolve([true, matchUrl[1], title, 0, 0]); }
 
                     let sum = 0;
                     for (let i = 0; i < cardTotal; i++) {
@@ -190,40 +242,32 @@
                             console.error(e);
                         }
                     }
-                    document.body.appendChild(box);
-                    document.body.removeChild(box);
 
-                    resolve([true, title, sum, cardTotal]);
+                    resolve([true, matchUrl[1], title, sum, cardTotal]);
                 })
                 .catch(err => {
                     console.error("请求失败", err);
-                    resolve([false, null, null, null]);
+                    resolve([false, matchUrl[1], null, null, null]);
                 });
         });
     }
     //读取徽章页面
     async function getBadgeList(page) {
-        await fetch(BadgeUrl + page)
-            .then(res => res.text())
-            .then(html => {
-                const pureHtml = RegPureBadges.exec(html)[0];
-                let box = document.createElement("div");
-                box.style.display = "none";
-                box.innerHTML = pureHtml;
-                let badges = parseDom2BadgeList(box);
-                badges.forEach(badge => {
-                    const url = badge.querySelector("a")?.href;
-                    const badgeInfo = badge.querySelector(".badge_info_description>div:nth-child(2)")?.innerText.trim();
-                    if (url === null || badgeInfo === null) { return; }
-
-                    if (badgeInfo.startsWith("5 级")) {
-                        console.log(`${badgeInfo}`);
-                    }
+        return new Promise((resolve, reject) => {
+            fetch(`${origin}${pathname}?sort=c&p=${page}&l=schinese`)
+                .then(res => res.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    resolve(doc);
+                })
+                .catch(err => {
+                    console.error("请求失败", err);
+                    resolve(null);
                 });
-                document.body.appendChild(box);
-                document.body.removeChild(box);
-            });
+        });
     }
+
 })();
 
 GM_addStyle(`
