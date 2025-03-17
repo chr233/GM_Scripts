@@ -3,8 +3,8 @@
 // @name            Wishlist_Filter
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
-// @version         1.5
+// @contributionURL https://afdian.com/@chr233
+// @version         2.0
 // @description     愿望单游戏过滤器
 // @description:zh-CN  愿望单游戏过滤器
 // @author          Chr_
@@ -25,7 +25,10 @@
   // 控件数组
   const domObj = {};
 
-  addPanel();
+  setTimeout(() => {
+    addPanel();
+  }, 2000);
+
   // 添加按钮
   function addPanel() {
     function genBtn(name, foo, tooltip) {
@@ -61,10 +64,12 @@
       s.textContent = name;
       return s;
     }
-    let divWsHeader = document.querySelector("div.wishlist_header");
+    let divWsHeader = document.querySelector(
+      "#StoreTemplate>section>div:nth-child(2)>div:nth-child(2)"
+    );
     if (divWsHeader != null) {
       const btnDiv = genDiv("wf_panel");
-      btnDiv.addEventListener('click', (e) => {
+      btnDiv.addEventListener("click", (e) => {
         e.preventDefault();
       });
 
@@ -127,22 +132,22 @@
     filterConofig[7] = -1;
     loadInput();
     saveConfig();
-    for (let ele of document.querySelectorAll(
-      "#wishlist_ctn>div.wishlist_row"
-    )) {
-      filterGame(ele);
-    }
+
+    enableFilter = false;
   }
 
   function applyFilter() {
     saveInput();
     saveConfig();
+  }
+
+  setInterval(() => {
     for (let ele of document.querySelectorAll(
-      "#wishlist_ctn>div.wishlist_row"
+      "div.Panel div[data-index]>div"
     )) {
       filterGame(ele);
     }
-  }
+  }, 500);
 
   //处理数字
   function tryParseInt(value) {
@@ -276,10 +281,14 @@
   function parseGame(ele) {
     const [ramin, ramax, remin, remax, dmin, dmax, pmin, pmax] = filterConofig;
 
+    const container = ele.querySelector(
+      "div[role]>div:nth-child(3)>div:nth-child(2)"
+    );
+
     if (remin !== -1 || remax !== -1 || ramin !== -1 || ramax !== -1) {
-      const review = ele
-        .querySelector("div.game_review_summary")
-        ?.getAttribute("data-tooltip-text");
+      const review = container
+        .querySelector("div:nth-child(1)>div:nth-child(2)>span")
+        ?.getAttribute("title");
 
       if (review) {
         const [ra, rec] = parseReviewText(review);
@@ -299,7 +308,9 @@
     }
 
     if (dmin !== -1 || dmax !== -1) {
-      const discount = ele.querySelector("div.discount_pct")?.textContent;
+      const discount = container.querySelector(
+        "div:nth-child(2) div[role]>div:nth-child(1)>div"
+      )?.textContent;
 
       if (discount) {
         const d = parseDiscount(discount);
@@ -313,7 +324,9 @@
     }
 
     if (pmin !== -1 || pmax !== -1) {
-      const price = ele.querySelector("div.discount_final_price")?.textContent;
+      const price = container.querySelector(
+        "div:nth-child(2) div[role]>div:nth-child(2)>div"
+      )?.textContent;
       if (price) {
         const p = parsePrice(price);
 
@@ -338,45 +351,26 @@
       clsList.add("wf_hide");
     }
   }
-
-  //过滤游戏列表
-  let timer = setInterval(() => {
-    let container = document.getElementById("wishlist_ctn");
-    if (container != null) {
-      clearInterval(timer);
-
-      for (let ele of container.querySelectorAll("div.wishlist_row")) {
-        filterGame(ele);
-      }
-      container.addEventListener("DOMNodeInserted", ({ relatedNode }) => {
-        if (relatedNode.nodeName === "DIV") {
-          for (let ele of relatedNode.querySelectorAll("div.wishlist_row")) {
-            filterGame(ele);
-          }
-        }
-      });
-    }
-  }, 500);
 })();
 
 GM_addStyle(`
 div.wf_panel {
-    position: absolute;
-    right: 0;
-  }
-  
-  div.wf_panel > p > button {
-    padding: 0 10px;
-  }
-  div.wf_panel > p > input {
-    width: 50px;
-  }
-  div.wf_panel > p > *:not(:last-child) {
-    margin-right: 10px;
-  }
-  
-  #wishlist_ctn > div.wf_hide {
-    opacity: 0.3;
-  }
-  
+  position: absolute;
+  right: 0;
+}
+div.wf_panel > p {
+  margin: 5px 0;
+}
+div.wf_panel > p > button {
+  padding: 0 10px;
+}
+div.wf_panel > p > input {
+  width: 50px;
+}
+div.wf_panel > p > *:not(:last-child) {
+  margin-right: 10px;
+}
+div.wf_hide {
+  opacity: 0.3;
+}
 `);
