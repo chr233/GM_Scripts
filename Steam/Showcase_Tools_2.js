@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.0
+// @version         1.1
 // @description     从点数商店购买第三个展柜
 // @description:zh-CN  从点数商店购买第三个展柜
 // @author          Chr_
@@ -41,7 +41,7 @@
     btn.textContent = "购买更多展柜";
     btn.addEventListener("click", () => showPanel(token));
     btn.title = btn.textContent;
-    btn.style = "position: absolute;right: 300px;top: 10px;padding: 5px;";
+    btn.style = "position: absolute;right: 50%;top: 10px;padding: 5px;";
     container.appendChild(btn);
   }
 
