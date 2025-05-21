@@ -2,7 +2,7 @@
 // @name:zh-CN   补充包合成器增强
 // @name         Boosterpack_Enhance
 // @namespace    https://blog.chrxw.com
-// @version      1.4
+// @version      1.5
 // @description  补充包制作工具
 // @description:zh-CN  补充包制作工具
 // @author       Chr_
@@ -231,7 +231,7 @@
 
         function appImageFormatter(cell, formatterParams, onRendered) {
             const appid = cell.getValue();
-            const src = `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${appid}/capsule_231x87.jpg`;
+            const src = `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg`;
             const image = genImage(src, "be-row-image");
             return image;
         };
