@@ -5,7 +5,14 @@
     "STATIC说明": "key为CSS选择器,value为翻译字典. 只匹配被选择的元素中的textNode元素",
     "INPUT说明": "key为placeholder内容,value为翻译文本",
     "DYNAMIC说明": "暂未实装",
-    "贡献名单": ["Chr_", "joejoe5", "cyb233", "lyzlyslyc", "悠久の蝶", "shiquda"]
+    "贡献名单": [
+      "Chr_",
+      "joejoe5",
+      "cyb233",
+      "lyzlyslyc",
+      "悠久の蝶",
+      "shiquda"
+    ]
   },
   "STATIC": {
     "ul>li,ul>li>a,ul>li>share-action,.header-navbar>a,.header-login>span": {
@@ -222,7 +229,7 @@
       "Turkish": "土耳其语",
       "Ukrainian": "乌克兰语",
       "Vietnamese": "越南语",
-      "First seen on SteamDB":"首次被 SteamDB 收录时间"
+      "First seen on SteamDB": "首次被 SteamDB 收录时间"
     },
     "td,td>a,td>small": {
       "Yes": "✅是",
@@ -485,8 +492,6 @@
       "Apps in this package": "此 SUB 包含的 APP",
       "Stats": "统计数据",
       "Price history": "价格历史",
-      "Metadata":"元信息",
-      "Patches":"补丁",
       "Supported Languages": "支持的语言",
       "Lookup a SteamID and calculate the value of any Steam account": "查询 SteamID 并计算任何 Steam 账号的价值."
     },
@@ -640,7 +645,9 @@
       "Games": " 游戏 ",
       "Localization": " 本地化 ",
       "Files": " 文件 ",
-      "Manifests": " 清单 "
+      "Manifests": " 清单 ",
+      "Metadata": " 元信息 ",
+      "Patches": " 补丁 "
     },
     ".header-wrapper>div>p,.header-wrapper>div>p>b,.header-wrapper>div>a": {
       "Your watch list is public, you can share it with this link:": "你的监视列表是公开的, 你可以分享这个链接: ",
@@ -717,7 +724,7 @@
       "Filter by type (No DLC)": "按类型过滤 (不包含DLC)",
       "Filter by user tags": "按用户标签过滤",
       "Filter by system": "按系统过滤",
-      "Filter by features": "按功能特色过滤",      
+      "Filter by features": "按功能特色过滤",
       "Compare with others…": "和其他项比较...",
       "Embed this chart on your website": "将此图表嵌入您的网站",
       "Set your currency": " 设置您的货币 ",
@@ -852,7 +859,7 @@
       "Looking for bundles? Take a look at our bundles page": "想查询捆绑包? 点击前往捆绑包折扣分页",
       "View all previous Steam sales and their dates": "浏览之前所有的 Steam 促销活动",
       "You own over half of apps in a bundle": " 您已拥有超过半数游戏的捆绑包",
-      "You own apps in this bundle": " 您已拥有游戏的捆绑包"      
+      "You own apps in this bundle": " 您已拥有游戏的捆绑包"
     },
     ".faq_question>a,.faq_answer>p,.faq_answer>p>b,.faq_answer>p>a,.faq_answer>p>a>b": {
       "How to contact you?": "如何联系你",
@@ -1056,7 +1063,7 @@
       "Early Access": "抢先体验",
       "Profile Features Limited": "个人资料功能受限",
       "Low Confidence Metric": "Steam 正在了解该游戏",
-      "Steam is learning": "Steam 正在了解...",      
+      "Steam is learning": "Steam 正在了解...",
       "Adult Only": "成人内容",
       "Filter by type (No DLC)": "按类型过滤 (不包含DLC)",
       "Games only": "只显示 游戏",
