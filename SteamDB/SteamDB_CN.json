@@ -1,6 +1,6 @@
 {
   "DOC": {
-    "更新时间": "2023-08-13",
+    "更新时间": "2025-05-21",
     "文档说明": "STATIC: 静态元素字典, INPUT: 输入框字典, DYNAMIC: 动态元素字典",
     "STATIC说明": "key为CSS选择器,value为翻译字典. 只匹配被选择的元素中的textNode元素",
     "INPUT说明": "key为placeholder内容,value为翻译文本",
@@ -221,7 +221,8 @@
       "Thai": "泰语",
       "Turkish": "土耳其语",
       "Ukrainian": "乌克兰语",
-      "Vietnamese": "越南语"
+      "Vietnamese": "越南语",
+      "First seen on SteamDB":"首次被 SteamDB 收录时间"
     },
     "td,td>a,td>small": {
       "Yes": "✅是",
@@ -484,6 +485,8 @@
       "Apps in this package": "此 SUB 包含的 APP",
       "Stats": "统计数据",
       "Price history": "价格历史",
+      "Metadata":"元信息",
+      "Patches":"补丁",
       "Supported Languages": "支持的语言",
       "Lookup a SteamID and calculate the value of any Steam account": "查询 SteamID 并计算任何 Steam 账号的价值."
     },
