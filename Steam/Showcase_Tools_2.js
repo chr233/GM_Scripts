@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.1
+// @version         1.2
 // @description     从点数商店购买第三个展柜
 // @description:zh-CN  从点数商店购买第三个展柜
 // @author          Chr_
@@ -50,8 +50,8 @@
       Steam年度回顾: 24,
       完满主义者展柜: 23,
       精选艺术作品展柜: 22,
-      奖励展柜: 21,
-      特卖星人统计数据: 20,
+      // 奖励展柜: 21,
+      // 特卖星人统计数据: 20,
       成就展柜: 17,
       我的指南: 16,
       收藏的指南: 15,
@@ -68,7 +68,7 @@
       打算交易的物品: 4,
       物品展柜: 3,
       游戏收藏家: 2,
-      最稀有成就展柜: 1,
+      // 最稀有成就展柜: 1,
     };
 
     const div = document.createElement("div");
