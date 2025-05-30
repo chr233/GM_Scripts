@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.com/@chr233
-// @version            2.5
+// @version            2.6
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -23,7 +23,7 @@
     let GcontextId = 2;
 
     const delay = 300;
-    const amount = 5000;
+    const amount = 1000;
 
     let token = document.querySelector("#application_config")?.getAttribute("data-loyalty_webapi_token");
     if (token) {
