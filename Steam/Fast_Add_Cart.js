@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         4.6
+// @version         4.7
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -216,35 +216,7 @@
 
     //初始化
     const pathname = window.location.pathname;
-    if (
-        pathname === "/search/" ||
-        pathname === "/" ||
-        pathname.startsWith("/tags/")
-    ) {
-        //搜索页,主页,标签页
-        return;
-
-    } else if (
-        pathname.startsWith("/publisher/") ||
-        pathname.startsWith("/franchise/") ||
-        pathname.startsWith("/developer/")
-    ) {
-        //发行商主页
-        return;
-
-    } else if (
-        pathname.startsWith("/app/") ||
-        pathname.startsWith("/sub/") ||
-        pathname.startsWith("/bundle/")
-    ) {
-        //商店详情页
-        return;
-
-    } else if (pathname.startsWith("/wishlist/")) {
-        //愿望单页
-        return;
-
-    } else if (pathname.startsWith("/cart")) {
+    if (pathname.startsWith("/cart")) {
         //购物车页
 
         function genBr() {
@@ -459,6 +431,15 @@
         btnArea2.appendChild(genSpan(" | "));
         btnArea2.appendChild(btnForget);
 
+        const fastAddCartPanel = document.createElement("div");
+        fastAddCartPanel.className = "fac_panel";
+
+        fastAddCartPanel.appendChild(btnArea);
+        fastAddCartPanel.appendChild(genBr());
+        fastAddCartPanel.appendChild(inputBox);
+        fastAddCartPanel.appendChild(genBr());
+        fastAddCartPanel.appendChild(btnArea2);
+
         window.addEventListener("beforeunload", () => {
             GM_setValue("fac_cart", inputBox.value);
             GM_setValue("fac_discount", chkDiscount.checked);
@@ -467,14 +448,11 @@
 
         //等待购物车加载完毕, 显示额外面板
         const timer = setInterval(() => {
-            const continer = document.querySelector("div[data-featuretarget='react-root']>div>div:last-child>div:last-child>div:first-child>div:last-child");
-            if (continer) {
+            const container = document.querySelector("div[data-featuretarget='react-root']>div>div:last-child>div:last-child>div:last-child>div:nth-child(1)>div:last-child");
+            if (container) {
                 clearInterval(timer);
-                continer.appendChild(btnArea);
-                continer.appendChild(genBr());
-                continer.appendChild(inputBox);
-                continer.appendChild(genBr());
-                continer.appendChild(btnArea2);
+
+                container.parentElement.insertBefore(fastAddCartPanel,container);
             }
         }, 500);
     }
