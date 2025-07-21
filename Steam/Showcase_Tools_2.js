@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.3
+// @version         1.4
 // @description     从点数商店购买第三个展柜
 // @description:zh-CN  从点数商店购买第三个展柜
 // @author          Chr_
@@ -92,6 +92,8 @@
     button.style = "padding: 3px;";
     button.addEventListener("click", async () => {
       await buyShowcases(token, select.value);
+
+      ShowAlertDialog("提示","购买操作完成, 是否购买成功请前往个人资料中查看。", "知道了");
 
       dialog.Dismiss();
     });
