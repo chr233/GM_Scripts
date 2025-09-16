@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.0
+// @version         1.1
 // @description     导入导出
 // @description:zh-CN  导入导出
 // @author          Chr_
@@ -36,17 +36,17 @@
   function onPageLoad() {
     let data = [];
 
-    const btnLoad = genBtn("获取数据", "ct_btn", () => {
+    const btnLoad = genBtn("获取数据", "ctd_btn", () => {
       getFullAppsList(curatorId, btnLoad).then((result) => {
         btnLoad.style.display = 'none';
         data = result;
 
         console.log(JSON.stringify(data));
 
-        const btnDump1 = genBtn("导出全部评测", "ct_btn", () => {
+        const btnDump1 = genBtn("导出全部评测", "ctd_btn", () => {
           dumpData(data, "全部评测");
         });
-        const btnDump2 = genBtn("导出异常评测", "ct_btn", () => {
+        const btnDump2 = genBtn("导出异常评测", "ctd_btn", () => {
           const dump = data.filter(x => x.unListed);
           dumpData(dump, "异常评测");
         });
@@ -97,7 +97,8 @@
   }
 
   function downloadCsv(csv, name) {
-    const blob = new Blob([csv], { type: "text/csv" });
+    const bom = '\uFEFF';
+    const blob = new Blob([bom + csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
 
     GM_download({
@@ -224,7 +225,7 @@
 })();
 
 GM_addStyle(`
-.ct_btn {
+.ctd_btn {
   padding: 3px;
   margin: 5px;
   display: block;
