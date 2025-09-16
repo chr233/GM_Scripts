@@ -3,7 +3,7 @@
 // @name            GMG_Steam_Search
 // @namespace       https://blog.chrxw.com/
 // @supportURL      https://blog.chrxw.com/scripts.html
-// @contributionURL https://afdian.net/@chr233
+// @contributionURL https://afdian.com/@chr233
 // @icon            https://blog.chrxw.com/favicon.ico
 // @version         1.6
 // @description     快捷搜索steam商店

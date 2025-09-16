@@ -12,6 +12,7 @@
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
 // @grant           GM_addStyle
+// @grant           GM_setClipboard
 // ==/UserScript==
 
 // 初始化
@@ -69,12 +70,20 @@
 
     const eleTips = document.getElementById("curator_createlist_app_count");
 
+    let added = false;
+
     const btnLoad = genBtn("加载App列表数据", "clf_btn", async () => {
       btnLoad.disabled = true;
       result = await getFullAppsList(curator, eleTips);
       ListEdit_Onload(listid, listDetails);
       eleTips.textContent += `, 您的列表中有 ${g_rgAppsCurated.length} 个应用可用。`;
       btnLoad.disabled = false;
+
+      if (!added) {
+        added = true;
+        const btnDump = genBtn("复制评测列表", "clf_btn", () => {});
+        eleTitleFrame.appendChild(btnDump);
+      }
     });
     eleTitleFrame.appendChild(btnLoad);
 
@@ -214,6 +223,7 @@
 
           if (recommendations) {
             for (let item of recommendations) {
+              item.unListed = item.app_name === "Uninitialized";
               delete item.recommendation;
               item.curated = true;
             }
