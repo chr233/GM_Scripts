@@ -29,7 +29,7 @@
         await showOperationDialog();
 
         const groupLink = await showInputGroupLinkDialog();
-        const match = groupLink.match(/^(?:https:\/\/steamcommunity\.com\/groups\/)?([^/\s]+)\/?/)
+        const match = groupLink.match(/^(?:https:\/\/steamcommunity\.com\/groups\/)?([^/\s]+)\/?/);
 
         if (!match) {
             ShowAlertDialog("提示", "群组链接错误, 无法完成操作");
@@ -116,7 +116,7 @@
                     }
                     resolve();
                 });
-            }else{
+            } else {
                 resolve();
             }
         });
