@@ -53,13 +53,13 @@ function addPanel() {
         let a = document.createElement('a');
         let s = genSpan(text);
         a.className = 'pagebtn';
-        a.addEventListener('click', foo)
+        a.addEventListener('click', foo);
         a.appendChild(s);
         return a;
     }
     function genDiv(cls) {
         let d = document.createElement('div');
-        if (cls) { d.className = cls };
+        if (cls) { d.className = cls; };
         return d;
     }
     function genDivBox(title) {
@@ -202,7 +202,7 @@ function addPanel() {
     dHistory.appendChild(genSpace());
     dHistory.appendChild(btnClear);
     dHistory.appendChild(genBr());
-    dHistory.appendChild(txtTips2)
+    dHistory.appendChild(txtTips2);
     pContent.appendChild(dHistory);
 }
 // 自动打赏
@@ -226,7 +226,7 @@ function autoAward() {
     // 等待加载完全
     function waitLoad() {
         let doms = document.querySelectorAll('button[class^=awardmodal_Button_] span[class^=awardmodal_Points_]');
-        let tips = document.querySelector('div[class^=awardmodal_Description_]')
+        let tips = document.querySelector('div[class^=awardmodal_Description_]');
         if (doms && tips) {
             tips.textContent = '关闭提示框即可中断操作,Bug反馈【chr@chrxw.com】';
             tries = 0;
@@ -275,7 +275,7 @@ function autoAward() {
             }
         }
         if (max == 0) { // 没有合适的打赏项目,终止操作
-            throw '没有合适的打赏项目,请更换评测'
+            throw '没有合适的打赏项目,请更换评测';
         }
         for (let btn of btns) { // 找到最大的打赏项目
             if (btn.classNames().toString().search('Disabled') != -1) {
@@ -414,7 +414,7 @@ function startAward() {
 }
 // 打印日志
 function log(message) {
-    console.log(message)
+    console.log(message);
     let iHistory = document.getElementById('op_history');
     iHistory.value += message + '\n';
     iHistory.scrollTop = iHistory.scrollHeight;
@@ -444,7 +444,7 @@ function getMyPoint() {
         onload: (response) => {
             if (response.status == 200) {
                 let t = response.responseText.match(/\{\&quot\;points\&quot\;\:\&quot\;(\d+)\&quot\;/);
-                console.log(t)
+                console.log(t);
                 t = t ? t[1] : -1;
                 if (t < 0) {
                     log('获取点数失败,自动刷新');
@@ -472,7 +472,7 @@ function historyReport() {
     for (let txt of list) {
         let match = txt.match(/向 (.*) 打赏 (\d+) 点/);
         if (match) {
-            console.log(match)
+            console.log(match);
             let name = match[1].replace(/\s/g, '');
             let value = Number(match[2]);
             if (dic[name] == undefined) {
@@ -482,12 +482,12 @@ function historyReport() {
             }
         }
     }
-    console.log(JSON.stringify(dic))
-    log('====点数统计====')
+    console.log(JSON.stringify(dic));
+    log('====点数统计====');
     for (let n in dic) {
         log(n + ' 共计 ' + dic[n] + ' 点');
     }
-    log('====点数统计====')
+    log('====点数统计====');
 }
 // 判断是不是自己
 function checkSelf() {
@@ -504,7 +504,7 @@ function numAddDot(num) {
 }
 // 去掉千分位
 function numRemoveDot(num) {
-    return num.replace(/,/g, '')
+    return num.replace(/,/g, '');
 }
 // 更新进度显示
 function updateProcess(msg) {
@@ -533,7 +533,7 @@ function loadConf() {
     }
     let history = GM_getValue('history');
     if (history) {
-        let iHistory = document.getElementById('op_history')
+        let iHistory = document.getElementById('op_history');
         iHistory.value = history + '\n';
         iHistory.scrollTop = iHistory.scrollHeight;
     }
