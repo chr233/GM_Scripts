@@ -1,3 +1,6 @@
 WIP
 .vscode/
 Pro/
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md
