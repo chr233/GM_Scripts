@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.10
+// @version         1.11
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -18,10 +18,10 @@
 (() => {
   "use strict";
 
-  const eleContailer = document.getElementById("subpage_container");
-  if (eleContailer) {
+  const eleContainer = document.getElementById("subpage_container");
+  if (eleContainer) {
     const observer = new MutationObserver(onPageLoad);
-    observer.observe(eleContailer, { childList: true, subtree: true });
+    observer.observe(eleContainer, { childList: true, subtree: true });
   }
 
   let lastPathname = "";
