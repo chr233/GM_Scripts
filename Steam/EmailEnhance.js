@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.0
+// @version         1.1
 // @description:zh-CN  增强发送邮件
 // @description     send email enhance
 // @author          Chr_
@@ -46,14 +46,14 @@
     }
 
     function setMailSubject() {
-        showDialog("设置邮件主题", "支持变量：{游戏链接} {游戏名称}", mailSubject, 100, (text) => {
+        showDialog("设置邮件主题", "支持变量：{游戏链接} {游戏名称}", mailSubject, 5000, (text) => {
             mailSubject = text;
             GM_setValue("mailSubject", text);
         });
     }
 
     function setMailContent() {
-        showDialog("设置邮件正文", "支持变量：{游戏链接} {游戏名称}", mailContent, 100, (text) => {
+        showDialog("设置邮件正文", "支持变量：{游戏链接} {游戏名称}", mailContent, 5000, (text) => {
             mailContent = text;
             GM_setValue("mailContent", text);
         });
