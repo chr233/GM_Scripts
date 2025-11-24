@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.4
+// @version         1.5
 // @description     从点数商店购买第三个展柜
 // @description:zh-CN  从点数商店购买第三个展柜
 // @author          Chr_
@@ -18,12 +18,17 @@
 (() => {
   "use strict";
 
+  const t = setInterval(addPanel, 1000);
+
   function addPanel() {
-    const container = document.querySelector("#points_shop_root>div>div");
+    const container = document.querySelector("#points_shop_root>div>div div:not([style]) div[class='Panel Focusable']");
 
     if (!container) {
       console.error("找不到元素");
       return;
+    }
+    else {
+      clearInterval(t);
     }
 
     const token = JSON.parse(
@@ -41,7 +46,7 @@
     btn.textContent = "购买更多展柜";
     btn.addEventListener("click", () => showPanel(token));
     btn.title = btn.textContent;
-    btn.style = "position: absolute;right: 50%;top: 10px;padding: 5px;z-index: 999;";
+    btn.style = "position: absolute;right: 50%;top: 100px;padding: 5px;z-index: 9999;";
     container.appendChild(btn);
   }
 
@@ -85,6 +90,8 @@
 
     div.appendChild(select);
 
+    alert("脚本疑似失效, 可能不能够购买, 请删除 Showcase_Tools_2");
+
     const dialog = ShowDialog("要购买什么展柜?", div);
 
     const button = document.createElement("button");
@@ -93,14 +100,13 @@
     button.addEventListener("click", async () => {
       await buyShowcases(token, select.value);
 
-      ShowAlertDialog("提示","购买操作完成, 是否购买成功请前往个人资料中查看。", "知道了");
+      ShowAlertDialog("提示", "购买操作完成, 是否购买成功请前往个人资料中查看。", "知道了");
 
       dialog.Dismiss();
     });
     div.appendChild(button);
   }
 
-  setTimeout(addPanel, 2000);
 
   // 购买展柜
   function buyShowcases(token, type = 1) {
