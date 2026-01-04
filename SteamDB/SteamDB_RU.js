@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name                SteamDB_RU
+// @name:ru             SteamDB_РУ
 // @namespace           https://blog.chrxw.com
 // @supportURL          https://blog.chrxw.com/scripts.html
 // @contributionURL     https://afdian.com/@chr233
 // @version             1.38
-// @description         SteamDB Translation Plugin
+// @description         SteamDB Russian Translation Plugin
+// @description:ru      Плагин для перевода сайта SteamDB на русский
 // @author              Chr_
 // @match               https://steamdb.info/*
 // @license             AGPL-3.0
@@ -35,7 +37,7 @@
     window.location.reload();
   });
 
-  document.querySelector("html").setAttribute("lang", "zh-CN");
+  document.querySelector("html").setAttribute("lang", "ru-RU");
 
   let Locales;
 
@@ -202,7 +204,7 @@
     const headerUl = document.querySelector(".header-menu-container>div>ul:nth-child(1)");
     const footerUl = document.querySelector(".footer-container>div>ul:nth-child(1)");
     const scriptLink = document.createElement("li");
-    scriptLink.innerHTML = `<a href="https://blog.chrxw.com" target="_blank">SteamDB 汉化 V${version}</a>`;
+    scriptLink.innerHTML = `<a href="https://blog.chrxw.com" target="_blank">SteamDB RU V${version}</a>`;
     headerUl?.appendChild(scriptLink);
     footerUl?.appendChild(scriptLink.cloneNode(true));
   }, 500);
