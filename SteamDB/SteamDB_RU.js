@@ -1,17 +1,15 @@
 // ==UserScript==
-// @name:zh-CN          SteamDB汉化
-// @name                SteamDB_CN
+// @name                SteamDB_RU
 // @namespace           https://blog.chrxw.com
 // @supportURL          https://blog.chrxw.com/scripts.html
 // @contributionURL     https://afdian.com/@chr233
 // @version             1.38
-// @description         SteamDB汉化插件
-// @description:zh-cn   SteamDB汉化插件
+// @description         SteamDB Translation Plugin
 // @author              Chr_
 // @match               https://steamdb.info/*
 // @license             AGPL-3.0
 // @icon                https://blog.chrxw.com/favicon.ico
-// @resource            data https://raw.chrxw.com/GM_Scripts/master/SteamDB/SteamDB_CN.json
+// @resource            data https://raw.chrxw.com/GM_Scripts/master/SteamDB/SteamDB_RU.json
 // @grant               GM_addStyle
 // @grant               GM_getResourceText
 // @grant               GM_registerMenuCommand
@@ -21,18 +19,18 @@
 (function () {
   "use strict";
 
-  const ENABLE = "开";
-  const DISABLE = "关";
+  const ENABLE = "ENABLE";
+  const DISABLE = "DISABLE";
 
   const DEBUG = window.localStorage["dbg_mode"] === ENABLE;
   const OUTPUT = window.localStorage["out_word"] === ENABLE;
 
-  GM_registerMenuCommand(`Debug translation texts: 【${DEBUG ? ENABLE : DISABLE}】`, () => {
+  GM_registerMenuCommand(`Debug Translation: 【${DEBUG ? ENABLE : DISABLE}】`, () => {
     window.localStorage["dbg_mode"] = DEBUG ? DISABLE : ENABLE;
     window.location.reload();
   });
 
-  GM_registerMenuCommand(`Output unmatched texts in console: 【${OUTPUT ? ENABLE : DISABLE}】`, () => {
+  GM_registerMenuCommand(`Log unmatched texts in console: 【${OUTPUT ? ENABLE : DISABLE}】`, () => {
     window.localStorage["out_word"] = OUTPUT ? DISABLE : ENABLE;
     window.location.reload();
   });
@@ -54,8 +52,8 @@
 
     const template = JSON.stringify({
       DOC: {
-        "更新时间": Date().toLocaleString(),
-        "贡献名单": ["调试模式"],
+        "Update time": Date().toLocaleString(),
+        "Contributions list": ["debug mode"],
       },
       STATIC: {},
       INPUT: {},
@@ -69,28 +67,28 @@
     const action = document.createElement("div");
     action.className = "sdc-links";
     box.appendChild(action);
-    const btnSave = genBtn("💾 保存并应用", () => {
+    const btnSave = genBtn("💾 Save and apply", () => {
       const raw = text.value.trim();
       if (!raw) {
-          alert("翻译文本不是有效的JSON格式!!!");
+        alert("Translation text cannot be empty!!!");
       } else {
         try {
           JSON.parse(raw);
           window.localStorage["sdb_lang"] = raw;
           window.location.reload();
         } catch (e) {
-          alert("翻译文本不是有效的JSON格式!!!");
+          alert("Translation text is not valid JSON format!!!");
         }
       }
     });
     action.appendChild(btnSave);
-    const btnReset = genBtn("🗑️ 清空文本", () => {
+    const btnReset = genBtn("🗑️ Clear text", () => {
       window.localStorage["sdb_lang"] = template;
       window.location.reload();
     });
     action.appendChild(btnReset);
-    const btnOnline = genBtn("📄 当前在线文本", () => {
-      if (confirm("替换为在线版本后当前所做修改将会丢失, 确定要继续吗?")) {
+    const btnOnline = genBtn("📄 Current online text", () => {
+      if (confirm("Replacing with the online version will lose any current changes, are you sure you want to continue?")) {
         text.value = GM_getResourceText("data");
       }
     });
@@ -146,14 +144,14 @@
           }
         }
       } else {
-        if (OUTPUT) { console.warn(`CSS选择器未匹配到任何元素: ${css}`); }
+        if (OUTPUT) { console.warn(`CSS selector did not match any elements: ${css}`); }
       }
     }
   }
 
   {//输入框
     const inputs = Locales.INPUT;
-    if (OUTPUT) { console.log("〖输入框〗"); }
+    if (OUTPUT) { console.log("〖Input fields〗"); }
     const elements = document.querySelectorAll("input");
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
@@ -170,7 +168,7 @@
 
   {//悬浮提示
     const labels = Locales.LABEL;
-    if (OUTPUT) { console.log("〖提示文本〗"); }
+    if (OUTPUT) { console.log("〖Input fields〗"); }
     const elements = document.querySelectorAll("*[aria-label]");
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
@@ -186,18 +184,18 @@
   }
 
   const { script: { version } } = GM_info;
-  const { DOC: { "更新时间": update, "贡献名单": contribution } } = Locales;
+  const { DOC: { "Update time": update, "Contributions list": contribution } } = Locales;
 
   const End = new Date().getTime();
 
   // 统计耗时
-  console.log("执行耗时", `${End - Start} ms`);
+  // 统计耗时
+  console.log("Execution time", `${End - Start} ms`);
   console.log("=================================");
-  console.log(`插件版本: ${version}`);
-  console.log(`更新时间: ${update}`);
-  console.log(`贡献名单: ${contribution.join(", ")}`);
+  console.log(`Plugin version: ${version}`);
+  console.log(`Update time: ${update}`);
+  console.log(`Contributions list: ${contribution.join(", ")}`);
   console.log("=================================");
-  console.log("迷茫同学:\n『没有恶意 请问直接用谷歌翻译整个网页不香吗』");
 
   // 添加按钮
   setTimeout(() => {
