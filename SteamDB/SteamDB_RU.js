@@ -37,7 +37,7 @@
     window.location.reload();
   });
 
-  document.querySelector("html").setAttribute("lang", "ru-RU");
+  document.querySelector("html").setAttribute("lang", "ru");
 
   let Locales;
 
