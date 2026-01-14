@@ -3,7 +3,7 @@
 // @name:zh-CN   Steam自动打赏【极速多账户版】
 // @namespace    https://blog.chrxw.com
 // @contributionURL    https://afdian.com/@chr233
-// @version      2.3
+// @version      3.0
 // @description  Steam自动打赏 — 极速多账户版
 // @description:zh-CN  Steam自动打赏 — 极速多账户版
 // @author       Chr_
@@ -1084,18 +1084,12 @@
     }
     //打赏项目
     const reactionsDict = {
-        1: 300, 2: 300, 3: 300, 4: 300, 5: 300, 6: 300, 7: 300, 8: 300, 9: 600,
-        10: 1200, 11: 2400, 12: 300, 13: 2400, 14: 600, 15: 1200, 16: 600,
-        17: 4800, 18: 300, 19: 600, 20: 1200, 21: 300, 22: 600, 23: 300
+        12: 500, 24: 500, 25: 500, 26: 500, 27: 500, 28: 500, 29: 500,
+        30: 500, 31: 500, 32: 500, 33: 500, 34: 500, 35: 500
     };
-    const reactionValues = [
-        300, 300, 300, 300, 300, 300, 300, 300, 600, 1200, 2400, 300,
-        2400, 600, 1200, 600, 4800, 300, 600, 1200, 300, 600, 300
-    ];
-    const reactionIDs = [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-        13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
-    ];
+    const reactionValues =  Object.values(reactionsDict);
+    const reactionIDs = Object.keys(reactionsDict).map(Number);
+
     //自动打赏  
     async function autoAward() {
         //打赏类型
