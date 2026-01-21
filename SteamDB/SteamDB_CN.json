@@ -1,6 +1,6 @@
 {
   "DOC": {
-    "更新时间": "2025-08-08",
+    "更新时间": "2026-1-21",
     "文档说明": "STATIC: 静态元素字典, INPUT: 输入框字典, DYNAMIC: 动态元素字典",
     "STATIC说明": "key为CSS选择器,value为翻译字典. 只匹配被选择的元素中的textNode元素",
     "INPUT说明": "key为placeholder内容,value为翻译文本",
@@ -35,7 +35,10 @@
       "Your Watchlist": "你的监视列表",
       "Sales & Deals": "促销信息",
       "Tools": " 工具",
+      "BUNDLE": "捆绑包",
       "Sales": "促销",
+      "Tags": "标签",
+      "Support us": "支持我们",
       "Charts": "图表",
       "Calculator": "计算器",
       "Patches": "补丁",
@@ -58,6 +61,7 @@
       "Upcoming releases": "即将发售",
       "Upcoming": "即将发售",
       "Most followed upcoming": "最受关注",
+      "Badges leaderboard": "徽章排行榜",
       "Release calendar": "发售日历",
       "Game releases by year": "每年发售的游戏",
       "Rankings": " 排行榜",
@@ -207,7 +211,11 @@
       "INTERFACE": "界面",
       "FULL AUDIO": "完全音频",
       "SUBTITLES": "字幕",
-      "ACHIEVEMENTS": "成就"
+      "ACHIEVEMENTS": "成就",
+      "Image": "图片",
+      "Your Level": "你的等级",
+      "Max Level": "最高等级",
+      "Scarcity": "稀缺性"
     },
     "tr>td,tr>td>span": {
       "Depot from": "资产来自 ",
@@ -452,7 +460,8 @@
       "Steam Release Calendar": "Steam 发售日历",
       "Steam Game Release Summary": "Steam 游戏发售汇总",
       "How can you help SteamDB": "我该如何帮助 SteamDB",
-      "Free Packages": "免费 Sub"
+      "Free Packages": "免费 Sub",
+      "Steam Profile Badges Leaderboard": "Steam 个人资料徽章排行榜"
     },
     "h2,h2 *": {
       "SteamDB in numbers": "Steam 统计数据",

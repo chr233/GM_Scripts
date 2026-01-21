@@ -4,7 +4,7 @@
 // @namespace           https://blog.chrxw.com
 // @supportURL          https://blog.chrxw.com/scripts.html
 // @contributionURL     https://afdian.com/@chr233
-// @version             1.38
+// @version             1.39
 // @description         SteamDB汉化插件
 // @description:zh-cn   SteamDB汉化插件
 // @author              Chr_
@@ -65,6 +65,7 @@
     const box = document.createElement("div");
     box.className = "sdc";
     const text = document.createElement("textarea");
+    text.id = "sdc-textarea";
     box.appendChild(text);
     const action = document.createElement("div");
     action.className = "sdc-links";
@@ -72,7 +73,7 @@
     const btnSave = genBtn("💾 保存并应用", () => {
       const raw = text.value.trim();
       if (!raw) {
-          alert("翻译文本不是有效的JSON格式!!!");
+        alert("翻译文本不是有效的JSON格式!!!");
       } else {
         try {
           JSON.parse(raw);
@@ -95,10 +96,12 @@
       }
     });
     action.appendChild(btnOnline);
-    const about = document.createElement('a');
-    about.href = "https://blog.chrxw.com";
-    about.innerText = "🔗 By Chr_ © 2022";
-    action.appendChild(about);
+    const span = document.createElement("span");
+    action.appendChild(span);
+    const btnAbout = genBtn("🔗 By Chr_ © 2022", () => {
+      window.open("https://blog.chrxw.com", "_blank");
+    });
+    action.appendChild(btnAbout);
 
     const father = document.getElementById("main");
     father.insertBefore(box, father.firstChild);
@@ -211,38 +214,33 @@
 
   // 添加样式
   GM_addStyle(`
-  .tabnav-tabs > a {
-    min-width: 80px;
-  }
-  .sdc {
-    display: flex;
-  }
-  .sdc > textarea {
-    width: 100%;
-    height: 200px;
-    min-height: 200px;
-    resize: vertical;
-  }
-  .sdc > div.sdc-links {
-    width: 150px;
-    margin: 5px;
-  }
-  .sdc > div.sdc-links > * {
-    width: 100%;
-    margin-bottom: 10px;
-    background-color: #213145;
-    color: white;
-    font-size: 12px;
-    border-radius: 0px;
-    display: inline-block;
-    height: 30px;
-  }
-  .sdc > div.sdc-links > a:last-child {
-    width: 100%;
-    margin-top: 30px;
-    margin-bottom: 0px;
-    color: #67c1f5;
-    background-color: #273b4b;
-  }
+.tabnav-tabs > a {
+  min-width: 80px;
+}
+.sdc {
+  display: flex;
+  flex-flow: row;
+}
+.sdc > textarea {
+  flex: auto;
+  min-height: 200px;
+  resize: vertical;
+  margin: 5px;
+}
+.sdc > div.sdc-links {
+  margin: 5px;
+  display: flex;
+  flex-flow: column;
+}
+.sdc > div.sdc-links > * {
+  font-size: 12px;
+  padding: 5px;
+}
+.sdc > div.sdc-links > *:not(:last-child) {
+  margin-bottom: 10px;
+}
+.sdc > div.sdc-links > span {
+  flex: auto;
+}
 `);
 })(); 

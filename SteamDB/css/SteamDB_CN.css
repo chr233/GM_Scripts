@@ -3,31 +3,26 @@
 }
 .sdc {
   display: flex;
+  flex-flow: row;
 }
 .sdc > textarea {
-  width: 100%;
-  height: 200px;
+  flex: auto;
   min-height: 200px;
   resize: vertical;
-}
-.sdc > div.sdc-links {
-  width: 150px;
   margin: 5px;
 }
-.sdc > div.sdc-links > * {
-  width: 100%;
-  margin-bottom: 10px;
-  background-color: #213145;
-  color: white;
-  font-size: 12px;
-  border-radius: 0px;
-  display: inline-block;
-  height: 30px;
+.sdc > div.sdc-links {
+  margin: 5px;
+  display: flex;
+  flex-flow: column;
 }
-.sdc > div.sdc-links > a:last-child {
-  width: 100%;
-  margin-top: 30px;
-  margin-bottom: 0px;
-  color: #67c1f5;
-  background-color: #273b4b;
+.sdc > div.sdc-links > * {
+  font-size: 12px;
+  padding: 5px;
+}
+.sdc > div.sdc-links > *:not(:last-child) {
+  margin-bottom: 10px;
+}
+.sdc > div.sdc-links > span {
+  flex: auto;
 }
