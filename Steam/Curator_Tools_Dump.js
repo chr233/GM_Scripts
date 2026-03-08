@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.3
+// @version         1.4
 // @description     导入导出
 // @description:zh-CN  导入导出
 // @author          Chr_
@@ -360,8 +360,10 @@
               const match = href.match(regex);
               if (match) {
                 const appid = match[1];
-                const name = a.textContent.trim();
-                results.push({ appid, app_name: name, unListed: true });
+                const app_name = a.textContent.trim();
+                const edit_url = `https://store.steampowered.com/curator/${curator}/admin/review_create/${appid}`
+
+                results.push({ appid, app_name, unListed: true, edit_url });
               }
             }
           }
