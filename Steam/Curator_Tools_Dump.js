@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name:zh-CN      鉴赏家导出工具
+// @name:zh-CN      鉴赏家测评导出工具
 // @name            Curator_Tools_Dump
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.2
+// @version         1.3
 // @description     导入导出
 // @description:zh-CN  导入导出
 // @author          Chr_
@@ -78,13 +78,20 @@
     })
     container.appendChild(btnLoadSlow);
 
-    const btnDumpAll = genBtn("导出全部评测", "ctd_btn", () => {
+    const btnDumpAll = genBtn("导出全部评测", "ctd_btn", async () => {
+      const data = await db.getAllData();
       dumpData(data, "全部评测");
     });
     container.appendChild(btnDumpAll);
-    const btnDumpError = genBtn("导出异常评测", "ctd_btn", () => {
+
+    const btnDumpError = genBtn("导出异常评测", "ctd_btn", async () => {
+      const data = await db.getAllData();
       const dump = data.filter(x => x.unListed);
-      dumpData(dump, "异常评测");
+      if (!dump || dump.length === 0) {
+        showAlert("没有异常评测数据可导出", false);
+      } else {
+        dumpData(dump, "异常评测");
+      }
     });
     container.appendChild(btnDumpError);
 
