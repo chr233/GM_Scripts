@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.4
+// @version         1.5
 // @description     导入导出
 // @description:zh-CN  导入导出
 // @author          Chr_
@@ -52,35 +52,49 @@
     })
     container.appendChild(btnStatus);
 
-    const btnLoadFast = genBtn("从评测列表抓取 (快速)", "ctd_btn", () => {
-      btnLoadFast.disabled = true;
+    let busy = false;
 
-      getFullAppsList(curator, btnLoadFast).then(async (result) => {
-        const data = result;
+    const btnLoadFast = genBtn("从评测列表抓取 (快速)", "ctd_btn", async () => {
+      if (busy) {
+        return;
+      }
+      busy = true;
+
+      try {
+        const data = await getFullAppsList(curator, btnLoadFast)
         console.log(data);
 
         await db.batchInsertData(data);
-        btnLoadFast.disabled = false;
-      });
+      } finally {
+        busy = false;
+      }
     })
     container.appendChild(btnLoadFast);
 
-    const btnLoadSlow = genBtn("从流量统计抓取 (慢)", "ctd_btn", () => {
-      btnLoadSlow.disabled = true;
+    const btnLoadSlow = genBtn("从流量统计抓取 (慢)", "ctd_btn", async () => {
+      if (busy) {
+        return;
+      }
+      busy = true;
 
-      getFullStateList(db, curator, btnLoadSlow).then(async (result) => {
-        const data = result;
+      try {
+        const data = await getFullStateList(db, curator, btnLoadSlow)
         console.log(data);
 
         await db.batchInsertData(data);
-        btnLoadSlow.disabled = false;
-      });
+      } finally {
+        busy = false;
+      }
     })
     container.appendChild(btnLoadSlow);
 
     const btnDumpAll = genBtn("导出全部评测", "ctd_btn", async () => {
-      const data = await db.getAllData();
-      dumpData(data, "全部评测");
+      const dump = await db.getAllData();
+      if (!dump || dump.length === 0) {
+        showAlert("没有异常评测数据可导出", false);
+      } else {
+        dumpData(dump, "全部评测");
+      }
     });
     container.appendChild(btnDumpAll);
 
@@ -115,11 +129,11 @@
 
   function convertToCsv(arr) {
     if (!arr || arr.length === 0) return '';
-    const header = ["AppId", "游戏名", "下架", "评测内容", "管理链接"].join(',');
+    const header = ["AppId", "游戏名", "下架", "评测内容", "管理链接", "评测列表-Start", "评测列表-Index", "流量统计-Start", "流量统计-Index"].join(',');
     const escape = s => `"${String(s).replace(/"/g, '""').replace(/\n/g, '\\n')}"`;
     const rows = [];
-    for (let { appid, app_name, unListed, blurb, edit_url } of arr) {
-      const row = [appid, app_name, unListed, blurb, edit_url].map(escape);
+    for (let { appid, app_name, unListed, blurb, edit_url, fast_start, fast_index, slow_start, slow_index } of arr) {
+      const row = [appid, escape(app_name), unListed, escape(blurb), escape(edit_url), fast_start, fast_index, slow_start, slow_index];
       rows.push(row.join(','));
     }
     return header + '\n' + rows.join('\n');
@@ -155,7 +169,7 @@
   // 批量爬取
   async function getFullAppsList(curator, eleBtn) {
     // 分页数量
-    const pageSize = 100;
+    const pageSize = 50;
 
     eleBtn.textContent = "正在加载第一页数据";
 
@@ -214,6 +228,19 @@
     return fullList;
   }
 
+  async function filterNotExist(db, list) {
+    const results = [];
+    if (list && list.length > 0) {
+      for (let item of list) {
+        const { appid } = item;
+        if (!db.queryByAppId(appid)) {
+          results.push(item);
+        }
+      }
+    }
+    return results
+  }
+
   async function getFullStateList(db, curator, eleBtn) {
     // 分页数量
     const pageSize = 10;
@@ -225,8 +252,9 @@
       return null;
     }
 
-    const { total_count, appIds } = firstPageResponse;
-    const fullList = [...appIds];
+    const { total_count, results } = firstPageResponse;
+    const filteredResults = await filterNotExist(db, results);
+    const fullList = [...filteredResults];
 
     if (total_count > pageSize) {
       // 并发请求的数量
@@ -261,17 +289,9 @@
 
           await delay(500);
 
-          results.forEach((result) => {
-            if (result && result.results) {
-              result.results.forEach(item => {
-                const { appid, app_name, unListed } = item;
-
-                if (!db.queryByAppId(appid)) {
-                  fullList.push(appid);
-                }
-
-              });
-            }
+          results.forEach(async (result) => {
+            const fResult = await filterNotExist(db, result);
+            fullList.push(...fResult);
           });
         }
 
@@ -301,6 +321,8 @@
 
             const regex = /(?:《|<)(.*)(?:》|>)/;
 
+            let index = 1;
+
             for (let item of recommendations) {
               const appid = item.appid;
               let app_name = item.app_name
@@ -316,7 +338,7 @@
               }
 
               const newItem = {
-                appid, app_name, unListed, blurb, edit_url
+                appid, app_name, unListed, blurb, edit_url, fast_start: start, fast_index: index++
               };
               result.push(newItem);
             }
@@ -354,16 +376,25 @@
 
             const regex = /app\/(\d+)\//;
 
+            let index = 1;
+
             for (let eleA of eleAs) {
               const href = eleA.getAttribute("href");
 
               const match = href.match(regex);
               if (match) {
-                const appid = match[1];
-                const app_name = a.textContent.trim();
+                const appid = parseInt(match[1]);
+
+                if (appid !== appid) {
+                  continue;
+                }
+
+                const app_name = eleA.textContent.trim();
                 const edit_url = `https://store.steampowered.com/curator/${curator}/admin/review_create/${appid}`
 
-                results.push({ appid, app_name, unListed: true, edit_url });
+                console.log(appid, app_name)
+
+                results.push({ appid, app_name, unListed: true, edit_url, slow_start: start, slow_index: index++ });
               }
             }
           }
