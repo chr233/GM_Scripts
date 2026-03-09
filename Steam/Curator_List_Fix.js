@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.1
+// @version         1.2
 // @description     修复列表显示
 // @description:zh-CN  修复列表显示
 // @author          Chr_
@@ -56,10 +56,10 @@
       /ListEdit_Onload\("(\d+)",([\d\D]+) \)/
     );
 
-    const listid = matchValue[1];
+    const listId = matchValue[1];
     const listDetails = JSON.parse(matchValue[2]);
 
-    console.log(listid);
+    console.log(listId);
     console.log(listDetails);
 
     let result = { recommendations: [], total_count: 0, start: 0, success: 1 };
@@ -72,16 +72,16 @@
 
     let added = false;
 
-    const btnLoad = genBtn("加载App列表数据", "clf_btn", async () => {
+    const btnLoad = genBtn("加载App列表数据", "clf_btn btnv6_blue_hoverfade", async () => {
       btnLoad.disabled = true;
       result = await getFullAppsList(curator, eleTips);
-      ListEdit_Onload(listid, listDetails);
+      ListEdit_Onload(listId, listDetails);
       eleTips.textContent += `, 您的列表中有 ${g_rgAppsCurated.length} 个应用可用。`;
       btnLoad.disabled = false;
 
       if (!added) {
         added = true;
-        const btnDump = genBtn("复制评测列表", "clf_btn", () => {});
+        const btnDump = genBtn("复制评测列表", "clf_btn btnv6_blue_hoverfade", () => { });
         eleTitleFrame.appendChild(btnDump);
       }
     });
@@ -92,9 +92,12 @@
 
       g_rgAppsCurated = result.recommendations;
 
-      document.getElementById(
+      const ele = document.getElementById(
         "curator_createlist_app_count_throbber"
-      ).style.display = "none";
+      )
+      if (ele) {
+        ele.style.display = "none";
+      }
       eleTips.textContent = "完整列表等待加载";
 
       if (fnOnComplete) {
@@ -178,9 +181,8 @@
         }
 
         if (subTasks.length > 0) {
-          eleBtn.textContent = `正在加载第 ${
-            totalPages - tasks.length
-          } / ${totalPages} 页数据`;
+          eleBtn.textContent = `正在加载第 ${totalPages - tasks.length
+            } / ${totalPages} 页数据`;
 
           const results = await Promise.all(subTasks);
 

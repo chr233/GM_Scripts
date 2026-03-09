@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.11
+// @version         1.12
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -83,12 +83,12 @@
       if (appid) {
         const btn = genBtn(
           "删除该评测",
-          "ct_btn",
+          "ct_btn btnv6_blue_hoverfade",
           async () => await deleteReview(curator, appid)
         );
         btnArea.appendChild(btn);
         const link = genA(`https://store.steampowered.com/app/${appid}`);
-        const btn2 = genBtn("商店页", "ct_btn");
+        const btn2 = genBtn("商店页", "ct_btn btnv6_blue_hoverfade");
         link.appendChild(btn2);
         btnArea.appendChild(link);
       } else {
@@ -97,14 +97,14 @@
         if (appSuggest && reviewType) {
           let suggestAppId = null;
 
-          const btn = genBtn("编辑原先的评测", "ct_btn");
+          const btn = genBtn("编辑原先的评测", "ct_btn btnv6_blue_hoverfade");
           const link = genA("#");
           link.appendChild(btn);
           btnArea.appendChild(link);
 
           const btn2 = genBtn(
             "删除原先的评测",
-            "ct_btn",
+            "ct_btn btnv6_blue_hoverfade",
             async () => await deleteReview(curator, suggestAppId)
           );
           btnArea.appendChild(btn2);
@@ -252,7 +252,7 @@
       ) ?? [null, null, null];
 
       if (curator !== null && appid !== null) {
-        const btn = genBtn("删", "ct_btn", async () =>
+        const btn = genBtn("删", "ct_btn btnv6_blue_hoverfade", async () =>
           deleteReview(curator, appid, td.parentNode)
         );
         div.appendChild(btn);
@@ -295,7 +295,7 @@
       "#RecentReferrals_ctn > div:nth-child(2)"
     );
     recentCtn.appendChild(
-      genBtn("跳转到...", "ct_btn2", () => {
+      genBtn("跳转到...", "ct_btn2 btnv6_blue_hoverfade", () => {
         gotoPage(recentController);
       })
     );
@@ -308,7 +308,7 @@
       "#TopReferrals_ctn > div:nth-child(2)"
     );
     topCtn.appendChild(
-      genBtn("跳转到...", "ct_btn2", () => {
+      genBtn("跳转到...", "ct_btn2 btnv6_blue_hoverfade", () => {
         gotoPage(topController);
       })
     );
@@ -408,11 +408,11 @@
 
 GM_addStyle(`
 .ct_btn {
-  padding: 3px;
+  padding: 5px;
   margin-right: 10px;
 }
 .ct_btn2 {
-  padding: 0 3px;
+  padding: 5px;
   margin-right: 10px;
 }
 td {

@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.6
+// @version         1.8
 // @description     导入导出
 // @description:zh-CN  导入导出
 // @author          Chr_
@@ -46,7 +46,7 @@
       return;
     }
 
-    const btnStatus = genBtn("获取缓存数量", "ctd_btn", async () => {
+    const btnStatus = genBtn("获取缓存数量", async () => {
       const count = await db.getTotalCount();
       btnStatus.textContent = `缓存数量：${count}`;
     })
@@ -54,7 +54,7 @@
 
     let busy = false;
 
-    const btnLoadFast = genBtn("从评测列表抓取 (快速)", "ctd_btn", async () => {
+    const btnLoadFast = genBtn("从评测列表抓取 (快)", async () => {
       if (busy) {
         return;
       }
@@ -71,7 +71,7 @@
     })
     container.appendChild(btnLoadFast);
 
-    const btnLoadSlow = genBtn("从流量统计抓取 (慢)", "ctd_btn", async () => {
+    const btnLoadSlow = genBtn("从流量统计抓取 (慢)", async () => {
       if (busy) {
         return;
       }
@@ -88,7 +88,7 @@
     })
     container.appendChild(btnLoadSlow);
 
-    const btnDumpAll = genBtn("导出全部评测", "ctd_btn", async () => {
+    const btnDumpAll = genBtn("导出全部评测", async () => {
       const dump = await db.getAllData();
       if (!dump || dump.length === 0) {
         showAlert("没有异常评测数据可导出", false);
@@ -98,7 +98,7 @@
     });
     container.appendChild(btnDumpAll);
 
-    const btnDumpError = genBtn("导出异常评测", "ctd_btn", async () => {
+    const btnDumpError = genBtn("导出异常评测", async () => {
       const data = await db.getAllData();
       const dump = data.filter(x => x.unListed);
       if (!dump || dump.length === 0) {
@@ -109,16 +109,16 @@
     });
     container.appendChild(btnDumpError);
 
-    const btnClear = genBtn("清除缓存", "ctd_btn", async () => {
+    const btnClear = genBtn("清除缓存", async () => {
       await db.deleteAllData();
     })
     container.appendChild(btnClear);
   }
 
-  function genBtn(text, cls, foo) {
+  function genBtn(text, foo) {
     const btn = document.createElement("button");
     btn.textContent = text;
-    btn.className = cls;
+    btn.className = "ctd_btn btnv6_blue_hoverfade";
     btn.addEventListener("click", foo);
     return btn;
   }
@@ -230,7 +230,7 @@
 
   async function filterNotExist(db, list) {
     const results = [];
-    if (list ) {
+    if (list) {
       for (let item of list) {
         const { appid, slow_index, slow_start } = item;
         const existData = await db.queryByAppId(appid);
@@ -716,8 +716,9 @@
 
 GM_addStyle(`
 .ctd_btn {
-  padding: 3px;
+  padding: 5px;
   margin: 5px;
   display: block;
+  width: 100%;
 }
 `);
