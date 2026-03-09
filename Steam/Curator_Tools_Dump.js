@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.5
+// @version         1.6
 // @description     导入导出
 // @description:zh-CN  导入导出
 // @author          Chr_
@@ -230,11 +230,18 @@
 
   async function filterNotExist(db, list) {
     const results = [];
-    if (list && list.length > 0) {
+    if (list ) {
       for (let item of list) {
-        const { appid } = item;
-        if (!db.queryByAppId(appid)) {
+        const { appid, slow_index, slow_start } = item;
+        const existData = await db.queryByAppId(appid);
+        if (!existData) {
           results.push(item);
+        } else {
+          existData.slow_index = slow_index;
+          existData.slow_start = slow_start;
+          await db.insertData(existData);
+
+          const test = await db.queryByAppId(appid);
         }
       }
     }
@@ -289,10 +296,10 @@
 
           await delay(500);
 
-          results.forEach(async (result) => {
-            const fResult = await filterNotExist(db, result);
+          for (let result of results) {
+            const fResult = await filterNotExist(db, result.results);
             fullList.push(...fResult);
-          });
+          }
         }
 
         eleBtn.textContent = "加载完成";
