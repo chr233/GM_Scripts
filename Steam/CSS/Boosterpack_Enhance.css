@@ -19,3 +19,6 @@ div.bh-right > * {
 span.bh-tips {
   font-size: 10px;
 }
+button.bh-button {
+  padding: 4px 5px;
+}

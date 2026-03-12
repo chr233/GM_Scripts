@@ -2,7 +2,7 @@
 // @name:zh-CN   补充包合成器增强
 // @name         Boosterpack_Enhance
 // @namespace    https://blog.chrxw.com
-// @version      1.5
+// @version      1.6
 // @description  补充包制作工具
 // @description:zh-CN  补充包制作工具
 // @author       Chr_
@@ -37,6 +37,7 @@
     }
     function genInput(cls) {
         const i = document.createElement("input");
+        i.id = "bh_input";
         i.className = cls;
         return i;
     }
@@ -45,14 +46,14 @@
         s.textContent = name;
         return s;
     }
-    function genCheckbox(name, cls, key = null, checked = false) {
+    function genCheckbox(name, cls, key = null) {
         const l = document.createElement("label");
         const i = document.createElement("input");
         const s = genSpan(name);
         i.textContent = name;
         i.title = name;
         i.type = "checkbox";
-        i.className = "fac_checkbox";
+        i.className = cls;
         i.checked = localStorage.getItem(key) === "true";
         l.title = name;
         l.appendChild(i);
@@ -81,6 +82,7 @@
     }
     function genSelector() {
         const s = document.createElement("select");
+        s.id = "bh-selector";
         s.appendChild(genOption("可交易", "2"));
         s.appendChild(genOption("不可交易", "3"));
         return s;
@@ -92,6 +94,9 @@
         const filterContainer = genDiv("bh-filter");
         area.appendChild(filterContainer);
 
+        const divIptSearch = genDiv("gray_bevel for_text_input")
+        filterContainer.appendChild(divIptSearch);
+
         const iptSearch = genInput("bh-search");
         iptSearch.placeholder = "搜索名称 / AppId";
         let t = 0;
@@ -99,25 +104,25 @@
             clearTimeout(t);
             t = setTimeout(updateFilter, 500);
         });
-        filterContainer.appendChild(iptSearch);
+        divIptSearch.appendChild(iptSearch);
 
-        const [lblOnlyFavorite, chkOnlyFavorite] = genCheckbox("仅显示已收藏", "bh-checkbox", "bh-onlyfavorite", false);
+        const [lblOnlyFavorite, chkOnlyFavorite] = genCheckbox("仅显示已收藏", "bh-checkbox", "bh-onlyfavorite");
         chkOnlyFavorite.addEventListener("change", updateFilter);
         filterContainer.appendChild(lblOnlyFavorite);
-        const [lblOnlyCraftable, chkOnlyCraftable] = genCheckbox("仅显示可合成", "bh-checkbox", "bh-onlycraftable", false);
-        chkOnlyCraftable.addEventListener("change", updateFilter);
-        filterContainer.appendChild(lblOnlyCraftable);
+        const [lblOnlyCraftAble, chkOnlyCraftAble] = genCheckbox("仅显示可合成", "bh-checkbox", "bh-onlycraftable");
+        chkOnlyCraftAble.addEventListener("change", updateFilter);
+        filterContainer.appendChild(lblOnlyCraftAble);
 
         const btnSearch = genButton("清除过滤条件", () => {
             iptSearch.value = "";
             chkOnlyFavorite.checked = false;
-            chkOnlyCraftable.checked = false;
+            chkOnlyCraftAble.checked = false;
             updateFilter();
-        }, "bh-button");
+        }, "bh-button btnv6_blue_hoverfade");
         filterContainer.appendChild(btnSearch);
         filterContainer.appendChild(genSpan(""));
 
-        const tabledata = Object.values(g_boosterData);
+        const tableData = Object.values(g_boosterData);
 
         const divRight = genDiv("bh-right");
         filterContainer.appendChild(divRight);
@@ -130,7 +135,7 @@
         divRight.appendChild(selPackPrefer);
 
         const btnBatchCraft = genButton("批量合成收藏的包", async () => {
-            const favoriteItems = tabledata.filter(x => x.favorite && x.available);
+            const favoriteItems = tableData.filter(x => x.favorite && x.available);
             if (favoriteItems.length === 0) {
                 alert("无可合成项目");
             } else {
@@ -139,7 +144,7 @@
                     await asleep(200);
                 }
             }
-        }, "bh-button-right");
+        }, "bh-button btnv6_blue_hoverfade");
         divRight.appendChild(btnBatchCraft);
 
         const tableContainer = genDiv("bh-table");
@@ -157,7 +162,7 @@
 
         const table = new Tabulator(tableContainer, {
             height: 600,
-            data: tabledata,
+            data: tableData,
             layout: "fitDataStretch",
             rowHeight: 40,
             rowContextMenu: rowMenu,
@@ -190,7 +195,7 @@
 
         window.addEventListener("beforeunload", () => {
             localStorage.setItem("bh-onlyfavorite", chkOnlyFavorite.checked);
-            localStorage.setItem("bh-onlycraftable", chkOnlyCraftable.checked);
+            localStorage.setItem("bh-onlycraftable", chkOnlyCraftAble.checked);
         });
 
         updateFilter();
@@ -223,7 +228,7 @@
             if (chkOnlyFavorite.checked) {
                 filters.push({ field: "favorite", type: "=", value: true });
             }
-            if (chkOnlyCraftable.checked) {
+            if (chkOnlyCraftAble.checked) {
                 filters.push({ field: "available", type: "=", value: true });
             }
             table.setFilter(filters);
@@ -319,7 +324,7 @@
                 //生成按钮
                 const contailer = genDiv();
                 if (!available_at_time) {
-                    const benCraft = genButton("合成补充包", (e) => doCraftBooster2(appid, contailer), "bh-button");
+                    const benCraft = genButton("合成补充包", (e) => doCraftBooster2(appid, contailer), "bh-button btnv6_blue_hoverfade");
                     contailer.appendChild(benCraft);
                 } else {
                     const time = genSpan(available_at_time);
@@ -451,5 +456,8 @@ div.bh-right > * {
 }
 span.bh-tips {
   font-size: 10px;
+}
+button.bh-button {
+  padding: 4px 5px;
 }
 `);
