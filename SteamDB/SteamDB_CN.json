@@ -184,6 +184,8 @@
       "GAME": "游戏",
       "PATCH TITLE": "补丁标题",
       "Current": "当前在线",
+      "Players": "玩家",
+        "Now": "当前",
       "24h Peak": "24小时峰值",
       "All-Time Peak": "历史峰值",
       "Positive": "好评",
@@ -261,6 +263,8 @@
       "Publisher": "发行商",
       "Franchise": "系列作品",
       "Supported Systems": "支持的操作系统",
+      "Technologies": "技术 ",
+        "SteamDB automatically detects used technologies from game files. View all in app info tab.": "SteamDB 自动检测游戏文件中的技术组件。在 APP 信息标签页查看所有组件。",
       "Last Change Number": "最后更改序号",
       "Last Record Update": "最后更新时间",
       "Release Date": "发售时间",
@@ -512,6 +516,7 @@
       "Apps in this package": "此 SUB 包含的 APP",
       "Stats": "统计数据",
       "Price history": "价格历史",
+        "Price history (CN)": "价格历史（中国）",
       "Supported Languages": "支持的语言",
       "Lookup a SteamID and calculate the value of any Steam account": "查询 SteamID 并计算任何 Steam 账号的价值."
     },
@@ -575,6 +580,22 @@
       "Price does not take into account what you already own.": "显示的价格不包含您已拥有的游戏的价格",
       "Deleted bundles, bundles with no price in your currency, and bundles with no base discount are hidden from this page. You can use search in the navbar.": "已删除的捆绑包、没有以您的货币计价的捆绑包以及没有基本折扣的捆绑包将在此页面上隐藏.您可以使用导航栏中的搜索功能."
     },
+    "div,div>a,div>h2,div>label,div>p,div>span": {
+      "SteamDB is a free, independent database covering the entire Steam catalog. Player charts, price history across all regions, update histories, and detailed data for every product — kept current through fast, automatic updates.": "SteamDB 是一个免费的独立数据库, 包括所有 Steam 游戏. 它提供了玩家图表, 价格历史, 更新历史, 以及每个产品的详细数据. 数据通过快速的自动更新保持最新.",
+      "Frequently asked questions": "常见问题",
+      "new historical low": "新史低",
+        "Free To Keep": "免费入库",
+        "Play For Free": "免费开玩",
+      "Top Seller": "热销",
+      "Steam price history": "Steam 价格历史",
+      "Price history is limited.": " 价格历史受限。",
+        "View full data for free by signing in.": "登录后查看完整数据。",
+      "Click on a currency name to load price history for that particular currency.": " 点击货币名称以加载该货币的价格历史。",
+      "View lowest recorded prices on Steam store pages": " 在 Steam 商店页面中查看历史最低价格，",
+        "by using our browser extension": " 使用我们的浏览器扩展",
+      "Current filters:": "当前筛选: ",
+        "entries per page": "条/页"
+    },
     ".header-disclaimer": {
       "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB 是一个业余项目, 与 Valve 或 Steam 无关.",
       "All times on the site are UTC.": "网站上的所有时间都是 UTC 时间."
@@ -632,6 +653,7 @@
       "Follow": "关注",
       "Ignore": "忽略",
       "Owned": "已拥有",
+      "Launch": "启动",
       "Watch": "监视",
       "Install": "安装",
       "Store": " 商店页",
@@ -1556,7 +1578,7 @@
     "View article on PCGamingWiki": "查看 PCG Wiki 上的文章",
     "Blue discount — Product has not been this cheap before": "蓝色折扣 - 新史低 (当前价格比之前的历史最低价格还要低)",
     "Green discount — Product is priced on par with lowest recorded price": "绿色折扣 - 平史低 (当前价格和之前的历史最低价格相同)"
-  },
+ },
   "DYNAMIC": {
     "#js-notifications": {
       "Extension error": "扩展插件错误",
