@@ -580,7 +580,14 @@
       "Price does not take into account what you already own.": "显示的价格不包含您已拥有的游戏的价格",
       "Deleted bundles, bundles with no price in your currency, and bundles with no base discount are hidden from this page. You can use search in the navbar.": "已删除的捆绑包、没有以您的货币计价的捆绑包以及没有基本折扣的捆绑包将在此页面上隐藏.您可以使用导航栏中的搜索功能."
     },
-    "div,div>a,div>h2,div>label,div>p,div>span": {
+    "div,div>a,div>h1,div>h2,div>label,div>p,div>span,div>ul>li": {
+      "Checking your browser…": "正在检查您的浏览器…",
+        "If you are having issues passing this page:": "如果您无法通过此页面:",
+        "Make sure your browser is fully up to date.": "确保您的浏览器是最新版本。",
+        "Some extensions may cause issues.": "某些扩展可能会导致问题。",
+        "Antivirus with browser protection may cause issues.": "防病毒软件或浏览器保护可能会导致问题。",
+        "Try clearing cache and cookies.": "尝试清除缓存和 Cookie。",
+        "As a reminder, SteamDB is a hobby project that makes no money.": "提醒：SteamDB 是一个业余项目, 不获得任何利润。",
       "SteamDB is a free, independent database covering the entire Steam catalog. Player charts, price history across all regions, update histories, and detailed data for every product — kept current through fast, automatic updates.": "SteamDB 是一个免费的独立数据库, 包括所有 Steam 游戏. 它提供了玩家图表, 价格历史, 更新历史, 以及每个产品的详细数据. 数据通过快速的自动更新保持最新.",
       "Frequently asked questions": "常见问题",
       "new historical low": "新史低",
