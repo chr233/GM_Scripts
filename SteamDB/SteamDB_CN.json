@@ -580,7 +580,7 @@
       "Price does not take into account what you already own.": "显示的价格不包含您已拥有的游戏的价格",
       "Deleted bundles, bundles with no price in your currency, and bundles with no base discount are hidden from this page. You can use search in the navbar.": "已删除的捆绑包、没有以您的货币计价的捆绑包以及没有基本折扣的捆绑包将在此页面上隐藏.您可以使用导航栏中的搜索功能."
     },
-    "div,div>a,div>h1,div>h2,div>label,div>p,div>span,div>ul>li": {
+    "div,div>a,div>h1,div>h2,div>h2>span,div>h2>span>span,div>label,div>p,div>p>b,div>p>br,div>p>i,div>span,div>ul>li": {
       "Checking your browser…": "正在检查您的浏览器…",
         "If you are having issues passing this page:": "如果您无法通过此页面:",
         "Make sure your browser is fully up to date.": "确保您的浏览器是最新版本。",
@@ -601,7 +601,17 @@
       "View lowest recorded prices on Steam store pages": " 在 Steam 商店页面中查看历史最低价格，",
         "by using our browser extension": " 使用我们的浏览器扩展",
       "Current filters:": "当前筛选: ",
-        "entries per page": "条/页"
+        "entries per page": "条/页",
+      "Free Promotions on Steam": "Steam 免费促销活动",
+        "Looks like there are currently no free promotions that we can detect.": "看起来目前没有我们可以检测到的免费促销活动。",
+      "Potentially Upcoming": "潜在即将到来的",
+        "Free Promotions": "免费促销活动",
+      "Extension error": "扩展错误",
+        "Failed to load your games. Failed to fetch": "无法加载你的游戏。无法获取",
+        "Sign in on the Steam Store": "在 Steam Store 登录",
+      "Logging into SteamDB allows you to access additional features.": "登录后可以访问更多功能。",
+        "To provide a better service, we will fetch public information about your account": "为了提供更好的服务，我们将获取您的账户的公开信息",
+        "(steamid, profile name, avatar, and game list).": "（steamid、个人资料名称、头像和游戏列表）。"
     },
     ".header-disclaimer": {
       "SteamDB is a hobby project and is not affiliated with Valve or Steam.": "SteamDB 是一个业余项目, 与 Valve 或 Steam 无关.",
