@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.12
+// @version         1.13
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -43,6 +43,8 @@
       injectReviewCreate();
     } else if (location.pathname.includes("admin/stats")) {
       injectStats();
+    } else if (g_strCuratorAdminURL) {
+      injectStoreList();
     }
   }
 
@@ -70,6 +72,19 @@
     const span = document.createElement("span");
     span.textContent = name;
     return span;
+  }
+  function genCheck(name, checked, foo) {
+    const l = document.createElement('label');
+    const i = document.createElement('input');
+    const s = genSpan(name);
+    i.textContent = name;
+    i.title = name;
+    i.type = 'checkbox';
+    i.checked = !!checked;
+    i.addEventListener('change', foo);
+    l.appendChild(i);
+    l.appendChild(s);
+    return [l, i];
   }
 
   function injectReviewCreate() {
@@ -174,7 +189,31 @@
     }
   }
 
-  // 删除评测
+  /**
+   *  注入商店页测评列表
+   */
+  function injectStoreList() {
+    const [_, curator] = lastPathname.match(
+      /\/curator\/([^\/]+)\/?/
+    ) ?? [null, null];
+
+    if (curator) {
+      injectBtn2(curator);
+
+      const optionArea = document.querySelector(".browse_tabs");
+      const enable = localStorage.getItem("ct_goto_admin");
+      const [lblEnable, chkEnable] = genCheck("跳转到编辑页", enable,  (e) => {
+        e.preventDefault();
+
+        localStorage.setItem("ct_goto_admin", chkEnable.checked);
+      });
+      optionArea.appendChild(lblEnable);
+    }
+  }
+
+  /**
+   * 删除评测
+   */
   async function deleteReview(curator, appid, ele = null) {
     ShowConfirmDialog("", "真的要删除这篇评测吗", "给我删", "手滑了").done(
       () => {
@@ -312,6 +351,53 @@
         gotoPage(topController);
       })
     );
+  }
+
+  function injectBtn2(curator) {
+    const container = document.querySelector("#RecommendationsRows");
+    if (!container) return;
+
+    // 处理单个元素
+    function processDiv(eleDiv) {
+      if (eleDiv.dataset.ctInjected) return; // 避免重复注入
+      const eleA = eleDiv.querySelector("a");
+      if (!eleA) return;
+
+      eleDiv.dataset.ctInjected = "1";
+      console.log(eleA.href);
+
+      eleDiv.addEventListener("click", (e) => {
+        if (localStorage.getItem("ct_goto_admin")) {
+          e.preventDefault();
+          const href = eleA.href;
+          const [_, appId] = href.match(/\/app\/(\d+)/) ?? [null, null];
+
+          alert(`${appId} ${curator}`);
+
+          location.href = `https://store.steampowered.com/curator/${curator}/admin/review_create/${appId}`;
+        }
+
+      });
+
+    }
+
+    // 处理现有元素
+    container.querySelectorAll("div>div[role]").forEach(processDiv);
+
+    // 监听新增元素
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType !== Node.ELEMENT_NODE) continue;
+          // 新增的是父 div，查找其中的 div[role]
+          node.querySelectorAll("div[role]").forEach(processDiv);
+          // 也检查 node 本身
+          if (node.matches("div[role]")) processDiv(node);
+        }
+      }
+    });
+
+    observer.observe(container, { childList: true, subtree: true });
   }
 
   function gotoPage(controller) {
