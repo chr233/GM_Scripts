@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.13
+// @version         1.14
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -371,8 +371,6 @@
           e.preventDefault();
           const href = eleA.href;
           const [_, appId] = href.match(/\/app\/(\d+)/) ?? [null, null];
-
-          alert(`${appId} ${curator}`);
 
           location.href = `https://store.steampowered.com/curator/${curator}/admin/review_create/${appId}`;
         }
