@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.14
+// @version         1.15
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -77,6 +77,7 @@
     const l = document.createElement('label');
     const i = document.createElement('input');
     const s = genSpan(name);
+    s.className = "ct_option";
     i.textContent = name;
     i.title = name;
     i.type = 'checkbox';
@@ -198,14 +199,20 @@
     ) ?? [null, null];
 
     if (curator) {
+
+      if (document.querySelector(".navigation_bar").childElementCount < 5) {
+        return;
+      }
+
+
       injectBtn2(curator);
 
       const optionArea = document.querySelector(".browse_tabs");
       const enable = localStorage.getItem("ct_goto_admin");
-      const [lblEnable, chkEnable] = genCheck("跳转到编辑页", enable,  (e) => {
+      const [lblEnable, chkEnable] = genCheck("跳转到编辑页", enable, (e) => {
         e.preventDefault();
 
-        localStorage.setItem("ct_goto_admin", chkEnable.checked);
+        localStorage.setItem("ct_goto_admin", chkEnable.checked ? "true" : "");
       });
       optionArea.appendChild(lblEnable);
     }
@@ -364,7 +371,6 @@
       if (!eleA) return;
 
       eleDiv.dataset.ctInjected = "1";
-      console.log(eleA.href);
 
       eleDiv.addEventListener("click", (e) => {
         if (localStorage.getItem("ct_goto_admin")) {
@@ -515,4 +521,8 @@ tr > td > .ct_div > .ct_btn {
 tr:hover > td > .ct_div > .ct_btn {
   display: block;
 }
+span.ct_option {
+  margin: 5px;
+}
+
 `);
