@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.15
+// @version         1.16
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -200,21 +200,29 @@
 
     if (curator) {
 
-      if (document.querySelector(".navigation_bar").childElementCount < 5) {
-        return;
-      }
+      const isAdmin = document.querySelector(".navigation_bar").childElementCount >= 5;
 
-
-      injectBtn2(curator);
+      injectStoreBtn(curator);
 
       const optionArea = document.querySelector(".browse_tabs");
-      const enable = localStorage.getItem("ct_goto_admin");
-      const [lblEnable, chkEnable] = genCheck("跳转到编辑页", enable, (e) => {
+
+      if (isAdmin) {
+        const isGoToAdmin = localStorage.getItem("ct_goto_admin");
+        const [lblEnable, chkEnable] = genCheck("跳转到编辑页", isGoToAdmin, (e) => {
+          e.preventDefault();
+
+          localStorage.setItem("ct_goto_admin", chkEnable.checked ? "true" : "");
+        });
+        optionArea.appendChild(lblEnable);
+      }
+
+      const isNewWindow = localStorage.getItem("ct_new_window");
+      const [lblWindow, chkWindow] = genCheck("新窗口打开", isNewWindow, (e) => {
         e.preventDefault();
 
-        localStorage.setItem("ct_goto_admin", chkEnable.checked ? "true" : "");
+        localStorage.setItem("ct_new_window", chkWindow.checked ? "true" : "");
       });
-      optionArea.appendChild(lblEnable);
+      optionArea.appendChild(lblWindow);
     }
   }
 
@@ -360,7 +368,7 @@
     );
   }
 
-  function injectBtn2(curator) {
+  function injectStoreBtn(curator) {
     const container = document.querySelector("#RecommendationsRows");
     if (!container) return;
 
@@ -373,12 +381,28 @@
       eleDiv.dataset.ctInjected = "1";
 
       eleDiv.addEventListener("click", (e) => {
-        if (localStorage.getItem("ct_goto_admin")) {
+        const isGoToAdmin = localStorage.getItem("ct_goto_admin");
+        const isNewWindow = localStorage.getItem("ct_new_window");
+
+        if (isGoToAdmin || isNewWindow) {
           e.preventDefault();
+        }else{
+          return;
+        }
+
+        if (isGoToAdmin) {
           const href = eleA.href;
           const [_, appId] = href.match(/\/app\/(\d+)/) ?? [null, null];
 
-          location.href = `https://store.steampowered.com/curator/${curator}/admin/review_create/${appId}`;
+          const url = `https://store.steampowered.com/curator/${curator}/admin/review_create/${appId}`;
+          if (isNewWindow) {
+            window.open(url, "_blank");
+          } else {
+            location.href = url;
+          }
+        }
+        else if (isNewWindow) {
+          window.open(eleA.href, "_blank");
         }
 
       });
