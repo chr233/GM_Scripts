@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.16
+// @version         1.17
 // @description     添加删除按钮
 // @description:zh-CN  添加删除按钮
 // @author          Chr_
@@ -41,6 +41,8 @@
 
     if (location.pathname.includes("admin/review_create")) {
       injectReviewCreate();
+    } else if (location.pathname.includes("admin/reviews_manage")) {
+      injectReviewManage();
     } else if (location.pathname.includes("admin/stats")) {
       injectStats();
     } else if (g_strCuratorAdminURL) {
@@ -174,6 +176,40 @@
     }
   }
 
+  function injectReviewManage() {
+    const [_, curator] = lastPathname.match(
+      /\/curator\/([^\/]+)\/admin\/reviews_manage\/?/
+    ) ?? [null, null];
+
+    if (curator) {
+      setupManageHook();
+
+      const pageBtns = document.querySelectorAll("#ReviewsManage_controls>span.pagebtn,#ReviewsManage_controls>span>span.ReviewsManage_paging_pagelink");
+      pageBtns.forEach((btn) => {
+        btn.addEventListener("click", setupManageHook);
+      });
+    }
+  }
+
+  function setupManageHook() {
+    const t = setInterval(() => {
+      const controlBtns = document.querySelectorAll("#reviews_container>label>div.controls>a.edit_list_icon");
+      if (controlBtns.length === 0) {
+        return;
+      }
+
+      clearInterval(t);
+
+      controlBtns.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+
+          location.href = btn.href;
+        });
+      });
+    }, 500);
+  }
+
   function injectStats() {
     injectBtn();
     injectGotoBtn();
@@ -199,13 +235,14 @@
     ) ?? [null, null];
 
     if (curator) {
-
-      const isAdmin = document.querySelector(".navigation_bar").childElementCount >= 5;
+      const optionArea = document.querySelector(".browse_tabs");
+      if (!optionArea) {
+        return;
+      }
 
       injectStoreBtn(curator);
 
-      const optionArea = document.querySelector(".browse_tabs");
-
+      const isAdmin = document.querySelector(".navigation_bar").childElementCount >= 5;
       if (isAdmin) {
         const isGoToAdmin = localStorage.getItem("ct_goto_admin");
         const [lblEnable, chkEnable] = genCheck("跳转到编辑页", isGoToAdmin, (e) => {
@@ -386,7 +423,7 @@
 
         if (isGoToAdmin || isNewWindow) {
           e.preventDefault();
-        }else{
+        } else {
           return;
         }
 
