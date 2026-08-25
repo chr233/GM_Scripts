@@ -1529,6 +1529,26 @@
     },
     ".global-announcement>div>a": {
       "Follow SteamDB curator": "关注 SteamDB 鉴赏家"
+    },
+    ".header-navbar>a,.header-login>span,.tabnav-tabs>a,#js-header-hamburger>span,a.btn,button,button>span,.steamy-checkbox-label,tr>td,tr>td>span,.header-wrapper>div>p,.text-center,.text-center>a": {
+      "Skip to content": "跳到正文",
+      "This list is empty.": "此列表为空。",
+      "Collections": "收藏夹",
+      "Watched": "已关注",
+      "In Cart": "购物车中",
+      "In Library": "库中",
+      "In Wishlist": "愿望单中",
+      "Daily Active Users": "日活跃用户",
+      "Wishlist Activity": "愿望单趋势",
+      "Previous Releases": "过往发行",
+      "Top Rated Games": "好评游戏榜",
+      "Trending by Followers": "按关注者趋势",
+      "Upcoming Releases": "即将发行",
+      "Upcoming only": "仅显示即将发行",
+      "Close": "关闭"
+    },
+    ".filter-body label>span": {
+      "✨ AI Content Disclosed": "✨ 已披露 AI 生成内容"
     }
   },
   "INPUT": {
