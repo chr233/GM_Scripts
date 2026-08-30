@@ -22,3 +22,6 @@ tr > td > .ct_div > .ct_btn {
 tr:hover > td > .ct_div > .ct_btn {
   display: block;
 }
+span.ct_option {
+  margin: 5px;
+}

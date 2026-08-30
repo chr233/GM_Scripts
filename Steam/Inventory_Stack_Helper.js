@@ -4,7 +4,7 @@
 // @namespace          https://blog.chrxw.com
 // @supportURL         https://blog.chrxw.com/scripts.html
 // @contributionURL    https://afdian.com/@chr233
-// @version            2.6
+// @version            2.7
 // @description        Steam 物品堆叠工具
 // @description:zh-CN  Steam 物品堆叠工具
 // @author             Chr_
@@ -70,11 +70,6 @@
         container.className = "ish_container";
         btnArea.insertBefore(container, btnArea.firstChild);
 
-        const hiddenContainer = document.createElement("div");
-        hiddenContainer.style.display = "none";
-        container.appendChild(hiddenContainer);
-
-
         const btnStack = genBtn("堆叠", "堆叠库存中的物品", doStack);
         const btnUnstack = genBtn("反堆叠", "取消堆叠库存中的物品", doUnstack);
 
@@ -82,8 +77,6 @@
 
         const btnHelp = genBtn("❓", "查看帮助", doHelp);
         const spStatus = genSpan("");
-
-        hiddenContainer.appendChild(genSpan("库存"));
 
         container.appendChild(btnStack);
         container.appendChild(btnUnstack);
