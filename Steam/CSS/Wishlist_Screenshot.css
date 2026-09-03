@@ -1,5 +1,21 @@
+.ws_lg {
+  display: block;
+}
+
+.ws_sm {
+  display: none;
+}
+
+@media (max-width: 910px) {
+  .ws_lg {
+    display: none;
+  }
+
+  .ws_sm {
+    display: block;
+  }
+}
+
 .ws_take_photo {
-  position: absolute;
-  padding: 8px;
-  left: 50px;
+  padding: 5px 10px;
 }

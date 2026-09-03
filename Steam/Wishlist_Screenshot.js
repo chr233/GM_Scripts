@@ -5,167 +5,217 @@
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
 // @version         1.0
-// @description     一键生成愿望单截图
-// @description:zh-CN  一键生成愿望单截图
+// @description     自动截取愿望单
+// @description:zh-CN  自动截取愿望单
 // @author          Chr_
 // @license         AGPL-3.0
 // @icon            https://blog.chrxw.com/favicon.ico
 // @require         https://lib.baomitu.com/html2canvas/1.4.1/html2canvas.min.js
 // @include         https://store.steampowered.com/app/*
-// @grant           GM_setClipboard
+// @include         https://store.steampowered.com/wishlist/*
 // @grant           GM_addStyle
+// @grant           GM_registerMenuCommand
 // ==/UserScript==
 
 (() => {
-  "use strict";
-  // 初始化
-  const GObjs = {};
-  let GTimer = 0;
+    "use strict";
 
-  (() => {
-    addGUI();
-  })();
+    const PC_MODE_KEY = "pcMode";
 
-  function addGUI() {
-    const container = document.querySelector("div.apphub_OtherSiteInfo");
-    const top = container.getBoundingClientRect().top + window.scrollY;
+    const usePcMode = !!localStorage.getItem(PC_MODE_KEY);
 
-    const btn = document.createElement("a");
-    btn.style.top = `${top}px`;
-    btn.addEventListener("click", takePhoto);
-    btn.className = "ws_take_photo btnv6_blue_hoverfade btn_medium";
-    btn.textContent = "📷";
-
-    document.body.appendChild(btn);
-  }
-
-  async function takePhoto() {
-    const container = document.createElement("div");
-    const span = document.createElement("span");
-    span.textContent = "11111";
-    container.appendChild(span);
-    showDialog(container);
-  }
-
-  //显示提示框
-  function showDialog(ele) {
-    const genBtn = (text, onclick) => {
-      const btn = document.createElement("button");
-      btn.textContent = text;
-      btn.className = "btn_medium fec_btn";
-      if (onclick) {
-        btn.addEventListener("click", onclick);
-      }
-      return btn;
-    };
-    const area = document.createElement("div");
-    area.className = "fec_area";
-    const tit = document.createElement("h2");
-    tit.className = "fec_title";
-    tit.innerText = "";
-
-    const action = document.createElement("div");
-    action.className = "fec_action";
-    const btnAbort = genBtn("⛔停止运行", () => {
-      if (isWorking) {
-        isWorking = false;
-        tit.innerText = "已停止";
-      }
+    GM_registerMenuCommand(`愿望单模式: ${usePcMode ? "PC" : "手机"}`, () => {
+        localStorage.setItem(PC_MODE_KEY, usePcMode ? "" : "1");
+        window.location.reload();
     });
-    btnAbort.disabled = true;
-    const btnClose = genBtn("❌关闭", null);
-    const btnCopy = genBtn("📋复制", () => {
-      GM_setClipboard(txt.value, "text");
-      btnCopy.innerText = "✅已复制";
-      setTimeout(() => {
-        btnCopy.innerText = "📋复制";
-      }, 1000);
-    });
-    action.appendChild(btnCopy);
-    action.appendChild(btnAbort);
-    action.appendChild(btnClose);
-    area.appendChild(ele);
-    area.appendChild(action);
-    const diag = ShowDialog("", area, { bExplicitDismissalOnly: true });
-    btnClose.addEventListener("click", () => {
-      diag.Dismiss();
-    });
-    return [btnAbort];
-  }
-  //异步Sleep
-  function aioSleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
-  async function genImage() {
-    window.stop();
-    show_flash("图片生成中...");
-    const Start = new Date().getTime();
-    const { divCnv } = GObjs;
-    const steam = document.querySelector(".sr-user");
-    const helps = document.querySelectorAll(
-      "div[class='key-container wrapper']>div>p"
-    );
-    const btns = document.querySelectorAll("button.hb_sc");
-    if (btns || btns.length > 0) {
-      if (steam) {
-        steam.style.display = "none";
-      }
-      if (helps) {
-        for (const ele of helps) {
-          ele.style.display = "none";
+    // 控制注入逻辑
+    if (location.pathname.startsWith("/app/")) {
+        if (checkCanAddWishlist()) {
+            injectStorePage();
         }
-      }
-      divCnv.style.display = "";
-      const keyArea = document.querySelector(
-        "div[class='key-container wrapper']"
-      );
-      const canvas = await html2canvas(keyArea, {
-        imageTimeout: 10,
-        logging: false,
-      });
-      const img = document.createElement("img");
-      img.src = canvas.toDataURL("image/png");
-      divCnv.innerHTML = "";
-      divCnv.appendChild(img);
-      if (steam) {
-        steam.style.display = "";
-      }
-      if (helps) {
-        for (const help of helps) {
-          help.style.display = "";
+    } else if (location.pathname.startsWith("/wishlist/")) {
+        const params = new URLSearchParams(window.location.search);
+
+        // 检查某个参数是否存在
+        if (params.has('wsShoot')) {
+            console.log('wsShoot');
+            injectWishlistPage();
         }
-      }
-      const End = new Date().getTime();
-      show_flash(`图片生成完成, 右键图片复制, 耗时 ${End - Start} ms`);
-    } else {
-      show_flash("Key列表为空?\n或许是卡DOM了, 刷新一下即可。");
     }
-  }
 
-  function copyHTML() {
-    const data = parseKeys();
-    const tdCss = 'style="padding:5px 10px;border-top:1px solid;"';
-    const list = [
-      '<table style="border-collapse:collapse;margin-bottom:0.7em;">',
-      "<tr><th>游戏名</th><th>Key</th></tr>",
-    ];
-    for (let [title, key] of data) {
-      list.push(`<tr><td ${tdCss}>${title}</td><td ${tdCss}>${key}</td></tr>`);
+    // 生成按钮
+    function genButton(text, className = null, foo = null) {
+        const btn = document.createElement("button");
+        btn.textContent = text;
+        if (className) {
+            btn.className = className;
+        }
+        if (foo) {
+            btn.addEventListener("click", foo);
+        }
+
+        return btn;
     }
-    list.push("</table>");
-    setClipboard(list.join("\n"), "html");
-    show_flash("复制成功");
-  }
-  function setClipboard(data, dataType = "text") {
-    GM_setClipboard(data, dataType);
-  }
-})();
 
-GM_addStyle(`
-.ws_take_photo {
-  position: absolute;
-  padding: 8px;
-  left: 50px;
+    // 检查是否可以添加愿望单
+    function checkCanAddWishlist() {
+        const eleAddWishlist = document.querySelector("#add_to_wishlist_area");
+        const eleAddWishlistS = document.querySelector("#add_to_wishlist_area_success");
+        const eleAddWishlistF = document.querySelector("#add_to_wishlist_area_fail");
+        return !!(eleAddWishlist && eleAddWishlistS && eleAddWishlistF);
+    }
+
+    // 注入商店页
+    function injectStorePage() {
+
+        const area = document.querySelector("#queueActionsCtn");
+        const lastA = document.querySelector("#queueActionsCtn>a");
+
+        const btn = genButton("愿望单截图", "btnv6_blue_hoverfade ws_take_photo ws_lg", openWishlist);
+        area.insertBefore(btn, lastA);
+
+        const btnSm = genButton("📷", "btnv6_blue_hoverfade ws_take_photo ws_sm", openWishlist);
+        area.insertBefore(btnSm, lastA);
+    }
+
+    // 注入愿望单页面
+    function injectWishlistPage() {
+        window.addEventListener("load", () => {
+            document.querySelector('header').style.display = "none";
+
+            const t = setInterval(async () => {
+                const eleImgs = document.querySelectorAll("img[role='presentation']");
+
+                for (let img of eleImgs) {
+                    if (!img.complete || img.naturalHeight === 0) {
+                        return;
+                    }
+                }
+
+                clearInterval(t);
+
+                setTimeout(doScreenshot, 500);
+
+            }, 500);
+        });
+    }
+
+    // 获取 AppId
+    function getCurrentAppId() {
+        const match = location.pathname.match(/\/app\/(\d+)/);
+        if (!match) {
+            return null;
+        }
+
+        return match[1];
+    }
+
+    // 获取用户个人资料路径
+    function getCurrentUserPath() {
+        const href = document.querySelector("#global_actions>a")?.getAttribute("href");
+        if (!href) {
+            return null;
+        }
+
+        const match = href.match(/(id|profiles)\/([^\/\s]+)/);
+        if (!match) {
+            return null;
+        }
+
+        return `${match[1]}/${match[2]}`;
+    }
+
+    // 打卡愿望单
+    function openWishlist() {
+        if (document.querySelector("#add_to_wishlist_area")?.style?.display !== "none") {
+            ShowAlertDialog("提示", "请先添加愿望单, 如果已添加, 请刷新页面后再试");
+            return;
+        }
+
+        const appId = getCurrentAppId();
+        const userPath = getCurrentUserPath();
+
+        if (!appId || !userPath) {
+            ShowAlertDialog("提示", "可能没有登录Steam");
+            return;
+        }
+
+        const targetUrl = `https://store.steampowered.com/wishlist/${userPath}/?sort=discount&wng=${appId}&wsShoot=1`;
+
+        const newWindow = window.open(
+            targetUrl,
+            '愿望单',
+            usePcMode ? 'width=810,height=580' : 'width=430,height=750',
+        );
+
+        console.log(newWindow);
+    }
+
+    async function doScreenshot() {
+        try {
+            console.log('📸 正在截屏...');
+
+            // 截取页面
+            const canvas = await html2canvas(document.body, {
+                backgroundColor: '#ffffff',
+                useCORS: true,
+                allowTaint: true,
+                windowHeight: window.innerHeight,
+                windowWidth: window.innerWidth,
+                // ✓ 从当前滚动位置开始
+                x: 0,
+                y: window.scrollY
+            });
+
+            // Canvas 转 Blob
+            const blob = await new Promise(resolve => {
+                canvas.toBlob(resolve, 'image/png');
+            });
+
+            // 使用 Clipboard API 复制图片
+            await navigator.clipboard.write([
+                new ClipboardItem({
+                    'image/png': blob
+                })
+            ]);
+
+            console.log('✓ 愿望单截图已复制!');
+            alert('✓ 愿望单截图已复制!');
+
+            if (window.opener) {
+                window.close();
+            }
+
+        } catch (error) {
+            console.error('✗ 失败:', error);
+            alert('✗ 复制失败, 请手动截图!');
+        }
+    }
+
+    GM_addStyle(`
+.ws_lg {
+  display: block;
 }
+
+.ws_sm {
+  display: none;
+}
+
+@media (max-width: 910px) {
+  .ws_lg {
+    display: none;
+  }
+
+  .ws_sm {
+    display: block;
+  }
+}
+
+.ws_take_photo {
+  padding: 5px 10px;
+}
+
 `);
+
+})();
