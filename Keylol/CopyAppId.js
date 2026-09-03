@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.0
+// @version         1.1
 // @description     复制页面中的所有AppId
 // @description:zh-CN  复制页面中的所有AppId
 // @author          Chr_
@@ -31,7 +31,7 @@
         await queryGame(JSON.stringify(group));
       }
     }
-  }, 2000);
+  }, 10000);
 
   function getAppIds() {
     const links = document.querySelectorAll(
