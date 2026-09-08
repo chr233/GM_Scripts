@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.0
+// @version         1.1
 // @description     自动截取愿望单
 // @description:zh-CN  自动截取愿望单
 // @author          Chr_
@@ -21,11 +21,18 @@
     "use strict";
 
     const PC_MODE_KEY = "pcMode";
+    const MANUAL_MODE = "autoMode";
 
     const usePcMode = !!localStorage.getItem(PC_MODE_KEY);
+    const manualMode = !!localStorage.getItem(MANUAL_MODE);
 
     GM_registerMenuCommand(`愿望单模式: ${usePcMode ? "PC" : "手机"}`, () => {
         localStorage.setItem(PC_MODE_KEY, usePcMode ? "" : "1");
+        window.location.reload();
+    });
+
+    GM_registerMenuCommand(`截图模式: ${manualMode ? "手动" : "自动"}`, () => {
+        localStorage.setItem(MANUAL_MODE, manualMode ? "" : "1");
         window.location.reload();
     });
 
@@ -95,7 +102,7 @@
 
                 clearInterval(t);
 
-                setTimeout(doScreenshot, 500);
+                setTimeout(doScreenshot, 800);
 
             }, 500);
         });
@@ -141,7 +148,10 @@
             return;
         }
 
-        const targetUrl = `https://store.steampowered.com/wishlist/${userPath}/?sort=discount&wng=${appId}&wsShoot=1`;
+        let targetUrl = `https://store.steampowered.com/wishlist/${userPath}/?sort=discount&wng=${appId}`;
+        if (!manualMode) {
+            targetUrl += '&wsShoot=1';
+        }
 
         const newWindow = window.open(
             targetUrl,
