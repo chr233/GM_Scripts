@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         1.1
+// @version         1.2
 // @description     自动截取愿望单
 // @description:zh-CN  自动截取愿望单
 // @author          Chr_
@@ -43,6 +43,15 @@
         }
     } else if (location.pathname.startsWith("/wishlist/")) {
         const params = new URLSearchParams(window.location.search);
+
+        if (params.has('inject')) {
+            setTimeout(() => {
+                const eleBtns = document.querySelectorAll("button.sdq_listbtns");
+                for (let btn of eleBtns) {
+                    btn.style.display = "none";
+                }
+            }, 1000);
+        }
 
         // 检查某个参数是否存在
         if (params.has('wsShoot')) {
@@ -148,7 +157,7 @@
             return;
         }
 
-        let targetUrl = `https://store.steampowered.com/wishlist/${userPath}/?sort=discount&wng=${appId}`;
+        let targetUrl = `https://store.steampowered.com/wishlist/${userPath}/?sort=discount&wng=${appId}&inject=1`;
         if (!manualMode) {
             targetUrl += '&wsShoot=1';
         }
