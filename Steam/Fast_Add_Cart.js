@@ -4,7 +4,7 @@
 // @namespace       https://blog.chrxw.com
 // @supportURL      https://blog.chrxw.com/scripts.html
 // @contributionURL https://afdian.com/@chr233
-// @version         4.9
+// @version         5.0
 // @description:zh-CN  超级方便的添加购物车体验, 不用跳转商店页, 附带导入导出购物车功能.
 // @description     Add to cart without redirect to cart page, also provide import/export cart feature.
 // @author          Chr_
@@ -72,7 +72,7 @@
             add: "添加",
             toCart: "到购物车",
             tips: "提示",
-            ok: "是",
+            ok: "确认",
             no: "否",
             fetchingSubs: "读取可用SUB",
             noSubFound: "未找到可用SUB",
@@ -91,6 +91,7 @@
             notOnSale: "尚未打折, 跳过",
             showUserCountry: "显示账号区域",
             yes: "是",
+            skipGiftee: "暂不设置送礼对象"
         },
         EN: {
             langName: "English",
@@ -160,6 +161,7 @@
             notOnSale: "Not on sale, skip",
             showUserCountry: "Show user country",
             yes: "Yes",
+            skipGiftee: "Skip giftee setting"
         },
     };
 
@@ -179,26 +181,49 @@
         const languageTips = GM_getValue("languageTips", true);
         if (languageTips && language === "ZH") {
             if (!document.querySelector("html").lang.startsWith("zh")) {
-                SteamFacade.showConfirmDialog(
-                    "tips",
-                    "Fast add cart now support English, switch?",
-                    "Using English",
-                    "Don't show again"
-                )
-                    .done(() => {
+                Swal.fire({
+                    title: "Tips",
+                    theme: 'auto',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: "Using English",
+                    cancelButtonText: "使用中文",
+                }).then(({ isConfirmed, isDenied, isDismissed, value: text }) => {
+
+                    if (isConfirmed) {
                         GM_setValue("lang", "EN");
                         GM_setValue("languageTips", false);
                         window.location.reload();
-                    })
-                    .fail((bool) => {
-                        if (bool) {
-                            showAlert(
-                                "",
-                                "You can switch the plugin's language using TamperMonkey's menu."
-                            );
-                            GM_setValue("languageTips", false);
-                        }
-                    });
+                    }
+                    if (isDenied) {
+                        showAlert(
+                            "",
+                            "You can switch the plugin's language using TamperMonkey's menu."
+                        );
+                        GM_setValue("languageTips", false);
+                    }
+                });
+
+                // SteamFacade.showConfirmDialog(
+                //     "tips",
+                //     "Fast add cart now support English, switch?",
+                //     "Using English",
+                //     "Don't show again"
+                // )
+                //     .done(() => {
+                //         GM_setValue("lang", "EN");
+                //         GM_setValue("languageTips", false);
+                //         window.location.reload();
+                //     })
+                //     .fail((bool) => {
+                //         if (bool) {
+                //             showAlert(
+                //                 "",
+                //                 "You can switch the plugin's language using TamperMonkey's menu."
+                //             );
+                //             GM_setValue("languageTips", false);
+                //         }
+                //     });
             }
         }
         //注册菜单
@@ -224,17 +249,37 @@
         );
     }
 
+    let accessToken = null;
+    let storeLanguage = null;
+    let userCountry = null;
+    let languageCode = null;
+
     //获取商店语言和区域
-    const { LANGUAGE: storeLanguage, COUNTRY: userCountry } = JSON.parse(
-        document
-            .querySelector("#application_config")
-            ?.getAttribute("data-config") ?? "{}"
-    );
-    const { webapi_token: accessToken } = JSON.parse(
-        document
-            .querySelector("#application_config")
-            ?.getAttribute("data-store_user_config") ?? "{}"
-    );
+
+    const eleConfig = document.querySelector("#application_config");
+    if (eleConfig) {
+        const { LANGUAGE, COUNTRY, ELANGUAGE } = JSON.parse(
+            eleConfig.getAttribute("data-config") ?? "{}"
+        );
+        storelanguage = LANGUAGE;
+        userCountry = COUNTRY;
+        languageCode = ELANGUAGE;
+        const { webapi_token } = JSON.parse(
+            eleConfig.getAttribute("data-store_user_config") ?? "{}"
+        );
+        accessToken = webapi_token;
+    } else {
+        const { LANGUAGE, COUNTRY, ELANGUAGE } = Config ?? {};
+
+        storeLanguage = LANGUAGE;
+        userCountry = COUNTRY;
+        languageCode = ELANGUAGE;
+
+        const loaderData = SSR?.loaderData;
+        if (loaderData && loaderData.length >= 0) {
+            accessToken = JSON.parse(loaderData[0]).strWebAPIToken;
+        }
+    }
 
     const G_Objs = {};
 
@@ -348,23 +393,41 @@
             var data = await exportCart(chkDiscount2.checked);
 
             if (currentValue !== "") {
-                SteamFacade.showConfirmDialog(
-                    "",
-                    t("exportConfirm"),
-                    t("exportConfirmReplace"),
-                    t("exportConfirmAppend")
-                )
-                    .done(() => {
+                Swal.fire({
+                    text: t("exportConfirm"),
+                    theme: 'auto',
+                    showCancelButton: true,
+                    confirmButtonText: t("exportConfirmReplace"),
+                    cancelButtonText: t("exportConfirmAppend"),
+                }).then(({ isConfirmed, isDenied, isDismissed, value: text }) => {
+                    if (isConfirmed) {
                         inputBox.value = `========【${now}】=========\n` + data;
                         fitInputBox();
-                    })
-                    .fail((bool) => {
-                        if (bool) {
-                            inputBox.value =
-                                currentValue + `\n========【${now}】=========\n` + data;
-                            fitInputBox();
-                        }
-                    });
+                    }
+                    else if (isDenied) {
+                        inputBox.value =
+                            currentValue + `\n========【${now}】=========\n` + data;
+                        fitInputBox();
+                    }
+                });
+
+                // SteamFacade.showConfirmDialog(
+                //     "",
+                //     t("exportConfirm"),
+                //     t("exportConfirmReplace"),
+                //     t("exportConfirmAppend")
+                // )
+                //     .done(() => {
+                //         inputBox.value = `========【${now}】=========\n` + data;
+                //         fitInputBox();
+                //     })
+                //     .fail((bool) => {
+                //         if (bool) {
+                //             inputBox.value =
+                //                 currentValue + `\n========【${now}】=========\n` + data;
+                //             fitInputBox();
+                //         }
+                //     });
             } else {
                 inputBox.value =
                     `========【${now}】=========\n` + exportCart(chkDiscount2.checked);
@@ -389,18 +452,48 @@
             showAlert(t("tips"), t("copyDone"), true);
         });
         const btnClear = genBtn(`🗑️${t("reset")}`, t("resetDesc"), () => {
-            SteamFacade.showConfirmDialog("", t("resetConfirm"), t("ok"), t("no")).done(() => {
-                inputBox.value = "";
-                GM_setValue("fac_cart", "");
-                fitInputBox();
+            Swal.fire({
+                text: t("resetConfirm"),
+                theme: 'auto',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: t("yes"),
+                cancelButtonText: t("no"),
+            }).then(({ isConfirmed, isDenied, isDismissed }) => {
+                if (isConfirmed) {
+                    inputBox.value = "";
+                    GM_setValue("fac_cart", "");
+                    fitInputBox();
+                }
             });
+
+            // SteamFacade.showConfirmDialog("", t("resetConfirm"), t("ok"), t("no")).done(() => {
+            //     inputBox.value = "";
+            //     GM_setValue("fac_cart", "");
+            //     fitInputBox();
+            // });
         });
         const btnReload = genBtn(`🔃${t("reload")}`, t("reloadDesc"), () => {
-            SteamFacade.showConfirmDialog("", t("reloadConfirm"), t("ok"), t("no")).done(() => {
-                const s = GM_getValue("fac_cart") ?? "";
-                inputBox.value = s;
-                fitInputBox();
+            Swal.fire({
+                text: t("reloadConfirm"),
+                theme: 'auto',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: t("yes"),
+                cancelButtonText: t("no"),
+            }).then(({ isConfirmed, isDenied, isDismissed }) => {
+                if (isConfirmed) {
+                    const s = GM_getValue("fac_cart") ?? "";
+                    inputBox.value = s;
+                    fitInputBox();
+                }
             });
+
+            // SteamFacade.showConfirmDialog("", t("reloadConfirm"), t("ok"), t("no")).done(() => {
+            //     const s = GM_getValue("fac_cart") ?? "";
+            //     inputBox.value = s;
+            //     fitInputBox();
+            // });
         });
         const btnHistory = genBtn(`📜${t("history")}`, t("historyDesc"), () => {
             window.location.href =
@@ -410,22 +503,42 @@
             window.location.href = "https://store.steampowered.com/cart/";
         });
         const btnForget = genBtn(`⚠️${t("clear")}`, t("clearDesc"), () => {
-            SteamFacade.showConfirmDialog("", t("clearConfirm"), t("ok"), t("no")).done(() => {
-                deleteAccountCart()
-                    .then(() => {
-                        location.reload();
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        showAlert("出错", err, false);
-                    });
+            Swal.fire({
+                text: t("clearConfirm"),
+                theme: 'auto',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: t("yes"),
+                cancelButtonText: t("no"),
+            }).then(({ isConfirmed, isDenied, isDismissed }) => {
+                if (isConfirmed) {
+                    deleteAccountCart()
+                        .then(() => {
+                            location.reload();
+                        })
+                        .catch((err) => {
+                            console.error(err);
+                            showAlert("出错", err, false);
+                        });
+                }
             });
+
+            // SteamFacade.showConfirmDialog("", t("clearConfirm"), t("yes"), t("no")).done(() => {
+            //     deleteAccountCart()
+            //         .then(() => {
+            //             location.reload();
+            //         })
+            //         .catch((err) => {
+            //             console.error(err);
+            //             showAlert("出错", err, false);
+            //         });
+            // });
         });
         const btnHelp = genBtn(`${t("help")}`, t("helpDesc"), () => {
             const {
                 script: { version },
             } = GM_info;
-            showAlert(
+            showHtmlAlert(
                 `${t("helpTitle")} ${version}`,
                 [
                     `<p>【🔼${t("import")}】${t("importDesc")}</p>`,
@@ -439,9 +552,9 @@
                     `<p>【⚠️${t("clear")}】${t("clearDesc")}</p>`,
                     `<p>【🔣${t("help")}】${t("helpDesc")}</p>`,
                     `<p>【<a href="https://keylol.com/t747892-1-1" target="_blank">发布帖</a>】 【<a href="https://blog.chrxw.com/scripts.html" target="_blank">脚本反馈</a>】 【Developed by <a href="https://steamcommunity.com/id/Chr_" target="_blank">Chr_</a>】</p>`,
-                ].join("<br>"),
+                ].join(""),
                 true
-            );
+            )
         });
 
         const btnArea = document.createElement("div");
@@ -509,8 +622,8 @@
         const regShort = new RegExp(/^([\s]*|)(\d+)/);
 
         return new Promise(async (resolve, reject) => {
-            const dialog = showAlert(
-                "导入购物车",
+            const dialog = showHtmlAlert(
+                null,
                 `<h2 id="fac_diag" class="fac_diag">${t("operation")}</h2>`,
                 true
             );
@@ -702,7 +815,7 @@
 
                             txt.textContent = "4/4 导入购物车成功";
 
-                            dialog.Dismiss();
+                            dialog.close();
 
                             resolve(result.join("\n"));
 
@@ -725,8 +838,8 @@
     //导出购物车
     function exportCart(onlyOnsale = false) {
         return new Promise(async (resolve, reject) => {
-            const dialog = showAlert(
-                "导出购物车",
+            const dialog = showHtmlAlert(
+                null,
                 `<h2 id="fac_diag" class="fac_diag">${t("operation")}</h2>`,
                 true
             );
@@ -814,7 +927,7 @@
                             }
 
                             txt.textContent = "3/4 导出购物车信息成功";
-                            dialog.Dismiss();
+                            dialog.close();
 
                             resolve(result.join("\n"));
                         } else {
@@ -836,8 +949,8 @@
         const setGiftInfo = await inputGiftee(setToGift);
 
         return new Promise(async (resolve, reject) => {
-            const dialog = showAlert(
-                "编辑购物车",
+            const dialog = showHtmlAlert(
+                null,
                 `<h2 id="fac_diag" class="fac_diag">${t("operation")}</h2>`,
                 true
             );
@@ -911,12 +1024,12 @@
 
                             txt.textContent = "3/3 批量修改购物车成功";
 
-                            setTimeout(() => dialog.Dismiss(), 1000);
+                            setTimeout(() => dialog.close(), 1000);
                             resolve();
                         } else {
                             txt.textContent = "3/3 购物车无需修改";
 
-                            setTimeout(() => dialog.Dismiss(), 1000);
+                            setTimeout(() => dialog.close(), 1000);
                             resolve();
                         }
                     } catch (err) {
@@ -940,19 +1053,31 @@
             if (!isGift) {
                 resolve(null);
             } else {
-                SteamFacade.showPromptDialog(
-                    "提示",
-                    "请输入礼物接收人的 SteamID 或者好友代码, 可以留空",
-                    "确认",
-                    "跳过"
-                )
-                    .done((text) => {
+                Swal.fire({
+                    title: "提示",
+                    input: "text",
+                    theme: 'auto',
+                    inputLabel: "请输入礼物接收人的 SteamID 或者好友代码, 可以留空",
+                    showCancelButton: true,
+                    confirmButtonText: t("ok"),
+                    cancelButtonText: t("skipGiftee"),
+                    inputValidator: (value) => {
+                        try {
+                            const id = BigInt(value.trim());
+                            if (id == 0) {
+                                return "输入数值有误";
+                            }
+                        } catch (err) {
+                            return "输入数值有误";
+                        }
+                    }
+                }).then(({ isConfirmed, isDenied, isDismissed, value: text }) => {
+                    if (isConfirmed) {
                         try {
                             let steamId = BigInt(text.trim());
                             if (steamId == 0) {
                                 throw "输入数值有误";
                             }
-
                             if (steamId > steamIdConvert) {
                                 steamId -= steamIdConvert;
                             }
@@ -968,12 +1093,52 @@
                             };
                             resolve(giftInfo);
                         } catch (err) {
-                            SteamFacade.showAlertDialog("提示", "输入数值有误").then(() => resolve(null));
+                            // ShowAlertDialog("提示", "输入数值有误").then(() => resolve(null));
+                            Swal.fire({
+                                title: "提示",
+                                text: "输入数值有误",
+                                theme: 'auto',
+                                icon: "error",
+                            }).then(() => resolve(null));
                         }
-                    })
-                    .fail(() => {
+                    } else {
                         resolve(null);
-                    });
+                    }
+                });
+
+                // SteamFacade.showPromptDialog(
+                //     "提示",
+                //     "请输入礼物接收人的 SteamID 或者好友代码, 可以留空",
+                //     "确认",
+                //     "跳过"
+                // )
+                //     .done((text) => {
+                //         try {
+                //             let steamId = BigInt(text.trim());
+                //             if (steamId == 0) {
+                //                 throw "输入数值有误";
+                //             }
+                //             if (steamId > steamIdConvert) {
+                //                 steamId -= steamIdConvert;
+                //             }
+                //             const giftInfo = {
+                //                 accountid_giftee: steamId.toString(),
+                //                 gift_message: {
+                //                     gifteename: steamId.toString(),
+                //                     message: "Send by Fast_Add_Cart",
+                //                     sentiment: nickname,
+                //                     signature: nickname,
+                //                 },
+                //                 time_scheduled_send: 0,
+                //             };
+                //             resolve(giftInfo);
+                //         } catch (err) {
+                //             ShowAlertDialog("提示", "输入数值有误").then(() => resolve(null));
+                //         }
+                //     })
+                //     .fail(() => {
+                //         resolve(null);
+                //     });
             }
         });
     }
@@ -1209,7 +1374,25 @@
 
     //显示提示
     function showAlert(title, text, succ = true) {
-        return SteamFacade.showAlertDialog(`${succ ? "✅" : "❌"}${title}`, text);
+        // return ShowAlertDialog(`${succ ? "✅" : "❌"}${title}`, text);
+        return Swal.fire({
+            title,
+            text,
+            theme: 'auto',
+            icon: succ ? 'success' : 'error',
+            confirmButtonText: t("ok"),
+        });
+    }
+    //显示提示
+    function showHtmlAlert(title, text, succ = true) {
+        // return ShowAlertDialog(`${succ ? "✅" : "❌"}${title}`, text);
+        return Swal.fire({
+            title,
+            html: text,
+            theme: 'auto',
+            icon: succ ? 'success' : 'error',
+            confirmButtonText: t("ok"),
+        });
     }
 })();
 
