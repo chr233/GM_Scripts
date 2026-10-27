@@ -27,7 +27,8 @@ div.game_purchase_action > button.fac_listbtns {
   bottom: 8px;
 }
 button.fac_cartbtns {
-  padding: 5px 8px;
+  padding: 4px;
+  border: 1px;
 }
 button.fac_cartbtns:not(:last-child) {
   margin-right: 4px;

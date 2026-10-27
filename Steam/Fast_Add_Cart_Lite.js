@@ -1,4 +1,3 @@
-
 // ==UserScript==
 // @name:zh-CN      Steam快速添加购物车 [轻量版]
 // @name            Fast_Add_Cart_Lite

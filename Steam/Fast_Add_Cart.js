@@ -17,6 +17,7 @@
 // @grant           GM_setValue
 // @grant           GM_getValue
 // @grant           GM_registerMenuCommand
+// @require         https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js
 // ==/UserScript==
 
 (async () => {
@@ -178,7 +179,7 @@
         const languageTips = GM_getValue("languageTips", true);
         if (languageTips && language === "ZH") {
             if (!document.querySelector("html").lang.startsWith("zh")) {
-                ShowConfirmDialog(
+                SteamFacade.showConfirmDialog(
                     "tips",
                     "Fast add cart now support English, switch?",
                     "Using English",
@@ -258,7 +259,7 @@
             let btn = document.createElement("button");
             btn.textContent = text;
             btn.title = title;
-            btn.className = "btn_medium btnv6_blue_hoverfade fac_cartbtns";
+            btn.className = "fac_cartbtns";
             btn.addEventListener("click", onclick);
             return btn;
         }
@@ -323,12 +324,12 @@
         );
         G_Objs.chkDiscount = chkDiscount;
 
-        const btnImport = genBtn(`🔼${t("import")}`, t("importDesc"), async () => {
+        const btnImport = genBtn(`${t("import")}`, t("importDesc"), async () => {
             inputBox.value = await importCart(inputBox.value, chkDiscount.checked);
         });
 
-        const histryPage = pathname.search("history") !== -1;
-        if (histryPage) {
+        const historyPage = pathname.search("history") !== -1;
+        if (historyPage) {
             btnImport.disabled = true;
             btnImport.title = t("importDesc2");
         }
@@ -340,14 +341,14 @@
         );
         G_Objs.chkDiscount2 = chkDiscount2;
 
-        const btnExport = genBtn(`🔽${t("export")}`, t("exportDesc"), async () => {
+        const btnExport = genBtn(`${t("export")}`, t("exportDesc"), async () => {
             let currentValue = inputBox.value.trim();
             const now = new Date().toLocaleString();
 
             var data = await exportCart(chkDiscount2.checked);
 
             if (currentValue !== "") {
-                ShowConfirmDialog(
+                SteamFacade.showConfirmDialog(
                     "",
                     t("exportConfirm"),
                     t("exportConfirmReplace"),
@@ -388,14 +389,14 @@
             showAlert(t("tips"), t("copyDone"), true);
         });
         const btnClear = genBtn(`🗑️${t("reset")}`, t("resetDesc"), () => {
-            ShowConfirmDialog("", t("resetConfirm"), t("ok"), t("no")).done(() => {
+            SteamFacade.showConfirmDialog("", t("resetConfirm"), t("ok"), t("no")).done(() => {
                 inputBox.value = "";
                 GM_setValue("fac_cart", "");
                 fitInputBox();
             });
         });
         const btnReload = genBtn(`🔃${t("reload")}`, t("reloadDesc"), () => {
-            ShowConfirmDialog("", t("reloadConfirm"), t("ok"), t("no")).done(() => {
+            SteamFacade.showConfirmDialog("", t("reloadConfirm"), t("ok"), t("no")).done(() => {
                 const s = GM_getValue("fac_cart") ?? "";
                 inputBox.value = s;
                 fitInputBox();
@@ -409,7 +410,7 @@
             window.location.href = "https://store.steampowered.com/cart/";
         });
         const btnForget = genBtn(`⚠️${t("clear")}`, t("clearDesc"), () => {
-            ShowConfirmDialog("", t("clearConfirm"), t("ok"), t("no")).done(() => {
+            SteamFacade.showConfirmDialog("", t("clearConfirm"), t("ok"), t("no")).done(() => {
                 deleteAccountCart()
                     .then(() => {
                         location.reload();
@@ -420,7 +421,7 @@
                     });
             });
         });
-        const btnHelp = genBtn(`🔣${t("help")}`, t("helpDesc"), () => {
+        const btnHelp = genBtn(`${t("help")}`, t("helpDesc"), () => {
             const {
                 script: { version },
             } = GM_info;
@@ -453,7 +454,6 @@
         btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnConvertToGift);
         btnArea.appendChild(btnConvertToSelf);
-        btnArea.appendChild(genSpan(" | "));
         btnArea.appendChild(btnHelp);
 
         const btnArea2 = document.createElement("div");
@@ -461,7 +461,7 @@
         btnArea2.appendChild(btnClear);
         btnArea2.appendChild(btnReload);
         btnArea2.appendChild(genSpan(" | "));
-        btnArea2.appendChild(histryPage ? btnBack : btnHistory);
+        btnArea2.appendChild(historyPage ? btnBack : btnHistory);
         btnArea2.appendChild(genSpan(" | "));
         btnArea2.appendChild(btnForget);
 
@@ -483,14 +483,14 @@
         //等待购物车加载完毕, 显示额外面板
         const timer = setInterval(() => {
             const container = document.querySelector(
-                "div[data-featuretarget='react-root']>div>div:last-child>div:last-child>div:last-child>div:nth-child(1)>div:last-child"
+                "section>div:last-child>div[class$='Panel']>div[class$='Panel']>div:last-child div[class$='Panel']"
             );
             if (container) {
                 clearInterval(timer);
 
                 container.parentElement.insertBefore(fastAddCartPanel, container);
             }
-        }, 500);
+        }, 2000);
     }
 
     // getStoreItem([730], null, null).then((data) => console.log(data)).catch(err => console.error(err))
@@ -940,7 +940,7 @@
             if (!isGift) {
                 resolve(null);
             } else {
-                ShowPromptDialog(
+                SteamFacade.showPromptDialog(
                     "提示",
                     "请输入礼物接收人的 SteamID 或者好友代码, 可以留空",
                     "确认",
@@ -968,7 +968,7 @@
                             };
                             resolve(giftInfo);
                         } catch (err) {
-                            ShowAlertDialog("提示", "输入数值有误").then(() => resolve(null));
+                            SteamFacade.showAlertDialog("提示", "输入数值有误").then(() => resolve(null));
                         }
                     })
                     .fail(() => {
@@ -1209,70 +1209,71 @@
 
     //显示提示
     function showAlert(title, text, succ = true) {
-        return ShowAlertDialog(`${succ ? "✅" : "❌"}${title}`, text);
+        return SteamFacade.showAlertDialog(`${succ ? "✅" : "❌"}${title}`, text);
     }
 })();
 
 GM_addStyle(`
 button.fac_listbtns {
-    display: none;
-    position: relative;
-    z-index: 100;
-    padding: 1px;
-  }
-  a.search_result_row > button.fac_listbtns {
-    top: -25px;
-    left: 300px;
-  }
-  a.tab_item > button.fac_listbtns {
-    top: -40px;
-    left: 330px;
-  }
-  a.recommendation_link > button.fac_listbtns {
-    bottom: 10px;
-    right: 10px;
-    position: absolute;
-  }
-  div.wishlist_row > button.fac_listbtns {
-    top: 35%;
-    right: 30%;
-    position: absolute;
-  }
-  div.game_purchase_action > button.fac_listbtns {
-    right: 8px;
-    bottom: 8px;
-  }
-  button.fac_cartbtns {
-    padding: 5px 8px;
-  }
-  button.fac_cartbtns:not(:last-child) {
-    margin-right: 4px;
-  }
-  button.fac_cartbtns:not(:first-child) {
-    margin-left: 4px;
-  }
-  a.tab_item:hover button.fac_listbtns,
-  a.search_result_row:hover button.fac_listbtns,
-  div.recommendation:hover button.fac_listbtns,
-  div.wishlist_row:hover button.fac_listbtns {
-    display: block;
-  }
-  div.game_purchase_action:hover > button.fac_listbtns {
-    display: inline;
-  }
-  button.fac_choose {
-    padding: 1px;
-    margin: 2px 5px;
-  }
-  textarea.fac_inputbox {
-    resize: vertical;
-    font-size: 12px;
-    min-height: 130px;
-    width: 98%;
-    background: #3d4450;
-    color: #fff;
-    padding: 1%;
-    border: gray;
-    border-radius: 5px;
-  }
+  display: none;
+  position: relative;
+  z-index: 100;
+  padding: 1px;
+}
+a.search_result_row > button.fac_listbtns {
+  top: -25px;
+  left: 300px;
+}
+a.tab_item > button.fac_listbtns {
+  top: -40px;
+  left: 330px;
+}
+a.recommendation_link > button.fac_listbtns {
+  bottom: 10px;
+  right: 10px;
+  position: absolute;
+}
+div.wishlist_row > button.fac_listbtns {
+  top: 35%;
+  right: 30%;
+  position: absolute;
+}
+div.game_purchase_action > button.fac_listbtns {
+  right: 8px;
+  bottom: 8px;
+}
+button.fac_cartbtns {
+  padding: 4px;
+  border: 1px;
+}
+button.fac_cartbtns:not(:last-child) {
+  margin-right: 4px;
+}
+button.fac_cartbtns:not(:first-child) {
+  margin-left: 4px;
+}
+a.tab_item:hover button.fac_listbtns,
+a.search_result_row:hover button.fac_listbtns,
+div.recommendation:hover button.fac_listbtns,
+div.wishlist_row:hover button.fac_listbtns {
+  display: block;
+}
+div.game_purchase_action:hover > button.fac_listbtns {
+  display: inline;
+}
+button.fac_choose {
+  padding: 1px;
+  margin: 2px 5px;
+}
+textarea.fac_inputbox {
+  resize: vertical;
+  font-size: 12px;
+  min-height: 130px;
+  width: 98%;
+  background: #3d4450;
+  color: #fff;
+  padding: 1%;
+  border: gray;
+  border-radius: 5px;
+}
 `);
